@@ -55,7 +55,7 @@ var cardList =
     'Stan Musial', 'Bill Terry', 'Rogers Hornsby', 'Lou Brock', 'Ted Williams',
     'Bill Dickey', 'Christy Mathewson', 'Willie McCovey', 'Lou Gehrig', 'George Brett',
     'Hank Aaron', 'Harry Heilmann', 'Walter Johnson', 'Roger Clemens', 'Ty Cobb',
-    'Whitey Ford', 'Willie Mays', 'Rickey Henderson', 'Babe Ruth'
+    'Whitey Ford', 'Willie Mays', 'Babe Ruth'
 ];
 
 // TODO: REMOVE (Currently to be used as reference)
