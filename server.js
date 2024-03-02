@@ -9,80 +9,22 @@ app.use(bodyParser.json());
 app.use((req, res, next) => 
 {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-  );
-  res.setHeader(
-    'Access-Control-Allow-Methods',
-    'GET, POST, PATCH, DELETE, OPTIONS'
-  );
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS');
   next();
 });
 
 app.listen(5000); // start Node + Express server on port 5000
 
-// NOTE: Leinecker connection string 'mongodb+srv://RickLeinecker:COP4331Rocks@cluster0.ehunp00.mongodb.net/?retryWrites=true&w=majority'
 // NOTE: Project connection string 'mongodb+srv://COP4331:POOSD24@cluster0.pwkanif.mongodb.net/'
-const url = 'mongodb+srv://RickLeinecker:COP4331Rocks@cluster0.ehunp00.mongodb.net/?retryWrites=true&w=majority';
-  const MongoClient = require("mongodb").MongoClient;
-  const client = new MongoClient(url);
-  client.connect(console.log("mongodb connected"));
+const url = 'mongodb+srv://COP4331:POOSD24@cluster0.pwkanif.mongodb.net/';
+const MongoClient = require("mongodb").MongoClient;
+const client = new MongoClient(url);
+client.connect(console.log("mongodb connected"));
 
 // Check http://localhost:5000/ to see Hello World
 app.get('/', function(req, res, next) {
   res.send("Hello world");
-});
-
-// TODO: REMOVE (Currently to allow api/addcard to work)
-var cardList = 
-[   'Roy Campanella', 'Paul Molitor', 'Tony Gwynn', 'Dennis Eckersley', 'Reggie Jackson',
-    'Gaylord Perry', 'Buck Leonard', 'Rollie Fingers', 'Charlie Gehringer', 'Wade Boggs',
-    'Carl Hubbell', 'Dave Winfield', 'Jackie Robinson', 'Ken Griffey, Jr.', 'Al Simmons', 
-    'Chuck Klein', 'Mel Ott', 'Mark McGwire','Nolan Ryan', 'Ralph Kiner', 
-    'Yogi Berra', 'Goose Goslin', 'Greg Maddux', 'Frankie Frisch', 'Ernie Banks',
-    'Ozzie Smith', 'Hank Greenberg', 'Kirby Puckett', 'Bob Feller', 'Dizzy Dean',
-    'Joe Jackson', 'Sam Crawford', 'Barry Bonds', 'Duke Snider', 'George Sisler',
-    'Ed Walsh', 'Tom Seaver', 'Willie Stargell', 'Bob Gibson', 'Brooks Robinson', 
-    'Steve Carlton', 'Joe Medwick', 'Nap Lajoie', 'Cal Ripken, Jr.', 'Mike Schmidt',
-    'Eddie Murray', 'Tris Speaker', 'Al Kaline', 'Sandy Koufax', 'Willie Keeler',
-    'Pete Rose', 'Robin Roberts', 'Eddie Collins', 'Lefty Gomez', 'Lefty Grove',
-    'Carl Yastrzemski', 'Frank Robinson', 'Juan Marichal', 'Warren Spahn', 'Pie Traynor',
-    'Roberto Clemente', 'Harmon Killebrew', 'Satchel Paige', 'Eddie Plank', 'Josh Gibson',
-    'Oscar Charleston', 'Mickey Mantle', 'Cool Papa Bell', 'Johnny Bench', 'Mickey Cochrane',
-    'Jimmie Foxx', 'Jim Palmer', 'Cy Young', 'Eddie Mathews', 'Honus Wagner',
-    'Paul Waner', 'Grover Alexander', 'Rod Carew', 'Joe DiMaggio', 'Joe Morgan',
-    'Stan Musial', 'Bill Terry', 'Rogers Hornsby', 'Lou Brock', 'Ted Williams',
-    'Bill Dickey', 'Christy Mathewson', 'Willie McCovey', 'Lou Gehrig', 'George Brett',
-    'Hank Aaron', 'Harry Heilmann', 'Walter Johnson', 'Roger Clemens', 'Ty Cobb',
-    'Whitey Ford', 'Willie Mays', 'Babe Ruth'
-];
-
-// TODO: REMOVE (Currently to be used as reference)
-app.post('/api/addcard', async (req, res, next) =>
-{
-  // incoming: userId, color
-  // outgoing: error
-	
-  const { userId, card } = req.body;
-
-  const newCard = {Card:card,UserId:userId};
-  var error = '';
-
-  try
-  {
-    const db = client.db("COP4331Cards");
-    const result = db.collection('Cards').insertOne(newCard);
-  }
-  catch(e)
-  {
-    error = e.toString();
-  }
-
-  cardList.push( card );
-
-  var ret = { error: error };
-  res.status(200).json(ret);
 });
 
 
@@ -94,48 +36,48 @@ app.post('/api/login', async (req, res, next) =>
 	
  var error = '';
 
-  const { login, password } = req.body;
+  const { username, password } = req.body;
 
-  const db = client.db("COP4331Cards");
-  const results = await db.collection('Users').find({Login:login,Password:password}).toArray();
+  const db = client.db("POOSD24");
+  const results = await db.collection('User').find({Username:username, Password:password}).toArray();
 
   var id = -1;
-  var fn = '';
-  var ln = '';
+  var email = '';
+  //var fn = '';
+  //var ln = '';
 
   if( results.length > 0 )
   {
-    id = results[0].UserID;
-    fn = results[0].FirstName;
-    ln = results[0].LastName;
+    email = results[0].email
+    //id = results[0].ID;
+    //fn = results[0].FirstName;
+    //ln = results[0].LastName;
   }
 
-  var ret = { id:id, firstName:fn, lastName:ln, error:''};
+  var ret = { id:id, email:email, error:''};
   res.status(200).json(ret);
 });
 
-// TODO: REMOVE (Currently to be used as reference)
-app.post('/api/searchcards', async (req, res, next) => 
-{
-  // incoming: userId, search
-  // outgoing: results[], error
 
-  var error = '';
+app.post("api/register", async (req, res, next) => {
 
-  const { userId, search } = req.body;
+  // finds what is in Users table
+  const { userId, login, password, email} = req.body;
 
-  var _search = search.trim();
-  
-  const db = client.db("COP4331Cards");
-  const results = await db.collection('Cards').find({"Card":{$regex:_search+'.*', $options:'i'}}).toArray();
-  
-  var _ret = [];
-  for( var i=0; i<results.length; i++ )
-  {
-    _ret.push( results[i].Card );
+  const newUser = {UserID: -1, login:login, password:password, email:email}
+
+  var error = "";
+
+  try {
+    const db = client.db("POSSD24");
+    const result = db.collection("User").insertOne(newUser);
+  } catch (e) {
+    error = e.toString();
   }
-  
-  var ret = {results:_ret, error:error};
+
+  //cardList.push(card);
+
+  var ret = { error: error };
   res.status(200).json(ret);
 });
 
