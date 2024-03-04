@@ -23,7 +23,7 @@ app.listen(5000); // start Node + Express server on port 5000
 
 // NOTE: Project connection string 'mongodb+srv://COP4331:POOSD24@cluster0.pwkanif.mongodb.net/'
 const url = "mongodb+srv://COP4331:POOSD24@cluster0.pwkanif.mongodb.net/";
-const MongoClient = require("mongodb").MongoClient;
+const { MongoClient, MongoServerError } = require('mongodb');
 const client = new MongoClient(url);
 client.connect(console.log("mongodb connected"));
 
@@ -63,60 +63,43 @@ app.post("/api/login", async (req, res, next) => {
   res.status(200).json(ret);
 });
 
+
 // User registration
 app.post("/api/register", async (req, res, next) => {
-  
-  /*
-  According to documentation each user has:
-    - [x] First Name
-    - [x] Last Name
-    - [x] Username
-    - [x] Password -- TODO: Hashing?
-    - [x] Email
-  
-  Error checking:
-    - [x] Check if email is a duplicate
-  */
 
-  const { FirstName, LastName, Username, Password, Email } = req.body;
+  const { firstName, lastName, username, password, email, businessIdList } = req.body;
   const usersCollection = client.db("inventory_tracker").collection("users");
-
-  var error = "";
 
   try {
 
-    // Check if email already exists
-    const user = await usersCollection.findOne({ Email });
-    if (user) {
-      return res.status(400).json({ error: "Email Taken" });
-    }
-
-    // Insert new user into usersCollection
     const newUser = await usersCollection.insertOne({
-      FirstName: FirstName,
-      LastName: LastName,
-      Username: Username,
-      Password: Password, // TODO: Is this supposed to be hashed
-      Email: Email,
+      firstName: firstName,
+      lastName: lastName,
+      username: username,
+      password: password, 
+      email: email,
+      businessIdList: businessIdList || []
     });
 
-    // Use the insertedId to fetch the user's first name from the database for testing
     const createdUser = await usersCollection.findOne(
       { _id: newUser.insertedId },
-      { projection: { _id: 0, FirstName: 1 } }
+      { projection: { _id: 0, firstName: 1, businessIdList: 1 } }
     );
 
     if (createdUser) {
-      res.status(201).json({ user: createdUser });
+      res.status(201).json({ error: "" });
     } else {
       res.status(404).json({ error: "User not found after registration." });
     }
 
-    // If implementing immediate login it might be best to return user after registration
-
   } catch (e) {
-    error = e.toString();
-    console.log(error);
+
+    if (e instanceof MongoServerError && e.code === 11000) {
+      const errorField = e.message.includes('email_1') ? 'Email' : 'Username';
+      return res.status(400).json({ error: `${errorField} Taken` });
+    }
+
+    console.log(e);
     res.status(500).json({ error: "Server error" });
-  }
+  } 
 });
