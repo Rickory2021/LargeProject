@@ -1,3 +1,0 @@
-# LargeProject
-Inventory Management Software
-
