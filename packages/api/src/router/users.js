@@ -4,6 +4,10 @@ const bodyParser = require("body-parser")
 const cors = require("cors");
 
 router.post("/api/login", async (req, res, next) => {
+  // incoming: username, password
+  // outgoing: id, firstName, lastName, businessIdList, error
+
+  // Init. error var
   var error = "";
   const { username, password } = req.body;
 
@@ -21,15 +25,26 @@ router.post("/api/login", async (req, res, next) => {
     var id = -1;
     var fn = "";
     var ln = "";
+    var email = "";
+    var bId = [];
 
     // if results found, obtain from array and store in the init. variables
     if (results.length > 0) {
       id = results[0]._id;
       fn = results[0].firstName;
       ln = results[0].lastName;
+      email = results[0].email;
+      bId = results[0].businessIdList;
 
       // Return what we just stored in our vars, id, fn, ln
-      var ret = { _id: id, firstName: fn, lastName: ln, error: "" };
+      var ret = {
+        _id: id,
+        firstName: fn,
+        lastName: ln,
+        email: email,
+        businessIdList: bId,
+        error: "",
+      };
       return res.status(200).json(ret);
     }
 
@@ -76,6 +91,39 @@ router.post("/api/register", async (req, res, next) => {
 
     console.log(e);
     res.status(500).json({ error: "Server error" });
+  }
+});
+
+router.post("/api/registerBusiness", async (req, res, next) => {
+  // incoming: businessName
+  // outgoing: businessId, error
+
+  // Init. error var
+  var error = "";
+  const { businessName } = req.body;
+
+  // Connect to database
+  const db = client.db("inventory_tracker");
+
+  try {
+    // Create a new business object
+    const result = await db.collection("businesses").insertOne({
+      businessName: businessName,
+      employeeIdList: [],
+      itemList: [],
+      distributorList: [],
+    });
+
+    // Extract the inserted business ID
+    const businessId = result.insertedId;
+
+    // Return the business ID and no error
+    return res.status(200).json({ businessId, error: "" });
+  } catch (error) {
+    console.error("Error during business registration:", error);
+
+    // Return an empty business ID and an error message
+    return res.status(500).json({ businessId: "", error: "Unknown Error" });
   }
 });
 
