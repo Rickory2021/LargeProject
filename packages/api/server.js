@@ -4,7 +4,7 @@ const cors = require("cors");
 
 const app = express();
 
-const users = require("./routes/users");
+const users = require("./router/users");
 
 users(app);
 
