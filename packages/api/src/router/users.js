@@ -79,7 +79,7 @@ router.post("/api/register", async (req, res, next) => {
   }
 });
 
-mudule.exports = function (app) {
+module.exports = function (app) {
   app.use('/users', router);
 }
 
