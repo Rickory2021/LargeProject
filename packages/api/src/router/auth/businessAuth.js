@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
+const { getDatabase } = require('../database/databaseManager');
 
-router.post("/api/registerBusiness", async (req, res, next) => {
+router.post("/register", async (req, res, next) => {
     // incoming: businessName
     // outgoing: businessId, error
   
@@ -10,9 +11,10 @@ router.post("/api/registerBusiness", async (req, res, next) => {
     const { businessName } = req.body;
   
     // Connect to database
-    const db = client.db("inventory_tracker");
+    const db = getDatabase()
   
     try {
+
       // Create a new business object
       const result = await db.collection("businesses").insertOne({
         businessName: businessName,
@@ -34,6 +36,4 @@ router.post("/api/registerBusiness", async (req, res, next) => {
     }
   });
 
-module.exports = function (app) {
-    app.use('/business', router);
-}
+module.exports = router;

@@ -12,6 +12,9 @@ app.use(bodyParser.json());
 const userAuthRouter = require("./src/router/auth/userAuth");
 app.use('/api/user', userAuthRouter);
 
+const businessAuthRouter = require("./src/router/auth/businessAuth");
+app.use('/api/business', businessAuthRouter);
+
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
@@ -25,7 +28,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.listen(5000); // start Node + Express server on port 5000
+app.listen(3001); // start Node + Express server on port 5000
 
 // NOTE: Project connection string 'mongodb+srv://COP4331:POOSD24@cluster0.pwkanif.mongodb.net/'
 connectToServer((err) => {

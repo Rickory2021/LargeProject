@@ -65,28 +65,28 @@ router.post("/register", async (req, res, next) => {
 
     try {
         const newUser = await usersCollection.insertOne({
-        firstName: firstName,
-        lastName: lastName,
-        username: username,
-        password: password,
-        email: email,
-        businessIdList: businessIdList || [],
+            firstName: firstName,
+            lastName: lastName,
+            username: username,
+            password: password,
+            email: email,
+            businessIdList: businessIdList || [],
         });
 
         const createdUser = await usersCollection.findOne(
-        { _id: newUser.insertedId },
-        { projection: { _id: 0, firstName: 1, businessIdList: 1 } }
+            { _id: newUser.insertedId },
+            { projection: { _id: 0, firstName: 1, businessIdList: 1 } }
         );
 
         if (createdUser) {
-        res.status(201).json({ error: "" });
-        } else {
-        res.status(404).json({ error: "User not found after registration." });
+            res.status(201).json({ error: "" });
+            } else {
+            res.status(404).json({ error: "User not found after registration." });
         }
     } catch (e) {
-        if (e instanceof MongoServerError && e.code === 11000) {
-        const errorField = e.message.includes("email_1") ? "Email" : "Username";
-        return res.status(400).json({ error: `${errorField} Taken` });
+            if (e instanceof MongoServerError && e.code === 11000) {
+            const errorField = e.message.includes("email_1") ? "Email" : "Username";
+            return res.status(400).json({ error: `${errorField} Taken` });
         }
 
         console.log(e);
