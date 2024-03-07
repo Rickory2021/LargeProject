@@ -1,11 +1,13 @@
 import { redirect } from "next/navigation";
 
 import SignUp from "./sign-up";
+import Nav from "../../../../../packages/ui/src/nav";
 
-export default async function Stuff() {
+export default async function Page() {
   return (
     <div>
-      <h1>Sign Up</h1>
+      <Nav />
+      <SignUp />
     </div>
   );
 }
