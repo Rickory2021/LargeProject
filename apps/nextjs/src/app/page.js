@@ -8,7 +8,13 @@ import { Nav } from "./components/nav";
 
 export default function HomePage() {
   return (
-    <Nav />
+    <div>
+      <Nav />
+      
+    </div>
+   
+    
+   
     
   );
 }
