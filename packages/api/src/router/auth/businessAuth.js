@@ -21,6 +21,7 @@ router.post("/register", async (req, res, next) => {
         employeeIdList: [],
         itemList: [],
         distributorList: [],
+        locationList: []
       });
   
       // Extract the inserted business ID
@@ -28,7 +29,8 @@ router.post("/register", async (req, res, next) => {
   
       // Return the business ID and no error
       return res.status(200).json({ businessId, error: "" });
-    } catch (error) {
+    } 
+    catch (error) {
       console.error("Error during business registration:", error);
   
       // Return an empty business ID and an error message
