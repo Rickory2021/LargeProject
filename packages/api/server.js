@@ -15,6 +15,12 @@ app.use('/api/user', userAuthRouter);
 const businessAuthRouter = require("./src/router/auth/businessAuth");
 app.use('/api/business', businessAuthRouter);
 
+// const userBusinessConnectionRouter = require("./src/router/auth/businessAuth");
+// app.use('/api/business', userBusinessConnectionRouter);
+
+const userBusinessConnectionRouter = require("./src/router/business/userBusinessConnection");
+app.use('/api/userBusiness', userBusinessConnectionRouter);
+
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
