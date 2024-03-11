@@ -16,7 +16,7 @@ export function SideNav() {
 
 const SideBarIcon = ({ icon, text }) => (
   <div
-    className="group relative flex items-center justify-center h-20 w-20 mt-2 mb-2 
+    className="group relative flex items-center justify-center h-21 w-21 mt-2 mb-2 
             text-white hover:bg-white hover:text-blue-600 hover:rounded-xl "
   >
     {icon}
