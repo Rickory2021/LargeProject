@@ -7,11 +7,11 @@
       "outputs": [
         ".next/**",
         "!.next/cache/**",
-        ".expo/**",
-        ".output/**",
-        ".vercel/output/**",
-        ".express/**"
+        ".expo/**"
       ]
+    },
+    "start": {
+      "dependsOn": ["^build"]
     },
     "lint": {
       "dependsOn": ["^lint"]
