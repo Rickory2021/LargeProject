@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -14,6 +15,12 @@ app.use('/api/user', userAuthRouter);
 
 const businessAuthRouter = require("./src/router/auth/businessAuth");
 app.use('/api/business', businessAuthRouter);
+
+// const userBusinessConnectionRouter = require("./src/router/auth/businessAuth");
+// app.use('/api/business', userBusinessConnectionRouter);
+
+//const userBusinessConnectionRouter = require("./src/router/business/userBusinessConnection");
+//app.use('/api/userBusiness', userBusinessConnectionRouter);
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -40,3 +47,4 @@ app.get("/", function (req, res, next) {
   res.send("Hello world");
 });
 
+module.exports = app;

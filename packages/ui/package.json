@@ -4,7 +4,7 @@
   "private": true,
   "exports": {
     "./button": "./src/button.tsx",
-    "./card": "./src/card.tsx",
+    "./card": "./src/card.jsx",
     "./code": "./src/code.tsx"
   },
   "scripts": {

@@ -3,10 +3,12 @@ import { redirect } from "next/navigation";
 
 import SignIn from  "./sign-in"
 
-export default async function Morestuff(){
+
+export default async function Page(){
     return(
         <div>
-            <h1>Sign In</h1>
+            
+            <SignIn />
         </div>
     );
 }

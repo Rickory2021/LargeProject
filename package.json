@@ -1,12 +1,17 @@
 {
-  "name": "LargeProject",
+  "name": "largeproject",
   "private": true,
   "scripts": {
     "build": "turbo build",
+    "start": "node packages/api/server.js",
     "dev": "turbo dev",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
@@ -16,5 +21,8 @@
   "packageManager": "pnpm@8.9.0",
   "engines": {
     "node": ">=18"
+  },
+  "dependencies": {
+    "next-auth": "^4.24.7"
   }
 }

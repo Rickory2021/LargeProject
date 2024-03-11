@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const { MongoServerError } = require("mongodb");
 const { getDatabase } = require('../database/databaseManager');
+const crypto = require('crypto')
+const sendgrid = require('@sendgrid/mail')
 
 router.post("/login", async (req, res, next) => {
     // incoming: username, password
@@ -64,6 +66,10 @@ router.post("/register", async (req, res, next) => {
     const usersCollection = getDatabase().collection("users");
 
     try {
+
+        const emailVerificationToken = crypto.randomBytes(20).toString('hex')
+        const emailVerified = false
+
         const newUser = await usersCollection.insertOne({
             firstName: firstName,
             lastName: lastName,
@@ -71,12 +77,16 @@ router.post("/register", async (req, res, next) => {
             password: password,
             email: email,
             businessIdList: businessIdList || [],
+            emailVerified,
+            emailVerificationToken
         });
 
         const createdUser = await usersCollection.findOne(
             { _id: newUser.insertedId },
             { projection: { _id: 0, firstName: 1, businessIdList: 1 } }
         );
+
+        await sendVerificationEmail(email, emailVerificationToken);
 
         if (createdUser) {
             res.status(201).json({ error: "" });
@@ -93,5 +103,52 @@ router.post("/register", async (req, res, next) => {
         res.status(500).json({ error: "Server error" });
     }
 });
+
+router.post('/verify-email', async (req, res, next) => {
+  
+  const { emailVerificationToken } = req.body;
+  const usersCollection = getDatabase().collection("users");
+
+  try {
+
+    const result = await usersCollection.updateOne(
+      { emailVerificationToken: emailVerificationToken, emailVerified: false },
+      { $set: { emailVerified: true }, $unset: { emailVerificationToken: "" } }
+    );
+
+    if (result.modifiedCount === 1) {
+      res.json({ error: "" });
+    } else {
+      
+      res.status(400).json({ error: "Invalid or expired verification link." });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "An error occurred during the verification process." });
+  }
+});
+
+async function sendVerificationEmail(email, token) {
+
+  sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
+
+  const verificationUrl = `https://slicer-nine.vercel.app/verify-email/${token}`;
+  const msg = {
+      to: email,
+      from: 'xariaadavis@gmail.com', // For testing purposes
+      subject: 'Slicer: Verify Your Email',
+      html: `<p>Please verify your email by clicking on the link below:</p><a href="${verificationUrl}">Verify Email</a>`,
+  };
+
+  try {
+      await sendgrid.send(msg);
+      console.log('Verification email sent successfully.');
+  } catch (error) {
+      console.error('Error sending verification email:', error);
+
+      // TODO: 
+      throw new Error('Failed to send verification email.'); 
+  }
+}
 
 module.exports = router;

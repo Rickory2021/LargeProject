@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base{
-  
+
+@layer components {
+  .sidebar_icon {
+    @apply relative flex items-center justify-center h-12 w-12 mt-2 mb-2 
+            text-white bg-gray-500 hover:bg-gray-600;
+  }
 }
