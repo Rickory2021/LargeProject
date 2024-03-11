@@ -1,5 +1,5 @@
 {
-  "name": "LargeProject",
+  "name": "largeproject",
   "private": true,
   "scripts": {
     "build": "turbo build",
