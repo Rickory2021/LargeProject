@@ -130,8 +130,7 @@ router.post('/verify-email', async (req, res, next) => {
 
 async function sendVerificationEmail(email, token) {
 
-  // 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
-  sendgrid.setApiKey('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');
+  sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
 
   const verificationUrl = `https://slicer-nine.vercel.app/verify-email/${token}`;
   const msg = {
