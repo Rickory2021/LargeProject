@@ -34,7 +34,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.listen(3001); // start Node + Express server on port 5000
+app.listen(5000); // start Node + Express server on port 5000
 
 // NOTE: Project connection string 'mongodb+srv://COP4331:POOSD24@cluster0.pwkanif.mongodb.net/'
 connectToServer((err) => {
