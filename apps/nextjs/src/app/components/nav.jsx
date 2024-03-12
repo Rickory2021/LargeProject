@@ -14,13 +14,13 @@ export function Nav() {
           <div className="hidden md:block .justify-center ">
             <Link href="/sign-in">
               <button className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md">
-                SignIn
+                Sign In
               </button>
             </Link>
 
             <Link href="/sign-up">
               <button className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md">
-                Signup
+                Sign up
               </button>
             </Link>
           </div>
