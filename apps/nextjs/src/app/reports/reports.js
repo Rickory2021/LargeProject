@@ -1,6 +1,6 @@
 import { SideNav } from "./components/side-bar";
 
-export function Dashboard() {
+export function Reports() {
   return (
     <div className="flex">
       <SideNav />
