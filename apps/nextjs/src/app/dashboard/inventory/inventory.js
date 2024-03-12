@@ -1,8 +1,8 @@
 import { SideNav } from "@repo/ui/side-nav";
 
-export function Dashboard() {
+export function Inventory() {
   return (
-    <div className="flex felx-col">
+    <div className="flex flex-col">
       <SideNav />
     </div>
   );
