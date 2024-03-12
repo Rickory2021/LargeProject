@@ -1,42 +1,43 @@
-import Link from 'next/link'; // Import Link from Next.js
+"use client";
+
+import Link from "next/link"; // Import Link from Next.js
 
 import { HiArchive, HiCreditCard } from "react-icons/hi";
 import { FaHome, FaTruck } from "react-icons/fa";
 import { TbReportSearch } from "react-icons/tb";
 
-export function SideNav() {
+function SideNav() {
   return (
     <div className="fixed top-0 left-0 h-screen w-46 m-0 flex flex-col bg-blue-600 text-white">
       <Link href="/dashboard">
         <button className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md">
           <SideBarIcon icon={<FaHome size="66" />} text="Dashboard" />
         </button>
-      </Link>   
-      
-      <Link href="/inventory">
+      </Link>
+
+      <Link href="/dashboard/inventory">
         <button className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md">
           <SideBarIcon icon={<HiArchive size="66" />} text="Inventory" />
         </button>
-      </Link>   
+      </Link>
 
-      <Link href="/orders">
+      <Link href="/dashboard/orders">
         <button className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md">
           <SideBarIcon icon={<HiCreditCard size="66" />} text="Orders" />
         </button>
-      </Link> 
+      </Link>
 
-      <Link href="/suppliers">
+      <Link href="/dashboard/suppliers">
         <button className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md">
           <SideBarIcon icon={<FaTruck size="62" />} text="Suppliers" />
         </button>
-      </Link>   
+      </Link>
 
-       <Link href="/reports">
+      <Link href="/dashboard/reports">
         <button className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md">
           <SideBarIcon icon={<TbReportSearch size="62" />} text="Reports" />
         </button>
-      </Link>   
-
+      </Link>
     </div>
   );
 }
@@ -49,3 +50,5 @@ const SideBarIcon = ({ icon, text }) => (
     </span>
   </div>
 );
+
+export { SideNav, SideBarIcon };

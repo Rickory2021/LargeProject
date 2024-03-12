@@ -4,23 +4,13 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const { connectToServer } = require('./src/router/database/databaseManager');
 
+//const path = require('path');
+//const PORT = process.env.PORT || 5000;
 const app = express();
+//app.set("port", (process.env.PORT || 5000));
 
 app.use(cors());
 app.use(bodyParser.json());
-
-// Route declarations
-const userAuthRouter = require("./src/router/auth/userAuth");
-app.use('/api/user', userAuthRouter);
-
-const businessAuthRouter = require("./src/router/auth/businessAuth");
-app.use('/api/business', businessAuthRouter);
-
-// const userBusinessConnectionRouter = require("./src/router/auth/businessAuth");
-// app.use('/api/business', userBusinessConnectionRouter);
-
-//const userBusinessConnectionRouter = require("./src/router/business/userBusinessConnection");
-//app.use('/api/userBusiness', userBusinessConnectionRouter);
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -35,7 +25,24 @@ app.use((req, res, next) => {
   next();
 });
 
-app.listen(3001); // start Node + Express server on port 5000
+app.listen(3001);
+
+// Route declarations
+const userAuthRouter = require("./src/router/auth/userAuth");
+app.use('/api/user', userAuthRouter);
+
+const businessAuthRouter = require("./src/router/auth/businessAuth");
+app.use('/api/business', businessAuthRouter);
+
+//const userBusinessConnectionRouter = require("./src/router/business/userBusinessConnection");
+//app.use('/api/userBusiness', userBusinessConnectionRouter);
+
+/*
+app.listen(PORT, () => {
+  console.log('Listening on port ' + PORT);
+});
+*/
+
 
 // NOTE: Project connection string 'mongodb+srv://COP4331:POOSD24@cluster0.pwkanif.mongodb.net/'
 connectToServer((err) => {
