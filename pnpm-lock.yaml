@@ -162,6 +162,10 @@ importers:
   packages/typescript-config: {}
 
   packages/ui:
+    dependencies:
+      react-icons:
+        specifier: ^5.0.1
+        version: 5.0.1(react@18.2.0)
     devDependencies:
       '@repo/eslint-config':
         specifier: workspace:*
