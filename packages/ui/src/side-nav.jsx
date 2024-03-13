@@ -8,7 +8,7 @@ import { TbReportSearch } from "react-icons/tb";
 
 function SideNav() {
   return (
-    <div className="fixed top-0 left-0 h-screen w-46 m-0 flex flex-col bg-blue-600 text-white">
+    <div className="fixed top-0 left-0 h-screen w-auto m-0 flex flex-col bg-blue-600 text-white">
       <Link href="/dashboard">
         <button className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md">
           <SideBarIcon icon={<FaHome size="66" />} text="Dashboard" />

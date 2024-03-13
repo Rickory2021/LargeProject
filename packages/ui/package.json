@@ -3,9 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "exports": {
-    
     "./card": "./src/card.jsx",
-    
     "./side-nav": "./src/side-nav.jsx"
   },
   "scripts": {

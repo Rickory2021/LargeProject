@@ -4,7 +4,7 @@
   "scripts": {
     "build": "turbo build",
     "start": "node packages/api/server.js",
-    "dev": "turbo dev",
+    "dev": "pnpm install && turbo dev",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
