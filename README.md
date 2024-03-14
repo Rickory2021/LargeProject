@@ -1,53 +1,52 @@
-# Turborepo starter
+# Slicer
 
-This is an official starter Turborepo.
+Simple Inventory Manager for small businesses 
 
-## Using this example
+## About this repo
 
-Run the following command:
-
-```sh
-npx create-turbo@latest
-```
-
-## What's inside?
-
-This Turborepo includes the following packages/apps:
+This repository is a monorepo using Turborepo and pnpm containing:
 
 ### Apps and Packages
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
+- `nextjs`: a [Next.js](https://nextjs.org/) app
+- `mobile`: an expo mibile app using React Native
+- `@repo/ui`: a stub React component library shared by both `nextjs` and `mobile` applications
 - `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
 - `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+- `packages/api`: an express backend for our endpoints
 
 ### Utilities
 
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
 - [ESLint](https://eslint.org/) for code linting
 - [Prettier](https://prettier.io) for code formatting
+- [Tailwind CSS](https://tailwindcss.com/) for styling
+
+## Using this monorepo
+
+### Develop
+
+To develop all apps and packages and install dependencies, run the following command:
+
+```
+pnpm dev
+```
 
 ### Build
 
 To build all apps and packages, run the following command:
 
 ```
-cd my-turborepo
 pnpm build
 ```
 
-### Develop
+### Configure environmental variables
 
-To develop all apps and packages, run the following command:
+To Configure all env variables, run the following command:
 
 ```
-cd my-turborepo
-pnpm dev
+# Not yet set up
+cp .env.example .env
+
 ```
 
 ### Remote Caching
@@ -68,14 +67,3 @@ Next, you can link your Turborepo to your Remote Cache by running the following 
 ```
 npx turbo link
 ```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
