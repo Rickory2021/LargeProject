@@ -2,15 +2,21 @@ require('dotenv').config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const { connectToServer } = require('./src/router/database/databaseManager');
+const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser");
+const authRoute = require("./Routes/AuthRoute");
+const { connectToServer } = require('./database/databaseManager');
+const { DATABASE_URL, PORT } = process.env;
 
 //const path = require('path');
 //const PORT = process.env.PORT || 5000;
 const app = express();
 //app.set("port", (process.env.PORT || 5000));
 
-app.use(cors());
+// middleware 
+app.use(express.json());
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -25,23 +31,25 @@ app.use((req, res, next) => {
   next();
 });
 
-app.listen(3001);
+// TODO: Fix? 
+mongoose.connect(DATABASE_URL)
+.then(() => console.log("MongoDB is connected successfully"))
+.catch((err) => console.error(err));
 
-// Route declarations
-const userAuthRouter = require("./src/router/auth/userAuth");
-app.use('/api/user', userAuthRouter);
-
-const businessAuthRouter = require("./src/router/auth/businessAuth");
-app.use('/api/business', businessAuthRouter);
-
-//const userBusinessConnectionRouter = require("./src/router/business/userBusinessConnection");
-//app.use('/api/userBusiness', userBusinessConnectionRouter);
-
-/*
 app.listen(PORT, () => {
-  console.log('Listening on port ' + PORT);
-});
-*/
+  console.log(`Server is listening on port ${PORT}`); 
+})
+// app.listen(3001);
+
+app.use(cors ({
+  origin: ["http://localhost:3000"], 
+  methods: ["GET", "POST", "PUT", "DELETE"], 
+  credentials: true, 
+})
+);
+
+// Route 
+app.use("/", authRoute);
 
 
 // NOTE: Project connection string 'mongodb+srv://COP4331:POOSD24@cluster0.pwkanif.mongodb.net/'
