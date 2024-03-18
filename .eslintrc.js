@@ -1,10 +1,17 @@
-// This configuration only applies to the package manager root.
-/** @type {import("eslint").Linter.Config} */
 module.exports = {
-  ignorePatterns: ["apps/**", "packages/**"],
-  extends: ["@repo/eslint-config/library.js"],
-  parser: "@typescript-eslint/parser",
-  parserOptions: {
-    project: true,
+  env: {
+    browser: true,
+    commonjs: true,
+    node: true,
+    es2021: true,
+    es6: true,
+    jquery: true
   },
+  extends: ['eslint:recommended', 'plugin:react/recommended', 'prettier'],
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module'
+  },
+  plugins: ['react'],
+  rules: {}
 };
