@@ -1,5 +1,5 @@
-import React from 'react';
-import Link from 'next/link';
+import React from "react";
+import Link from "next/link";
 
 export function Nav() {
   return (
@@ -28,4 +28,5 @@ export function Nav() {
       </nav>
     </div>
   );
-}
+};
+

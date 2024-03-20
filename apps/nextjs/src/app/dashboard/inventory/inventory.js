@@ -1,4 +1,4 @@
-import { SideNav } from '@repo/ui/side-nav';
+import { SideNav } from "@repo/ui/side-nav";
 
 export function Inventory() {
   return (
