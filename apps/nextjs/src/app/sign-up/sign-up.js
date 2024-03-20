@@ -17,12 +17,19 @@ export default function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:3001/api/user/register", {
+      const res = await fetch("http://localhost:3001/api/auth/user/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ firstName, lastName, username, password, email, businessIdList }),
+        body: JSON.stringify({
+          firstName,
+          lastName,
+          username,
+          password,
+          email,
+          businessIdList,
+        }),
       });
       if (res.ok) {
         router.push("/dashboard");
