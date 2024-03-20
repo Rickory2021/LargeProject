@@ -1,6 +1,6 @@
 # Slicer
 
-Simple Inventory Manager for small businesses 
+Simple Inventory Manager for small businesses
 
 ## About this repo
 

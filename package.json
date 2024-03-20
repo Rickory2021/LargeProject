@@ -6,7 +6,7 @@
     "start": "node packages/api/server.js",
     "dev": "pnpm install && turbo dev",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{yaml,example,html,env,css,jsx,js,json,ts,tsx,md}\""
   },
   "workspaces": [
     "packages/*",
