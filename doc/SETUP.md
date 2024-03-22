@@ -74,3 +74,28 @@ That is why we are using .env files that are ignored to keep sensitive data from
 
 Since packages/api/package.json is currently the the one with “dotenv” within its dependencies,<br>
 So in packages/api create an .env file (So server.js can access the important information) based off .env.example and credentials found in discord.
+
+## Installing Prettier & ESLint
+
+This Project will be using Prettier & ESLint to ensure proper formating and coding style.<br>
+This is beneficial since it will:
+
+- Ensure that Style is Consistent
+- Flag Poor Coding Practices to Fix
+- Help Flag Bug's Potential Issues
+- Flag Reduntant Code
+- Ensure Better Readability
+
+1. Install Prettier & ESLint from Visual Studio Code Extensions<br>
+   <img src="images\SETUP\0_Prettier_Extension_Install.png" alt="Shows the Trello Card Icon" style="width:40%; height:auto;">
+   <img src="images\SETUP\1_ESLint_Extension_Install.png" alt="Shows the Trello Card Icon" style="width:40%; height:auto;">
+2. Restart Visual Studio by either closing and reopening or by typing ">reload" on VSCode
+   <img src="images\SETUP\2_Reload_Command.png" alt="Shows the Trello Card Icon" style="width:100%; height:auto;">
+
+Afterwards:
+
+- Prettier will Auto Format after you Save the File
+- ESLint will display warnings of poor coding style<br>
+  <img src="images/SETUP/3_ESLint_Flags.png" alt="Shows the Trello Card Icon" style="width:100%; height:auto;"><br>
+  **Note**: ESLint has been configured to just act as a helper, meaning that anything that ESLint flagges is just a suggestion. This is due to the fact that this project is done by people who are still learning how to collaborate.<br>
+  If an ESLint gives an error instead of a warning, please notify Ricky to ensure that Pull Requests are able to be done without any failed test
