@@ -87,15 +87,15 @@ This is beneficial since it will:
 - Ensure Better Readability
 
 1. Install Prettier & ESLint from Visual Studio Code Extensions<br>
-   <img src="images\SETUP\0_Prettier_Extension_Install.png" alt="Shows the Trello Card Icon" style="width:40%; height:auto;">
-   <img src="images\SETUP\1_ESLint_Extension_Install.png" alt="Shows the Trello Card Icon" style="width:40%; height:auto;">
+   <img src="images\SETUP\0_Prettier_Extension_Install.png" alt="Shows Prettier Extension on VSCode's Extension Section" style="width:40%; height:auto;">
+   <img src="images\SETUP\1_ESLint_Extension_Install.png" alt="Shows ESLint Extension on VSCode's Extension Section" style="width:40%; height:auto;">
 2. Restart Visual Studio by either closing and reopening or by typing ">reload" on VSCode
-   <img src="images\SETUP\2_Reload_Command.png" alt="Shows the Trello Card Icon" style="width:100%; height:auto;">
+   <img src="images\SETUP\2_Reload_Command.png" alt="Shows Visual Studio Code's Top Taskbar Command to Quickly Reload Window" style="width:100%; height:auto;">
 
 Afterwards:
 
 - Prettier will Auto Format after you Save the File
 - ESLint will display warnings of poor coding style<br>
-  <img src="images/SETUP/3_ESLint_Flags.png" alt="Shows the Trello Card Icon" style="width:100%; height:auto;"><br>
+  <img src="images/SETUP/3_ESLint_Flags.png" alt="Shows Problems that ESLint 'warns' from where the Terminal is located" style="width:100%; height:auto;"><br>
   **Note**: ESLint has been configured to just act as a helper, meaning that anything that ESLint flagges is just a suggestion. This is due to the fact that this project is done by people who are still learning how to collaborate.<br>
   If an ESLint gives an error instead of a warning, please notify Ricky to ensure that Pull Requests are able to be done without any failed test
