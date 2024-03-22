@@ -19,12 +19,12 @@ Provided below are resources if you would prefer a visual/audio resource to lear
 NOTE: Videos should cover everything you need for MongoDB; however, continue reading for more details on our project.
 
 MongoDB Introduction & Installation:<br>
-· Learn MongoDB in 1 Hour 🍃(2023):<br>
-[https://youtu.be/c2M-rlkkT5o?si=fk2gN4vAl2Yf5Y41](https://youtu.be/c2M-rlkkT5o?si=fk2gN4vAl2Yf5Y41)
+
+- [Learn MongoDB in 1 Hour 🍃(2023)](https://youtu.be/c2M-rlkkT5o?si=fk2gN4vAl2Yf5Y41)
 
 MongoDB with Mern (From Leinecker):<br>
-·     Getting Started with MERN A<br>
-[https://youtu.be/p3m3riYbWfc?si=nlx2Knyi6Yi8bhJP](https://youtu.be/p3m3riYbWfc?si=nlx2Knyi6Yi8bhJP)
+
+- [Getting Started with MERN A](https://youtu.be/p3m3riYbWfc?si=nlx2Knyi6Yi8bhJP)
 
 # Large Project ERD
 
@@ -48,7 +48,7 @@ MongoDB Compass ([https://www.mongodb.com/try/download/compass](https://www.mong
 1. Go to [https://www.mongodb.com/try/download/compass](https://www.mongodb.com/try/download/compass) and download the .exe file of your respective OS
 2. Launch the MongoDB Compass exe file for installation
 3. Launch the MongoDB Compass App
-4. MongoDB will default to “mongodb://localhost:27017,” which would connect to the MongoDB of the local host.<br>Instead, we will connect to our connection string (Check discord information. Shown here is just an example) “mongodb+srv://User:Password@cluster0.rand.mongodb.net” to connect to the Project’s MongoDB Atlas’s Server
+4. MongoDB will default to “mongodb://localhost:27017,” which would connect to the MongoDB of the local host.<br>Instead, we will connect to our connection string (Check discord information. Shown here is just an example) “mongodb+srv://\<User\>:\<Password\>@cluster0.rand.mongodb.net” to connect to the Project’s MongoDB Atlas’s Server<br>Subsitute \<User\> and \<Password\> based on the credintials found in Discord
 5. Under “inventory_tracker” is the Database for our Project
 
 ![In the MongoDB Compass Directory should show "inventory_tracker"](images\MONGODB\1_MongoDB_Compass_Database.png)
