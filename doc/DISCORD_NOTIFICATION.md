@@ -47,7 +47,7 @@ Additionally, there are also other Notification Settings that should be self-exp
 Hold the Server Icon to get the Notification Settings<br>
 **NOTE:** Mobile and Desktop Settings are Shared.
 
-![Image of Server Notification Settings](images\DISCORD_NOTIFICATION\0_How_to_Edit_Server_Notification_Settings.png)
+<img src="images\DISCORD_NOTIFICATION\0_How_to_Edit_Server_Notification_Settings.png" alt="Image of Server Notification Setting" style="width:50%; height:auto;">
 
 ---
 
