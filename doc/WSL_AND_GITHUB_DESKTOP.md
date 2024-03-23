@@ -24,14 +24,14 @@ Linux will ask you to create a new UNIX username and password. Use whatever user
 To resolve this:
 
 ```bash
-wsl --unregister ubuntu
+wsl --unregister Ubuntu
 wsl --install
 ```
 
 **Note**: If WSL is already installed, to ensure that Ubuntu is installed, paste the following:
 
-```bash
-wsl – install -d Ubuntu
+```bash 
+wsl --install -d Ubuntu
 ```
 
 3. Restart your computer to allow WSL to setup.

@@ -15,7 +15,7 @@ One-time Global Install for the MERN Stack on Computer:
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 ```
 
-2. sing NVM, install & use the latest Node Version Manager
+2. Aftwerwards, **restart** the terminal to let the install.sh for NVM to get set up to install & use the latest Node Version Manager
 
 ```bash
 nvm install --lts
