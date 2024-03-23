@@ -1,8 +1,8 @@
-const { Signup } = require('../Controllers/UserAuthController');
-const { Login } = require('../Controllers/UserAuthController');
-const { Logout } = require('../Controllers/UserAuthController');
-const { RegisterBusiness } = require('../Controllers/BusinessAuthController');
-const { userVerification } = require('../Middlewares/AuthMiddleware');
+const { Signup } = require('../controllers/user_auth_controller');
+const { Login } = require('../controllers/user_auth_controller');
+const { Logout } = require('../controllers/user_auth_controller');
+const { RegisterBusiness } = require('../controllers/business_auth_controller');
+const { userVerification } = require('../middlewares/auth_middleware');
 // TODO: Uncomment when making these endpoints
 // const { AddUserBusinessConn } = require("../Controllers/BusinessAuthController");
 // const { RemoveUserBusinessConn } = require("../Controllers/BusinessAuthController");
