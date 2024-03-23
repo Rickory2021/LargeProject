@@ -1,6 +1,6 @@
 # Slicer
 
-Simple Inventory Manager for small businesses 
+Simple Inventory Manager for small businesses
 
 ## About this repo
 
@@ -21,33 +21,12 @@ This repository is a monorepo using Turborepo and pnpm containing:
 - [Prettier](https://prettier.io) for code formatting
 - [Tailwind CSS](https://tailwindcss.com/) for styling
 
-## Using this monorepo
+## Using This Monorepo
 
-### Develop
+### Develop, Build, and Config
 
-To develop all apps and packages and install dependencies, run the following command:
-
-```
-pnpm dev
-```
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-pnpm build
-```
-
-### Configure environmental variables
-
-To Configure all env variables, run the following command:
-
-```
-# Not yet set up
-cp .env.example .env
-
-```
+To develop, build, and configure all apps, packages, and dependencies,<br>
+Please refer to [SETUP.md](doc/SETUP.md) to setup the project.
 
 ### Remote Caching
 
@@ -67,3 +46,13 @@ Next, you can link your Turborepo to your Remote Cache by running the following 
 ```
 npx turbo link
 ```
+
+## Contributing to Monorepo
+
+To contribute to the Monorepo after setting up,<br>
+Please refer to [CONTRIBUTING.md](doc/CONTRIBUTING.md) properly contribute to the project.
+
+## Additional Docuementation
+
+Additional Docuementation that is used for this project can be found in the [Docuement Directory](doc/).<br>
+Please refer to the Markdown files as well as the group discord's #general-docuemntation for important information
