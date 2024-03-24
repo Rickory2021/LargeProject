@@ -1,11 +1,9 @@
-const express = require('express');
-const router = express.Router();
-const { getDatabase } = require('../database/database_manager');
+// TODO: delete commented out 'consts' below - not being used
+// const express = require('express');
+// const router = express.Router();
+// const { getDatabase } = require('../database/database_manager');
 const Business = require('../models/business_model');
 
-// TODO: Fix and test
-// Failing to add business, possible problem with Models/schema method
-// might need to replace with code that interacts with database directly like user endpts.
 // Register Business endpoint
 module.exports.RegisterBusiness = async (req, res, next) => {
   try {
@@ -14,7 +12,6 @@ module.exports.RegisterBusiness = async (req, res, next) => {
 
     // Extract required information from request body
     const { businessName } = req.body;
-    // const businessesCollection = getDatabase().collection("businesses");
 
     // Validate input
     if (!businessName) {
@@ -31,8 +28,9 @@ module.exports.RegisterBusiness = async (req, res, next) => {
     });
 
     // Save the new business to the database
-    await newBusiness
-      .save()
+    await newBusiness.save();
+    // TODO: Delete?
+    /*    // For debugging purposes
       .then(savedUser => {
         console.log('User saved successfully:', savedUser);
         console.log(`Database Loc: ${getDatabase}`);
@@ -44,11 +42,13 @@ module.exports.RegisterBusiness = async (req, res, next) => {
           console.error('Error saving user:', error);
         }
       });
+      */
 
     // Return a success response
     res.status(201).json({ error: null, business: newBusiness });
   } catch (error) {
-    console.error('Error registering business:', error);
+    // TODO: Delete?
+    // console.error('Error registering business:', error);     // For debugging
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
