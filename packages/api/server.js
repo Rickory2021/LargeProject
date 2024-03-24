@@ -1,66 +1,56 @@
-require("dotenv").config();
-const express = require("express");
-const bodyParser = require("body-parser");
-const cors = require("cors");
-const mongoose = require("mongoose");
-const cookieParser = require("cookie-parser");
-const authRoute = require("./Routes/AuthRoute");
-const { connectToServer } = require("./database/databaseManager");
+require('dotenv').config();
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
+const authRoute = require('./routes/auth_route');
 const { DATABASE_URL, PORT } = process.env;
 
-//const path = require('path');
-//const PORT = process.env.PORT || 5000;
 const app = express();
-//app.set("port", (process.env.PORT || 5000));
 
 // middleware
-app.use(express.json());
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(express.json());
 
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
   );
   res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PATCH, DELETE, OPTIONS"
+    'Access-Control-Allow-Methods',
+    'GET, POST, PATCH, DELETE, OPTIONS'
   );
   next();
 });
 
-// TODO: Fix?
+app.use(
+  cors({
+    origin: ['http://localhost:' + PORT],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
+  })
+);
+
+// Connecting to database
 mongoose
   .connect(DATABASE_URL)
-  .then(() => console.log("MongoDB is connected successfully"))
-  .catch((err) => console.error(err));
+  .then(() => console.log('MongoDB is connected successfully'))
+  .catch(err => console.error(err));
+
+// Route
+app.use('/api/auth', authRoute);
 
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
 });
-// app.listen(3001);
-
-app.use(
-  cors({
-    origin: ["http://localhost:3000"],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  })
-);
-
-// Route
-app.use("/api/auth", authRoute);
-
-// NOTE: Project connection string 'mongodb+srv://COP4331:POOSD24@cluster0.pwkanif.mongodb.net/'
-connectToServer((err) => {
-  if (err) console.error(err);
-});
 
 // Check http://localhost:5000/ to see Hello World
-app.get("/", function (req, res, next) {
-  res.send("Hello world");
+app.get('/', function (req, res, next) {
+  res.send(`Server is listening on port ${PORT}`);
 });
 
 module.exports = app;
