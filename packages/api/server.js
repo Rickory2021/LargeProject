@@ -5,18 +5,14 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const authRoute = require('./routes/auth_route');
-const { connectToServer } = require('./database/database_manager');
 const { DATABASE_URL, PORT } = process.env;
 
-//const path = require('path');
-//const PORT = process.env.PORT || 5000;
 const app = express();
-//app.set("port", (process.env.PORT || 5000));
 
 // middleware
-app.use(express.json());
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(express.json());
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -31,17 +27,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// TODO: Fix?
-mongoose
-  .connect(DATABASE_URL)
-  .then(() => console.log('MongoDB is connected successfully'))
-  .catch(err => console.error(err));
-
-app.listen(PORT, () => {
-  console.log(`Server is listening on port ${PORT}`);
-});
-// app.listen(3001);
-
 app.use(
   cors({
     origin: ['http://localhost:' + PORT],
@@ -50,12 +35,17 @@ app.use(
   })
 );
 
+// Connecting to database
+mongoose
+  .connect(DATABASE_URL)
+  .then(() => console.log('MongoDB is connected successfully'))
+  .catch(err => console.error(err));
+
 // Route
 app.use('/api/auth', authRoute);
 
-// NOTE: Project connection string 'mongodb+srv://COP4331:POOSD24@cluster0.pwkanif.mongodb.net/'
-connectToServer(err => {
-  if (err) console.error(err);
+app.listen(PORT, () => {
+  console.log(`Server is listening on port ${PORT}`);
 });
 
 // Check http://localhost:5000/ to see Hello World
