@@ -1,8 +1,5 @@
-// TODO: delete commented out 'consts' below - not being used
-// const express = require('express');
-// const router = express.Router();
-// const { getDatabase } = require('../database/database_manager');
 const Business = require('../models/business_model');
+const User = require('../models/user_model');
 
 // Register Business endpoint
 module.exports.RegisterBusiness = async (req, res, next) => {
@@ -53,8 +50,51 @@ module.exports.RegisterBusiness = async (req, res, next) => {
   }
 };
 
-// TODO: Add and test
 // Connect User and Business endpoint
+module.exports.AddUserBusinessConn = async (req, res, next) => {
+  // outgoing: error null, or error connection failed
+
+  try {
+    // incoming: userId, businessId
+    const { userId, businessId } = req.body;
+
+    // Check if the userId and businessId are provided
+    if (!userId || !businessId) {
+      return res
+        .status(400)
+        .json({ error: 'Both userId and businessId are required' });
+    }
+
+    // Find the user and business using the DB User and Business models to search
+    const user = await User.findById(userId);
+    const business = await Business.findById(businessId);
+
+    // Check that they exist
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    if (!business) {
+      return res.status(404).json({ error: 'Business not found' });
+    }
+
+    // Add businessId to user's businessIdList
+    user.businessIdList.push(businessId);
+    await user.save();
+
+    // Add userId to business's employeeIdList
+    business.employeeIdList.push(userId);
+    await business.save();
+
+    // return success response
+    res.status(200).json({ error: null });
+  } catch (error) {
+    console.error('Error connecting user and business:', error);
+    res.status(500).json({ error: 'Connection of Business & User Failed' });
+  }
+};
 
 // TODO: Add and test
 // Remove User and Business endpoint
+
+// TODO: Add and test
+// Get business name endpoint
