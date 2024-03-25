@@ -1,12 +1,10 @@
 const User = require('../models/user_model');
-const { createSecretToken } = require('../util/secret_token');
-const bcrypt = require('bcryptjs');
 const express = require('express');
-const router = express.Router();
-const { MongoServerError } = require('mongodb');
-const { getDatabase } = require('../database/database_manager');
 const crypto = require('crypto');
-const sendgrid = require('@sendgrid/mail');
+const { sendVerificationEmail } = require('../util/email'); // Import the sendVerificationEmail function
+const { createSecretToken } = require('../util/secret_token');
+const bcrypt = require('bcryptjs'); // Import bcrypt for password comparison
+const { MongoServerError } = require('mongodb');
 
 // Register user endpoint
 module.exports.Signup = async (req, res, next) => {
@@ -14,129 +12,89 @@ module.exports.Signup = async (req, res, next) => {
     const { firstName, lastName, username, password, email, businessIdList } =
       req.body;
 
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 12);
-
-    const usersCollection = getDatabase().collection('users');
-
+    // Check if the email is already in use
     const existingUser = await User.findOne({ email });
-
     if (existingUser) {
-      return res.json({ error: 'User already exists' });
+      return res.status(400).json({ error: 'User already exists' });
     }
 
     const emailVerificationToken = crypto.randomBytes(20).toString('hex');
     const emailVerified = false;
 
-    const newUser = await usersCollection.insertOne({
-      firstName: firstName,
-      lastName: lastName,
-      username: username,
-      password: hashedPassword,
-      email: email,
+    // Create a new user using the User model
+    const newUser = await User.create({
+      firstName,
+      lastName,
+      username,
+      password,
+      email,
       businessIdList: businessIdList || [],
-      emailVerified,
       emailVerificationToken
     });
 
-    const createdUser = await usersCollection.findOne(
-      { _id: newUser.insertedId },
-      { projection: { _id: 0, firstName: 1, businessIdList: 1 } }
-    );
-
+    // Send verification email
     await sendVerificationEmail(email, emailVerificationToken);
 
-    if (createdUser) {
-      return res.status(201).json({ error: null });
-      next();
-    } else {
-      return res
-        .status(404)
-        .json({ error: 'User not found after registration.' });
-    }
+    // Respond with success
+    return res.status(201).json({ error: null, user: newUser });
   } catch (e) {
     console.error(e);
     if (e instanceof MongoServerError && e.code === 11000) {
       const errorField = e.message.includes('email_1') ? 'Email' : 'Username';
       return res.status(400).json({ error: `${errorField} Taken` });
     }
+    // Generic error response
+    return res.status(500).json({ error: 'Internal server error' });
   }
 };
 
 // Email verification endpoint
-router.post('/verify-email', async (req, res, next) => {
+module.exports.verifyEmail = async (req, res, next) => {
   const { emailVerificationToken } = req.body;
-  const usersCollection = getDatabase().collection('users');
 
   try {
-    const result = await usersCollection.updateOne(
-      { emailVerificationToken: emailVerificationToken, emailVerified: false },
+    // Find the user with the given email verification token and emailVerified status is false
+    const user = await User.findOneAndUpdate(
+      { emailVerificationToken, emailVerified: false },
       { $set: { emailVerified: true }, $unset: { emailVerificationToken: '' } }
     );
 
-    if (result.modifiedCount === 1) {
-      res.json({ error: '' });
+    if (user) {
+      // Verification successful
+      return res.json({ error: '' });
     } else {
-      res.status(400).json({ error: 'Invalid or expired verification link.' });
+      // No matching user found with the token
+      return res
+        .status(400)
+        .json({ error: 'Invalid or expired verification link.' });
     }
   } catch (error) {
     console.error(error);
-    res
+    return res
       .status(500)
       .json({ error: 'An error occurred during the verification process.' });
   }
-});
-
-async function sendVerificationEmail(email, token) {
-  sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
-
-  const verificationUrl = `https://slicer-nine.vercel.app/verify-email/${token}`;
-  const msg = {
-    to: email,
-    from: 'xariaadavis@gmail.com', // For testing purposes
-    subject: 'Slicer: Verify Your Email',
-    html: `<p>Please verify your email by clicking on the link below:</p><a href="${verificationUrl}">Verify Email</a>`
-  };
-
-  try {
-    await sendgrid.send(msg);
-    console.log('Verification email sent successfully.');
-  } catch (error) {
-    console.error('Error sending verification email:', error);
-
-    // TODO:
-    throw new Error('Failed to send verification email.');
-  }
-}
+};
 
 // Login user endpoint
-module.exports.Login = async (req, res, next) => {
+module.exports.Login = async (req, res) => {
   // incoming: username, password
   // outgoing: id, firstName, lastName, businessIdList, error
   try {
-    // Init. error var
-    var error = '';
     const { username, password } = req.body;
-
-    // Connect to database
-    const db = getDatabase();
 
     if (!username || !password) {
       return res.json({ error: 'All fields are required' });
     }
 
-    // const user = await User.findOne({ username });
-    // connect to database
-    const usersCollection = getDatabase().collection('users');
-
-    // Find user by username
-    const user = await usersCollection.findOne({ username });
+    // Find user by username using the User model
+    const user = await User.findOne({ username });
 
     if (!user) {
-      return res.status(400).json({ error: 'Incorrect password or username' });
+      return res.status(400).json({ error: 'Incorrect username or password' });
     }
 
-    // compare hashed password
+    // Compare hashed password
     const auth = await bcrypt.compare(password, user.password);
 
     if (!auth) {
@@ -144,7 +102,7 @@ module.exports.Login = async (req, res, next) => {
     }
 
     // Generate JWT token for authenticated user
-    // also set the token as a cookie
+    // Also, set the token as a cookie
     const token = createSecretToken(user._id);
     res.cookie('token', token, {
       withCredentials: true,
@@ -152,7 +110,7 @@ module.exports.Login = async (req, res, next) => {
     });
 
     // Return user details and token
-    res.status(200).json({
+    return res.status(200).json({
       error: null,
       _id: user._id,
       firstName: user.firstName,
@@ -160,7 +118,6 @@ module.exports.Login = async (req, res, next) => {
       email: user.email,
       businessIdList: user.businessIdList
     });
-    next();
   } catch (error) {
     console.error('Error during login:', error);
     return res.status(500).json({ error: 'Internal Server Error' });
