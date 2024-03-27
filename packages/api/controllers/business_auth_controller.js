@@ -53,7 +53,6 @@ module.exports.RegisterBusiness = async (req, res, next) => {
 // Connect User and Business endpoint
 module.exports.AddUserBusinessConn = async (req, res, next) => {
   // outgoing: error null, or error connection failed
-
   try {
     // incoming: userId, businessId
     const { userId, businessId } = req.body;
