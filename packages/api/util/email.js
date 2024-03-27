@@ -11,7 +11,7 @@ async function sendVerificationEmail(email, token) {
       to: email,
       from: 'xariaadavis@gmail.com', // For testing purposes
       subject: 'Slicer: Verify Your Email',
-      html: `<p>Please verify your email by clicking on the link below:</p><a href="${verificationUrl}">Verify Email</a>`
+      html: `<p>Please verify your email by clicking on the link below:</p><a href="${verificationUrl}">Verify Email<br>${verificationUrl}</a>`
     };
 
     // Send email
