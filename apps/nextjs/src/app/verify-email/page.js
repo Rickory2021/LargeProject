@@ -1,11 +1,14 @@
 import { redirect } from 'next/navigation';
 
 import VerifyEmail from './verify-email';
+import { Suspense } from 'react';
 
 export default async function Page() {
   return (
     <div>
-      <VerifyEmail />
+      <Suspense>
+        <VerifyEmail />
+      </Suspense>
     </div>
   );
 }
