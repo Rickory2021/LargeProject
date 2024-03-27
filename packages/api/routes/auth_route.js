@@ -1,5 +1,6 @@
 const {
   Signup,
+  VerifyEmail,
   Login,
   Logout
 } = require('../controllers/user_auth_controller');
@@ -16,6 +17,7 @@ const router = require('express').Router();
 
 // User routes
 router.post('/user/signup', Signup);
+router.post('/user/verify-email/:token', Signup);
 router.post('/user/login', Login);
 router.post('/user/logout', Logout);
 

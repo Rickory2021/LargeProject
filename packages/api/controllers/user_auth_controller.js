@@ -49,8 +49,8 @@ module.exports.Signup = async (req, res, next) => {
 };
 
 // Email verification endpoint
-module.exports.verifyEmail = async (req, res) => {
-  const { emailVerificationToken } = req.body.paramValue;
+module.exports.VerifyEmail = async (req, res) => {
+  const { emailVerificationToken } = req.params.token;
 
   try {
     // Find the user with the given email verification token and emailVerified status is false
