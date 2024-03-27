@@ -53,7 +53,6 @@ module.exports.RegisterBusiness = async (req, res, next) => {
 // Connect User and Business endpoint
 module.exports.AddUserBusinessConn = async (req, res, next) => {
   // outgoing: error null, or error connection failed
-
   try {
     // incoming: userId, businessId
     const { userId, businessId } = req.body;
@@ -93,8 +92,82 @@ module.exports.AddUserBusinessConn = async (req, res, next) => {
   }
 };
 
-// TODO: Add and test
-// Remove User and Business endpoint
+// Remove User and Business Connection endpoint
+module.exports.RemoveUserBusinessConn = async (req, res, next) => {
+  try {
+    // incoming: userId, businessId
+    const { userId, businessId } = req.body;
 
-// TODO: Add and test
-// Get business name endpoint
+    // Check if userId and businessId are provided
+    if (!userId || !businessId) {
+      return res
+        .status(400)
+        .json({ error: 'Both userId and businessId are required' });
+    }
+
+    // Find the user and business by their IDs
+    const user = await User.findById(userId);
+    const business = await Business.findById(businessId);
+
+    // Check if user and business exist
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    if (!business) {
+      return res.status(404).json({ error: 'Business not found' });
+    }
+
+    // Remove businessId from user's businessIdList
+    const businessIndex = user.businessIdList.indexOf(businessId);
+    if (businessIndex !== -1) {
+      user.businessIdList.splice(businessIndex, 1);
+      await user.save();
+    }
+
+    // Remove userId from business's employeeIdList
+    const userIndex = business.employeeIdList.indexOf(userId);
+    if (userIndex !== -1) {
+      business.employeeIdList.splice(userIndex, 1);
+      await business.save();
+    }
+
+    // Return success response
+    res.status(200).json({ error: null });
+  } catch (error) {
+    console.error('Error removing user and business connection:', error);
+    res
+      .status(500)
+      .json({ error: 'Removal of Business & User Connection Failed' });
+  }
+};
+
+// Get Business Name endpoint
+module.exports.GetBusinessName = async (req, res, next) => {
+  try {
+    // Incoming: business_id
+    const { businessId } = req.body;
+
+    // Check if business_id is provided
+    if (!businessId) {
+      return res.status(400).json({ error: 'Business ID is required' });
+    }
+
+    // Find the business by its ID
+    const business = await Business.findById(businessId);
+
+    // Check if business exists
+    if (!business) {
+      return res
+        .status(404)
+        .json({ businessName: null, error: 'Business not found' });
+    }
+
+    // Return the business name
+    res.status(200).json({ businessName: business.businessName, error: null });
+  } catch (error) {
+    console.error('Error fetching business name:', error);
+    res
+      .status(500)
+      .json({ businessName: null, error: 'Business Name Fetch Failed' });
+  }
+};

@@ -1,7 +1,14 @@
-const { Signup } = require('../controllers/user_auth_controller');
-const { Login } = require('../controllers/user_auth_controller');
-const { Logout } = require('../controllers/user_auth_controller');
-const { RegisterBusiness } = require('../controllers/business_auth_controller');
+const {
+  Signup,
+  Login,
+  Logout
+} = require('../controllers/user_auth_controller');
+const {
+  RegisterBusiness,
+  AddUserBusinessConn,
+  RemoveUserBusinessConn,
+  GetBusinessName
+} = require('../controllers/business_auth_controller');
 const { userVerification } = require('../middlewares/auth_middleware');
 const {
   AddUserBusinessConn
@@ -21,7 +28,7 @@ router.post('/', userVerification);
 // Business routes
 router.post('/business/register', RegisterBusiness);
 router.post('/business/addConnection', AddUserBusinessConn);
-// TODO: Uncomment when making these endpoints
-// router.post('/business/removeConnection', RemoveUserBusinessConn);
+router.post('/business/removeConnection', RemoveUserBusinessConn);
+router.post('/business/getName', GetBusinessName);
 
 module.exports = router;
