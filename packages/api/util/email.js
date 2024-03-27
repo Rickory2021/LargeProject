@@ -6,7 +6,7 @@ async function sendVerificationEmail(email, token) {
     sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
 
     //const verificationUrl = `https://slicer-nine.vercel.app/verify-email/${token}`;
-    const verificationUrl = `https://large-project-nextjs.vercel.app/`;
+    const verificationUrl = `https://large-project-nextjs.vercel.app/api/auth/user/verify-email/${token}`;
     const msg = {
       to: email,
       from: 'xariaadavis@gmail.com', // For testing purposes
