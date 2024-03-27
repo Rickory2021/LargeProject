@@ -53,4 +53,8 @@ app.get('/', function (req, res, next) {
   res.send(`Server is listening on port ${PORT}`);
 });
 
+app.get('/api/:version', function (req, res) {
+  res.send(req.params.version);
+});
+
 module.exports = app;

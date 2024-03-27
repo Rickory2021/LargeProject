@@ -50,13 +50,13 @@ module.exports.Signup = async (req, res, next) => {
 
 // Email verification endpoint
 module.exports.VerifyEmail = async (req, res) => {
-  const { emailVerificationToken } = req.params.token;
-
+  const emailVerificationToken = req.query.token;
+  console.log(emailVerificationToken);
   try {
     // Find the user with the given email verification token and emailVerified status is false
     const user = await User.findOneAndUpdate(
       { emailVerificationToken, emailVerified: false },
-      { $set: { emailVerified: true }, $unset: { emailVerificationToken: '' } }
+      { emailVerified: true, emailVerificationToken: '' }
     );
 
     if (user) {

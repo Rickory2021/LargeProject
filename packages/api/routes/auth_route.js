@@ -17,7 +17,7 @@ const router = require('express').Router();
 
 // User routes
 router.post('/user/signup', Signup);
-router.post('/user/verify-email/:token', VerifyEmail);
+router.post('/user/verify-email', VerifyEmail);
 router.post('/user/login', Login);
 router.post('/user/logout', Logout);
 
