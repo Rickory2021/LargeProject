@@ -6,12 +6,12 @@ async function sendVerificationEmail(email, token) {
     sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
 
     //const verificationUrl = `https://slicer-nine.vercel.app/verify-email/${token}`;
-    const verificationUrl = `https://large-project-nextjs.vercel.app/verify-email?${token}`;
+    const verificationUrl = `https://large-project-nextjs.vercel.app/verify-email?token=${token}`;
     const msg = {
       to: email,
       from: 'xariaadavis@gmail.com', // For testing purposes
       subject: 'Slicer: Verify Your Email',
-      html: `<p>sdasfsdefPleaseasdaswd verify your email by clicking on the link below:</p><a href="${verificationUrl}">Verify Email</a>`
+      html: `<p>Please verify your email by clicking on the link below:</p><a href="${verificationUrl}">Verify Email</a>`
     };
 
     // Send email
