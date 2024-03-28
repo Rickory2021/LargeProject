@@ -1,26 +1,26 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import Link from 'next/link';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function SignUp() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [username, setUsername] = useState("");
-  const [businessIdList, setBusinessIdList] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [username, setUsername] = useState('');
+  const [businessIdList, setBusinessIdList] = useState('');
 
   const router = useRouter();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:3001/api/auth/user/signup", {
-        method: "POST",
+      const res = await fetch('http://localhost:3001/api/auth/user/signup', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           firstName,
@@ -28,14 +28,14 @@ export default function SignUp() {
           username,
           password,
           email,
-          businessIdList,
-        }),
+          businessIdList
+        })
       });
       if (res.ok) {
-        router.push("/dashboard");
+        router.push('/dashboard');
       }
     } catch (error) {
-      console.error("An unexpected error happened:", error);
+      console.error('An unexpected error happened:', error);
     }
   };
 
@@ -47,42 +47,42 @@ export default function SignUp() {
           type="firstName"
           placeholder="FirstName"
           value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
+          onChange={e => setFirstName(e.target.value)}
           className="p-2 border border-gray-300 rounded-md"
         />
         <input
           type="lastName"
           placeholder="LastName"
           value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
+          onChange={e => setLastName(e.target.value)}
           className="p-2 border border-gray-300 rounded-md"
         />
         <input
           type="username"
           placeholder="username"
           value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={e => setUsername(e.target.value)}
           className="p-2 border border-gray-300 rounded-md"
         />
         <input
           type="password"
           placeholder="Password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={e => setPassword(e.target.value)}
           className="p-2 border border-gray-300 rounded-md"
         />
         <input
           type="email"
           placeholder="Email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={e => setEmail(e.target.value)}
           className="p-2 border border-gray-300 rounded-md"
         />
         <input
           type="businessIdList"
           placeholder="businessID"
           value={businessIdList}
-          onChange={(e) => setBusinessIdList(e.target.value)}
+          onChange={e => setBusinessIdList(e.target.value)}
           className="p-2 border border-gray-300 rounded-md"
         />
 

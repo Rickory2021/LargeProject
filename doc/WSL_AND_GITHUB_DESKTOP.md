@@ -30,7 +30,7 @@ wsl --install
 
 **Note**: If WSL is already installed, to ensure that Ubuntu is installed, paste the following:
 
-```bash 
+```bash
 wsl --install -d Ubuntu
 ```
 

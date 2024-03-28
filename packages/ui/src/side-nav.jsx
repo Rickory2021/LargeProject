@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import Link from "next/link"; // Import Link from Next.js
+import Link from 'next/link'; // Import Link from Next.js
 
-import { HiArchive, HiCreditCard } from "react-icons/hi";
-import { FaHome, FaTruck } from "react-icons/fa";
-import { TbReportSearch } from "react-icons/tb";
+import { HiArchive, HiCreditCard } from 'react-icons/hi';
+import { FaHome, FaTruck } from 'react-icons/fa';
+import { TbReportSearch } from 'react-icons/tb';
 
 function SideNav() {
   return (
