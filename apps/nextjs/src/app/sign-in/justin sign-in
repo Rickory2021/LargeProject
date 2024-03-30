@@ -4,34 +4,22 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import React from 'react';
 import { useCookies } from 'react-cookie';
-import { ToastContainer, toast } from 'react-toastify';
-import axios from 'axios';
 
 export default function SignIn() {
-  const router = useRouter();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
-  const handleError = err =>
-    toast.error(err, {
-      position: 'bottom-left'
-    });
-  const handleSuccess = msg =>
-    toast.success(msg, {
-      position: 'bottom-left'
-    });
+  const router = useRouter();
 
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      const { res } = await axios.post(
-        'http://localhost:3001/api/auth/user/login',
-        {
-          username,
-          password
-        }
-      );
-      console.log(res);
+      const res = await fetch('http://localhost:3001/api/auth/user/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, password })
+      });
       if (res.ok) {
         router.push('/dashboard');
       }
