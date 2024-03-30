@@ -2,32 +2,36 @@ const {
   Signup,
   VerifyEmail,
   Login,
-  Logout
-} = require('../controllers/user_auth_controller');
+  Logout,
+  GetUserInfo
+} = require('../controllers/auth/user_auth_controller');
 const {
   RegisterBusiness,
   AddUserBusinessConn,
   RemoveUserBusinessConn,
   GetBusinessName
-} = require('../controllers/business_auth_controller');
-const { userVerification } = require('../middlewares/auth_middleware');
+} = require('../controllers/auth/business_auth_controller');
+const {
+  userVerification
+} = require('../controllers/auth/middlewares/auth_middleware_controller');
 // TODO: Uncomment when making these endpoints
 // const { RemoveUserBusinessConn } = require('../controllers/business_auth_controller');
 const router = require('express').Router();
 
-// User routes
-router.post('/user/signup', Signup);
-router.post('/user/verify-email', VerifyEmail);
-router.post('/user/login', Login);
-router.post('/user/logout', Logout);
+// User routes /api/auth
+router.post('/user/signup', Signup); // POST /api/auth/user/signup
+router.post('/user/verify-email', VerifyEmail); // POST /api/auth/user/verify-email?token
+router.post('/user/login', Login); // POST /api/auth/user/signup
+router.post('/user/logout', Logout); // POST /api/auth/user/logout
+router.get('/user/user-info', GetUserInfo); // GET /api/auth/user/user-info?id
 
-// Home route
-router.post('/', userVerification);
+// Home route /api/auth
+router.post('/', userVerification); // POST /api/auth/
 
-// Business routes
-router.post('/business/register', RegisterBusiness);
-router.post('/business/addConnection', AddUserBusinessConn);
-router.post('/business/removeConnection', RemoveUserBusinessConn);
-router.post('/business/getName', GetBusinessName);
+// Business routes /api/auth
+router.post('/business/register', RegisterBusiness); // POST /api/auth/business/register
+router.post('/business/add-connection', AddUserBusinessConn); // POST /api/auth/business/add-connection
+router.post('/business/remove-connection', RemoveUserBusinessConn); // POST /api/auth/business/remove-connection
+router.get('/business/business-name', GetBusinessName); // GET /api/auth/business/business-name?businessId
 
 module.exports = router;
