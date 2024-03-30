@@ -9,7 +9,7 @@ async function sendVerificationEmail(email, token) {
     const verificationUrl = `https://slicer-nine.vercel.app/verify-email?token=${token}`;
     const msg = {
       to: email,
-      from: 'xariaadavis@gmail.com', // For testing purposes
+      from: 'poosd.group24@gmail.com', 
       subject: 'Slicer: Verify Your Email',
       html: `<p>Please verify your email by clicking on the link below:</p><a href="${verificationUrl}">Verify Email</a>`
     };
