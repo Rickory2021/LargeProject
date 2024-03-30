@@ -1,13 +1,19 @@
-const User = require('../models/user_model');
-const express = require('express');
+const User = require('../../models/user_model');
 const crypto = require('crypto');
-const { sendVerificationEmail } = require('../util/email'); // Import the sendVerificationEmail function
-const { createSecretAccessToken } = require('../util/secret_token');
+const { sendVerificationEmail } = require('../../util/email'); // Import the sendVerificationEmail function
+const { createSecretAccessToken } = require('../../util/secret_token');
 const bcrypt = require('bcryptjs'); // Import bcrypt for password comparison
 const { MongoServerError } = require('mongodb');
 
-// Register user endpoint
-module.exports.Signup = async (req, res, next) => {
+/**
+ * Register user endpoint\
+ * - Creates the new User Account (No Login) & Sends Email Verification
+ * @param {Request} req Incoming: JSON {firstName, lastName, username, password, email, businessIdList}
+ * @param {Result} res The Express response object.
+ * @returns \{error:null, user:{firstName, lastName, username, password, email, businessIdList, emailVerificationToken}}
+ * || {error:'${email} Taken'} || {error:'${username} Taken'} || {error:'Internal server error'}
+ */
+module.exports.Signup = async (req, res) => {
   try {
     const { firstName, lastName, username, password, email, businessIdList } =
       req.body;
@@ -19,7 +25,6 @@ module.exports.Signup = async (req, res, next) => {
     }
 
     const emailVerificationToken = crypto.randomBytes(20).toString('hex');
-    const emailVerified = false;
 
     // Create a new user using the User model
     const newUser = await User.create({
@@ -29,7 +34,8 @@ module.exports.Signup = async (req, res, next) => {
       password,
       email,
       businessIdList: businessIdList || [],
-      emailVerificationToken
+      emailVerificationToken,
+      emailVerified: false
     });
 
     // Send verification email
@@ -38,7 +44,6 @@ module.exports.Signup = async (req, res, next) => {
     // Respond with success
     return res.status(201).json({ error: null, user: newUser });
   } catch (e) {
-    console.error(e);
     if (e instanceof MongoServerError && e.code === 11000) {
       const errorField = e.message.includes('email_1') ? 'Email' : 'Username';
       return res.status(400).json({ error: `${errorField} Taken` });
@@ -48,10 +53,17 @@ module.exports.Signup = async (req, res, next) => {
   }
 };
 
-// Email verification endpoint
+/**
+ * Email verification endpoint\
+ * - Given Email Token, will attempt to Verify User's Email\
+ * - emailVerificationToken:token => ''\
+ * - emailVerified:false => true
+ * @param {Request} req Incoming: QUERY ?token
+ * @param {Result} res The Express response object.
+ * @returns \{error:null} || {error:'Invalid or expired verification link.'} || {error:'An error occurred during the verification process.'}
+ */
 module.exports.VerifyEmail = async (req, res) => {
   const emailVerificationToken = req.query.token;
-  console.log(emailVerificationToken);
   try {
     // Find the user with the given email verification token and emailVerified status is false
     const user = await User.findOneAndUpdate(
@@ -61,7 +73,7 @@ module.exports.VerifyEmail = async (req, res) => {
 
     if (user) {
       // Verification successful
-      return res.json({ error: '' });
+      return res.json({ error: null });
     } else {
       // No matching user found with the token
       return res
@@ -69,17 +81,22 @@ module.exports.VerifyEmail = async (req, res) => {
         .json({ error: 'Invalid or expired verification link.' });
     }
   } catch (error) {
-    console.error(error);
     return res
       .status(500)
       .json({ error: 'An error occurred during the verification process.' });
   }
 };
 
-// Login user endpoint
+/**
+ * Login user endpoint\
+ * - Login if Username & Password is Correct & Email Verified\
+ * - Initialize SecretAccessToken for Middleware
+ * @param {Request} req Incoming: JSON{username, password}
+ * @param {Result} res The Express response object.
+ * @returns \{error:null}, Cookie{userId, AccessToken} || {error:'All fields are required'} || {error:'Incorrect username'}
+ * || {error:'Incorrect password'} {error:'Email not Verified'}|| {error:'Internal Server Error'}
+ */
 module.exports.Login = async (req, res) => {
-  // incoming: username, password
-  // outgoing: id, firstName, lastName, businessIdList, error
   try {
     const { username, password } = req.body;
 
@@ -91,7 +108,7 @@ module.exports.Login = async (req, res) => {
     const user = await User.findOne({ username });
 
     if (!user) {
-      return res.status(400).json({ error: 'Incorrect username or password' });
+      return res.status(400).json({ error: 'Incorrect username' });
     }
 
     // Compare hashed password
@@ -99,6 +116,10 @@ module.exports.Login = async (req, res) => {
 
     if (!auth) {
       return res.json({ error: 'Incorrect password' });
+    }
+
+    if (!user.emailVerified) {
+      return res.json({ error: 'Email not Verified' });
     }
 
     // Generate JWT token for authenticated user
@@ -122,21 +143,25 @@ module.exports.Login = async (req, res) => {
       businessIdList: user.businessIdList
     });
   } catch (error) {
-    console.error('Error during login:', error);
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
-//TODO
-// Login user endpoint
+/**
+ * Get User Info endpoint\
+ * - Given UserId, return all information of User
+ * @param {Request} req Incoming: QUERY ?userId
+ * @param {Result} res The Express response object.
+ * @returns \{error:null, userId, firstName, lastName, username, email, businessIdList} || {error:'Incorrect userId'} || {error:'Internal Server Error'}
+ */
 module.exports.GetUserInfo = async (req, res) => {
-  // incoming: userId
-  // outgoing: _id, firstName, lastName, businessIdList, error
   try {
-    const { userId } = req.body;
+    const userId = req.query.id;
+    console.log(userId);
 
     // Find user by username using the User model
-    const user = await User.findOne({ userId });
+    const user = await User.findOne({ _id: userId });
+    console.log(user);
 
     if (!user) {
       return res.status(400).json({ error: 'Incorrect userId' });
@@ -153,13 +178,18 @@ module.exports.GetUserInfo = async (req, res) => {
       businessIdList: user.businessIdList
     });
   } catch (error) {
-    console.error('Error during login:', error);
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
-// Logout user endpoint
-module.exports.Logout = async (req, res, next) => {
+/**
+ * Logout user endpoint\
+ * - Remove the Cookie that is used for Authentification
+ * @param {Request} req Incoming: NULL
+ * @param {Result} res The Express response object.
+ * @returns \{error:null} || {error:'Internal Server Error'}
+ */
+module.exports.Logout = async (req, res) => {
   try {
     // Clear the token cookie by setting it to an empty value and expiring it
     res.clearCookie('token');
@@ -167,7 +197,6 @@ module.exports.Logout = async (req, res, next) => {
     // Return a success message indicating successful logout
     return res.status(200).json({ error: null });
   } catch (error) {
-    console.error('Error during logout:', error);
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 };

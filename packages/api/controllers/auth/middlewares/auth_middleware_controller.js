@@ -1,11 +1,19 @@
-const User = require('../models/user_model');
+const User = require('../../../models/user_model');
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
 
 // Check if the user has access to the route by checking if the tokens match
+/**
+ * Check if the user has access to the route by checking if the tokens match\
+ * - SHOULD BE RUN ON EVERY PAGE TO GET USER ID
+ * @param {Request} req  - Incoming: COOKIE token
+ * @param {Result} res - The Express response object
+ * @returns \{status:true, userId} || {status: false}
+ */
 module.exports.userVerification = (req, res) => {
   // Get the token from the cookie
-  const token = req.cookies.token;
+  const token = req.cookies.accessToken;
+  console.log(`Token: ${token}`);
 
   if (!token) {
     return res.json({ status: false });
@@ -16,7 +24,7 @@ module.exports.userVerification = (req, res) => {
       return res.json({ status: false });
     } else {
       const user = await User.findById(data.userId);
-      if (user) return res.json({ status: true, userId: user.userId });
+      if (user) return res.json({ status: true, userId: data.userId });
       else return res.json({ status: false });
     }
   });
