@@ -20,8 +20,8 @@ module.exports.RegisterBusiness = async (req, res, next) => {
       businessName: businessName,
       employeeIdList: [],
       itemList: [],
-      distributorList: [],
-      locationList: []
+      distributorMetaDataList: [],
+      locationMetaDataList: []
     });
 
     // Save the new business to the database

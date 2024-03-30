@@ -48,7 +48,7 @@ const businessSchema = new mongoose.Schema(
             unitCost: Number
           }
         ],
-        locationList: [
+        locationItemList: [
           {
             locationName: String,
             inventoryList: [inventorySchema]
@@ -58,7 +58,7 @@ const businessSchema = new mongoose.Schema(
         distributorItemList: [distributorItemSchema]
       }
     ],
-    distributorList: [
+    distributorMetaDataList: [
       {
         distributorName: String,
         distributorDeadlineDate: String,
@@ -66,7 +66,7 @@ const businessSchema = new mongoose.Schema(
         distributorMetaData: String
       }
     ],
-    locationList: [
+    locationMetaDataList: [
       {
         locationName: String,
         locationAddress: String,
