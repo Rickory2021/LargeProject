@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const authRoute = require('./routes/auth_route');
 const { DATABASE_URL, PORT } = process.env;
+const crudRoute = require('./routes/crud_route')
 
 const app = express();
 
@@ -43,6 +44,7 @@ mongoose
 
 // Route
 app.use('/api/auth', authRoute);
+app.use('/crud', crudRoute); 
 
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
