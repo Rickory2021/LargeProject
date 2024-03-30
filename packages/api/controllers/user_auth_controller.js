@@ -2,7 +2,7 @@ const User = require('../models/user_model');
 const express = require('express');
 const crypto = require('crypto');
 const { sendVerificationEmail } = require('../util/email'); // Import the sendVerificationEmail function
-const { createSecretToken } = require('../util/secret_token');
+const { createSecretAccessToken } = require('../util/secret_token');
 const bcrypt = require('bcryptjs'); // Import bcrypt for password comparison
 const { MongoServerError } = require('mongodb');
 
@@ -103,18 +103,52 @@ module.exports.Login = async (req, res) => {
 
     // Generate JWT token for authenticated user
     // Also, set the token as a cookie
-    const token = createSecretToken(user._id);
-    res.cookie('token', token, {
+    const accessToken = createSecretAccessToken(user._id);
+    res.cookie('accessToken', accessToken, {
       withCredentials: true,
-      httpOnly: false
+      httpOnly: false,
+      sameSite: 'None', //cross-site cookie
+      maxAge: 6 * 24 * 60 * 60 * 1000
     });
 
     // Return user details and token
     return res.status(200).json({
       error: null,
-      _id: user._id,
+      userId: user._id,
       firstName: user.firstName,
       lastName: user.lastName,
+      username: user.username,
+      email: user.email,
+      businessIdList: user.businessIdList
+    });
+  } catch (error) {
+    console.error('Error during login:', error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+//TODO
+// Login user endpoint
+module.exports.GetUserInfo = async (req, res) => {
+  // incoming: userId
+  // outgoing: _id, firstName, lastName, businessIdList, error
+  try {
+    const { userId } = req.body;
+
+    // Find user by username using the User model
+    const user = await User.findOne({ userId });
+
+    if (!user) {
+      return res.status(400).json({ error: 'Incorrect userId' });
+    }
+
+    // Return user details and token
+    return res.status(200).json({
+      error: null,
+      userId: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      username: user.username,
       email: user.email,
       businessIdList: user.businessIdList
     });
