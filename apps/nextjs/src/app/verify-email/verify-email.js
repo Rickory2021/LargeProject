@@ -9,7 +9,7 @@ export default function VerifyEmail() {
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
   //console.log(token);
-  const emailVerify = async () => {
+  useEffect(async () => {
     //console.log('Start');
     try {
       const response = await fetch(
@@ -28,10 +28,7 @@ export default function VerifyEmail() {
     } catch (error) {
       console.error('Error:', error);
     }
-  };
-
-  // Call the function to make the POST request when component mounts
-  emailVerify();
+  }, []);
 
   /*useEffect(() => {
     // Function to make the POST request
