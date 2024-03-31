@@ -153,6 +153,29 @@ class GenericCRUDController {
     return JSON.stringify(schema1.obj) === JSON.stringify(schema2.obj);
   }
 
+  async createGeneric(businessId, arrayField, modelSchema, modelData) {
+    try {
+      // Construct the item using the Item model
+      const newModelObject = new modelSchema(modelData);
+
+      // Update the document by pushing the new item into the array
+      const result = await Business.updateOne(
+        { _id: businessId },
+        { $push: { [arrayField]: newModelObject } }
+      );
+
+      //Check if any documents were modified
+      if (result.modifiedCount > 0) {
+        console.log(`Successfully pushed new item to ${arrayField}`);
+      } else {
+        console.log(`Failed to push new item to ${arrayField}`);
+      }
+      return result;
+    } catch (error) {
+      console.error('Error pushing item:', error);
+    }
+  }
+
   async createGenericObject(modelObject, newObject) {
     if (modelObject == null) {
       console.log('modelObject is null');
@@ -240,14 +263,20 @@ class GenericCRUDController {
     // console.log(projectionJson);
     // Update all documents where itemList contains an item with the specified itemId
     try {
-      const result = await Business.updateMany(
+      const result = await Business.updateOne(
         { _id: businessId },
         { $pull: { [arrayField]: { [fieldToCheck]: checkString } } }
       );
-
-      console.log(
-        `Delete embedded document with ${fieldToCheck}:${checkString} from ${arrayField}`
-      );
+      //Check if any documents were modified
+      if (result.modifiedCount > 0) {
+        console.log(
+          `Successfully Delete All embedded document with ${fieldToCheck}:${checkString} from ${businessId}=>${arrayField}`
+        );
+      } else {
+        console.log(
+          `Failed Delete embedded All document with ${fieldToCheck}:${checkString} ${businessId}=>from ${arrayField}`
+        );
+      }
       return result;
     } catch (error) {
       console.error('Error deleting embedded document:', error);
