@@ -1,5 +1,4 @@
-import { redirect } from 'next/navigation';
-
+import React from 'react';
 import VerifyEmail from './verify-email';
 import { Suspense } from 'react';
 
