@@ -101,7 +101,7 @@ module.exports.Login = async (req, res) => {
     const { username, password } = req.body;
 
     if (!username || !password) {
-      return res.json({ error: 'All fields are required' });
+      return res.status(400).json({ error: 'All fields are required' });
     }
 
     // Find user by username using the User model
@@ -115,11 +115,11 @@ module.exports.Login = async (req, res) => {
     const auth = await bcrypt.compare(password, user.password);
 
     if (!auth) {
-      return res.json({ error: 'Incorrect password' });
+      return res.status(400).json({ error: 'Incorrect password' });
     }
 
     if (!user.emailVerified) {
-      return res.json({ error: 'Email not Verified' });
+      return res.status(400).json({ error: 'Email not Verified' });
     }
 
     // Generate JWT token for authenticated user
