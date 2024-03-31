@@ -1,9 +1,9 @@
 // Rename to business_operations.js?
 
 const Business = require('../../models/business_model');
-const CRUDController = require('../crud_controller');
+const GenericCRUDController = require('../crud/generic_crud_controller');
 
-class BusinessController extends CRUDController {
+class BusinessController extends GenericCRUDController {
   constructor() {
     super(Business);
   }

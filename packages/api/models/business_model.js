@@ -1,51 +1,81 @@
 const mongoose = require('mongoose');
 
 const portionInfoSchema = new mongoose.Schema({
-  unitName: String,
+  unitName: {
+    type: String,
+    required: true
+  },
   unitNumber: Number
 });
 
 const locationInventorySchema = new mongoose.Schema({
-  portionNumber: Number,
+  portionNumber: {
+    type: Number,
+    required: true
+  },
   metaData: String
 });
 
+const locationLogSchema = new mongoose.Schema({
+  locationName: {
+    type: String,
+    required: true
+  },
+  initialPortion: Number,
+  finalPortion: Number,
+  updateDate: {
+    type: Date,
+    default: Date.now
+  }
+});
+
 const locationBucketLogSchema = new mongoose.Schema({
-  locationBucket: String,
+  locationBucket: {
+    type: String,
+    required: true
+  },
   locationBucketLog: [locationLogSchema]
 });
 
-const locationLogSchema = new mongoose.Schema({
-  locationName: String,
-  initialPortion: Number,
-  finalPortion: Number,
-  updateDate: Date
-});
-
 const distributorItemSchema = new mongoose.Schema({
-  distributorName: String,
+  distributorName: {
+    type: String,
+    required: true
+  },
   distributorItemName: String,
   distributorItemPortion: Number,
   distributorItemCost: Number,
-  priorityChoice: Number
+  priorityChoice: {
+    type: Number,
+    default: 100
+  }
 });
 
 const distributorMetaDataSchema = new mongoose.Schema({
-  distributorName: String,
+  distributorName: {
+    type: String,
+    required: true
+  },
   distributorDeadlineDate: String,
   distributorDeliveryDate: String,
   distributorMetaData: String
 });
 
 const locationMetaDataSchema = new mongoose.Schema({
-  distributorName: String,
+  distributorName: {
+    type: String,
+    required: true
+  },
   distributorDeadlineDate: String,
   distributorDeliveryDate: String,
   distributorMetaData: String
 });
 
 const itemSchema = new mongoose.Schema({
-  itemName: String,
+  itemName: {
+    type: String,
+    required: true
+  },
   portionInfoList: [portionInfoSchema],
   usedInList: [
     {
@@ -109,13 +139,13 @@ const locationMetaData = mongoose.model(
 );
 
 module.exports = {
-  Business,
-  Item,
   PortionInfo,
   LocationInventory,
   locationBucketLog,
   LocationLog,
   DistributorItem,
   distributorMetaData,
-  locationMetaData
+  locationMetaData,
+  Item,
+  Business
 };

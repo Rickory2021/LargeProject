@@ -13,7 +13,7 @@ const {
 // NOTE THAT LOCATION LOG Element is the only 3rd Level Hierarchy (Business=>Item=>LocationBucket=>LocationLog)
 // Whereas others are all 2nd Level hierarchy
 
-class CRUDController {
+class GenericCRUDController {
   constructor(toModel) {
     this.toModel = toModel;
     this.BusinessModel = Business;
@@ -63,10 +63,17 @@ class CRUDController {
    * @returns The Object based off the Id and the toModel with the information || NULL
    */
   navigateToModel = async (businessId, itemName = null) => {
+    console.log('Using navigateToModel From Generic');
     this.modelObject = this.navigateToItem(businessId, itemName);
     if (this.modelObject === null) return null;
     if (this.areSchemasEqual(this.toModel, this.BusinessModel)) {
       if (itemName !== null) console.log('ITEM NAME NOT USED');
+    } else if (this.areSchemasEqual(this.toModel, this.ItemModel)) {
+      this.modelObject = await this.modelObject.portionInfoList;
+      if (this.modelObject === null) {
+        console.log('Portion Info not found in Selected Item');
+        return null;
+      }
     } else if (this.areSchemasEqual(this.toModel, this.PortionInfoModel)) {
       this.modelObject = await this.modelObject.portionInfoList;
       if (this.modelObject === null) {
@@ -120,7 +127,7 @@ class CRUDController {
    * @returns True if Equal || False if not
    */
   areSchemasEqual = (schema1, schema2) => {
-    return JSON.stringify(schema1.obj) === JSON.stringify(schema2.obj);
+    return JSON.stringify(schema1) === JSON.stringify(schema2);
   };
 
   createGenericObject = async newObject => {
@@ -131,73 +138,166 @@ class CRUDController {
       console.log('Use CreateBuinessAPI Instead');
       return false;
     }
-    // Add a new address
     this.modelObject.push(newObject);
     await this.modelObject.save(); // Save the changes to the database
     console.log('New Object Saved:', this.modelObject);
     return true;
   };
 
-  readListOfGenericObject = async (field, value) => {
+  readListOfGenericObject = async printedFieldNameList => {
+    if (this.modelObject == null) {
+      console.log('modelObject is null');
+      return null;
+    } else if (this.areSchemasEqual(this.toModel, this.BusinessModel)) {
+      console.log('Use CreateBuinessAPI Instead');
+      return null;
+    }
+    try {
+      const fieldInfoList = await this.modelObject.find(
+        {},
+        printedFieldNameList.join(' ')
+      );
+      return fieldInfoList.map(doc => {
+        const mappedDoc = {};
+        printedFieldNameList.forEach(fieldName => {
+          mappedDoc[fieldName] = doc[fieldName];
+        });
+        return mappedDoc;
+      });
+    } catch (error) {
+      console.error('Error getting list:', error);
+      throw error;
+    }
+  };
+
+  findListOfGenericObject = async (field, value) => {
+    if (this.modelObject == null) {
+      console.log('modelObject is null');
+      return null;
+    } else if (this.areSchemasEqual(this.toModel, this.BusinessModel)) {
+      console.log('Use CreateBuinessAPI Instead');
+      return null;
+    }
+    try {
+      const statusUpdate = await this.modelObject.find({ [field]: value });
+      return statusUpdate;
+    } catch (error) {
+      console.error('Error getting list:', error);
+      throw error;
+    }
+  };
+
+  findOneGenericObject = async (identityField, identityValue) => {
+    if (this.modelObject == null) {
+      console.log('modelObject is null');
+      return null;
+    } else if (this.areSchemasEqual(this.toModel, this.BusinessModel)) {
+      console.log('Use BuinessAPI Instead');
+      return null;
+    }
+    try {
+      const statusUpdate = await this.modelObject.findOne({
+        [identityField]: identityValue
+      });
+      return statusUpdate;
+    } catch (error) {
+      console.error('Error getting list:', error);
+      throw error;
+    }
+  };
+
+  updateListOfGenericObject = async (
+    identityField,
+    identityValue,
+    editField,
+    editValue
+  ) => {
     if (this.modelObject == null) {
       console.log('modelObject is null');
       return [];
     } else if (this.areSchemasEqual(this.toModel, this.BusinessModel)) {
-      console.log('Use CreateBuinessAPI Instead');
+      console.log('Use BuinessAPI Instead');
       return false;
     }
-    // Add a new address
-    this.modelObject.push(newObject);
-    await this.modelObject.save(); // Save the changes to the database
-    console.log('New Object Saved:', this.modelObject);
-    return true;
-  };
-
-  create = async (req, res) => {
-    // Navigate
     try {
-      const newItem = new this.model(req.body);
-      await newItem.save();
-      res.status(201).send(newItem);
+      const statusUpdate = await this.modelObject.updateMany(
+        { [identityField]: identityValue },
+        { $set: { [editField]: editValue } }
+      );
+      return statusUpdate;
     } catch (error) {
-      res.status(400).send(error);
+      console.error('Error getting list:', error);
+      throw error;
     }
   };
 
-  findAll = async (req, res) => {
+  updateOneGenericObject = async (
+    identityField,
+    identityValue,
+    editField,
+    editValue
+  ) => {
+    if (this.modelObject == null) {
+      console.log('modelObject is null');
+      return null;
+    } else if (this.areSchemasEqual(this.toModel, this.BusinessModel)) {
+      console.log('Use BuinessAPI Instead');
+      return null;
+    }
     try {
-      const items = await this.model.find({});
-      res.send(items);
+      const statusUpdate = await this.modelObject.updateOne(
+        { [identityField]: identityValue },
+        { $set: { [editField]: editValue } }
+      );
+      return statusUpdate;
     } catch (error) {
-      res.status(500).send(error);
+      console.error('Error getting list:', error);
+      throw error;
     }
   };
 
-  update = async (req, res) => {
+  deleteOneGenericObject = async (identityField, identityValue) => {
+    if (this.modelObject == null) {
+      console.log('modelObject is null');
+      return null;
+    } else if (this.areSchemasEqual(this.toModel, this.BusinessModel)) {
+      console.log('Use BuinessAPI Instead');
+      return null;
+    }
     try {
-      const item = await this.model.findByIdAndUpdate(req.params.id, req.body, {
-        new: true,
-        runValidators: true
+      const statusUpdate = await this.modelObject.deleteOne({
+        [identityField]: identityValue
       });
-      if (!item) {
-        return res.status(404).send();
-      }
-      res.send(item);
+      return statusUpdate;
     } catch (error) {
-      res.status(400).send(error);
+      console.error('Error getting list:', error);
+      throw error;
     }
   };
 
-  delete = async (req, res) => {
+  deleteListOfGenericObject = async (
+    identityField,
+    identityValue,
+    editField,
+    editValue
+  ) => {
+    if (this.modelObject == null) {
+      console.log('modelObject is null');
+      return [];
+    } else if (this.areSchemasEqual(this.toModel, this.BusinessModel)) {
+      console.log('Use BuinessAPI Instead');
+      return false;
+    }
     try {
-      const item = await this.model.findByIdAndDelete(req.params.id);
-      if (!item) {
-        return res.status(404).send();
-      }
-      res.send(item);
+      const statusUpdate = await this.modelObject.deleteMany(
+        { [identityField]: identityValue },
+        { $set: { [editField]: editValue } }
+      );
+      return statusUpdate;
     } catch (error) {
-      res.status(500).send(error);
+      console.error('Error getting list:', error);
+      throw error;
     }
   };
 }
-module.exports = CRUDController;
+module.exports = GenericCRUDController;

@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const authRoute = require('./routes/auth_route');
 const { DATABASE_URL, PORT } = process.env;
-const crudRoute = require('./routes/crud_route')
+const crudRoute = require('./routes/crud_route');
 
 const app = express();
 
@@ -44,14 +44,14 @@ mongoose
 
 // Route
 app.use('/api/auth', authRoute);
-app.use('/crud', crudRoute); 
+app.use('/api/crud', crudRoute);
 
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
 });
 
 // Check http://localhost:5000/ to see Hello World
-app.get('/', function (req, res, next) {
+app.get('/', function (req, res) {
   res.send(`Server is listening on port ${PORT}`);
 });
 
