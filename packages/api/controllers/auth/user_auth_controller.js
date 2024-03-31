@@ -93,7 +93,7 @@ module.exports.VerifyEmail = async (req, res) => {
  * - Initialize SecretAccessToken for Middleware
  * @param {Request} req Incoming: JSON{username, password}
  * @param {Result} res The Express response object.
- * @returns \{error:null}, Cookie{userId, AccessToken} || {error:'All fields are required'} || {error:'Incorrect username'}
+ * @returns \{error:null,userId,firstName,lastName,username,email,businessIdList,accessToken}, Cookie{userId, AccessToken} || {error:'All fields are required'} || {error:'Incorrect username'}
  * || {error:'Incorrect password'} {error:'Email not Verified'}|| {error:'Internal Server Error'}
  */
 module.exports.Login = async (req, res) => {
@@ -140,7 +140,8 @@ module.exports.Login = async (req, res) => {
       lastName: user.lastName,
       username: user.username,
       email: user.email,
-      businessIdList: user.businessIdList
+      businessIdList: user.businessIdList,
+      accessToken: accessToken
     });
   } catch (error) {
     return res.status(500).json({ error: 'Internal Server Error' });
