@@ -232,100 +232,25 @@ class GenericCRUDController {
     }
   }
 
-  async updateListOfGenericObject(
-    modelObject,
-    identityField,
-    identityValue,
-    editField,
-    editValue
-  ) {
-    if (modelObject == null) {
-      console.log('modelObject is null');
-      return [];
-    } else if (this.areSchemasEqual(modelObject, Business)) {
-      console.log('Use BuinessAPI Instead');
-      return false;
-    }
+  async deleteGeneric(businessId, arrayField, fieldToCheck, checkString) {
+    // console.log(matchJson);
+    // console.log(unwind1stList);
+    // console.log(projectFieldsArray);
+    // let projectionJson = this.constructJson(projectFieldsArray);
+    // console.log(projectionJson);
+    // Update all documents where itemList contains an item with the specified itemId
     try {
-      const statusUpdate = await modelObject.updateMany(
-        { [identityField]: identityValue },
-        { $set: { [editField]: editValue } }
+      const result = await Business.updateMany(
+        { _id: businessId },
+        { $pull: { [arrayField]: { [fieldToCheck]: checkString } } }
       );
-      return statusUpdate;
-    } catch (error) {
-      console.error('Error getting list:', error);
-      throw error;
-    }
-  }
 
-  async updateOneGenericObject(
-    modelObject,
-    identityField,
-    identityValue,
-    editField,
-    editValue
-  ) {
-    if (modelObject == null) {
-      console.log('modelObject is null');
-      return null;
-    } else if (this.areSchemasEqual(modelObject, Business)) {
-      console.log('Use BuinessAPI Instead');
-      return null;
-    }
-    try {
-      const statusUpdate = await modelObject.updateOne(
-        { [identityField]: identityValue },
-        { $set: { [editField]: editValue } }
+      console.log(
+        `Delete embedded document with ${fieldToCheck}:${checkString} from ${arrayField}`
       );
-      return statusUpdate;
+      return result;
     } catch (error) {
-      console.error('Error getting list:', error);
-      throw error;
-    }
-  }
-
-  async deleteOneGenericObject(modelObject, identityField, identityValue) {
-    if (modelObject == null) {
-      console.log('modelObject is null');
-      return null;
-    } else if (this.areSchemasEqual(modelObject, Business)) {
-      console.log('Use BuinessAPI Instead');
-      return null;
-    }
-    try {
-      const statusUpdate = await modelObject.deleteOne({
-        [identityField]: identityValue
-      });
-      return statusUpdate;
-    } catch (error) {
-      console.error('Error getting list:', error);
-      throw error;
-    }
-  }
-
-  async deleteListOfGenericObject(
-    modelObject,
-    identityField,
-    identityValue,
-    editField,
-    editValue
-  ) {
-    if (modelObject == null) {
-      console.log('modelObject is null');
-      return [];
-    } else if (this.areSchemasEqual(modelObject, Business)) {
-      console.log('Use BuinessAPI Instead');
-      return false;
-    }
-    try {
-      const statusUpdate = await modelObject.deleteMany(
-        { [identityField]: identityValue },
-        { $set: { [editField]: editValue } }
-      );
-      return statusUpdate;
-    } catch (error) {
-      console.error('Error getting list:', error);
-      throw error;
+      console.error('Error deleting embedded document:', error);
     }
   }
 }

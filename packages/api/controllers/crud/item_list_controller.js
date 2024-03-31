@@ -74,7 +74,7 @@ class ItemListController extends GenericCRUDController {
   // };
 
   //req.query.businessId  req.query.printedFieldNameList [Recurring for List]
-  async read(req, res) {
+  async readItemList(req, res) {
     try {
       console.log('About to read');
       let mongooseObjectID = new mongoose.Types.ObjectId(req.query.businessId);
@@ -107,9 +107,9 @@ class ItemListController extends GenericCRUDController {
   }
 
   //req.query.businessId  req.query.printedFieldNameList [Recurring for List]
-  async update(req, res) {
+  async updateItemList(req, res) {
     try {
-      console.log('About to read');
+      console.log('About to update');
       // { $limit: outputSize }, // Project only the name field for each post
       // { $skip: outset } // Project only the name field for each post
       const fieldValues = await super.updateGeneric(
@@ -128,56 +128,25 @@ class ItemListController extends GenericCRUDController {
     }
   }
 
-  //req.query.businessId  req.query.identityField req.query.identityValue req.query.editField req.query.editValue
-  async updateListOfGenericObject(req, res) {
+  //req.query.businessId  req.query.printedFieldNameList [Recurring for List]
+  async deleteItemList(req, res) {
     try {
-      const itemList = await super.navigateToModel(
-        this.modelObject,
-        req.query.businessId
+      console.log('About to delete');
+      // { $limit: outputSize }, // Project only the name field for each post
+      // { $skip: outset } // Project only the name field for each post
+      const fieldValues = await super.deleteGeneric(
+        req.query.businessId,
+        'itemList',
+        'itemName',
+        'Finished Item'
       );
-      if (!itemList) {
-        return res.status(404).json({ error: 'Item List not found' });
-      }
-      return res
-        .status(200)
-        .json(
-          await super.updateListOfGenericObject(
-            this.modelObject,
-            req.query.identityField,
-            req.query.identityValue,
-            req.query.editField,
-            req.query.editValue
-          )
-        );
+      //req.query.printedFieldName
+      return res.status(200).json({ list: fieldValues });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
   }
-  // req.query.businessId req.query.identityField req.query.identityValue req.query.editField req.query.editValue
-  async updateOneGenericObject(req, res) {
-    try {
-      const itemList = await super.navigateToModel(
-        this.modelObject,
-        req.query.businessId
-      );
-      if (!itemList) {
-        return res.status(404).json({ error: 'Item List not found' });
-      }
-      return res
-        .status(200)
-        .json(
-          await super.updateOneGenericObject(
-            this.modelObject,
-            req.query.identityField,
-            req.query.identityValue,
-            req.query.editField,
-            req.query.editValue
-          )
-        );
-    } catch (error) {
-      return res.status(500).json({ error: error.message });
-    }
-  }
+
   // req.query.businessId req.query.identityField req.query.identityValue
   async deleteListOfGenericObject(req, res) {
     try {
@@ -229,16 +198,15 @@ class ItemListController extends GenericCRUDController {
 let itemListController = new ItemListController();
 module.exports = {
   navigateToModel: (req, res) => itemListController.navigateToModel(req, res),
-  read: (req, res) => itemListController.read(req, res),
+  readItemList: (req, res) => itemListController.readItemList(req, res),
   findListOfGenericObject: (req, res) =>
     itemListController.findListOfGenericObject(req, res),
   findOneGenericObject: (req, res) =>
     itemListController.findOneGenericObject(req, res),
-  update: (req, res) => itemListController.update(req, res),
+  updateItemList: (req, res) => itemListController.updateItemList(req, res),
   updateOneGenericObject: (req, res) =>
     itemListController.updateOneGenericObject(req, res),
-  deleteListOfGenericObject: (req, res) =>
-    itemListController.deleteListOfGenericObject(req, res),
+  deleteItemList: (req, res) => itemListController.deleteItemList(req, res),
   deleteOneGenericObject: (req, res) =>
     itemListController.deleteOneGenericObject(req, res)
 };
