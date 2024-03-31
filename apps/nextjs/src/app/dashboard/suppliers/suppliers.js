@@ -15,13 +15,12 @@ export function Suppliers() {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex">
       <CookieComponent
         cookieName={'accessToken'}
         onUserIdChange={handleUserIdChange}
       />
       <SideNav />
-      {userId}
     </div>
   );
 }

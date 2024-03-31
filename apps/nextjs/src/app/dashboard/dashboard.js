@@ -14,7 +14,7 @@ export function Dashboard() {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex">
       <CookieComponent
         cookieName={'accessToken'}
         onUserIdChange={handleUserIdChange}
