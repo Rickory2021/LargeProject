@@ -1,8 +1,23 @@
+'use client';
 import { SideNav } from '@repo/ui/side-nav';
+import CookieComponent from '../components/CookieComponent';
+import React from 'react';
+import { useState } from 'react';
+const userId = <CookieComponent cookieName={'accessToken'} />;
 
 export function Dashboard() {
+  const [userId, setUserId] = useState(null);
+
+  // Function to handle userId change
+  const handleUserIdChange = userId => {
+    setUserId(userId);
+  };
   return (
-    <div className="flex felx-col">
+    <div className="flex flex-col">
+      <CookieComponent
+        cookieName={'accessToken'}
+        onUserIdChange={handleUserIdChange}
+      />
       <SideNav />
     </div>
   );
