@@ -33,13 +33,21 @@ export function Content() {
         <div className="card w-96 shadow-xl rounded-lg border-2 border-blue-600">
           <div className="card-body p-3 h-32">
             <h2 className="card-title text-xl">See Product Growth</h2>
-            <p>Stuff</p>
+            <p>
+              Ever wonder how your stock totals, and orders fluctate month to
+              month? Slicer shows users these changes with easy to interact with
+              charts and tables.
+            </p>
           </div>
         </div>
         <div className="card w-96 shadow-xl rounded-lg border-2 border-blue-600">
           <div className="card-body p-3 h-32">
             <h2 className="card-title text-xl">Order Tracking and History</h2>
-            <p>Stuff</p>
+            <p>
+              Whenever you input your order totals, whether it be every day,
+              week, even month. Slicer will automatically adjust your stock
+              totals and keep track of when and who inputted the orders.
+            </p>
           </div>
         </div>
       </div>
