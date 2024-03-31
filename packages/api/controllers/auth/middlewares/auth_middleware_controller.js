@@ -6,13 +6,13 @@ const jwt = require('jsonwebtoken');
 /**
  * Check if the user has access to the route by checking if the tokens match\
  * - SHOULD BE RUN ON EVERY PAGE TO GET USER ID
- * @param {Request} req  - Incoming: COOKIE token
+ * @param {Request} req  - Incoming: PARAM /AccessTokenString
  * @param {Result} res - The Express response object
  * @returns \{status:true, userId} || {status: false}
  */
 module.exports.userVerification = (req, res) => {
   // Get the token from the cookie
-  const token = req.cookies.accessToken;
+  const token = req.params.accessToken;
   console.log(`Token: ${token}`);
 
   if (!token) {

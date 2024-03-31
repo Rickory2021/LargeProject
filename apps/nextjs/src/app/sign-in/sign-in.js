@@ -1,28 +1,33 @@
-"use client";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+'use client';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function SignIn() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const router = useRouter();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:3001/api/auth/user/login", {
-        method: "POST",
+      const res = await fetch('http://localhost:3001/api/auth/user/login', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username, password })
       });
       if (res.ok) {
-        router.push("/dashboard");
+        const data = await res.json();
+        const { accessToken } = data;
+        const expires = new Date();
+        expires.setTime(expires.getTime() + 3 * 24 * 60 * 60 * 1000);
+        document.cookie = `accessToken=${accessToken};expires=${expires.toUTCString()};path=/`;
+        router.push('/dashboard');
       }
     } catch (error) {
-      console.error("An unexpected error happened:", error);
+      console.error('An unexpected error happened:', error);
     }
   };
 
@@ -34,14 +39,14 @@ export default function SignIn() {
           type="usernmame"
           placeholder="Username"
           value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={e => setUsername(e.target.value)}
           className="p-2 border border-gray-300 rounded-md"
         />
         <input
           type="password"
           placeholder="Password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={e => setPassword(e.target.value)}
           className="p-2 border border-gray-300 rounded-md"
         />
         <button type="submit" className="bg-blue-500 text-white p-2 rounded-md">

@@ -26,7 +26,7 @@ router.post('/user/logout', Logout); // POST /api/auth/user/logout
 router.get('/user/user-info', GetUserInfo); // GET /api/auth/user/user-info?id
 
 // Home route /api/auth
-router.post('/', userVerification); // POST /api/auth/
+router.post('/:accessToken', userVerification); // POST /api/auth/sdasjcbweqioqiudbbd
 
 // Business routes /api/auth
 router.post('/business/register', RegisterBusiness); // POST /api/auth/business/register
