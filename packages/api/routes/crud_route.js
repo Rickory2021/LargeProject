@@ -4,7 +4,6 @@ const {
   ReadEmployeeIdList
 } = require('../controllers/crud/business_controller');
 const {
-  doesExistItem,
   createItem,
   readItem,
   updateItem,
@@ -16,7 +15,6 @@ router.get('/business/employee-id-list', ReadEmployeeIdList); // /api/auth/busin
 
 // Item List Route /crud
 
-router.post('/business/item-list/exist', doesExistItem); // ?businessId&printedFieldNameList
 router.post('/business/item-list/create', createItem); // ?businessId&printedFieldNameList
 router.post('/business/item-list/read', readItem); // ?businessId&printedFieldNameList
 router.post('/business/item-list/update', updateItem); // ?businessId&identityField&identityValue&editField&editValue

@@ -6,40 +6,47 @@ const mongoose = require('mongoose');
 
 class ItemListController extends GenericCRUDController {
   constructor() {
-    super(Item);
+    super();
   }
 
-  async doesExistItem(req, res) {
+  async doesExistItem(businessId, field, value) {
     try {
-      console.log('Check existance');
-      // { $limit: outputSize }, // Project only the name field for each post
-      // { $skip: outset } // Project only the name field for each post
-      const fieldValues = await super.doesExist(
-        req.query.businessId,
-        'itemList.itemName',
-        'newItem'
-      );
-      //req.query.printedFieldName
-      return res.status(200).json({ list: fieldValues });
+      let doesExist = await super.doesExistGeneric(businessId, field, value);
+      return doesExist;
     } catch (error) {
-      return res.status(500).json({ error: error.message });
+      console.error('An error occurred:', error);
+      return false;
     }
   }
 
   //req.query.businessId  req.query.printedFieldNameList [Recurring for List]
   async createItem(req, res) {
+    let businessId = req.query.businessId;
+    let itemName = req.query.itemName;
+
     try {
+      console.log('Check if Duplicate ItemName');
+      let doesExist = await this.doesExistItem(
+        businessId,
+        'itemList.itemName',
+        itemName
+      );
+      if (doesExist) {
+        console.log('DUPLICATE ItemName found in itemList');
+        return res
+          .status(409)
+          .json({ error: 'DUPLICATE ItemName found in itemList' });
+      }
+
       console.log('About to create');
-      // { $limit: outputSize }, // Project only the name field for each post
-      // { $skip: outset } // Project only the name field for each post
-      const fieldValues = await super.createGeneric(
-        req.query.businessId,
+      const statusData = await super.createGeneric(
+        businessId,
         'itemList',
         Item,
-        { itemName: 'newItem' }
+        { itemName: itemName }
       );
       //req.query.printedFieldName
-      return res.status(200).json({ list: fieldValues });
+      return res.status(200).json({ status: statusData });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
@@ -121,7 +128,6 @@ class ItemListController extends GenericCRUDController {
 }
 let itemListController = new ItemListController();
 module.exports = {
-  doesExistItem: (req, res) => itemListController.doesExistItem(req, res),
   createItem: (req, res) => itemListController.createItem(req, res),
   readItem: (req, res) => itemListController.readItem(req, res),
   updateItem: (req, res) => itemListController.updateItem(req, res),
