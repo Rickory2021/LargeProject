@@ -8,6 +8,24 @@ class ItemListController extends GenericCRUDController {
   constructor() {
     super(Item);
   }
+
+  async doesExistItem(req, res) {
+    try {
+      console.log('Check existance');
+      // { $limit: outputSize }, // Project only the name field for each post
+      // { $skip: outset } // Project only the name field for each post
+      const fieldValues = await super.doesExist(
+        req.query.businessId,
+        'itemList.itemName',
+        'newItem'
+      );
+      //req.query.printedFieldName
+      return res.status(200).json({ list: fieldValues });
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
+    }
+  }
+
   //req.query.businessId  req.query.printedFieldNameList [Recurring for List]
   async createItem(req, res) {
     try {
@@ -103,6 +121,7 @@ class ItemListController extends GenericCRUDController {
 }
 let itemListController = new ItemListController();
 module.exports = {
+  doesExistItem: (req, res) => itemListController.doesExistItem(req, res),
   createItem: (req, res) => itemListController.createItem(req, res),
   readItem: (req, res) => itemListController.readItem(req, res),
   updateItem: (req, res) => itemListController.updateItem(req, res),
