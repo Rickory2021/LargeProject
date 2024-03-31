@@ -31,7 +31,7 @@ export function Content() {
           </div>
         </div>
         <div className="card w-96 shadow-xl rounded-lg border-2 border-blue-600">
-          <div className="card-body p-3 h-32">
+          <div className="card-body p-3 h-34">
             <h2 className="card-title text-xl">See Product Growth</h2>
             <p>
               Ever wonder how your stock totals, and orders fluctate month to
@@ -41,7 +41,7 @@ export function Content() {
           </div>
         </div>
         <div className="card w-96 shadow-xl rounded-lg border-2 border-blue-600">
-          <div className="card-body p-3 h-32">
+          <div className="card-body p-3 h-35">
             <h2 className="card-title text-xl">Order Tracking and History</h2>
             <p>
               Whenever you input your order totals, whether it be every day,
