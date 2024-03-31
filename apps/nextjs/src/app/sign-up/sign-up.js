@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import React from 'react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -32,7 +33,7 @@ export default function SignUp() {
         })
       });
       if (res.ok) {
-        router.push('/dashboard');
+        router.push('/sign-in');
       }
     } catch (error) {
       console.error('An unexpected error happened:', error);
