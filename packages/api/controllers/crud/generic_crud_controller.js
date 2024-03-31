@@ -1,31 +1,56 @@
 const {
-  Business,
-  Item,
   PortionInfo,
   LocationInventory,
-  locationBucketLog,
+  LocationBucketLog,
   LocationLog,
   DistributorItem,
-  distributorMetaData,
-  locationMetaData
+  DistributorMetaData,
+  LocationMetaData,
+  Item,
+  Business
 } = require('../../models/business_model');
-
+const mongoose = require('mongoose');
 // NOTE THAT LOCATION LOG Element is the only 3rd Level Hierarchy (Business=>Item=>LocationBucket=>LocationLog)
 // Whereas others are all 2nd Level hierarchy
 
 class GenericCRUDController {
-  constructor(toModel) {
-    this.toModel = toModel;
-    this.BusinessModel = Business;
-    this.ItemModel = Item;
-    this.PortionInfoModel = PortionInfo;
-    this.LocationInventoryModel = LocationInventory;
-    this.locationBucketLogModel = locationBucketLog;
-    this.LocationLogModel = LocationLog;
-    this.DistributorItemModel = DistributorItem;
-    this.distributorMetaDataModel = distributorMetaData;
-    this.locationMetaDataModel = locationMetaData;
-    this.modelObject = null;
+  constructor() {}
+
+  /**
+   * Moves the Model to the Correct Business based off the BusinessId
+   * @param {Business Id} businessId The Business Id that the Model will go to
+   * @returns The Object based off the Id and the toModel with the information || NULL
+   */
+  async getBusinessQuery(businessId) {
+    let queryObject = await Business.findById(businessId);
+    return queryObject;
+  }
+
+  async getBusinessSubList(businessId, listField) {
+    //let queryObject = await Business.findById(businessId)[listField];
+    let queryObject = await Business.findById(businessId).select(listField);
+    return queryObject;
+  }
+
+  async getEmployeeIdListQuery(businessId) {
+    let queryObject = await Business.findById(businessId).employeeIdList;
+    return queryObject;
+  }
+
+  async getItemListQuery(businessId) {
+    let queryObject = await Business.findById(businessId).itemList;
+    return queryObject;
+  }
+
+  async getDistributorMetaDataQuery(businessId) {
+    let queryObject =
+      await Business.findById(businessId).distributorMetaDataList;
+    return queryObject;
+  }
+
+  async getLocationMetaDataQuery(businessId) {
+    let queryObject = await Business.findById(businessId).locationMetaDataList;
+    return queryObject;
   }
 
   /**
@@ -33,92 +58,90 @@ class GenericCRUDController {
    * @param {Business Id} businessId The Business Id that the Model will go to
    * @returns The Object based off the Id and the toModel with the information || NULL
    */
-  navigateToItem = async (businessId, itemName) => {
-    this.modelObject = this.navigateToBusiness(businessId);
-    if (this.modelObject === null) {
+  async navigateToItem(modelObject, businessId, itemName) {
+    modelObject = this.navigateToBusiness(businessId);
+    if (modelObject === null) {
       console.log('Business ID does not exist');
       return null;
     }
     // Your modelObject is no a Business, so w2e will access the Item List
     let itemNameFound = false;
-    for (const item of this.modelObject.itemList) {
+    for (const item of modelObject.itemList) {
       if (item.name === itemName) {
         itemNameFound = true;
-        this.modelObject = item;
+        modelObject = item;
         break;
       }
     }
     if (itemNameFound) {
-      return this.modelObject;
+      return modelObject;
     } else {
       console.log('Item Name was not found in that Business Id');
-      this.modelObject = null;
+      modelObject = null;
       return null;
     }
-  };
+  }
 
   /**
    * Moves the Model to the Correct Model based off the BusinessId and ItemName
    * @param {Business Id} businessId The Business Id that the Model will go to
    * @returns The Object based off the Id and the toModel with the information || NULL
    */
-  navigateToModel = async (businessId, itemName = null) => {
+  async navigateToModel(modelObject, businessId, itemName = null) {
     console.log('Using navigateToModel From Generic');
-    this.modelObject = this.navigateToItem(businessId, itemName);
-    if (this.modelObject === null) return null;
-    if (this.areSchemasEqual(this.toModel, this.BusinessModel)) {
+    modelObject = this.navigateToItem(modelObject, businessId, itemName);
+    if (modelObject === null) return null;
+    if (this.areSchemasEqual(modelObject, Business)) {
       if (itemName !== null) console.log('ITEM NAME NOT USED');
-    } else if (this.areSchemasEqual(this.toModel, this.ItemModel)) {
-      this.modelObject = await this.modelObject.portionInfoList;
-      if (this.modelObject === null) {
+    } else if (this.areSchemasEqual(modelObject, Item)) {
+      modelObject = await modelObject.itemList;
+      if (modelObject === null) {
+        console.log('ItemList not found in Selected Item');
+        return null;
+      }
+    } else if (this.areSchemasEqual(modelObject, PortionInfo)) {
+      modelObject = await modelObject.portionInfoList;
+      if (modelObject === null) {
         console.log('Portion Info not found in Selected Item');
         return null;
       }
-    } else if (this.areSchemasEqual(this.toModel, this.PortionInfoModel)) {
-      this.modelObject = await this.modelObject.portionInfoList;
-      if (this.modelObject === null) {
-        console.log('Portion Info not found in Selected Item');
-        return null;
-      }
-    } else if (this.areSchemasEqual(this.toModel, this.locationBucketLog)) {
-      this.modelObject = await this.modelObject.locationBucketLog;
-      if (this.modelObject === null) {
+    } else if (this.areSchemasEqual(modelObject, LocationBucketLog)) {
+      modelObject = await modelObject.locationBucketLog;
+      if (modelObject === null) {
         console.log('Location Bucket not found in Selected Item');
         return null;
       }
-    } else if (this.areSchemasEqual(this.toModel, this.DistributorItemModel)) {
-      this.modelObject = await this.modelObject.distributorItemList;
-      if (this.modelObject === null) {
+    } else if (this.areSchemasEqual(modelObject, DistributorItem)) {
+      modelObject = await modelObject.distributorItemList;
+      if (modelObject === null) {
         console.log('DistributorItem not found in Selected Item');
         return null;
       }
-    } else if (
-      this.areSchemasEqual(this.toModel, this.distributorMetaDataModel)
-    ) {
-      this.modelObject = await this.modelObject.distributorMetaDataList;
-      if (this.modelObject === null) {
+    } else if (this.areSchemasEqual(modelObject, DistributorMetaData)) {
+      modelObject = await modelObject.distributorMetaDataList;
+      if (modelObject === null) {
         console.log('Distributor MetaData not found in Selected Item');
         return null;
       }
-    } else if (this.areSchemasEqual(this.toModel, this.locationMetaDataModel)) {
-      this.modelObject = await this.modelObject.locationMetaDataList;
-      if (this.modelObject === null) {
+    } else if (this.areSchemasEqual(modelObject, LocationMetaData)) {
+      modelObject = await modelObject.locationMetaDataList;
+      if (modelObject === null) {
         console.log('Location MetaData not found in Selected Item');
         return null;
       }
     }
-    return this.modelObject;
-  };
+    return modelObject;
+  }
 
   /**
    * Moves the Model to the Correct Business based off the BusinessId
    * @param {Business Id} businessId The Business Id that the Model will go to
    * @returns The Object based off the Id and the toModel with the information || NULL
    */
-  navigateToBusiness = async businessId => {
-    this.modelObject = await this.BusinessModel.findById(businessId);
-    return this.modelObject;
-  };
+  async navigateToBusiness(modelObject, businessId) {
+    modelObject = await Business.findById(businessId);
+    return modelObject;
+  }
 
   /**
    * Checkes to see if the Schemas are identital
@@ -126,77 +149,130 @@ class GenericCRUDController {
    * @param schema2
    * @returns True if Equal || False if not
    */
-  areSchemasEqual = (schema1, schema2) => {
-    return JSON.stringify(schema1) === JSON.stringify(schema2);
-  };
+  areSchemasEqual(schema1, schema2) {
+    return JSON.stringify(schema1.obj) === JSON.stringify(schema2.obj);
+  }
 
-  createGenericObject = async newObject => {
-    if (this.modelObject == null) {
+  async createGenericObject(modelObject, newObject) {
+    if (modelObject == null) {
       console.log('modelObject is null');
       return false;
-    } else if (this.areSchemasEqual(this.toModel, this.BusinessModel)) {
-      console.log('Use CreateBuinessAPI Instead');
+    } else if (this.areSchemasEqual(modelObject, Business)) {
+      console.log('createGenericObject > Use CreateBuinessAPI Instead');
       return false;
     }
-    this.modelObject.push(newObject);
-    await this.modelObject.save(); // Save the changes to the database
-    console.log('New Object Saved:', this.modelObject);
+    modelObject.push(newObject);
+    await modelObject.save(); // Save the changes to the database
+    console.log('New Object Saved:', modelObject);
     return true;
-  };
+  }
 
-  readListOfGenericObject = async printedFieldNameList => {
-    if (this.modelObject == null) {
-      console.log('modelObject is null');
-      return null;
-    } else if (this.areSchemasEqual(this.toModel, this.BusinessModel)) {
-      console.log('Use CreateBuinessAPI Instead');
-      return null;
-    }
+  constructJson(stringsArray) {
+    let jsonObject = {};
+    jsonObject['_id'] = 0;
+    stringsArray.forEach(str => {
+      jsonObject[str] = 1;
+    });
+    return jsonObject;
+  }
+
+  async readListOfGenericObject(
+    matchJson,
+    unwind1stList,
+    projectFieldsArray,
+    outputSize = 50,
+    outset = 0
+  ) {
+    console.log(matchJson);
+    console.log(unwind1stList);
+    console.log(projectFieldsArray);
+    let projectionJson = this.constructJson(projectFieldsArray);
+    console.log(projectionJson);
     try {
-      const fieldInfoList = await this.modelObject.find(
-        {},
-        printedFieldNameList.join(' ')
-      );
-      return fieldInfoList.map(doc => {
-        const mappedDoc = {};
-        printedFieldNameList.forEach(fieldName => {
-          mappedDoc[fieldName] = doc[fieldName];
-        });
-        return mappedDoc;
-      });
+      const result = await Business.aggregate([
+        { $match: matchJson },
+        { $unwind: unwind1stList }, // Unwind the arrayName array
+        { $project: projectionJson }, // Project only the name field for each post
+        { $limit: outputSize }, // Project only the name field for each post
+        { $skip: outset } // Project only the name field for each post
+      ]);
+
+      if (!result || result.length === 0) {
+        console.log('User or posts not found');
+        return null;
+      }
+
+      // Extract the names from the result
+      console.log('Post names:', result);
+      return result;
     } catch (error) {
-      console.error('Error getting list:', error);
-      throw error;
+      console.error('Error:', error);
+      return null;
     }
-  };
+  }
 
-  findListOfGenericObject = async (field, value) => {
-    if (this.modelObject == null) {
+  async updateListOfGenericObject(
+    modelObject,
+    identityField,
+    identityValue,
+    editField,
+    editValue
+  ) {
+    if (modelObject == null) {
       console.log('modelObject is null');
-      return null;
-    } else if (this.areSchemasEqual(this.toModel, this.BusinessModel)) {
-      console.log('Use CreateBuinessAPI Instead');
-      return null;
+      return [];
+    } else if (this.areSchemasEqual(modelObject, Business)) {
+      console.log('Use BuinessAPI Instead');
+      return false;
     }
     try {
-      const statusUpdate = await this.modelObject.find({ [field]: value });
+      const statusUpdate = await modelObject.updateMany(
+        { [identityField]: identityValue },
+        { $set: { [editField]: editValue } }
+      );
       return statusUpdate;
     } catch (error) {
       console.error('Error getting list:', error);
       throw error;
     }
-  };
+  }
 
-  findOneGenericObject = async (identityField, identityValue) => {
-    if (this.modelObject == null) {
+  async updateOneGenericObject(
+    modelObject,
+    identityField,
+    identityValue,
+    editField,
+    editValue
+  ) {
+    if (modelObject == null) {
       console.log('modelObject is null');
       return null;
-    } else if (this.areSchemasEqual(this.toModel, this.BusinessModel)) {
+    } else if (this.areSchemasEqual(modelObject, Business)) {
       console.log('Use BuinessAPI Instead');
       return null;
     }
     try {
-      const statusUpdate = await this.modelObject.findOne({
+      const statusUpdate = await modelObject.updateOne(
+        { [identityField]: identityValue },
+        { $set: { [editField]: editValue } }
+      );
+      return statusUpdate;
+    } catch (error) {
+      console.error('Error getting list:', error);
+      throw error;
+    }
+  }
+
+  async deleteOneGenericObject(modelObject, identityField, identityValue) {
+    if (modelObject == null) {
+      console.log('modelObject is null');
+      return null;
+    } else if (this.areSchemasEqual(modelObject, Business)) {
+      console.log('Use BuinessAPI Instead');
+      return null;
+    }
+    try {
+      const statusUpdate = await modelObject.deleteOne({
         [identityField]: identityValue
       });
       return statusUpdate;
@@ -204,23 +280,24 @@ class GenericCRUDController {
       console.error('Error getting list:', error);
       throw error;
     }
-  };
+  }
 
-  updateListOfGenericObject = async (
+  async deleteListOfGenericObject(
+    modelObject,
     identityField,
     identityValue,
     editField,
     editValue
-  ) => {
-    if (this.modelObject == null) {
+  ) {
+    if (modelObject == null) {
       console.log('modelObject is null');
       return [];
-    } else if (this.areSchemasEqual(this.toModel, this.BusinessModel)) {
+    } else if (this.areSchemasEqual(modelObject, Business)) {
       console.log('Use BuinessAPI Instead');
       return false;
     }
     try {
-      const statusUpdate = await this.modelObject.updateMany(
+      const statusUpdate = await modelObject.deleteMany(
         { [identityField]: identityValue },
         { $set: { [editField]: editValue } }
       );
@@ -229,75 +306,7 @@ class GenericCRUDController {
       console.error('Error getting list:', error);
       throw error;
     }
-  };
-
-  updateOneGenericObject = async (
-    identityField,
-    identityValue,
-    editField,
-    editValue
-  ) => {
-    if (this.modelObject == null) {
-      console.log('modelObject is null');
-      return null;
-    } else if (this.areSchemasEqual(this.toModel, this.BusinessModel)) {
-      console.log('Use BuinessAPI Instead');
-      return null;
-    }
-    try {
-      const statusUpdate = await this.modelObject.updateOne(
-        { [identityField]: identityValue },
-        { $set: { [editField]: editValue } }
-      );
-      return statusUpdate;
-    } catch (error) {
-      console.error('Error getting list:', error);
-      throw error;
-    }
-  };
-
-  deleteOneGenericObject = async (identityField, identityValue) => {
-    if (this.modelObject == null) {
-      console.log('modelObject is null');
-      return null;
-    } else if (this.areSchemasEqual(this.toModel, this.BusinessModel)) {
-      console.log('Use BuinessAPI Instead');
-      return null;
-    }
-    try {
-      const statusUpdate = await this.modelObject.deleteOne({
-        [identityField]: identityValue
-      });
-      return statusUpdate;
-    } catch (error) {
-      console.error('Error getting list:', error);
-      throw error;
-    }
-  };
-
-  deleteListOfGenericObject = async (
-    identityField,
-    identityValue,
-    editField,
-    editValue
-  ) => {
-    if (this.modelObject == null) {
-      console.log('modelObject is null');
-      return [];
-    } else if (this.areSchemasEqual(this.toModel, this.BusinessModel)) {
-      console.log('Use BuinessAPI Instead');
-      return false;
-    }
-    try {
-      const statusUpdate = await this.modelObject.deleteMany(
-        { [identityField]: identityValue },
-        { $set: { [editField]: editValue } }
-      );
-      return statusUpdate;
-    } catch (error) {
-      console.error('Error getting list:', error);
-      throw error;
-    }
-  };
+  }
 }
+
 module.exports = GenericCRUDController;

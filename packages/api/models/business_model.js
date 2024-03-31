@@ -120,7 +120,7 @@ const LocationInventory = mongoose.model(
   'LocationInventory',
   locationInventorySchema
 );
-const locationBucketLog = mongoose.model(
+const LocationBucketLog = mongoose.model(
   'locationBucketLog',
   locationBucketLogSchema
 );
@@ -129,11 +129,11 @@ const DistributorItem = mongoose.model(
   'DistributorItem',
   distributorItemSchema
 );
-const distributorMetaData = mongoose.model(
+const DistributorMetaData = mongoose.model(
   'distributorMetaData',
   distributorMetaDataSchema
 );
-const locationMetaData = mongoose.model(
+const LocationMetaData = mongoose.model(
   'locationMetaData',
   locationMetaDataSchema
 );
@@ -141,11 +141,11 @@ const locationMetaData = mongoose.model(
 module.exports = {
   PortionInfo,
   LocationInventory,
-  locationBucketLog,
+  LocationBucketLog,
   LocationLog,
   DistributorItem,
-  distributorMetaData,
-  locationMetaData,
+  DistributorMetaData,
+  LocationMetaData,
   Item,
   Business
 };

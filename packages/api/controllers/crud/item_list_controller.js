@@ -1,11 +1,33 @@
 // Rename to business_operations.js?
-
-const { Item } = require('../../models/business_model');
+const {
+  Business,
+  Item,
+  PortionInfo,
+  LocationInventory,
+  locationBucketLog,
+  LocationLog,
+  DistributorItem,
+  distributorMetaData,
+  locationMetaData
+} = require('../../models/business_model');
 const GenericCRUDController = require('../crud/generic_crud_controller');
+
+const mongoose = require('mongoose');
 
 class ItemListController extends GenericCRUDController {
   constructor() {
     super(Item);
+    this.toModel = Item;
+    this.BusinessModel = Business;
+    this.ItemModel = Item;
+    this.PortionInfoModel = PortionInfo;
+    this.LocationInventoryModel = LocationInventory;
+    this.locationBucketLogModel = locationBucketLog;
+    this.LocationLogModel = LocationLog;
+    this.DistributorItemModel = DistributorItem;
+    this.distributorMetaDataModel = distributorMetaData;
+    this.locationMetaDataModel = locationMetaData;
+    this.modelObject = null;
   }
   // NULL
   // navigateToItem = async () => {
@@ -25,24 +47,21 @@ class ItemListController extends GenericCRUDController {
   //   // }
   // };
   // // req.query.businessId
-  navigateToModel = async (req, res) => {
-    console.log(
-      `navigateToModelItemList=>req.query.businessId:${req.query.businessId}`
-    );
+  async navigateToModel(req, res) {
     try {
-      console.log(
-        `navigateToModelItemList=>req.query.businessId:${req.query.businessId}`
+      const business = await super.navigateToBusiness(
+        this.modelObject,
+        req.query.businessId
       );
-      const business = await super.navigateToBusiness(req.query.businessId);
-      console.log(`navigateToModelItemList=>business:${business}`);
       if (!business) {
-        return res.status(404).json({ error: 'Business not found' });
+        return null;
       }
-      return res.status(200).json(business.itemList);
+      console.log(business.itemList);
+      return business.itemList;
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
-  };
+  }
   // //NULL
   // navigateToBusiness = async () => {
   //   console.log('Item List Controller Not Implemented');
@@ -55,29 +74,32 @@ class ItemListController extends GenericCRUDController {
   // };
 
   //req.query.businessId  req.query.printedFieldNameList [Recurring for List]
-  readListOfGenericObject = async (req, res) => {
+  async readListOfGenericObject(req, res) {
     try {
-      console.log(
-        `readListOfGenericObject>ItemList>req.query.businessId:${req.query.businessId}`
+      console.log('About to readListOfGenericObject');
+      let mongooseObjectID = new mongoose.Types.ObjectId(req.query.businessId);
+      const fieldValues = await super.readListOfGenericObject(
+        { _id: new mongoose.Types.ObjectId('65f1e1562ce46bcd9e280adf') },
+        `$itemList`,
+        [
+          `itemList.portionInfoList`,
+          `itemList.locationItemList`,
+          `itemList.locationItemLog`
+        ]
       );
-      const itemList = await super.navigateToModel(req.query.businessId);
-      console.log(req.query.businessId);
-      if (!itemList) {
-        return res.status(404).json({ error: 'Item List not found' });
-      }
-      return res
-        .status(200)
-        .json(
-          await super.readListOfGenericObject(req.query.printedFieldNameList)
-        );
+      //req.query.printedFieldName
+      return res.status(200).json({ list: fieldValues });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
-  };
+  }
   // req.query.businessId req.query.field req.query.value
-  findListOfGenericObject = async (req, res) => {
+  async findListOfGenericObject(req, res) {
     try {
-      const itemList = await super.navigateToModel(req.query.businessId);
+      const itemList = await super.navigateToModel(
+        this.modelObject,
+        req.query.businessId
+      );
       console.log(itemList);
       if (!itemList) {
         return res.status(404).json({ error: 'Item List not found' });
@@ -85,16 +107,23 @@ class ItemListController extends GenericCRUDController {
       return res
         .status(200)
         .json(
-          await super.findListOfGenericObject(req.query.field, req.query.value)
+          await super.findListOfGenericObject(
+            this.modelObject,
+            req.query.field,
+            req.query.value
+          )
         );
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
-  };
+  }
   // req.query.businessId req.query.identityField req.query.identityValue
-  findOneGenericObject = async (req, res) => {
+  async findOneGenericObject(req, res) {
     try {
-      const itemList = await super.navigateToModel(req.query.businessId);
+      const itemList = await super.navigateToModel(
+        this.modelObject,
+        req.query.businessId
+      );
       if (!itemList) {
         return res.status(404).json({ error: 'Item List not found' });
       }
@@ -102,6 +131,7 @@ class ItemListController extends GenericCRUDController {
         .status(200)
         .json(
           await super.findOneGenericObject(
+            this.modelObject,
             req.query.identityField,
             req.query.identityValue
           )
@@ -109,11 +139,14 @@ class ItemListController extends GenericCRUDController {
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
-  };
+  }
   //req.query.businessId  req.query.identityField req.query.identityValue req.query.editField req.query.editValue
-  updateListOfGenericObject = async (req, res) => {
+  async updateListOfGenericObject(req, res) {
     try {
-      const itemList = await super.navigateToModel(req.query.businessId);
+      const itemList = await super.navigateToModel(
+        this.modelObject,
+        req.query.businessId
+      );
       if (!itemList) {
         return res.status(404).json({ error: 'Item List not found' });
       }
@@ -121,6 +154,7 @@ class ItemListController extends GenericCRUDController {
         .status(200)
         .json(
           await super.updateListOfGenericObject(
+            this.modelObject,
             req.query.identityField,
             req.query.identityValue,
             req.query.editField,
@@ -130,11 +164,14 @@ class ItemListController extends GenericCRUDController {
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
-  };
+  }
   // req.query.businessId req.query.identityField req.query.identityValue req.query.editField req.query.editValue
-  updateOneGenericObject = async (req, res) => {
+  async updateOneGenericObject(req, res) {
     try {
-      const itemList = await super.navigateToModel(req.query.businessId);
+      const itemList = await super.navigateToModel(
+        this.modelObject,
+        req.query.businessId
+      );
       if (!itemList) {
         return res.status(404).json({ error: 'Item List not found' });
       }
@@ -142,6 +179,7 @@ class ItemListController extends GenericCRUDController {
         .status(200)
         .json(
           await super.updateOneGenericObject(
+            this.modelObject,
             req.query.identityField,
             req.query.identityValue,
             req.query.editField,
@@ -151,11 +189,14 @@ class ItemListController extends GenericCRUDController {
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
-  };
+  }
   // req.query.businessId req.query.identityField req.query.identityValue
-  deleteListOfGenericObject = async (req, res) => {
+  async deleteListOfGenericObject(req, res) {
     try {
-      const itemList = await super.navigateToModel(req.query.businessId);
+      const itemList = await super.navigateToModel(
+        this.modelObject,
+        req.query.businessId
+      );
       if (!itemList) {
         return res.status(404).json({ error: 'Item List not found' });
       }
@@ -163,6 +204,7 @@ class ItemListController extends GenericCRUDController {
         .status(200)
         .json(
           await super.deleteManyGenericObject(
+            this.modelObject,
             req.query.identityField,
             req.query.identityValue
           )
@@ -170,12 +212,15 @@ class ItemListController extends GenericCRUDController {
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
-  };
+  }
 
   // req.query.businessId req.query.identityField req.query.identityValue
-  deleteOneGenericObject = async (req, res) => {
+  async deleteOneGenericObject(req, res) {
     try {
-      const itemList = await super.navigateToModel(req.query.businessId);
+      const itemList = await super.navigateToModel(
+        this.modelObject,
+        req.query.businessId
+      );
       if (!itemList) {
         return res.status(404).json({ error: 'Item List not found' });
       }
@@ -183,6 +228,7 @@ class ItemListController extends GenericCRUDController {
         .status(200)
         .json(
           await super.deleteOneGenericObject(
+            this.modelObject,
             req.query.identityField,
             req.query.identityValue
           )
@@ -190,7 +236,7 @@ class ItemListController extends GenericCRUDController {
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
-  };
+  }
 }
 let itemListController = new ItemListController();
 module.exports = {
