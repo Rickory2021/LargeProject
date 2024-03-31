@@ -176,25 +176,17 @@ class GenericCRUDController {
     return jsonObject;
   }
 
-  async readListOfGenericObject(
-    matchJson,
-    unwind1stList,
-    projectFieldsArray,
-    outputSize = 50,
-    outset = 0
-  ) {
-    console.log(matchJson);
-    console.log(unwind1stList);
-    console.log(projectFieldsArray);
-    let projectionJson = this.constructJson(projectFieldsArray);
-    console.log(projectionJson);
+  async readGeneric(aggregateJsonList) {
+    // console.log(matchJson);
+    // console.log(unwind1stList);
+    // console.log(projectFieldsArray);
+    // let projectionJson = this.constructJson(projectFieldsArray);
+    // console.log(projectionJson);
     try {
       const result = await Business.aggregate([
-        { $match: matchJson },
-        { $unwind: unwind1stList }, // Unwind the arrayName array
-        { $project: projectionJson }, // Project only the name field for each post
-        { $limit: outputSize }, // Project only the name field for each post
-        { $skip: outset } // Project only the name field for each post
+        // { $limit: outputSize }, // Project only the name field for each post
+        // { $skip: outset } // Project only the name field for each post
+        aggregateJsonList
       ]);
 
       if (!result || result.length === 0) {
@@ -203,7 +195,36 @@ class GenericCRUDController {
       }
 
       // Extract the names from the result
-      console.log('Post names:', result);
+      console.log('result from generic:', result);
+      return result;
+    } catch (error) {
+      console.error('Error:', error);
+      return null;
+    }
+  }
+
+  async updateGeneric(filterJson, updateJson) {
+    // console.log(matchJson);
+    // console.log(unwind1stList);
+    // console.log(projectFieldsArray);
+    // let projectionJson = this.constructJson(projectFieldsArray);
+    // console.log(projectionJson);
+    console.log(updateJson);
+    try {
+      const result = await Business.updateMany(
+        // { $limit: outputSize }, // Project only the name field for each post
+        // { $skip: outset } // Project only the name field for each post
+        filterJson,
+        updateJson
+      );
+
+      if (!result || result.length === 0) {
+        console.log('User or posts not found');
+        return null;
+      }
+
+      // Extract the names from the result
+      console.log('result from generic:', result);
       return result;
     } catch (error) {
       console.error('Error:', error);

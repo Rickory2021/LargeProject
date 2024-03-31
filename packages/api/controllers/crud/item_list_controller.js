@@ -74,18 +74,52 @@ class ItemListController extends GenericCRUDController {
   // };
 
   //req.query.businessId  req.query.printedFieldNameList [Recurring for List]
-  async readListOfGenericObject(req, res) {
+  async read(req, res) {
     try {
-      console.log('About to readListOfGenericObject');
+      console.log('About to read');
       let mongooseObjectID = new mongoose.Types.ObjectId(req.query.businessId);
-      const fieldValues = await super.readListOfGenericObject(
-        { _id: new mongoose.Types.ObjectId('65f1e1562ce46bcd9e280adf') },
-        `$itemList`,
-        [
-          `itemList.portionInfoList`,
-          `itemList.locationItemList`,
-          `itemList.locationItemLog`
-        ]
+      // { $limit: outputSize }, // Project only the name field for each post
+      // { $skip: outset } // Project only the name field for each post
+      const fieldValues = await super.readGeneric([
+        {
+          $match: {
+            _id: mongooseObjectID
+          }
+        },
+        { $unwind: `$itemList` },
+        {
+          $match: {
+            'itemList.itemName': 'Fluid Item'
+          }
+        },
+        {
+          $project: {
+            itemName: '$itemList',
+            _id: 1
+          }
+        }
+      ]);
+      //req.query.printedFieldName
+      return res.status(200).json({ list: fieldValues });
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
+    }
+  }
+
+  //req.query.businessId  req.query.printedFieldNameList [Recurring for List]
+  async update(req, res) {
+    try {
+      console.log('About to read');
+      // { $limit: outputSize }, // Project only the name field for each post
+      // { $skip: outset } // Project only the name field for each post
+      const fieldValues = await super.updateGeneric(
+        {
+          _id: req.query.businessId,
+          'itemList.itemName': 'Fluidy Item'
+        },
+        {
+          $set: { 'itemList.$.itemName': 'Fluid Item' }
+        }
       );
       //req.query.printedFieldName
       return res.status(200).json({ list: fieldValues });
@@ -93,53 +127,7 @@ class ItemListController extends GenericCRUDController {
       return res.status(500).json({ error: error.message });
     }
   }
-  // req.query.businessId req.query.field req.query.value
-  async findListOfGenericObject(req, res) {
-    try {
-      const itemList = await super.navigateToModel(
-        this.modelObject,
-        req.query.businessId
-      );
-      console.log(itemList);
-      if (!itemList) {
-        return res.status(404).json({ error: 'Item List not found' });
-      }
-      return res
-        .status(200)
-        .json(
-          await super.findListOfGenericObject(
-            this.modelObject,
-            req.query.field,
-            req.query.value
-          )
-        );
-    } catch (error) {
-      return res.status(500).json({ error: error.message });
-    }
-  }
-  // req.query.businessId req.query.identityField req.query.identityValue
-  async findOneGenericObject(req, res) {
-    try {
-      const itemList = await super.navigateToModel(
-        this.modelObject,
-        req.query.businessId
-      );
-      if (!itemList) {
-        return res.status(404).json({ error: 'Item List not found' });
-      }
-      return res
-        .status(200)
-        .json(
-          await super.findOneGenericObject(
-            this.modelObject,
-            req.query.identityField,
-            req.query.identityValue
-          )
-        );
-    } catch (error) {
-      return res.status(500).json({ error: error.message });
-    }
-  }
+
   //req.query.businessId  req.query.identityField req.query.identityValue req.query.editField req.query.editValue
   async updateListOfGenericObject(req, res) {
     try {
@@ -241,14 +229,12 @@ class ItemListController extends GenericCRUDController {
 let itemListController = new ItemListController();
 module.exports = {
   navigateToModel: (req, res) => itemListController.navigateToModel(req, res),
-  readListOfGenericObject: (req, res) =>
-    itemListController.readListOfGenericObject(req, res),
+  read: (req, res) => itemListController.read(req, res),
   findListOfGenericObject: (req, res) =>
     itemListController.findListOfGenericObject(req, res),
   findOneGenericObject: (req, res) =>
     itemListController.findOneGenericObject(req, res),
-  updateListOfGenericObject: (req, res) =>
-    itemListController.updateListOfGenericObject(req, res),
+  update: (req, res) => itemListController.update(req, res),
   updateOneGenericObject: (req, res) =>
     itemListController.updateOneGenericObject(req, res),
   deleteListOfGenericObject: (req, res) =>
