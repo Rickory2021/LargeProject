@@ -14,7 +14,8 @@ const {
 const {
   addDistributorMetaData, 
   readDistributorMetaData,
-  updateDistributorMetaData
+  updateDistributorMetaData,
+  deleteDistributorMetaData
 } = require('../controllers/crud/distributor_metadata_list_controller')
 
 // Employee Id List Route /crud
@@ -32,6 +33,6 @@ router.post('/business/item-list/delete', deleteItem); // ?businessId&&itemName
 router.post('/business/distributor-metadata-list/add', addDistributorMetaData)
 router.get('/business/distributor-metadata-list/read', readDistributorMetaData)
 router.post('/business/distributor-metadata-list/update', updateDistributorMetaData)
-
+router.post('/business/distributor-metadata-list/delete', deleteDistributorMetaData)
 
 module.exports = router;

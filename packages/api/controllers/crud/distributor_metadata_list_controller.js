@@ -101,6 +101,33 @@ class DistributorMetaDataController extends GenericCRUDController {
       return res.status(500).json({ error: error.message });
     }
   }
+
+  async deleteDistributorMetaData(req, res) {
+    try {
+      const businessId = req.query.businessId;
+      const distributorName = req.query.distributorName;
+
+      if (!businessId || !distributorName) {
+        return res.status(400).json({
+          message: 'Missing businessId or distributorName in the request.'
+        });
+      }
+
+      const objectId = new mongoose.Types.ObjectId(businessId);
+
+      const result = await this.deleteGeneric(
+        objectId,
+        'distributorMetaDataList',
+        'distributorName',
+        distributorName
+      );
+
+      return res.status(200).json({ message: result });
+    } catch (error) {
+      console.error('Error deleting distributor metadata:', error);
+      return res.status(500).json({ error: error.message });
+    }
+  }
 }
 
 let distributorMetadataListController = new DistributorMetaDataController();
@@ -110,5 +137,7 @@ module.exports = {
   readDistributorMetaData: (req, res) =>
     distributorMetadataListController.readDistributorMetaData(req, res),
   updateDistributorMetaData: (req, res) =>
-    distributorMetadataListController.updateDistributorMetaData(req, res)
+    distributorMetadataListController.updateDistributorMetaData(req, res),
+  deleteDistributorMetaData: (req, res) =>
+    distributorMetadataListController.deleteDistributorMetaData(req, res)
 };
