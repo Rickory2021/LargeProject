@@ -1,5 +1,4 @@
 'use client'
-import Link from 'next/link'; // Import Link from Next.js
 import { useState } from 'react';
 import { HiArchive, HiCreditCard } from 'react-icons/hi';
 import { FaHome, FaTruck, FaSignOutAlt } from 'react-icons/fa'; // Added FaSignOutAlt icon
@@ -44,7 +43,7 @@ function SideNav() {
         // Clear the cookie upon successful logout
         document.cookie = "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; // Change yourCookieName to the name of your cookie
         // Redirect to login page or any other appropriate page after successful logout
-        window.location.href = '/sign-in'; // Adjust the path to your login page
+        router.push('/sign-in'); // Adjust the path to your login page
       } else {
         console.error('Logout failed');
       }
