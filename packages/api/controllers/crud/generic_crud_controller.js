@@ -5,7 +5,7 @@ const { Business } = require('../../models/business_model');
 class GenericCRUDController {
   constructor() {}
 
-  async doesExist(businessId, field, value) {
+  async doesExistGeneric(businessId, field, value) {
     try {
       // Find a document with the provided ID and item name
       const existingItem = await Business.findOne({
@@ -14,21 +14,23 @@ class GenericCRUDController {
       });
 
       // Check if the document exists
-      if (existingItem.list !== null) {
+      if (existingItem !== null) {
+        // Modify this line
         console.log(`ID: ${businessId} at ${field} value: ${value} does exist`);
         return true;
       } else {
         console.log(
-          `ID: ${businessId} at ${field} value: ${value} do not exist`
+          `ID: ${businessId} at ${field} value: ${value} does not exist`
         );
         return false;
       }
     } catch (error) {
       console.error('Error checking existence:', error);
+      throw error; // Throw the error to be caught by the calling function
     }
   }
 
-  async createGeneric(businessId, arrayField, modelSchema, modelData) {
+  async createGeneric(businessId, field, modelSchema, modelData) {
     try {
       // Construct the item using the Item model
       const newModelObject = new modelSchema(modelData);
@@ -36,14 +38,14 @@ class GenericCRUDController {
       // Update the document by pushing the new item into the array
       const result = await Business.updateOne(
         { _id: businessId },
-        { $push: { [arrayField]: newModelObject } }
+        { $push: { [field]: newModelObject } }
       );
 
       //Check if any documents were modified
       if (result.modifiedCount > 0) {
-        console.log(`Successfully pushed new item to ${arrayField}`);
+        console.log(`Successfully pushed new item to ${field}`);
       } else {
-        console.log(`Failed to push new item to ${arrayField}`);
+        console.log(`Failed to push new item to ${field}`);
       }
       return result;
     } catch (error) {
