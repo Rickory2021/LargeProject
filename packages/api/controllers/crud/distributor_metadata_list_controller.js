@@ -41,7 +41,7 @@ class DistributorMetaDataController extends GenericCRUDController {
   async readDistributorMetaData(req, res) {
     try {
       let businessId = new mongoose.Types.ObjectId(req.query.businessId);
-  
+
       const distributorMetaData = await super.readGeneric([
         {
           $match: { _id: businessId }
@@ -53,22 +53,54 @@ class DistributorMetaDataController extends GenericCRUDController {
           }
         }
       ]);
-    
+
       if (!distributorMetaData || distributorMetaData.length === 0) {
         return res.status(404).json({
           message: 'No distributor metadata found for the given business ID'
         });
       }
-      
+
       return res.status(200).json({
-        distributorMetaDataList: distributorMetaData[0]?.distributorMetaDataList || []
+        distributorMetaDataList:
+          distributorMetaData[0]?.distributorMetaDataList || []
       });
-  
     } catch (error) {
       console.error('Error reading distributor metadata:', error);
       return res.status(500).json({ error: error.message });
     }
-  }  
+  }
+
+  // TODO: error checking
+  async updateDistributorMetaData(req, res) {
+    try {
+      const { businessId, distributorName } = req.query;
+
+      const filterJson = {
+        _id: businessId,
+        'distributorMetaDataList.distributorName': distributorName
+      };
+
+      // Uncomment first line if the name can be changes
+      const updateJson = {
+        $set: {
+          // 'distributorMetaDataList.$.distributorName': req.body.distributorName,
+          'distributorMetaDataList.$.distributorDeadlineDate':
+            req.body.distributorDeadlineDate,
+          'distributorMetaDataList.$.distributorDeliveryDate':
+            req.body.distributorDeliveryDate,
+          'distributorMetaDataList.$.distributorMetaData':
+            req.body.distributorMetaData
+        }
+      };
+
+      const result = await super.updateGeneric(filterJson, updateJson);
+
+      return res.status(200).json({ message: result }); // The result is printed but its the changed values
+    } catch (error) {
+      console.error('Error updating distributor metadata:', error);
+      return res.status(500).json({ error: error.message });
+    }
+  }
 }
 
 let distributorMetadataListController = new DistributorMetaDataController();
@@ -76,5 +108,7 @@ module.exports = {
   addDistributorMetaData: (req, res) =>
     distributorMetadataListController.addDistributorMetaData(req, res),
   readDistributorMetaData: (req, res) =>
-    distributorMetadataListController.readDistributorMetaData(req, res)
+    distributorMetadataListController.readDistributorMetaData(req, res),
+  updateDistributorMetaData: (req, res) =>
+    distributorMetadataListController.updateDistributorMetaData(req, res)
 };
