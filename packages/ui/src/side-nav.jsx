@@ -22,6 +22,7 @@ function SideNav() {
   }
 
   const handleSuppliers = () =>{
+
     router.push('/dashboard/suppliers');
   }
 
@@ -68,7 +69,7 @@ function SideNav() {
           <SideBarIcon icon={<HiCreditCard size="66" />} text="Orders" />
         </button>
 
-        <button onCLick = {handleSuppliers} className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md">
+        <button onClick = {handleSuppliers} className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md">
           <SideBarIcon icon={<FaTruck size="62" />} text="Suppliers" />
         </button>
 
