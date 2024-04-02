@@ -56,7 +56,7 @@ function SideNav() {
   };
 
   return (
-    <div className="inset-y-0 left-0 h-screen w-auto m-0 flex flex-col bg-blue-600 text-white">
+    <div className="inset-y-0 left-0 h-screen w-150px m-0 flex flex-col bg-blue-600 text-white">
         <button onClick={handleDasboard} className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md">
           <SideBarIcon icon={<FaHome size="66" />} text="Dashboard" />
         </button>
