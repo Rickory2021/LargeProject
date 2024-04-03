@@ -1,11 +1,34 @@
-import Link from 'next/link'; // Import Link from Next.js
+'use client'
 import { useState } from 'react';
 import { HiArchive, HiCreditCard } from 'react-icons/hi';
 import { FaHome, FaTruck, FaSignOutAlt } from 'react-icons/fa'; // Added FaSignOutAlt icon
 import { TbReportSearch } from 'react-icons/tb';
+import { useRouter } from 'next/navigation';
 
 function SideNav() {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const router = useRouter();
+
+  const handleDasboard = () => {
+    router.push('/dashboard');
+  }
+
+  const handleInventory = () =>{
+    router.push('/dashboard/inventory');
+  }
+
+  const handleOrders = () =>{
+    router.push('/dashboard/orders');
+  }
+
+  const handleSuppliers = () =>{
+
+    router.push('/dashboard/suppliers');
+  }
+
+  const handleReport = () => {
+      router.push('/dashboard/reports');
+  }
 
   const handleLogout = async () => {
     try {
@@ -21,7 +44,7 @@ function SideNav() {
         // Clear the cookie upon successful logout
         document.cookie = "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; // Change yourCookieName to the name of your cookie
         // Redirect to login page or any other appropriate page after successful logout
-        window.location.href = '/sign-in'; // Adjust the path to your login page
+        router.push('/sign-in'); // Adjust the path to your login page
       } else {
         console.error('Logout failed');
       }
@@ -33,39 +56,29 @@ function SideNav() {
   };
 
   return (
-    <div className="fixed top-0 left-0 h-screen w-auto m-0 flex flex-col bg-blue-600 text-white">
-      <Link href="/dashboard">
-        <button className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md">
+    <div className="inset-y-0 left-0 h-screen w-150px m-0 flex flex-col bg-blue-600 text-white">
+        <button onClick={handleDasboard} className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md">
           <SideBarIcon icon={<FaHome size="66" />} text="Dashboard" />
         </button>
-      </Link>
 
-      <Link href="/dashboard/inventory">
-        <button className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md">
+        <button onClick={handleInventory} className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md">
           <SideBarIcon icon={<HiArchive size="66" />} text="Inventory" />
         </button>
-      </Link>
 
-      <Link href="/dashboard/orders">
-        <button className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md">
+        <button onClick={handleOrders} className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md">
           <SideBarIcon icon={<HiCreditCard size="66" />} text="Orders" />
         </button>
-      </Link>
 
-      <Link href="/dashboard/suppliers">
-        <button className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md">
+        <button onClick = {handleSuppliers} className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md">
           <SideBarIcon icon={<FaTruck size="62" />} text="Suppliers" />
         </button>
-      </Link>
 
-      <Link href="/dashboard/reports">
-        <button className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md">
+        <button onClick = {handleReport} className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md">
           <SideBarIcon icon={<TbReportSearch size="62" />} text="Reports" />
         </button>
-      </Link>
 
       {/* Logout button using Link */}
-      <button onClick={handleLogout} className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md">
+      <button onClick={handleLogout} className="absolute bottom-0 right-0 text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md">
         <SideBarIcon icon={<FaSignOutAlt size="62" />} text="Logout" />
       </button>
     </div>
