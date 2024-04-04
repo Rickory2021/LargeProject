@@ -46,7 +46,7 @@ class ItemListController extends GenericCRUDController {
         { itemName: itemName }
       );
       //req.query.printedFieldName
-      return res.status(200).json({ status: statusData });
+      return res.status(200).json({ statusDetails: statusData });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
@@ -67,7 +67,7 @@ class ItemListController extends GenericCRUDController {
         { $project: { _id: 0, itemName: '$itemList.itemName' } }
       ]);
       //req.query.printedFieldName
-      return res.status(200).json({ fieldValues });
+      return res.status(200).json({ output:fieldValues });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
@@ -98,7 +98,7 @@ class ItemListController extends GenericCRUDController {
         }
       ]);
       //req.query.printedFieldName
-      return res.status(200).json({ fieldValues });
+      return res.status(200).json({ output:fieldValues });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
@@ -128,7 +128,7 @@ class ItemListController extends GenericCRUDController {
         },
         { $set: { 'itemList.$.itemName': req.query.newItemName } }
       );
-      return res.status(200).json({ fieldValues });
+      return res.status(200).json({ output:fieldValues });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
@@ -144,7 +144,7 @@ class ItemListController extends GenericCRUDController {
         'itemName',
         req.query.itemName
       );
-      return res.status(200).json({ status: statusData });
+      return res.status(200).json({ statusDetails: statusData });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
