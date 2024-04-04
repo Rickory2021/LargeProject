@@ -29,15 +29,14 @@ export function Content() {
             <AccordionItem value="item-2">
               <AccordionTrigger>Is it free?</AccordionTrigger>
               <AccordionContent>
-                Our basic tier is 100% free. We will never ask for your credit
-                card
+                Our basic tier is 100% free. We never ask for a credit card
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-3">
               <AccordionTrigger>Why choose us?</AccordionTrigger>
               <AccordionContent>
-                Our interface is very easy to use and gives the user exactly the
-                information they need at a glance
+                Our interface is easy to use and gives you the information you
+                need at a glance
               </AccordionContent>
             </AccordionItem>
           </Accordion>
