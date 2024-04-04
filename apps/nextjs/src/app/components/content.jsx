@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import {
   Accordion,
   AccordionContent,
@@ -8,17 +9,22 @@ import {
 
 export function Content() {
   return (
-    <>
-      <div className="flex flex-col items-center pt-48">
+    <div className="flex flex-col h-screen">
+      <div className="flex flex-col items-center pt-36">
         {/*Fix width */}
-        <h1 className="text-black font-bold text-4xl max-w-l">
+        <h1 className="text-black font-bold text-5xl max-w-l">
           Automate Restocks, Cut Costs, and Improve Productivity
         </h1>
-        <p className="text-xl p-11 max-w-l">
+        <p className="text-xl p-16 max-w-l">
           Track orders and inventory in real time so you never have to worry
           about having enough stock for life’s curve balls
         </p>
-        <div className="w-1/4 pt-14">
+        <Link href="/sign-up">
+          <button className="font-bold text-white bg-blue-600 hover:bg-blue-700 px-3 py-2 rounded-md">
+            Create an account now
+          </button>
+        </Link>
+        <div className="w-1/4 pt-24 pb-24">
           <Accordion type="single" collapsible>
             <AccordionItem value="item-1">
               <AccordionTrigger>What is Slicer? </AccordionTrigger>
@@ -42,7 +48,7 @@ export function Content() {
           </Accordion>
         </div>
       </div>
-      <div className="flex flex-row justify-center items-center pt-40 space-x-24">
+      <div className="flex flex-row justify-center items-center space-x-24 pb-20">
         <div className="card w-96 shadow-xl rounded-lg border-2 border-blue-600">
           <div className="card-body p-3 h-32">
             <h2 className="card-title text-xl">Fast and Efficient</h2>
@@ -73,6 +79,6 @@ export function Content() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

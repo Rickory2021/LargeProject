@@ -28,7 +28,7 @@ export function Nav() {
           </div>
           <NavigationMenu>
             <NavigationMenuList className="pl-16">
-              <NavigationMenuItem>
+              <NavigationMenuItem className="pr-4">
                 <NavigationMenuTrigger>Getting started</NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
@@ -36,13 +36,14 @@ export function Nav() {
                       Easily create an account and get started
                     </ListItem>
                     <ListItem title="Sign in">
-                      Sign in with username and password to access your account
+                      Sign in with your username and password to access your
+                      account
                     </ListItem>
                     <ListItem title="Mobile">Download our mobile app</ListItem>
                   </ul>
                 </NavigationMenuContent>
               </NavigationMenuItem>
-              <NavigationMenuItem>
+              <NavigationMenuItem className="pr-4">
                 <NavigationMenuTrigger>Pricing</NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
