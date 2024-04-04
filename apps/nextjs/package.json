@@ -10,6 +10,7 @@
   "dependencies": {
     "@headlessui/react": "^1.7.18",
     "@heroicons/react": "^2.1.1",
+    "@radix-ui/react-accordion": "^1.1.2",
     "@repo/ui": "workspace:*",
     "axios": "^1.6.7",
     "bcrypt": "^5.1.1",

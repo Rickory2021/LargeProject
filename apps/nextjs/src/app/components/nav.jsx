@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export function Nav() {
   return (
-    <div classname="flex flex-1 flex-row justify-center">
+    <div className="flex flex-1 flex-row justify-center">
       <nav className="bg-blue-600 p-4">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex-shrink-0">
