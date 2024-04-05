@@ -30,6 +30,26 @@ class GenericCRUDController {
     }
   }
 
+  async doesExistGenericByQuery(businessId, query) {
+    try {
+      // Find a document with the provided ID and item name
+      const existingItem = await Business.findOne(query);
+
+      // Check if the document exists
+      if (existingItem !== null) {
+        // Modify this line
+        console.log(`ID: ${businessId} by ${query} does exist`);
+        return true;
+      } else {
+        console.log(`ID: ${businessId} by ${query} does not exist`);
+        return false;
+      }
+    } catch (error) {
+      console.error('Error checking existence:', error);
+      throw error; // Throw the error to be caught by the calling function
+    }
+  }
+
   async createGeneric(businessId, field, modelSchema, modelData) {
     try {
       // Construct the item using the Item model
@@ -80,7 +100,7 @@ class GenericCRUDController {
     }
   }
 
-  async updateGeneric(filterJson, updateJson) {
+  async updateGeneric(filterJson, updateJson, arrayFilters = null) {
     // console.log(matchJson);
     // console.log(unwind1stList);
     // console.log(projectFieldsArray);
@@ -88,12 +108,23 @@ class GenericCRUDController {
     // console.log(projectionJson);
     console.log(updateJson);
     try {
-      const result = await Business.updateMany(
-        // { $limit: outputSize }, // Project only the name field for each post
-        // { $skip: outset } // Project only the name field for each post
-        filterJson,
-        updateJson
-      );
+      let result = null;
+      if (arrayFilters === null) {
+        result = await Business.updateMany(
+          // { $limit: outputSize }, // Project only the name field for each post
+          // { $skip: outset } // Project only the name field for each post
+          filterJson,
+          updateJson
+        );
+      } else {
+        result = await Business.updateMany(
+          // { $limit: outputSize }, // Project only the name field for each post
+          // { $skip: outset } // Project only the name field for each post
+          filterJson,
+          updateJson,
+          arrayFilters
+        );
+      }
 
       if (!result || result.length === 0) {
         console.log('User or posts not found');
