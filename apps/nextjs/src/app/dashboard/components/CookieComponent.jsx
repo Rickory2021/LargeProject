@@ -17,7 +17,7 @@ function CookieComponent({ cookieName, onUserIdChange }) {
       //No cookie of accessToken name
       router.push('/sign-in');
     }
-  }, [cookieName]);
+  }, []);
 
   const verifyAccessToken = async accessToken => {
     const response = await fetch(

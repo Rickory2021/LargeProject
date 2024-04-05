@@ -13,6 +13,7 @@
     "@repo/ui": "workspace:*",
     "axios": "^1.6.7",
     "bcrypt": "^5.1.1",
+    "bootstrap": "^5.3.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "daisyui": "^4.7.2",
