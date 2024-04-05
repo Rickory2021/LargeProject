@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import '../../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min';
-//../../node_modules/bootstrap/dist/js/bootstrap.bundle.min
 import ReadTable from './ReadTable';
 
 const Table = ({ businessId }) => {
@@ -18,6 +15,8 @@ const Table = ({ businessId }) => {
   });
 
   const [searchQuery, setSearchQuery] = useState('');
+
+  const [modalInitialized, setModalInitialized] = useState(false);
 
   //Edit Data values
   const handleEditChange = input => e => {
@@ -162,6 +161,17 @@ const Table = ({ businessId }) => {
     console.log(posts);
     console.log(posts);
   }, [posts]);
+
+  useEffect(() => {
+    if (!modalInitialized && typeof window !== 'undefined') {
+      import('bootstrap').then(bootstrap => {
+        const Modal = bootstrap.Modal;
+        const modalElement = document.getElementById('addModalForm');
+        const modal = new Modal(modalElement);
+        setModalInitialized(true);
+      });
+    }
+  }, [modalInitialized]);
 
   return (
     <div>
