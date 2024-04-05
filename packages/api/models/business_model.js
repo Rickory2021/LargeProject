@@ -44,10 +44,9 @@ const distributorMetaDataSchema = new mongoose.Schema({
 });
 
 const locationMetaDataSchema = new mongoose.Schema({
-  distributorName: String,
-  distributorDeadlineDate: String,
-  distributorDeliveryDate: String,
-  distributorMetaData: String
+  locationName: String,
+  locationAddress: String,
+  locationMetaData: String
 });
 
 const itemSchema = new mongoose.Schema({

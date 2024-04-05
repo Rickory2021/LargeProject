@@ -8,17 +8,30 @@ class LocationMetaDataController extends GenericCRUDController {
     super();
   }
 
-  // TODO: For some reason this only adds the businessID
   async addLocationMetaData(req, res) {
     try {
       const businessId = req.query.businessId;
 
+      // Need locationName to check if the document exists
+      const locationName = req.body.locationName;
+
+      const exists = await this.doesExistGeneric(
+        businessId,
+        'locationMetaDataList.locationName',
+        locationName
+      );
+
+      if (exists) {
+          return res.status(400).json({ message: 'Location name already exists.' });
+      }
+
       const locationMetaData = {
-        locationName: req.body.locationName,
+        locationName: locationName,
         locationAddress: req.body.locationAddress,
         locationMetaData: req.body.locationMetaData
       };
 
+      // TODO: Does not account for white space or case
       const result = await super.createGeneric(
         businessId,
         'locationMetaDataList',
@@ -27,12 +40,13 @@ class LocationMetaDataController extends GenericCRUDController {
       );
 
       if (result && result.modifiedCount > 0) {
-        return res.status(200).json({ message: locationMetaData });
+        return res.status(200).json({ error: null });
       } else {
         return res
           .status(400)
-          .json({ message: 'Failed to add location metadata' });
+          .json({ message: result });
       }
+
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
@@ -69,7 +83,7 @@ class LocationMetaDataController extends GenericCRUDController {
     }
   }
 
-  // TODO: error checking
+  // TODO: After item is complete, user should be able to edit locationName
   async updateLocationMetaData(req, res) {
     try {
       const { businessId, locationName } = req.query;
@@ -79,20 +93,17 @@ class LocationMetaDataController extends GenericCRUDController {
         'locationMetaDataList.locationName': locationName
       };
 
-      // Uncomment first line if the name can be changes
       const updateJson = {
         $set: {
-          // 'locationMetaDataList.$.locationName': req.body.locationName,
           'locationMetaDataList.$.locationAddress': req.body.locationAddress,
           'locationMetaDataList.$.locationMetaData': req.body.locationMetaData
         }
       };
 
-      const result = await super.updateGeneric(filterJson, updateJson);
+      await super.updateGeneric(filterJson, updateJson);
 
-      return res.status(200).json({ message: result }); // The result is printed but its the changed values
+      return res.status(200).json({error: null});
     } catch (error) {
-      console.error('Error updating location metadata:', error);
       return res.status(500).json({ error: error.message });
     }
   }
@@ -117,9 +128,8 @@ class LocationMetaDataController extends GenericCRUDController {
         locationName
       );
 
-      return res.status(200).json({ message: result });
+      return res.status(200).json({ error: null });
     } catch (error) {
-      console.error('Error deleting location metadata:', error);
       return res.status(500).json({ error: error.message });
     }
   }
