@@ -3,6 +3,7 @@ const router = require('express').Router();
 const {
   ReadEmployeeIdList
 } = require('../controllers/crud/business_controller');
+
 const {
   createItem,
   readAllItemName,
@@ -12,11 +13,18 @@ const {
 } = require('../controllers/crud/item_controller');
 
 const {
-  addDistributorMetaData, 
+  addDistributorMetaData,
   readDistributorMetaData,
   updateDistributorMetaData,
   deleteDistributorMetaData
-} = require('../controllers/crud/distributor_metadata_list_controller')
+} = require('../controllers/crud/distributor_metadata_list_controller');
+
+const {
+  addLocationMetaData,
+  readLocationMetaData,
+  updateLocationMetaData,
+  deleteLocationMetaData
+} = require('../controllers/crud/location_metadata_list_controller');
 
 // Employee Id List Route /crud
 router.get('/business/employee-id-list', ReadEmployeeIdList); // /api/auth/business/employeeIdList?id
@@ -29,10 +37,22 @@ router.post('/business/item-list/read-one', readOneItem); // ?businessId&itemNam
 router.post('/business/item-list/update', updateItem); // ?businessId&findItemName&newItemName
 router.post('/business/item-list/delete', deleteItem); // ?businessId&&itemName
 
-// Distributor metadata
-router.post('/business/distributor-metadata-list/add', addDistributorMetaData)
-router.get('/business/distributor-metadata-list/read', readDistributorMetaData)
-router.post('/business/distributor-metadata-list/update', updateDistributorMetaData)
-router.post('/business/distributor-metadata-list/delete', deleteDistributorMetaData)
+// Distributor MetaData
+router.post('/business/distributor-metadata-list/add', addDistributorMetaData);
+router.get('/business/distributor-metadata-list/read', readDistributorMetaData);
+router.post(
+  '/business/distributor-metadata-list/update',
+  updateDistributorMetaData
+);
+router.post(
+  '/business/distributor-metadata-list/delete',
+  deleteDistributorMetaData
+);
+
+// Location MetaData
+router.post('/business/location-metadata-list/add', addLocationMetaData)
+router.get('/business/location-metadata-list/read', readLocationMetaData)
+router.post('/business/location-metadata-list/update', updateLocationMetaData)
+router.post('/business/location-metadata-list/delete', deleteLocationMetaData)
 
 module.exports = router;
