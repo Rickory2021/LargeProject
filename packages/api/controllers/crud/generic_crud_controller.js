@@ -73,6 +73,27 @@ class GenericCRUDController {
     }
   }
 
+  async createGenericByQuery(filterQuery, updateQuery) {
+    try {
+      // Update the document by pushing the new item into the array
+      const result = await Business.updateOne(filterQuery, updateQuery);
+
+      //Check if any documents were modified
+      if (result.modifiedCount > 0) {
+        console.log(
+          `Successfully pushed new item :filterQuery ${filterQuery} updateQuery ${updateQuery}`
+        );
+      } else {
+        console.log(
+          `Failed to push new item :filterQuery ${filterQuery} updateQuery ${updateQuery}`
+        );
+      }
+      return result;
+    } catch (error) {
+      console.error('Error pushing item:', error);
+    }
+  }
+
   async readGeneric(aggregateJsonList) {
     // console.log(matchJson);
     // console.log(unwind1stList);
@@ -100,7 +121,7 @@ class GenericCRUDController {
     }
   }
 
-  async updateGeneric(filterJson, updateJson, arrayFilters = null) {
+  async updateGeneric(filterJson, updateJson, arrayFiltersJson = null) {
     // console.log(matchJson);
     // console.log(unwind1stList);
     // console.log(projectFieldsArray);
@@ -109,7 +130,7 @@ class GenericCRUDController {
     console.log(updateJson);
     try {
       let result = null;
-      if (arrayFilters === null) {
+      if (arrayFiltersJson === null) {
         result = await Business.updateMany(
           // { $limit: outputSize }, // Project only the name field for each post
           // { $skip: outset } // Project only the name field for each post
@@ -122,7 +143,7 @@ class GenericCRUDController {
           // { $skip: outset } // Project only the name field for each post
           filterJson,
           updateJson,
-          arrayFilters
+          arrayFiltersJson
         );
       }
 
@@ -160,6 +181,31 @@ class GenericCRUDController {
       } else {
         console.log(
           `Failed Delete embedded All document with ${fieldToCheck}:${checkString} ${businessId}=>from ${arrayField}`
+        );
+      }
+      return result;
+    } catch (error) {
+      console.error('Error deleting embedded document:', error);
+    }
+  }
+
+  async deleteGenericByQuery(filterJson, updateJson) {
+    // console.log(matchJson);
+    // console.log(unwind1stList);
+    // console.log(projectFieldsArray);
+    // let projectionJson = this.constructJson(projectFieldsArray);
+    // console.log(projectionJson);
+    // Update all documents where itemList contains an item with the specified itemId
+    try {
+      const result = await Business.updateOne(filterJson, updateJson);
+      //Check if any documents were modified
+      if (result.modifiedCount > 0) {
+        console.log(
+          `Successfully Delete All embedded document with ${filterJson} with action ${updateJson}`
+        );
+      } else {
+        console.log(
+          `Failed Delete embedded All document with  ${filterJson} with action ${updateJson}`
         );
       }
       return result;
