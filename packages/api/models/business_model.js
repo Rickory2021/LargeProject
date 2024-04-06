@@ -16,11 +16,10 @@ const locationLogSchema = new mongoose.Schema({
   initialPortion: Number,
   finalPortion: Number,
   updateDate: {
-    type: Date,
-    default: Date.now
+    type: Date
   }
 });
-
+//default: Date.now
 const locationBucketLogSchema = new mongoose.Schema({
   locationBucket: String,
   locationBucketLog: [locationLogSchema]

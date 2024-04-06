@@ -46,6 +46,12 @@ const {
 } = require('../controllers/crud/item_inventory_controller');
 
 const {
+  createLog,
+  readAllLogsInBucket,
+  deleteLog
+} = require('../controllers/crud/item_location_log_controller');
+
+const {
   addDistributorMetaData,
   readDistributorMetaData,
   updateDistributorMetaData,
@@ -120,6 +126,30 @@ router.post(
 ); // ?businessId { itemName, findLocationName, index, newMetaData }
 // TODO: DOES NOT UPDATE LOCATION META DATA & LOG YET
 router.post('/business/item-inventory/delete', deleteInventory); // ?businessId { itemName, locationName, index }
+
+//
+// Item Inventory
+router.post('/business/item-inventory/create', createInventory); // ?businessId { itemName, locationName, portionNumber, metaData }
+router.post('/business/item-inventory/read-all', readAllInventory); // ?businessId { itemName, locationName }
+// TODO: DOES NOT UPDATE LOCATION METADATA & LOG YET
+router.post('/business/item-inventory/update-number', updateInventoryNumber); // ?businessId { itemName, findLocationName, index, newNumber }
+router.post(
+  '/business/item-inventory/update-metadata',
+  updateInventoryMetaData
+); // ?businessId { itemName, findLocationName, index, newMetaData }
+// TODO: DOES NOT UPDATE LOCATION META DATA & LOG YET
+router.post('/business/item-inventory/delete', deleteInventory); // ?businessId { itemName, locationName, index }
+
+//
+// Location Logs
+// logReason: "Transit" [Use when moving one object to another location]
+// logReason: "Manual Count" [Use when manually editing quantity]
+// logReason: "Inventory Arrival" [Use when adding new Objects in Location]
+// logReason: "Predicted Estimate" [Use when editting with uncertainity]
+// Note: To Calculate Derivative, use Date, "Manual Count" & "Inventory Arrival"
+router.post('/business/item-location-log/create', createLog); // ?businessId  {itemName,locationName,logReason,initialPortion,finalPortion,updateDate}
+router.post('/business/item-location-log/read-all', readAllLogsInBucket); // ?businessId  { itemName, locationBucket }
+router.post('/business/item-location-log/delete', deleteLog); // ?businessId { itemName, updateDate }
 
 //
 // Distributor MetaData
