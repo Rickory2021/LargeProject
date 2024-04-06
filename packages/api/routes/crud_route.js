@@ -1,7 +1,8 @@
 const router = require('express').Router();
 
 const {
-  readAllEmployeeIds
+  readAllEmployeeIds,
+  deleteEmployeeId
 } = require('../controllers/crud/employee_id_list_controller');
 
 const {
@@ -21,6 +22,7 @@ const {
 
 // Employee Id List Route /crud
 router.get('/business/employee-id-list/read-all', readAllEmployeeIds); //GET /api/crud/business/employee-id-list/read-all?businessId=
+router.post('/business/employee-id-list/delete', deleteEmployeeId); //POST /api/crud/business/employee-id-list/delete?businessId=&employeeId=
 
 // Item List Route /crud
 router.post('/business/item-list/create', createItem); // ?businessId&itemName
