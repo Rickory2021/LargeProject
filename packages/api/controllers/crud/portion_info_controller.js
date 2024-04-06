@@ -1,5 +1,5 @@
 // Rename to business_operations.js?
-const { Item, PortionInfo } = require('../../models/business_model');
+const { PortionInfo } = require('../../models/business_model');
 const GenericCRUDController = require('./generic_crud_controller');
 const { Business } = require('../../models/business_model');
 
