@@ -49,23 +49,22 @@ class EmployeeIdListController extends GenericCRUDController {
 
   // Method to delete a specific employee ID from the employeeIdList of the specified business
   async deleteEmployeeId(req, res) {
+    const businessId = req.query.businessId;
+    const employeeId = req.query.employeeId.toString(); // Convert to string
     try {
-      console.log('About to delete');
-      const employeeIdString = req.query.employeeId.toString(); // Convert to string
-
-      console.log('checkString:', employeeIdString);
-      console.log('employeeId:', typeof employeeIdString);
-      // Call the deleteGeneric method from the parent class to delete the employee ID
-      const statusData = await super.deleteGeneric(
-        req.query.businessId,
-        'employeeIdList',
-        // 'employeeId', // Make sure 'employeeId' is passed as fieldToCheck
-        // null,
-        req.query.employeeId
+      const statusData = await super.deleteGenericByQuery(
+        {
+          _id: businessId
+        },
+        {
+          $pull: {
+            employeeIdList: employeeId
+          }
+        }
       );
-      return res.status(200).json({ status: statusData }); // Return success status with status data
+      return res.status(200).json({ statusDetails: [statusData] });
     } catch (error) {
-      return res.status(500).json({ error: error.message }); // Return error status with error message
+      return res.status(500).json({ error: error.message });
     }
   }
 }
@@ -80,10 +79,3 @@ module.exports = {
   deleteEmployeeId: (req, res) =>
     employeeIdListController.deleteEmployeeId(req, res)
 };
-
-/**
- * Read all employee id’s and read just one
- * CRUD employeeIdList(Create[Defaulted] Read[List of ID Strings) & Add[Is just Create & Delete] &
- * Delete [Delete a ID String])
- * employeeId(Create  [add Business & User ID], Read[List of ID Strings), Delete [remove Business & User ID] )
- */
