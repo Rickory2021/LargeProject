@@ -137,7 +137,7 @@ class PortionInfoListController extends GenericCRUDController {
           .json({ error: 'DUPLICATE New UnitName found in item' });
       }
       console.log('About to update');
-      const fieldValues = await super.updateGeneric(
+      const statusDetails = await super.updateGeneric(
         {
           _id: businessId,
           'itemList.itemName': itemName,
@@ -155,7 +155,7 @@ class PortionInfoListController extends GenericCRUDController {
           ]
         }
       );
-      return res.status(200).json({ outputList: [fieldValues] });
+      return res.status(200).json({ statusDetails: [statusDetails] });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
@@ -168,7 +168,7 @@ class PortionInfoListController extends GenericCRUDController {
     const businessId = req.query.businessId;
     try {
       console.log('About to update');
-      const fieldValues = await super.updateGeneric(
+      const statusDetails = await super.updateGeneric(
         {
           _id: businessId,
           'itemList.itemName': itemName,
@@ -187,7 +187,7 @@ class PortionInfoListController extends GenericCRUDController {
           ]
         }
       );
-      return res.status(200).json({ outputList: [fieldValues] });
+      return res.status(200).json({ statusDetails: [statusDetails] });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
