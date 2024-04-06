@@ -97,7 +97,7 @@ router.post(
   '/business/item-relation/update-unit-cost',
   updateItemRelationUnitCost
 ); // ?businessId {rawItemName,finishedItemName,newUnitCost}
-router.post('/business/item-relation/delete', deleteInventory); // ?businessId { rawItemName, finishedItemName }
+router.post('/business/item-relation/delete', deleteRelation); // ?businessId { rawItemName, finishedItemName }
 
 //
 // Item Location
