@@ -123,14 +123,14 @@ class ItemListController extends GenericCRUDController {
           .json({ error: 'DUPLICATE New ItemName found in itemList' });
       }
       console.log('About to update');
-      const fieldValues = await super.updateGeneric(
+      const statusDetails = await super.updateGeneric(
         {
           _id: businessId,
           'itemList.itemName': findItemName
         },
         { $set: { 'itemList.$.itemName': newItemName } }
       );
-      return res.status(200).json({ output: fieldValues });
+      return res.status(200).json({ statusDetails: [statusDetails] });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
