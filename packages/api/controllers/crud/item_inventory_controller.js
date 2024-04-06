@@ -256,7 +256,7 @@ class ItemInventoryController extends GenericCRUDController {
     }
   }
 
-  //req.query.businessId { itemName, locationName }
+  //req.query.businessId { itemName, locationName, index }
   async deleteInventory(req, res) {
     const businessId = req.query.businessId;
     const { itemName, locationName, index } = req.body;
