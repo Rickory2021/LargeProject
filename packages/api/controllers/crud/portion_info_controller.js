@@ -52,8 +52,7 @@ class PortionInfoListController extends GenericCRUDController {
   //req.query.businessId  req.query.itemName req.body.unitName req.body.unitNumber
   async createPortionInfo(req, res) {
     let businessId = req.query.businessId;
-    let itemName = req.query.itemName;
-    let { unitName, unitNumber } = req.body;
+    let { itemName, unitName, unitNumber } = req.body;
     console.log(
       `businessId:${businessId} itemName :${itemName} unitName :${unitName} unitNumber :${unitNumber}`
     );
@@ -119,11 +118,10 @@ class PortionInfoListController extends GenericCRUDController {
     }
   }
 
-  //req.query.businessId req.query.itemName  {req.body.findUnitName req.body.newUnitName, req.body.newUnitNumber}
+  //req.query.businessId  { itemName, findUnitName, newUnitName }
   // NOT DOES NOT UPDATE ItemNeeded ItemUsed YET
   async updatePortionInfoName(req, res) {
-    const { findUnitName, newUnitName } = req.body;
-    const itemName = req.query.itemName;
+    const { itemName, findUnitName, newUnitName } = req.body;
     const businessId = req.query.businessId;
     try {
       console.log('Check if Duplicate ItemName');
@@ -163,11 +161,10 @@ class PortionInfoListController extends GenericCRUDController {
     }
   }
 
-  //req.query.businessId req.query.itemName  {req.body.findUnitName req.body.newUnitName, req.body.newUnitNumber}
+  //req.query.businessId { itemName, findUnitName, newUnitNumber }
   // NOT DOES NOT UPDATE ItemNeeded ItemUsed YET
   async updatePortionInfoNumber(req, res) {
-    const { findUnitName, newUnitNumber } = req.body;
-    const itemName = req.query.itemName;
+    const { itemName, findUnitName, newUnitNumber } = req.body;
     const businessId = req.query.businessId;
     try {
       console.log('About to update');
@@ -196,11 +193,10 @@ class PortionInfoListController extends GenericCRUDController {
     }
   }
 
-  //req.query.businessId  req.body.itemName {unitName}
+  //req.query.businessId  { itemName, unitName }
   async deletePortionInfo(req, res) {
     const businessId = req.query.businessId;
-    const itemName = req.query.itemName;
-    const { unitName } = req.body;
+    const { itemName, unitName } = req.body;
     try {
       const statusData = await super.deleteGenericByQuery(
         {

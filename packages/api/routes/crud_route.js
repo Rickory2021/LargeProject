@@ -9,7 +9,7 @@ const {
   createItem,
   readAllItemName,
   readOneItem,
-  updateItem,
+  updateItemName,
   deleteItem
 } = require('../controllers/crud/item_controller');
 
@@ -37,11 +37,13 @@ const {
 } = require('../controllers/crud/distributor_metadata_list_controller');
 
 const {
-  addLocationMetaData,
-  readLocationMetaData,
-  updateLocationMetaData,
+  createLocationMetaData,
+  readAllLocationMetaData,
+  updateLocationMetaDataName,
+  updateLocationMetaDataAddress,
+  updateLocationMetaDataMetaData,
   deleteLocationMetaData
-} = require('../controllers/crud/location_metadata_list_controller');
+} = require('../controllers/crud/location_metadata_controller');
 
 // Employee Id List Route /crud
 router.post('/business/employee-id-list/read-all', readAllEmployeeIds); //POST /api/crud/business/employee-id-list/read-all?businessId=
@@ -51,28 +53,21 @@ router.post('/business/employee-id-list/delete', deleteEmployeeId); //POST /api/
 router.post('/business/item-list/create', createItem); // ?businessId {itemName}
 router.post('/business/item-list/read-all', readAllItemName); // ?businessId
 router.post('/business/item-list/read-one', readOneItem); // ?businessId {itemName}
-router.post('/business/item-list/update', updateItem); // ?businessId {findItemName, newItemName}
+//TODO: Update Name doesn't Update Relations, Log, etc.
+router.post('/business/item-list/update-name', updateItemName); // ?businessId {findItemName, newItemName}
 router.post('/business/item-list/delete', deleteItem); // ?businessId {itemName}
 
 // Portion List Info
-router.post('/business/portion-info-list/create', createPortionInfo); // ?businessId&itemName {unitName,unitNumber}
+router.post('/business/portion-info-list/create', createPortionInfo); // ?businessId {itemName, unitName,unitNumber}
 router.post('/business/portion-info-list/read-all', readAllPortionInfo); // ?businessId  {itemName}
-router.post('/business/portion-info-list/update-name', updatePortionInfoName); // ?businessId&itemName {findUnitName,c}
+// NOTE: Updating Name does not affect portioning of itemNeededList and usedInList Items
+router.post('/business/portion-info-list/update-name', updatePortionInfoName); // ?businessId { itemName, findUnitName, newUnitName }
+// NOTE: Updating Number does not affect portioning of itemNeededList and usedInList Items
 router.post(
   '/business/portion-info-list/update-number',
   updatePortionInfoNumber
-); // ?businessId&findItemName&newItemName
-router.post('/business/portion-info-list/delete', deletePortionInfo); // ?businessId&&itemName {unitName}
-
-// Relationship (usedInList & itemNeededList) Info
-router.post('/business/item-relation/create', createRelation); // ?businessId { rawItemName, finishedItemName, unitCost }
-router.post('/business/item-relation/read-used-in', readAllItemUsedIn); // ?businessId {itemName}
-router.post('/business/item-relation/read-needed', readAllItemNeeded); // ?businessId {itemName}
-router.post(
-  '/business/item-relation/update-unit-cost',
-  updateItemRelationUnitCost
-); // ?businessId {rawItemName,finishedItemName,newUnitCost}
-router.post('/business/item-relation/delete', deleteRelation); // ?businessId { rawItemName, finishedItemName }
+); // ?businessId { itemName, findUnitName, newUnitNumber }
+router.post('/business/portion-info-list/delete', deletePortionInfo); // ?businessId { itemName, unitName }
 
 // Relationship (usedInList & itemNeededList) Info
 router.post('/business/item-relation/create', createRelation); // ?businessId { rawItemName, finishedItemName, unitCost }
@@ -97,9 +92,24 @@ router.post(
 );
 
 // Location MetaData
-router.post('/business/location-metadata-list/add', addLocationMetaData);
-router.get('/business/location-metadata-list/read', readLocationMetaData);
-router.post('/business/location-metadata-list/update', updateLocationMetaData);
-router.post('/business/location-metadata-list/delete', deleteLocationMetaData);
+router.post('/business/location-metadata-list/create', createLocationMetaData); // ?businessId  { locationName, locationAddress, locationMetaData }
+router.post(
+  '/business/location-metadata-list/read-all',
+  readAllLocationMetaData
+); // ?businessId
+// TODO: Update Name does not update all locations with the same name in itemList and Log
+router.post(
+  '/business/location-metadata-list/update-name',
+  updateLocationMetaDataName
+); // ?businessId  { findLocationName, newLocationName }
+router.post(
+  '/business/location-metadata-list/update-address',
+  updateLocationMetaDataAddress
+); // ?businessId  { findLocationName, newLocationAddress }
+router.post(
+  '/business/location-metadata-list/update-metadata',
+  updateLocationMetaDataMetaData
+); // ?businessId  { findLocationName, newLocationMetaData }
+router.post('/business/location-metadata-list/delete', deleteLocationMetaData); // ?businessId {locationName}
 
 module.exports = router;

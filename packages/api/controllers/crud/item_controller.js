@@ -106,7 +106,7 @@ class ItemListController extends GenericCRUDController {
 
   //req.query.businessId  req.body.newItemName   req.body.findItemName
   // NOT DOES NOT UPDATE ItemNeeded ItemUsed YET
-  async updateItem(req, res) {
+  async updateItemName(req, res) {
     const { newItemName, findItemName } = req.body;
     const businessId = req.query.businessId;
     try {
@@ -159,7 +159,7 @@ module.exports = {
   createItem: (req, res) => itemListController.createItem(req, res),
   readAllItemName: (req, res) => itemListController.readAllItemName(req, res),
   readOneItem: (req, res) => itemListController.readOneItem(req, res),
-  updateItem: (req, res) => itemListController.updateItem(req, res),
+  updateItemName: (req, res) => itemListController.updateItemName(req, res),
   deleteItem: (req, res) => itemListController.deleteItem(req, res)
 };
 
