@@ -161,59 +161,37 @@ class GenericCRUDController {
     }
   }
 
-  // async deleteGeneric(businessId, arrayField, fieldToCheck, checkString) {
-  //   // console.log(matchJson);
-  //   // console.log(unwind1stList);
-  //   // console.log(projectFieldsArray);
-  //   // let projectionJson = this.constructJson(projectFieldsArray);
-  //   // console.log(projectionJson);
-  //   // Update all documents where itemList contains an item with the specified itemId
-  //   try {
-  //     console.log('About to delete');
-  //     console.log('Business ID:', businessId);
-  //     console.log('Array Field:', arrayField);
-  //     console.log('Field to Check:', fieldToCheck);
-  //     console.log('Check String:', checkString);
-
-  //     const result = await Business.updateOne(
-  //       { _id: businessId },
-  //       { $pull: { [arrayField]: { [fieldToCheck]: checkString } } }
-  //     );
-
-  //     console.log('MongoDB Update Result:', result);
-
-  //     //Check if any documents were modified
-  //     if (result.modifiedCount > 0) {
-  //       console.log(
-  //         `Successfully deleted all embedded document with ${fieldToCheck}:${checkString} from ${businessId}=>${arrayField}`
-  //       );
-  //     } else {
-  //       console.log(
-  //         `Failed to Delete all embedded documents with ${fieldToCheck}:${checkString} ${businessId}=>from ${arrayField}`
-  //       );
-  //     }
-  //     return result;
-  //   } catch (error) {
-  //     console.error('Error deleting embedded document:', error);
-  //     throw error; // Re-throw the error to be caught by the calling function
-  //   }
-  // }
-
   async deleteGeneric(businessId, arrayField, fieldToCheck, checkString) {
+    // console.log(matchJson);
+    // console.log(unwind1stList);
+    // console.log(projectFieldsArray);
+    // let projectionJson = this.constructJson(projectFieldsArray);
+    // console.log(projectionJson);
+    // Update all documents where itemList contains an item with the specified itemId
     try {
+      console.log('About to delete');
+
       const result = await Business.updateOne(
         { _id: businessId },
-        { $pull: { [arrayField]: checkString } } // Modified to directly pull the checkString from the arrayField
+        { $pull: { [arrayField]: { [fieldToCheck]: checkString } } }
       );
+
+      console.log('MongoDB Update Result:', result);
+
+      //Check if any documents were modified
       if (result.modifiedCount > 0) {
-        console.log(`Successfully deleted ${checkString} from ${arrayField}`);
+        console.log(
+          `Successfully deleted all embedded document with ${fieldToCheck}:${checkString} from ${businessId}=>${arrayField}`
+        );
       } else {
-        console.log(`Failed to delete ${checkString} from ${arrayField}`);
+        console.log(
+          `Failed to Delete all embedded documents with ${fieldToCheck}:${checkString} ${businessId}=>from ${arrayField}`
+        );
       }
       return result;
     } catch (error) {
       console.error('Error deleting embedded document:', error);
-      throw error; // Rethrow the error to handle it in the calling function
+      throw error; // Re-throw the error to be caught by the calling function
     }
   }
 
