@@ -234,23 +234,6 @@ class GenericCRUDController {
     }
   }
 
-  // async deleteGeneric(businessId, arrayField, fieldToCheck, checkString) {
-  //   try {
-  //     const result = await Business.updateOne(
-  //       { _id: businessId },
-  //       { $pull: { [arrayField]: checkString } } // Modified to directly pull the checkString from the arrayField
-  //     );
-  //     if (result.modifiedCount > 0) {
-  //       console.log(`Successfully deleted ${checkString} from ${arrayField}`);
-  //     } else {
-  //       console.log(`Failed to delete ${checkString} from ${arrayField}`);
-  //     }
-  //     return result;
-  //   } catch (error) {
-  //     console.error('Error deleting embedded document:', error);
-  //     throw error; // Rethrow the error to handle it in the calling function
-  //   }
-  // }
 }
 
 module.exports = GenericCRUDController;
