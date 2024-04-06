@@ -44,7 +44,7 @@ const {
 } = require('../controllers/crud/location_metadata_list_controller');
 
 // Employee Id List Route /crud
-router.get('/business/employee-id-list/read-all', readAllEmployeeIds); //GET /api/crud/business/employee-id-list/read-all?businessId=
+router.post('/business/employee-id-list/read-all', readAllEmployeeIds); //POST /api/crud/business/employee-id-list/read-all?businessId=
 router.post('/business/employee-id-list/delete', deleteEmployeeId); //POST /api/crud/business/employee-id-list/delete?businessId=&employeeId=
 
 // Item List Route /crud
@@ -97,9 +97,9 @@ router.post(
 );
 
 // Location MetaData
-router.post('/business/location-metadata-list/add', addLocationMetaData)
-router.get('/business/location-metadata-list/read', readLocationMetaData)
-router.post('/business/location-metadata-list/update', updateLocationMetaData)
-router.post('/business/location-metadata-list/delete', deleteLocationMetaData)
+router.post('/business/location-metadata-list/add', addLocationMetaData);
+router.get('/business/location-metadata-list/read', readLocationMetaData);
+router.post('/business/location-metadata-list/update', updateLocationMetaData);
+router.post('/business/location-metadata-list/delete', deleteLocationMetaData);
 
 module.exports = router;
