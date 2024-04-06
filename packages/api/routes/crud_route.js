@@ -19,7 +19,7 @@ const {
   updatePortionInfoName,
   updatePortionInfoNumber,
   deletePortionInfo
-} = require('../controllers/crud/portion_info_controller');
+} = require('../controllers/crud/item_portion_info_controller');
 
 const {
   createRelation,
