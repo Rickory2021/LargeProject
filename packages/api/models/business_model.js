@@ -12,6 +12,7 @@ const locationInventorySchema = new mongoose.Schema({
 
 const locationLogSchema = new mongoose.Schema({
   locationName: String,
+  logReason: String,
   initialPortion: Number,
   finalPortion: Number,
   updateDate: {
