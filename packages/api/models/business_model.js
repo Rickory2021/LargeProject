@@ -12,6 +12,7 @@ const locationInventorySchema = new mongoose.Schema({
 
 const locationLogSchema = new mongoose.Schema({
   locationName: String,
+  logReason: String,
   initialPortion: Number,
   finalPortion: Number,
   updateDate: {
@@ -44,10 +45,9 @@ const distributorMetaDataSchema = new mongoose.Schema({
 });
 
 const locationMetaDataSchema = new mongoose.Schema({
-  distributorName: String,
-  distributorDeadlineDate: String,
-  distributorDeliveryDate: String,
-  distributorMetaData: String
+  locationName: String,
+  locationAddress: String,
+  locationMetaData: String
 });
 
 const itemSchema = new mongoose.Schema({

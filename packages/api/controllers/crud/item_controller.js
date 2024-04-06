@@ -19,10 +19,10 @@ class ItemListController extends GenericCRUDController {
     }
   }
 
-  //req.query.businessId  req.query.printedFieldNameList [Recurring for List]
+  //req.query.businessId  req.body.itemName
   async createItem(req, res) {
-    let businessId = req.query.businessId;
-    let itemName = req.query.itemName;
+    const businessId = req.query.businessId;
+    const { itemName } = req.body;
 
     try {
       console.log('Check if Duplicate ItemName');
@@ -52,13 +52,12 @@ class ItemListController extends GenericCRUDController {
     }
   }
 
-  //req.query.businessId  req.query.printedFieldNameList [Recurring for List]
+  //req.query.businessId
   async readAllItemName(req, res) {
     try {
+      const businessId = req.query.businessId;
       console.log('About to read');
-      let mongooseBusinessID = new mongoose.Types.ObjectId(
-        req.query.businessId
-      );
+      let mongooseBusinessID = new mongoose.Types.ObjectId(businessId);
       // { $limit: outputSize }, // Project only the name field for each post
       // { $skip: outset } // Project only the name field for each post
       const fieldValues = await super.readGeneric([
@@ -73,13 +72,14 @@ class ItemListController extends GenericCRUDController {
     }
   }
 
-  //req.query.businessId  req.query.printedFieldNameList [Recurring for List]
+  //req.query.businessId {itemName}
   async readOneItem(req, res) {
     try {
       console.log('About to read');
-      let mongooseBusinessID = new mongoose.Types.ObjectId(
+      const mongooseBusinessID = new mongoose.Types.ObjectId(
         req.query.businessId
       );
+      const { itemName } = req.body;
       // { $limit: outputSize }, // Project only the name field for each post
       // { $skip: outset } // Project only the name field for each post
       const fieldValues = await super.readGeneric([
@@ -91,7 +91,7 @@ class ItemListController extends GenericCRUDController {
               $filter: {
                 input: '$itemList', // Use itemList as input
                 as: 'item',
-                cond: { $eq: ['$$item.itemName', req.query.itemName] }
+                cond: { $eq: ['$$item.itemName', itemName] }
               }
             }
           }
@@ -104,15 +104,17 @@ class ItemListController extends GenericCRUDController {
     }
   }
 
-  //req.query.businessId  req.query.newItemName   req.query.findItemName
+  //req.query.businessId  req.body.newItemName   req.body.findItemName
   // NOT DOES NOT UPDATE ItemNeeded ItemUsed YET
   async updateItem(req, res) {
+    const { newItemName, findItemName } = req.body;
+    const businessId = req.query.businessId;
     try {
       console.log('Check if Duplicate ItemName');
       let doesExist = await this.doesExistItem(
-        req.query.businessId,
+        businessId,
         'itemList.itemName',
-        req.query.newItemName
+        newItemName
       );
       if (doesExist) {
         console.log('DUPLICATE of New ItemName found in itemList');
@@ -123,10 +125,10 @@ class ItemListController extends GenericCRUDController {
       console.log('About to update');
       const fieldValues = await super.updateGeneric(
         {
-          _id: req.query.businessId,
-          'itemList.itemName': req.query.findItemName
+          _id: businessId,
+          'itemList.itemName': findItemName
         },
-        { $set: { 'itemList.$.itemName': req.query.newItemName } }
+        { $set: { 'itemList.$.itemName': newItemName } }
       );
       return res.status(200).json({ output: fieldValues });
     } catch (error) {
@@ -134,15 +136,17 @@ class ItemListController extends GenericCRUDController {
     }
   }
 
-  //req.query.businessId  req.query.itemName
+  //req.query.businessId  req.body.itemName
   async deleteItem(req, res) {
+    const businessId = req.query.businessId;
+    const { itemName } = req.body;
     try {
       console.log('About to delete');
       const statusData = await super.deleteGeneric(
-        req.query.businessId,
+        businessId,
         'itemList',
         'itemName',
-        req.query.itemName
+        itemName
       );
       return res.status(200).json({ statusDetails: statusData });
     } catch (error) {
