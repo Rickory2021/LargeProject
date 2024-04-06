@@ -88,7 +88,7 @@ class PortionInfoListController extends GenericCRUDController {
         }
       );
       //req.query.printedFieldName
-      return res.status(200).json({ statusDetails: statusData });
+      return res.status(200).json({ statusDetails: [statusData] });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
@@ -157,7 +157,7 @@ class PortionInfoListController extends GenericCRUDController {
           ]
         }
       );
-      return res.status(200).json({ outputList: fieldValues });
+      return res.status(200).json({ outputList: [fieldValues] });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
@@ -190,7 +190,7 @@ class PortionInfoListController extends GenericCRUDController {
           ]
         }
       );
-      return res.status(200).json({ outputList: fieldValues });
+      return res.status(200).json({ outputList: [fieldValues] });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
@@ -214,7 +214,7 @@ class PortionInfoListController extends GenericCRUDController {
           }
         }
       );
-      return res.status(200).json({ statusDetails: statusData });
+      return res.status(200).json({ statusDetails: [statusData] });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
