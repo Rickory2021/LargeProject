@@ -170,13 +170,6 @@ class GenericCRUDController {
     // Update all documents where itemList contains an item with the specified itemId
     try {
       console.log('About to delete');
-<<<<<<< Updated upstream
-=======
-      console.log('Business ID:', businessId);
-      console.log('Array Field:', arrayField);
-      console.log('Field to Check:', fieldToCheck);
-      console.log('Check String:', checkString);
->>>>>>> Stashed changes
 
       const result = await Business.updateOne(
         { _id: businessId },
@@ -194,7 +187,6 @@ class GenericCRUDController {
         console.log(
           `Failed to Delete all embedded documents with ${fieldToCheck}:${checkString} ${businessId}=>from ${arrayField}`
         );
-<<<<<<< Updated upstream
       }
       return result;
     } catch (error) {
@@ -221,19 +213,12 @@ class GenericCRUDController {
         console.log(
           `Failed Delete embedded All document with  ${filterJson} with action ${updateJson}`
         );
-=======
->>>>>>> Stashed changes
       }
       return result;
     } catch (error) {
       console.error('Error deleting embedded document:', error);
-<<<<<<< Updated upstream
-=======
-      throw error; // Re-throw the error to be caught by the calling function
->>>>>>> Stashed changes
     }
   }
-
 }
 
 module.exports = GenericCRUDController;
