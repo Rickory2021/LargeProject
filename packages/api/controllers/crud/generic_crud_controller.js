@@ -73,10 +73,24 @@ class GenericCRUDController {
     }
   }
 
-  async createGenericByQuery(filterQuery, updateQuery) {
+  async createGenericByQuery(
+    filterQuery,
+    updateQuery,
+    arrayFilterQuery = null
+  ) {
     try {
-      // Update the document by pushing the new item into the array
-      const result = await Business.updateOne(filterQuery, updateQuery);
+      let result;
+      if (arrayFilterQuery === null) {
+        // Update the document by pushing the new item into the array
+        result = await Business.updateOne(filterQuery, updateQuery);
+      } else {
+        // Update the document by pushing the new item into the array
+        result = await Business.updateOne(
+          filterQuery,
+          updateQuery,
+          arrayFilterQuery
+        );
+      }
 
       //Check if any documents were modified
       if (result.modifiedCount > 0) {

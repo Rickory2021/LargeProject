@@ -38,6 +38,14 @@ const {
 } = require('../controllers/crud/item_location_controller');
 
 const {
+  createInventory,
+  readAllInventory,
+  updateInventoryNumber,
+  updateInventoryMetaData,
+  deleteInventory
+} = require('../controllers/crud/item_inventory_controller');
+
+const {
   addDistributorMetaData,
   readDistributorMetaData,
   updateDistributorMetaData,
@@ -89,7 +97,7 @@ router.post(
   '/business/item-relation/update-unit-cost',
   updateItemRelationUnitCost
 ); // ?businessId {rawItemName,finishedItemName,newUnitCost}
-router.post('/business/item-relation/delete', deleteRelation); // ?businessId { rawItemName, finishedItemName }
+router.post('/business/item-relation/delete', deleteInventory); // ?businessId { rawItemName, finishedItemName }
 
 //
 // Item Location
@@ -99,6 +107,19 @@ router.post('/business/item-location/read-one', readOneItemLocation); // ?busine
 // TODO: DOES NOT UPDATE LOCATION META DATA & LOG YET
 router.post('/business/item-location/update-name', updateItemLocationName); // ?businessId { itemName, findLocationName, newLocationName }
 router.post('/business/item-location/delete', deleteItemLocation); // ?businessId { itemName, locationName }
+
+//
+// Item Location Inventory
+router.post('/business/item-inventory/create', createInventory); // ?businessId { itemName, locationName, portionNumber, metaData }
+router.post('/business/item-inventory/read-all', readAllInventory); // ?businessId { itemName, locationName }
+// TODO: DOES NOT UPDATE LOCATION METADATA & LOG YET
+router.post('/business/item-inventory/update-number', updateInventoryNumber); // ?businessId { itemName, findLocationName, index, newNumber }
+router.post(
+  '/business/item-inventory/update-metadata',
+  updateInventoryMetaData
+); // ?businessId { itemName, findLocationName, index, newMetaData }
+// TODO: DOES NOT UPDATE LOCATION META DATA & LOG YET
+router.post('/business/item-inventory/delete', deleteInventory); // ?businessId { itemName, locationName, index }
 
 //
 // Distributor MetaData
