@@ -35,7 +35,7 @@ const {
   readOneItemLocation,
   updateItemLocationName,
   deleteItemLocation
-} = require('../controllers/crud/location_controller');
+} = require('../controllers/crud/item_location_controller');
 
 const {
   addDistributorMetaData,
