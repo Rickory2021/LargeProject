@@ -1,8 +1,5 @@
 // Rename to business_operations.js?
-const {
-  LocationLog,
-  LocationBucketLog
-} = require('../../models/business_model');
+const { LocationLog } = require('../../models/business_model');
 const GenericCRUDController = require('./generic_crud_controller');
 const { Business, LocationMetaData } = require('../../models/business_model');
 

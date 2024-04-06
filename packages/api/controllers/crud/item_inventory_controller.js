@@ -1,7 +1,8 @@
 // Rename to business_operations.js?
 const { LocationInventory } = require('../../models/business_model');
 const GenericCRUDController = require('./generic_crud_controller');
-const { Business, LocationMetaData } = require('../../models/business_model');
+const { Business } = require('../../models/business_model');
+const { createLog } = require('./item_location_log_controller');
 
 const mongoose = require('mongoose');
 
@@ -77,7 +78,8 @@ class ItemInventoryController extends GenericCRUDController {
   //req.query.businessId  { itemName, locationName, portionNumber, metaData }
   async createInventory(req, res) {
     let businessId = req.query.businessId;
-    let { itemName, locationName, portionNumber, metaData } = req.body;
+    let { itemName, locationName, portionNumber, metaData, logReason } =
+      req.body;
     console.log(
       `businessId:${businessId} itemName :${itemName} locationName :${locationName} portionNumber :${portionNumber} metaData :${metaData}`
     );
@@ -106,6 +108,36 @@ class ItemInventoryController extends GenericCRUDController {
           ]
         }
       );
+      if (statusDetails && statusDetails.modifiedCount > 0) {
+        console.log('Documents were modified successfully.');
+        const mockReq = {
+          query: { businessId: businessId },
+          body: {
+            itemName: itemName,
+            locationName: locationName,
+            logReason: logReason,
+            initialPortion: 0,
+            finalPortion: portionNumber,
+            updateDate: new Date().toISOString()
+          }
+        };
+        // Mock res object
+        const mockRes = {
+          statusCode: 200, // Default status code
+          data: null, // Placeholder for response data
+          send: function (data) {
+            this.data = data;
+          },
+          json: function (data) {
+            this.data = data;
+          },
+          status: function (code) {
+            this.statusCode = code;
+            return this; // Return itself to allow chaining methods
+          }
+        };
+        createLog(mockReq, mockRes);
+      }
       return res.status(200).json({ statusDetails: statusDetails });
     } catch (error) {
       return res.status(500).json({ error: error.message });
@@ -156,7 +188,8 @@ class ItemInventoryController extends GenericCRUDController {
   }
 
   async updateInventoryNumber(req, res) {
-    const { itemName, findLocationName, index, newNumber } = req.body;
+    const { itemName, findLocationName, index, newNumber, logReason } =
+      req.body;
     const businessId = req.query.businessId;
     try {
       console.log('About to update');
@@ -187,9 +220,10 @@ class ItemInventoryController extends GenericCRUDController {
         console.log('Location item not found');
         return res.status(500).json({ error: 'Location item not found' });
       }
-
+      let initialPortion;
       // Update the portionNumber at the specified index
       if (index >= 0 && index < locationItem.inventoryList.length) {
+        initialPortion = locationItem.inventoryList[index].portionNumber;
         locationItem.inventoryList[index].portionNumber = newNumber;
       } else {
         console.log('Invalid index');
@@ -198,6 +232,36 @@ class ItemInventoryController extends GenericCRUDController {
 
       // Save the changes to the database
       const statusDetails = await business.save();
+      if (statusDetails) {
+        console.log('Documents were modified successfully.');
+        const mockReq = {
+          query: { businessId: businessId },
+          body: {
+            itemName: itemName,
+            locationName: findLocationName,
+            logReason: logReason,
+            initialPortion: initialPortion,
+            finalPortion: newNumber,
+            updateDate: new Date().toISOString()
+          }
+        };
+        // Mock res object
+        const mockRes = {
+          statusCode: 200, // Default status code
+          data: null, // Placeholder for response data
+          send: function (data) {
+            this.data = data;
+          },
+          json: function (data) {
+            this.data = data;
+          },
+          status: function (code) {
+            this.statusCode = code;
+            return this; // Return itself to allow chaining methods
+          }
+        };
+        createLog(mockReq, mockRes);
+      }
       console.log('Portion number updated successfully');
       return res.status(200).json({ statusDetails: [statusDetails] });
     } catch (error) {

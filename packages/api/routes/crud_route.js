@@ -116,23 +116,10 @@ router.post('/business/item-location/delete', deleteItemLocation); // ?businessI
 
 //
 // Item Location Inventory
-router.post('/business/item-inventory/create', createInventory); // ?businessId { itemName, locationName, portionNumber, metaData }
+router.post('/business/item-inventory/create', createInventory); // ?businessId { itemName, locationName, portionNumber, metaData, logReason }
 router.post('/business/item-inventory/read-all', readAllInventory); // ?businessId { itemName, locationName }
 // TODO: DOES NOT UPDATE LOCATION METADATA & LOG YET
-router.post('/business/item-inventory/update-number', updateInventoryNumber); // ?businessId { itemName, findLocationName, index, newNumber }
-router.post(
-  '/business/item-inventory/update-metadata',
-  updateInventoryMetaData
-); // ?businessId { itemName, findLocationName, index, newMetaData }
-// TODO: DOES NOT UPDATE LOCATION META DATA & LOG YET
-router.post('/business/item-inventory/delete', deleteInventory); // ?businessId { itemName, locationName, index }
-
-//
-// Item Inventory
-router.post('/business/item-inventory/create', createInventory); // ?businessId { itemName, locationName, portionNumber, metaData }
-router.post('/business/item-inventory/read-all', readAllInventory); // ?businessId { itemName, locationName }
-// TODO: DOES NOT UPDATE LOCATION METADATA & LOG YET
-router.post('/business/item-inventory/update-number', updateInventoryNumber); // ?businessId { itemName, findLocationName, index, newNumber }
+router.post('/business/item-inventory/update-number', updateInventoryNumber); // ?businessId { itemName, findLocationName, index, newNumber, logReason }
 router.post(
   '/business/item-inventory/update-metadata',
   updateInventoryMetaData
