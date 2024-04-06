@@ -30,6 +30,14 @@ const {
 } = require('../controllers/crud/item_relation_controller');
 
 const {
+  createItemLocation,
+  readAllItemLocationName,
+  readOneItemLocation,
+  updateItemLocationName,
+  deleteItemLocation
+} = require('../controllers/crud/location_controller');
+
+const {
   addDistributorMetaData,
   readDistributorMetaData,
   updateDistributorMetaData,
@@ -78,6 +86,14 @@ router.post(
   updateItemRelationUnitCost
 ); // ?businessId {rawItemName,finishedItemName,newUnitCost}
 router.post('/business/item-relation/delete', deleteRelation); // ?businessId { rawItemName, finishedItemName }
+
+// Item Location
+router.post('/business/item-location/create', createItemLocation); // ?businessId {itemName, locationName}
+router.post('/business/item-location/read-all', readAllItemLocationName); // ?businessId { itemName }
+router.post('/business/item-location/read-one', readOneItemLocation); // ?businessId { itemName, locationName }
+// TODO: DOES NOT UPDATE LOCATION META DATA & LOG YET
+router.post('/business/item-location/update-name', updateItemLocationName); // ?businessId { itemName, findLocationName, newLocationName }
+router.post('/business/item-location/delete', deleteItemLocation); // ?businessId { itemName, locationName }
 
 // Distributor MetaData
 router.post('/business/distributor-metadata-list/add', addDistributorMetaData);
