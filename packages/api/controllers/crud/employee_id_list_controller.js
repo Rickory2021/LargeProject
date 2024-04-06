@@ -46,6 +46,28 @@ class EmployeeIdListController extends GenericCRUDController {
       return res.status(500).json({ error: error.message });
     }
   }
+
+  // Method to delete a specific employee ID from the employeeIdList of the specified business
+  async deleteEmployeeId(req, res) {
+    try {
+      console.log('About to delete');
+      const employeeIdString = req.query.employeeId.toString(); // Convert to string
+
+      console.log('checkString:', employeeIdString);
+      console.log('employeeId:', typeof employeeIdString);
+      // Call the deleteGeneric method from the parent class to delete the employee ID
+      const statusData = await super.deleteGeneric(
+        req.query.businessId,
+        'employeeIdList',
+        // 'employeeId', // Make sure 'employeeId' is passed as fieldToCheck
+        // null,
+        req.query.employeeId
+      );
+      return res.status(200).json({ status: statusData }); // Return success status with status data
+    } catch (error) {
+      return res.status(500).json({ error: error.message }); // Return error status with error message
+    }
+  }
 }
 
 // Instantiate the EmployeeIdListController
@@ -54,7 +76,9 @@ let employeeIdListController = new EmployeeIdListController();
 // Export the methods of the EmployeeIdListController for use in other modules
 module.exports = {
   readAllEmployeeIds: (req, res) =>
-    employeeIdListController.readAllEmployeeIds(req, res)
+    employeeIdListController.readAllEmployeeIds(req, res),
+  deleteEmployeeId: (req, res) =>
+    employeeIdListController.deleteEmployeeId(req, res)
 };
 
 /**
