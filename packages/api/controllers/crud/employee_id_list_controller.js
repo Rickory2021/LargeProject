@@ -67,48 +67,6 @@ class EmployeeIdListController extends GenericCRUDController {
       return res.status(500).json({ error: error.message });
     }
   }
-
-  // async deleteEmployeeId(req, res) {
-  //   try {
-  //     console.log('About to delete');
-  //     const businessId = req.query.businessId;
-  //     const employeeId = req.query.employeeId;
-
-  //     // Find the business document by ID
-  //     const business = await Business.findById(businessId);
-
-  //     // Check if the business exists
-  //     if (!business) {
-  //       console.log(`Business with ID ${businessId} not found`);
-  //       return res.status(404).json({ error: 'Business not found' });
-  //     }
-
-  //     // Find the index of the employeeId in the employeeIdList array
-  //     const index = business.employeeIdList.indexOf(employeeId);
-
-  //     // Check if the employeeId exists in the employeeIdList
-  //     if (index === -1) {
-  //       console.log(
-  //         `Employee ID ${employeeId} not found in the employeeIdList`
-  //       );
-  //       return res
-  //         .status(404)
-  //         .json({ error: 'Employee ID not found in the employeeIdList' });
-  //     }
-
-  //     // Remove the employeeId from the employeeIdList array
-  //     business.employeeIdList.splice(index, 1);
-
-  //     // Save the updated business document
-  //     await business.save();
-
-  //     console.log(`Successfully deleted ${employeeId} from employeeIdList`);
-  //     return res.status(200).json({ success: true });
-  //   } catch (error) {
-  //     console.error('Error deleting employee ID:', error);
-  //     return res.status(500).json({ error: error.message }); // Return error status with error message
-  //   }
-  // }
 }
 
 // Instantiate the EmployeeIdListController
