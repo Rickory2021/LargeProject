@@ -87,7 +87,7 @@ class ItemListController extends GenericCRUDController {
         {
           $project: {
             _id: 0,
-            searchResult: {
+            item: {
               $filter: {
                 input: '$itemList', // Use itemList as input
                 as: 'item',
