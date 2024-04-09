@@ -1,8 +1,7 @@
 'use client';
 import * as React from 'react';
 import Link from 'next/link';
-import { GiKnifeFork } from 'react-icons/gi';
-import { cn } from '@/lib/utils';
+
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -13,7 +12,9 @@ import {
   NavigationMenuTrigger,
   NavigationMenuViewport
 } from '@/components/ui/navigation-menu';
+import { cn } from '@/lib/utils';
 import { navigationMenuTriggerStyle } from '@/components/ui/navigation-menu';
+import { GiKnifeFork } from 'react-icons/gi';
 
 export function Nav() {
   return (
@@ -113,5 +114,3 @@ const ListItem = React.forwardRef(
 );
 
 ListItem.displayName = 'ListItem';
-
-export default ListItem;
