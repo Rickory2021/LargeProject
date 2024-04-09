@@ -39,7 +39,7 @@ class EmployeeIdListController extends GenericCRUDController {
         { $project: { _id: 0, employeeIdList: 1 } } // Project only the employeeIdList field
       ]);
       // req.query.printedFieldName
-      return res.status(200).json({ output: fieldValues }); // Return success status with employee ID list
+      return res.status(200).json({ outputList: fieldValues }); // Return success status with employee ID list
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
