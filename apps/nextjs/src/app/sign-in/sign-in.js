@@ -23,9 +23,8 @@ export default function SignIn() {
         const expires = new Date();
         expires.setTime(expires.getTime() + 3 * 24 * 60 * 60 * 1000);
         document.cookie = `accessToken=${accessToken};expires=${expires.toUTCString()};path=/`;
-        // Redirect to dashboard if login is successful
+
         window.location.href = '/dashboard';
-      } else {
         // If response is not ok, get error message from response body
         const { error } = await res.json();
         setError(error);
