@@ -4,7 +4,7 @@ import SignIn from './sign-in';
 
 export default async function Page() {
   return (
-    <div>
+    <div className="flex flex-col flex-1 justify-between">
       <SimpleNav />
       <SignIn />
     </div>

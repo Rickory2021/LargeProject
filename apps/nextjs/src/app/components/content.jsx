@@ -20,11 +20,11 @@ export function Content() {
           about having enough stock for life’s curve balls
         </p>
         <Link href="/sign-up">
-          <button className="font-bold text-white bg-blue-600 hover:bg-blue-700 px-3 py-2 rounded-md">
+          <button className="text-l font-bold text-white bg-blue-600 hover:bg-blue-700 px-4 py-4 rounded-md">
             Create an account now
           </button>
         </Link>
-        <div className="w-1/4 pt-24 pb-24">
+        <div className="w-1/4 pt-24 pb-28">
           <Accordion type="single" collapsible>
             <AccordionItem value="item-1">
               <AccordionTrigger>What is Slicer? </AccordionTrigger>

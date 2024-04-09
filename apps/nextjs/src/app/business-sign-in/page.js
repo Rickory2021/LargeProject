@@ -1,10 +1,11 @@
 import React from 'react';
 import SignIn from './sign-in';
-import { SideNav } from '@repo/ui/side-nav';
+import { BusinessNav } from '../components/business-nav';
 
 export default async function Page() {
   return (
-    <div>
+    <div className="flex flex-col flex-1 justify-between">
+      <BusinessNav />
       <SignIn />
     </div>
   );

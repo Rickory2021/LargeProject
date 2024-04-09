@@ -58,7 +58,7 @@ export default function SignUp() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
+    <div className="flex flex-col items-center justify-center h-screen pb-16">
       <CookieComponent
         cookieName={'accessToken'}
         onUserIdChange={handleUserIdChange}
@@ -85,7 +85,7 @@ export default function SignUp() {
       </form>
       <Link href="/business-sign-up">
         <button className="mt-4 text-blue-500">
-          Don't have an Business to connect to? Create one here
+          Don't have an Business to connect to?<br></br> Create one here
         </button>
       </Link>
 
