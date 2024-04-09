@@ -68,7 +68,7 @@ export default function SignUp() {
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <input
           type="businessId"
-          placeholder="businessID"
+          placeholder="Business ID"
           value={businessId}
           onChange={e => setBusinessId(e.target.value)}
           className="p-2 border border-gray-300 rounded-md"

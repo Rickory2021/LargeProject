@@ -6,10 +6,11 @@ async function sendVerificationEmail(email, token) {
     sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
 
     //const verificationUrl = `https://slicer-nine.vercel.app/verify-email/${token}`;
+    //const verificationUrl = `https://slicer-nine.vercel.app/verify-email?token=${token}`;
     const verificationUrl = `https://slicer-nine.vercel.app/verify-email?token=${token}`;
     const msg = {
       to: email,
-      from: 'poosd.group24@gmail.com', 
+      from: 'poosd.group24@gmail.com',
       subject: 'Slicer: Verify Your Email',
       html: `<p>Please verify your email by clicking on the link below:</p><a href="${verificationUrl}">Verify Email</a>`
     };

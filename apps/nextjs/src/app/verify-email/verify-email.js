@@ -3,14 +3,13 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { FaCheckCircle } from 'react-icons/fa';
 
 export default function VerifyEmail() {
-  // pages/users/[userId].js
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
-  //console.log(token);
+
   useEffect(async () => {
-    //console.log('Start');
     try {
       const response = await fetch(
         `http://localhost:3001/api/auth/user/verify-email?token=${token}`,
@@ -30,86 +29,16 @@ export default function VerifyEmail() {
     }
   }, []);
 
-  /*useEffect(() => {
-    // Function to make the POST request
-    const postData = async () => {
-      console.log('Start');
-      try {
-        const response = await fetch('/api/data', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ key: 'value' }) // Replace with your payload
-        });
-
-        const responseData = await response.json();
-        console.log(responseData); // Logging response from server
-        // Handle response as needed
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    };
-
-    // Call the function to make the POST request when component mounts
-    postData();
-  }, []); // Empty dependency array ensures the effect runs only once after initial render
-
-  /*const getQueryParams = () => {
-    const queryString = window.location.search;
-    const queryParams = new URLSearchParams(queryString);
-    // Accessing specific query parameter
-    const parameterValue = queryParams.get('parameterName'); // Change 'parameterName' to your query parameter name
-    console.log('Query Parameter:', parameterValue);
-  };
-
-  getQueryParams();
-  //const router = useRouter();
-
-  useEffect(() => {
-    // Accessing query parameters
-    const getQueryParams = () => {
-      const queryString = window.location.search;
-      const queryParams = new URLSearchParams(queryString);
-      // Accessing specific query parameter
-      const parameterValue = queryParams.get('parameterName'); // Change 'parameterName' to your query parameter name
-      console.log('Query Parameter:', parameterValue);
-    };
-
-    getQueryParams();
-  }, []); // Re-run effect when location.search changes*/
-
   return (
-    <div>
-      <h1>This is the email-verify page</h1>
+    <div className="min-h-screen bg-blue-600 flex items-center justify-center">
+      <div className="bg-white p-8 rounded shadow-md max-w-md w-full text-center">
+        <FaCheckCircle className="text-6xl text-blue-600 mb-4" />
+        <h2 className="text-2xl font-bold mb-4">Email Verified!</h2>
+        <p className="text-lg text-gray-800 mb-6">
+          Your email has been successfully verified.<br></br>You can now close
+          this tab.
+        </p>
+      </div>
     </div>
   );
 }
-
-/*
-'use client';
-import React, { useEffect } from 'react';
-
-function EmailVerify() {
-  //const [username, setUsername] = useState('');
-  //const [password, setPassword] = useState('');
-
-  useEffect(() => {
-    // Accessing query parameters
-    const getQueryParams = () => {
-      const queryString = window.location.search;
-      const queryParams = new URLSearchParams(queryString);
-      // Accessing specific query parameter
-      const parameterValue = queryParams.get('parameterName'); // Change 'parameterName' to your query parameter name
-      console.log('Query Parameter:', parameterValue);
-    };
-
-    getQueryParams();
-  }, []); // Re-run effect when location.search changes
-
-  return (
-    <div>
-      <h1>This is the email-verify page</h1>
-    </div>
-  );
-}*/
