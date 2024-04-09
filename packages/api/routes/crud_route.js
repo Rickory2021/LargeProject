@@ -69,8 +69,8 @@ const {
 
 //
 // Employee Id List Route /crud
-router.post('/business/employee-id-list/read-all', readAllEmployeeIds); //POST /api/crud/business/employee-id-list/read-all?businessId=
-router.post('/business/employee-id-list/delete', deleteEmployeeId); //POST /api/crud/business/employee-id-list/delete?businessId=&employeeId=
+router.post('/business/employee-id-list/read-all', readAllEmployeeIds); //POST ?businessId=
+router.post('/business/employee-id-list/delete', deleteEmployeeId); //POST ?businessId=&employeeId=
 
 //
 // Item List Route /crud
