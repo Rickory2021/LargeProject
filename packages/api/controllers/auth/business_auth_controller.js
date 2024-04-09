@@ -1,4 +1,4 @@
-const Business = require('../../models/business_model');
+const { Business } = require('../../models/business_model');
 const User = require('../../models/user_model');
 
 /**
@@ -18,12 +18,8 @@ module.exports.RegisterBusiness = async (req, res) => {
     }
 
     // Create a new business object
-    const newBusiness = new Business({
-      businessName: businessName,
-      employeeIdList: [],
-      itemList: [],
-      distributorMetaDataList: [],
-      locationMetaDataList: []
+    let newBusiness = new Business({
+      businessName: businessName
     });
 
     // Save the new business to the database

@@ -1,47 +1,32 @@
 const mongoose = require('mongoose');
 
 const portionInfoSchema = new mongoose.Schema({
-  unitName: {
-    type: String,
-    required: true
-  },
+  unitName: String,
   unitNumber: Number
 });
 
 const locationInventorySchema = new mongoose.Schema({
-  portionNumber: {
-    type: Number,
-    required: true
-  },
+  portionNumber: Number,
   metaData: String
 });
 
 const locationLogSchema = new mongoose.Schema({
-  locationName: {
-    type: String,
-    required: true
-  },
+  locationName: String,
+  logReason: String,
   initialPortion: Number,
   finalPortion: Number,
   updateDate: {
-    type: Date,
-    default: Date.now
+    type: Date
   }
 });
-
+//default: Date.now
 const locationBucketLogSchema = new mongoose.Schema({
-  locationBucket: {
-    type: String,
-    required: true
-  },
+  locationBucket: String,
   locationBucketLog: [locationLogSchema]
 });
 
 const distributorItemSchema = new mongoose.Schema({
-  distributorName: {
-    type: String,
-    required: true
-  },
+  distributorName: String,
   distributorItemName: String,
   distributorItemPortion: Number,
   distributorItemCost: Number,
@@ -52,30 +37,20 @@ const distributorItemSchema = new mongoose.Schema({
 });
 
 const distributorMetaDataSchema = new mongoose.Schema({
-  distributorName: {
-    type: String,
-    required: true
-  },
+  distributorName: String,
   distributorDeadlineDate: String,
   distributorDeliveryDate: String,
   distributorMetaData: String
 });
 
 const locationMetaDataSchema = new mongoose.Schema({
-  distributorName: {
-    type: String,
-    required: true
-  },
-  distributorDeadlineDate: String,
-  distributorDeliveryDate: String,
-  distributorMetaData: String
+  locationName: String,
+  locationAddress: String,
+  locationMetaData: String
 });
 
 const itemSchema = new mongoose.Schema({
-  itemName: {
-    type: String,
-    required: true
-  },
+  itemName: String,
   portionInfoList: [portionInfoSchema],
   usedInList: [
     {
@@ -101,10 +76,7 @@ const itemSchema = new mongoose.Schema({
 
 const businessSchema = new mongoose.Schema(
   {
-    businessName: {
-      type: String,
-      required: true
-    },
+    businessName: String,
     employeeIdList: [String],
     itemList: [itemSchema],
     distributorMetaDataList: [distributorMetaDataSchema],

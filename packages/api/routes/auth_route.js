@@ -14,8 +14,6 @@ const {
 const {
   userVerification
 } = require('../controllers/auth/middlewares/auth_middleware_controller');
-// TODO: Uncomment when making these endpoints
-// const { RemoveUserBusinessConn } = require('../controllers/business_auth_controller');
 const router = require('express').Router();
 
 // User routes /api/auth
