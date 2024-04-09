@@ -1,5 +1,5 @@
 'use client';
-import { SideNav } from '@repo/ui/side-nav';
+import SideNav from './components/side-nav';
 import CookieComponent from './components/CookieComponent';
 import React from 'react';
 import { useState } from 'react';

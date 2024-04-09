@@ -1,5 +1,5 @@
 'use client';
-import { SideNav } from '@repo/ui/side-nav';
+import SideNav from '../components/side-nav';
 import CookieComponent from '../components/CookieComponent';
 import React from 'react';
 import { useState, useEffect } from 'react';
@@ -59,14 +59,13 @@ export function Inventory() {
 
   if (businessId != '') {
     return (
-      <div className="w-full h-screen grid grid-cols-[min-content_auto] grid-rows-[5fr_1fr]">
-        <div className="bg-green-500">
+      <div className="flex flex-row justify-between">
+        <div>
           <SideNav />
         </div>
-        <div className="justify-center flex-col items-center">
+        <div className="justify-center items-center">
           <Table businessId={businessId} />
         </div>
-        <div>Player</div>
       </div>
     );
   }
