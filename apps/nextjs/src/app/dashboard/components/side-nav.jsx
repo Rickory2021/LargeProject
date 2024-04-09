@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 
 export default function SideNav() {
   return (
-    <div className="fixed top-0 left-0 h-screen w-auto m-0 flex flex-col bg-blue-600 text-white">
+    <div className="top-0 left-0 h-screen w-auto m-0 flex flex-col bg-blue-600 text-white">
       <Link href="/dashboard">
         <SideBarIcon icon={<FaHome size="66" />} text="Dashboard" />
       </Link>
