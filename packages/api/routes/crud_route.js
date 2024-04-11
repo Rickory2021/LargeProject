@@ -79,8 +79,8 @@ const {
 
 //
 // Employee Id List Route /crud
-router.post('/business/employee-id-list/read-all', readAllEmployeeIds); //POST ?businessId=
-router.post('/business/employee-id-list/delete', deleteEmployeeId); //POST ?businessId=&employeeId=
+router.post('/business/employee-id-list/read-all', readAllEmployeeIds); //POST ?businessId
+router.post('/business/employee-id-list/delete', deleteEmployeeId); //POST ?businessId {employeeId}
 
 //
 // Item List Route /crud
