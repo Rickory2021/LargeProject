@@ -64,6 +64,7 @@ const itemSchema = new mongoose.Schema({
       unitCost: Number
     }
   ],
+  estimateDeduction: Number,
   locationItemList: [
     {
       locationName: String,
