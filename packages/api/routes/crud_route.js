@@ -4,7 +4,6 @@ const {
   readAllEmployeeIds,
   deleteEmployeeId
 } = require('../controllers/crud/employee_id_list_controller');
-
 const {
   createItem,
   readAllItemName,
@@ -13,7 +12,6 @@ const {
   deleteItem,
   getTotalCount
 } = require('../controllers/crud/item_controller');
-
 const {
   createPortionInfo,
   readAllPortionInfo,
@@ -21,7 +19,6 @@ const {
   updatePortionInfoNumber,
   deletePortionInfo
 } = require('../controllers/crud/item_portion_info_controller');
-
 const {
   createRelation,
   readAllItemUsedIn,
@@ -29,12 +26,10 @@ const {
   updateItemRelationUnitCost,
   deleteRelation
 } = require('../controllers/crud/item_relation_controller');
-
 const {
   readEstimateDeduction,
   updateEstimateDeduction
 } = require('../controllers/crud/estimate_deduction_controller');
-
 const {
   createItemLocation,
   readAllItemLocationName,
@@ -43,7 +38,6 @@ const {
   deleteItemLocation,
   getOneRecentDate
 } = require('../controllers/crud/item_location_controller');
-
 const {
   createInventory,
   readAllInventory,
@@ -51,13 +45,28 @@ const {
   updateInventoryMetaData,
   deleteInventory
 } = require('../controllers/crud/item_inventory_controller');
-
 const {
   createLog,
   readAllLogsInBucket,
   deleteLog
 } = require('../controllers/crud/item_location_log_controller');
-
+const {
+  createLocationMetaData,
+  readAllLocationMetaData,
+  updateLocationMetaDataName,
+  updateLocationMetaDataAddress,
+  updateLocationMetaDataMetaData,
+  deleteLocationMetaData
+} = require('../controllers/crud/location_metadata_controller');
+const {
+  createDistributorItem,
+  readAllDisributorItem,
+  updateDistributorItemName,
+  updateDistributorItemPortion,
+  updateDistributorItemCost,
+  updateDistributorItemPriorityChoice,
+  deleteDistributorItem
+} = require('../controllers/crud/distributor_item_controller');
 const {
   createDistributorMetaData,
   readAllDistributorMetaData,
@@ -67,15 +76,6 @@ const {
   updateDistributorMetaDataMetaData,
   deleteDistributorMetaData
 } = require('../controllers/crud/distributor_metadata_controller');
-
-const {
-  createLocationMetaData,
-  readAllLocationMetaData,
-  updateLocationMetaDataName,
-  updateLocationMetaDataAddress,
-  updateLocationMetaDataMetaData,
-  deleteLocationMetaData
-} = require('../controllers/crud/location_metadata_controller');
 
 //
 // Employee Id List Route /crud
@@ -157,6 +157,52 @@ router.post('/business/item-location-log/read-all', readAllLogsInBucket); // ?bu
 router.post('/business/item-location-log/delete', deleteLog); // ?businessId { itemName, updateDate }
 
 //
+// Location MetaData
+router.post('/business/location-metadata-list/create', createLocationMetaData); // ?businessId  { locationName, locationAddress, locationMetaData }
+router.post(
+  '/business/location-metadata-list/read-all',
+  readAllLocationMetaData
+); // ?businessId
+// TODO: Update Name does not update all locations with the same name in itemList and Log
+router.post(
+  '/business/location-metadata-list/update-name',
+  updateLocationMetaDataName
+); // ?businessId  { findLocationName, newLocationName }
+router.post(
+  '/business/location-metadata-list/update-address',
+  updateLocationMetaDataAddress
+); // ?businessId  { findLocationName, newLocationAddress }
+router.post(
+  '/business/location-metadata-list/update-metadata',
+  updateLocationMetaDataMetaData
+); // ?businessId  { findLocationName, newLocationMetaData }
+// TODO: Delete all Locations?
+router.post('/business/location-metadata-list/delete', deleteLocationMetaData); // ?businessId {locationName}
+
+//
+// Distributor Item
+router.post('/business/distributor-item/create', createDistributorItem);
+// ?businessId  {itemName, distributorName, distributorItemName, distributorItemPortion, distributorItemCost, priorityChoice}
+router.post('/business/distributor-item/read-all', readAllDisributorItem); // ?businessId  { itemName }
+router.post(
+  '/business/distributor-item/update-distributor-item-name',
+  updateDistributorItemName
+); // ?businessId  { itemName, index, newDistributorItemName }
+router.post(
+  '/business/distributor-item/update-item-portion',
+  updateDistributorItemPortion
+); // ?businessId  { itemName, index, newItemPortion }
+router.post(
+  '/business/distributor-item/update-item-cost',
+  updateDistributorItemCost
+); // ?businessId  { itemName, index, newItemCost }
+router.post(
+  '/business/distributor-item/update-priority-choice',
+  updateDistributorItemPriorityChoice
+); // ?businessId  { itemName, index, newPriorityChoice }
+router.post('/business/distributor-item/delete', deleteDistributorItem); // ?businessId { itemName, index }
+
+//
 // Distributor MetaData
 router.post(
   '/business/distributor-metadata-list/create',
@@ -187,28 +233,5 @@ router.post(
   '/business/distributor-metadata-list/delete',
   deleteDistributorMetaData
 ); // ?businessId {distributorName}
-
-//
-// Location MetaData
-router.post('/business/location-metadata-list/create', createLocationMetaData); // ?businessId  { locationName, locationAddress, locationMetaData }
-router.post(
-  '/business/location-metadata-list/read-all',
-  readAllLocationMetaData
-); // ?businessId
-// TODO: Update Name does not update all locations with the same name in itemList and Log
-router.post(
-  '/business/location-metadata-list/update-name',
-  updateLocationMetaDataName
-); // ?businessId  { findLocationName, newLocationName }
-router.post(
-  '/business/location-metadata-list/update-address',
-  updateLocationMetaDataAddress
-); // ?businessId  { findLocationName, newLocationAddress }
-router.post(
-  '/business/location-metadata-list/update-metadata',
-  updateLocationMetaDataMetaData
-); // ?businessId  { findLocationName, newLocationMetaData }
-// TODO: Delete all Locations?
-router.post('/business/location-metadata-list/delete', deleteLocationMetaData); // ?businessId {locationName}
 
 module.exports = router;
