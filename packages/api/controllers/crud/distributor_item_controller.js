@@ -120,6 +120,22 @@ class DistributorItemController extends GenericCRUDController {
         }
       );
 
+      // Fetch the updated business document
+      const business = await Business.findById(businessId);
+      // Find the item within the business document
+      const item = business.itemList.find(item => item.itemName === itemName);
+      if (!item) {
+        return res.status(404).json({ error: 'Item not found' });
+      }
+
+      // Sort the distributorItemList by priorityChoice
+      item.distributorItemList.sort(
+        (a, b) => a.priorityChoice - b.priorityChoice
+      );
+
+      // Save the updated business document
+      await business.save();
+
       // Check MetaData
       try {
         // Need locationName to check if the document exists
@@ -345,6 +361,13 @@ class DistributorItemController extends GenericCRUDController {
         console.log('Invalid index');
         return res.status(500).json({ error: 'Invalid index' });
       }
+      // Sort the distributorItemList by priorityChoice
+      item.distributorItemList.sort(
+        (a, b) => a.priorityChoice - b.priorityChoice
+      );
+
+      // Save the updated business document
+      await business.save();
       const statusDetails = await business.save();
       console.log(`Distributor Item's Priority Choice updated successfully`);
       return res.status(200).json({ statusDetails: [statusDetails] });
