@@ -106,7 +106,34 @@ class ItemRelationController extends GenericCRUDController {
         },
         { $push: { 'itemList.$.itemNeededList': finishedNeededData } }
       );
-      //req.query.printedFieldName
+      // Fetch the updated business document
+      const business = await Business.findById(businessId);
+      if (!business) {
+        return res.status(404).json({ error: 'Business not found' });
+      }
+
+      // Find the raw item in the business document
+      const rawItem = business.itemList.find(
+        item => item.itemName === rawItemName
+      );
+      if (rawItem) {
+        // Sort the usedInList by itemName in ascending order
+        rawItem.usedInList.sort((a, b) => a.itemName.localeCompare(b.itemName));
+      }
+
+      // Find the finished item in the business document
+      const finishedItem = business.itemList.find(
+        item => item.itemName === finishedItemName
+      );
+      if (finishedItem) {
+        // Sort the itemNeededList by itemName in ascending order
+        finishedItem.itemNeededList.sort((a, b) =>
+          a.itemName.localeCompare(b.itemName)
+        );
+      }
+
+      // Save the updated business document
+      await business.save();
       return res
         .status(200)
         .json({ statusDetails: [statusDataRaw, statusDataFinished] });
