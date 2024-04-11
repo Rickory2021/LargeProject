@@ -80,6 +80,19 @@ class LocationMetaDataController extends GenericCRUDController {
       const { businessId } = req.query;
       const { findLocationName, newLocationName } = req.body;
 
+      // Need locationName to check if the document exists
+      const exists = await this.doesExistGeneric(
+        businessId,
+        'locationMetaDataList.locationName',
+        newLocationName
+      );
+
+      if (exists) {
+        return res
+          .status(400)
+          .json({ error: 'New Location name already exists.' });
+      }
+
       const filterJson = {
         _id: businessId,
         'locationMetaDataList.locationName': findLocationName
@@ -97,7 +110,6 @@ class LocationMetaDataController extends GenericCRUDController {
     }
   }
 
-  // TODO: UpdateLocationMetaDataName NEEDS TO UPDATE ALL EXISTING LOCATIONS in Items and Logs
   // req.query.businessId { findLocationName, newLocationAddress }
   async updateLocationMetaDataAddress(req, res) {
     try {
@@ -121,7 +133,6 @@ class LocationMetaDataController extends GenericCRUDController {
     }
   }
 
-  // TODO: UpdateLocationMetaDataName NEEDS TO UPDATE ALL EXISTING LOCATIONS in Items and Logs
   // req.query.businessId { findLocationName, newLocationMetaData }
   async updateLocationMetaDataMetaData(req, res) {
     try {
