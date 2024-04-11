@@ -1,5 +1,5 @@
 // Import necessary modules and dependencies
-const { Business } = require('../../models/business_model');
+const { User } = require('../../models/user_model');
 const GenericCRUDController = require('./generic_crud_controller');
 
 const mongoose = require('mongoose'); // Import mongoose for ObjectId conversion

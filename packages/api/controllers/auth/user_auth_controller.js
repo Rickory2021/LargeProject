@@ -1,4 +1,4 @@
-const User = require('../../models/user_model');
+const { User } = require('../../models/user_model');
 const crypto = require('crypto');
 const { sendVerificationEmail } = require('../../util/email'); // Import the sendVerificationEmail function
 const { createSecretAccessToken } = require('../../util/secret_token');
