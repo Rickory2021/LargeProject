@@ -86,6 +86,21 @@ class PortionInfoListController extends GenericCRUDController {
           }
         }
       );
+
+      // Fetch the updated business document
+      const business = await Business.findById(businessId);
+
+      // Find the item with the given itemName
+      const item = business.itemList.find(item => item.itemName === itemName);
+      if (!item) {
+        return res.status(404).json({ error: 'Item not found' });
+      }
+
+      // Sort the portionInfoList array by portionNumber in ascending order
+      item.portionInfoList.sort((a, b) => a.unitNumber - b.unitNumber);
+
+      // Save the updated business document
+      await business.save();
       //req.query.printedFieldName
       return res.status(200).json({ statusDetails: [statusData] });
     } catch (error) {
@@ -187,6 +202,25 @@ class PortionInfoListController extends GenericCRUDController {
           ]
         }
       );
+      // Fetch the updated business document after the update
+      const updatedBusiness = await Business.findById(businessId);
+      if (!updatedBusiness) {
+        throw new Error('Business not found');
+      }
+
+      // Find the specific item
+      const item = updatedBusiness.itemList.find(
+        item => item.itemName === itemName
+      );
+      if (!item) {
+        throw new Error('Item not found');
+      }
+
+      // Sort the portionInfoList array by unitNumber in ascending order
+      item.portionInfoList.sort((a, b) => a.unitNumber - b.unitNumber);
+
+      // Save the changes back to the database
+      await updatedBusiness.save();
       return res.status(200).json({ statusDetails: [statusDetails] });
     } catch (error) {
       return res.status(500).json({ error: error.message });
@@ -229,24 +263,3 @@ module.exports = {
   deletePortionInfo: (req, res) =>
     portionInfoListController.deletePortionInfo(req, res)
 };
-
-// let mongooseBusinessID = new mongoose.Types.ObjectId(
-//   req.query.businessId
-// );
-// // { $limit: outputSize }, // Project only the name field for each post
-// // { $skip: outset } // Project only the name field for each post
-// let index = await super.readGeneric([
-//   { $match: { _id: mongooseBusinessID } },
-//   {
-//     $project: {
-//       _id: 0,
-//       index: {
-//         $indexOfArray: ['$itemList.itemName', req.query.itemName] // Get the index of matched itemName
-//       }
-//     }
-//   }
-// ]);
-// if (index.length === 0)
-//   return res.status(400).json({ error: 'No Item Found' });
-// console.log(index);
-// const value = index[0].index;

@@ -1,4 +1,4 @@
-const { LocationMetaData } = require('../../models/business_model');
+const { Business, LocationMetaData } = require('../../models/business_model');
 const GenericCRUDController = require('./generic_crud_controller');
 
 const mongoose = require('mongoose');
@@ -37,6 +37,20 @@ class LocationMetaDataController extends GenericCRUDController {
         LocationMetaData,
         locationMetaDataObject
       );
+
+      /// Fetch the updated business document
+      const updatedBusiness = await Business.findById(businessId);
+      if (!updatedBusiness) {
+        throw new Error('Business not found');
+      }
+
+      // Sort locationMetaDataList by locationName using localeCompare
+      updatedBusiness.locationMetaDataList.sort((a, b) => {
+        a.locationName.localeCompare(b.locationName);
+      });
+
+      // Save the changes to the database
+      await updatedBusiness.save();
 
       if (statusDetails && statusDetails.modifiedCount > 0) {
         return res.status(200).json({ statusDetails: [statusDetails] });
@@ -80,6 +94,19 @@ class LocationMetaDataController extends GenericCRUDController {
       const { businessId } = req.query;
       const { findLocationName, newLocationName } = req.body;
 
+      // Need locationName to check if the document exists
+      const exists = await this.doesExistGeneric(
+        businessId,
+        'locationMetaDataList.locationName',
+        newLocationName
+      );
+
+      if (exists) {
+        return res
+          .status(400)
+          .json({ error: 'New Location name already exists.' });
+      }
+
       const filterJson = {
         _id: businessId,
         'locationMetaDataList.locationName': findLocationName
@@ -90,6 +117,19 @@ class LocationMetaDataController extends GenericCRUDController {
       };
 
       const statusDetails = await super.updateGeneric(filterJson, updateJson);
+      // Fetch the updated business document
+      const updatedBusiness = await Business.findById(businessId);
+      if (!updatedBusiness) {
+        throw new Error('Business not found');
+      }
+
+      // Sort locationMetaDataList by locationName
+      updatedBusiness.locationMetaDataList.sort((a, b) => {
+        // Compare locationName values
+        if (a.locationName < b.locationName) return -1;
+        if (a.locationName > b.locationName) return 1;
+        return 0;
+      });
 
       return res.status(200).json({ statusDetails: [statusDetails] });
     } catch (error) {
@@ -97,7 +137,6 @@ class LocationMetaDataController extends GenericCRUDController {
     }
   }
 
-  // TODO: UpdateLocationMetaDataName NEEDS TO UPDATE ALL EXISTING LOCATIONS in Items and Logs
   // req.query.businessId { findLocationName, newLocationAddress }
   async updateLocationMetaDataAddress(req, res) {
     try {
@@ -121,7 +160,6 @@ class LocationMetaDataController extends GenericCRUDController {
     }
   }
 
-  // TODO: UpdateLocationMetaDataName NEEDS TO UPDATE ALL EXISTING LOCATIONS in Items and Logs
   // req.query.businessId { findLocationName, newLocationMetaData }
   async updateLocationMetaDataMetaData(req, res) {
     try {
