@@ -1,5 +1,5 @@
 // Rename to business_operations.js?
-const { Item } = require('../../models/business_model');
+const { Business, Item } = require('../../models/business_model');
 const GenericCRUDController = require('./generic_crud_controller');
 
 const mongoose = require('mongoose');
@@ -153,6 +153,42 @@ class ItemListController extends GenericCRUDController {
       return res.status(500).json({ error: error.message });
     }
   }
+  //req.query.businessId  req.body.itemName
+  async getTotalCount(req, res) {
+    try {
+      const businessId = req.query.businessId;
+      let mongooseBusinessID = new mongoose.Types.ObjectId(businessId);
+      let { itemName } = req.body;
+      // Find the business by its ID
+      const business = await Business.findById(businessId).populate(
+        'itemList.locationItemList.inventoryList'
+      );
+
+      if (!business) {
+        throw new Error('Business not found');
+      }
+
+      // Find the specific item in the business's itemList based on the given itemName
+      const item = business.itemList.find(item => item.itemName === itemName);
+
+      if (!item) {
+        throw new Error('Item not found in the specified business');
+      }
+
+      // Calculate the sum of all portionNumber in the inventoryList
+      let sum = 0;
+      item.locationItemList.forEach(locationItem => {
+        locationItem.inventoryList.forEach(inventory => {
+          sum += inventory.portionNumber;
+        });
+      });
+
+      //req.query.printedFieldName
+      return res.status(200).json({ outputList: [sum] });
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
+    }
+  }
 }
 let itemListController = new ItemListController();
 module.exports = {
@@ -160,7 +196,8 @@ module.exports = {
   readAllItemName: (req, res) => itemListController.readAllItemName(req, res),
   readOneItem: (req, res) => itemListController.readOneItem(req, res),
   updateItemName: (req, res) => itemListController.updateItemName(req, res),
-  deleteItem: (req, res) => itemListController.deleteItem(req, res)
+  deleteItem: (req, res) => itemListController.deleteItem(req, res),
+  getTotalCount: (req, res) => itemListController.getTotalCount(req, res)
 };
 
 // let mongooseBusinessID = new mongoose.Types.ObjectId(

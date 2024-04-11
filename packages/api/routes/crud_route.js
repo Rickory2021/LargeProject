@@ -10,7 +10,8 @@ const {
   readAllItemName,
   readOneItem,
   updateItemName,
-  deleteItem
+  deleteItem,
+  getTotalCount
 } = require('../controllers/crud/item_controller');
 
 const {
@@ -80,6 +81,7 @@ router.post('/business/item-list/read-one', readOneItem); // ?businessId {itemNa
 //TODO: Update Name doesn't Update Relations, Log, etc.
 router.post('/business/item-list/update-name', updateItemName); // ?businessId {findItemName, newItemName}
 router.post('/business/item-list/delete', deleteItem); // ?businessId {itemName}
+router.post('/business/item-list/total-count', getTotalCount); // ?businessId {itemName}
 
 //
 // Portion List Info
