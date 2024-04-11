@@ -59,11 +59,14 @@ const {
 } = require('../controllers/crud/item_location_log_controller');
 
 const {
-  addDistributorMetaData,
-  readDistributorMetaData,
-  updateDistributorMetaData,
+  createDistributorMetaData,
+  readAllDistributorMetaData,
+  updateDistributorMetaDataName,
+  updateDistributorMetaDataDeadlineDate,
+  updateDistributorMetaDataDeliveryDate,
+  updateDistributorMetaDataMetaData,
   deleteDistributorMetaData
-} = require('../controllers/crud/distributor_metadata_list_controller');
+} = require('../controllers/crud/distributor_metadata_controller');
 
 const {
   createLocationMetaData,
@@ -155,16 +158,35 @@ router.post('/business/item-location-log/delete', deleteLog); // ?businessId { i
 
 //
 // Distributor MetaData
-router.post('/business/distributor-metadata-list/add', addDistributorMetaData);
-router.get('/business/distributor-metadata-list/read', readDistributorMetaData);
 router.post(
-  '/business/distributor-metadata-list/update',
-  updateDistributorMetaData
-);
+  '/business/distributor-metadata-list/create',
+  createDistributorMetaData
+); // ?businessId {distributorName,distributorDeadlineDate,distributorDeliveryDate,distributorMetaData}
+router.post(
+  '/business/distributor-metadata-list/read-all',
+  readAllDistributorMetaData
+); // ?businessId
+router.post(
+  '/business/distributor-metadata-list/update-name',
+  updateDistributorMetaDataName
+); // ?businessId { findDistributorName, newDistributorName }
+router.post(
+  '/business/distributor-metadata-list/update-deadline-date',
+  updateDistributorMetaDataDeadlineDate
+); // ?businessId { findDistributorName, newDistributorDeadlineDate }
+router.post(
+  '/business/distributor-metadata-list/update-delivery-date',
+  updateDistributorMetaDataDeliveryDate
+); // ?businessId { findDistributorName, newDistributorDeliveryDate }
+router.post(
+  '/business/distributor-metadata-list/update-meta-data',
+  updateDistributorMetaDataMetaData
+); // ?businessId { findDistributorName, newDeliveryMetaData }
+// TODO: Delete all Distributor
 router.post(
   '/business/distributor-metadata-list/delete',
   deleteDistributorMetaData
-);
+); // ?businessId {distributorName}
 
 //
 // Location MetaData
@@ -186,6 +208,7 @@ router.post(
   '/business/location-metadata-list/update-metadata',
   updateLocationMetaDataMetaData
 ); // ?businessId  { findLocationName, newLocationMetaData }
+// TODO: Delete all Locations?
 router.post('/business/location-metadata-list/delete', deleteLocationMetaData); // ?businessId {locationName}
 
 module.exports = router;
