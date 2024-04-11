@@ -53,17 +53,17 @@ class EmployeeIdListController extends GenericCRUDController {
     // const employeeId = req.query.employeeId.toString(); // Convert to string
     try {
       console.log('About to delete');
-      const statusData = await super.deleteGenericByQuery(
-        {
-          _id: businessId
-        },
-        {
-          $pull: {
-            employeeIdList: employeeId // quotes and curly braces not needed here due to diff. structure
-          }
-        }
+      const businessStatusData = await super.deleteGenericByQuery(
+        { _id: businessId },
+        { $pull: { employeeIdList: employeeId } }
       );
-      return res.status(200).json({ statusDetails: [statusData] });
+      const employeeStatusData = await User.updateOne(
+        { _id: employeeId },
+        { $pull: { businessIdList: businessId } }
+      );
+      return res
+        .status(200)
+        .json({ statusDetails: [businessStatusData, employeeStatusData] });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
