@@ -31,6 +31,11 @@ const {
 } = require('../controllers/crud/item_relation_controller');
 
 const {
+  readEstimateDeduction,
+  updateEstimateDeduction
+} = require('../controllers/crud/estimate_deduction_controller');
+
+const {
   createItemLocation,
   readAllItemLocationName,
   readOneItemLocation,
@@ -106,6 +111,11 @@ router.post(
   updateItemRelationUnitCost
 ); // ?businessId {rawItemName,finishedItemName,newUnitCost}
 router.post('/business/item-relation/delete', deleteRelation); // ?businessId { rawItemName, finishedItemName }
+
+//
+// Estimate Deduction
+router.post('/business/estimate-deduction/read', readEstimateDeduction); // ?businessId {itemName}
+router.post('/business/estimate-deduction/update', updateEstimateDeduction); // ?businessId { newEstimateDeduction, findItemName }
 
 //
 // Item Location
