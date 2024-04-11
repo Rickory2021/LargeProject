@@ -108,7 +108,31 @@ class ItemLocationController extends GenericCRUDController {
           }
         }
       );
+      // Fetch the updated business document
+      const business = await Business.findById(businessId);
 
+      if (!business) {
+        console.log('Business not found');
+        return res.status(500).json({ error: 'Business not found' });
+      }
+
+      // Find the item within the business document by its itemName
+      const item = business.itemList.find(item => item.itemName === itemName);
+
+      if (!item) {
+        console.log('Item not found in the Business');
+        return res
+          .status(500)
+          .json({ error: 'Item not found in the Business' });
+      }
+
+      // Sort the locationItemList array by locationName in alphabetical order
+      item.locationItemList.sort((a, b) =>
+        a.locationName.localeCompare(b.locationName)
+      );
+
+      // Save the changes to the database
+      await business.save();
       // Check MetaData
       try {
         // Need locationName to check if the document exists
