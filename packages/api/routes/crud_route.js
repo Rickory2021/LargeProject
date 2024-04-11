@@ -40,7 +40,8 @@ const {
   readAllItemLocationName,
   readOneItemLocation,
   updateItemLocationName,
-  deleteItemLocation
+  deleteItemLocation,
+  getOneRecentDate
 } = require('../controllers/crud/item_location_controller');
 
 const {
@@ -125,6 +126,8 @@ router.post('/business/item-location/read-one', readOneItemLocation); // ?busine
 // TODO: DOES NOT UPDATE LOCATION META DATA & LOG YET
 router.post('/business/item-location/update-name', updateItemLocationName); // ?businessId { itemName, findLocationName, newLocationName }
 router.post('/business/item-location/delete', deleteItemLocation); // ?businessId { itemName, locationName }
+router.post('/business/item-location/delete', deleteItemLocation); // ?businessId { itemName, locationName }
+router.post('/business/item-location/get-one-recent-date', getOneRecentDate); // ?businessId { itemName, locationName }
 
 //
 // Item Location Inventory
