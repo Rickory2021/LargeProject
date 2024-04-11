@@ -1,4 +1,7 @@
-const { DistributorMetaData } = require('../../models/business_model');
+const {
+  Business,
+  DistributorMetaData
+} = require('../../models/business_model');
 const GenericCRUDController = require('./generic_crud_controller');
 
 const mongoose = require('mongoose');
@@ -45,6 +48,20 @@ class DistributorMetaDataController extends GenericCRUDController {
         DistributorMetaData,
         distributorMetaDataObject
       );
+
+      // Fetch the updated list of distributor metadata documents
+      const business = await Business.findById(businessId);
+      if (!business) {
+        return res.status(404).json({ error: 'Business not found' });
+      }
+
+      // Sort the list of distributor metadata documents by distributor name
+      business.distributorMetaDataList.sort((a, b) =>
+        a.distributorName.localeCompare(b.distributorName)
+      );
+
+      // Save the updated business document
+      await business.save();
 
       if (statusDetails && statusDetails.modifiedCount > 0) {
         return res.status(200).json({ statusDetails: [statusDetails] });
@@ -113,6 +130,19 @@ class DistributorMetaDataController extends GenericCRUDController {
       };
 
       const statusDetails = await super.updateGeneric(filterJson, updateJson);
+      // Fetch the updated list of distributor metadata documents
+      const business = await Business.findById(businessId);
+      if (!business) {
+        return res.status(404).json({ error: 'Business not found' });
+      }
+
+      // Sort the list of distributor metadata documents by distributor name
+      business.distributorMetaDataList.sort((a, b) =>
+        a.distributorName.localeCompare(b.distributorName)
+      );
+
+      // Save the updated business document
+      await business.save();
 
       return res.status(200).json({ statusDetails: [statusDetails] });
     } catch (error) {
