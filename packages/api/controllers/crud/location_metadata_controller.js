@@ -1,4 +1,4 @@
-const { LocationMetaData } = require('../../models/business_model');
+const { Business, LocationMetaData } = require('../../models/business_model');
 const GenericCRUDController = require('./generic_crud_controller');
 
 const mongoose = require('mongoose');
@@ -37,6 +37,20 @@ class LocationMetaDataController extends GenericCRUDController {
         LocationMetaData,
         locationMetaDataObject
       );
+
+      /// Fetch the updated business document
+      const updatedBusiness = await Business.findById(businessId);
+      if (!updatedBusiness) {
+        throw new Error('Business not found');
+      }
+
+      // Sort locationMetaDataList by locationName using localeCompare
+      updatedBusiness.locationMetaDataList.sort((a, b) => {
+        a.locationName.localeCompare(b.locationName);
+      });
+
+      // Save the changes to the database
+      await updatedBusiness.save();
 
       if (statusDetails && statusDetails.modifiedCount > 0) {
         return res.status(200).json({ statusDetails: [statusDetails] });
@@ -103,6 +117,19 @@ class LocationMetaDataController extends GenericCRUDController {
       };
 
       const statusDetails = await super.updateGeneric(filterJson, updateJson);
+      // Fetch the updated business document
+      const updatedBusiness = await Business.findById(businessId);
+      if (!updatedBusiness) {
+        throw new Error('Business not found');
+      }
+
+      // Sort locationMetaDataList by locationName
+      updatedBusiness.locationMetaDataList.sort((a, b) => {
+        // Compare locationName values
+        if (a.locationName < b.locationName) return -1;
+        if (a.locationName > b.locationName) return 1;
+        return 0;
+      });
 
       return res.status(200).json({ statusDetails: [statusDetails] });
     } catch (error) {
