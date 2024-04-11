@@ -223,24 +223,3 @@ module.exports = {
   deleteItem: (req, res) => itemListController.deleteItem(req, res),
   getTotalCount: (req, res) => itemListController.getTotalCount(req, res)
 };
-
-// let mongooseBusinessID = new mongoose.Types.ObjectId(
-//   req.query.businessId
-// );
-// // { $limit: outputSize }, // Project only the name field for each post
-// // { $skip: outset } // Project only the name field for each post
-// let index = await super.readGeneric([
-//   { $match: { _id: mongooseBusinessID } },
-//   {
-//     $project: {
-//       _id: 0,
-//       index: {
-//         $indexOfArray: ['$itemList.itemName', req.query.itemName] // Get the index of matched itemName
-//       }
-//     }
-//   }
-// ]);
-// if (index.length === 0)
-//   return res.status(400).json({ error: 'No Item Found' });
-// console.log(index);
-// const value = index[0].index;
