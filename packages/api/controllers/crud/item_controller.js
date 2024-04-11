@@ -45,7 +45,20 @@ class ItemListController extends GenericCRUDController {
         Item,
         { itemName: itemName }
       );
-      //req.query.printedFieldName
+
+      // After adding the item, fetch the updated business document
+      const business = await Business.findById(businessId);
+      if (!business) {
+        return res.status(404).json({ error: 'Business not found' });
+      }
+
+      // Sort the itemList array by itemName
+      business.itemList.sort((a, b) => a.itemName.localeCompare(b.itemName));
+
+      // Save the updated business document
+      await business.save();
+
+      // Return the status details
       return res.status(200).json({ statusDetails: [statusData] });
     } catch (error) {
       return res.status(500).json({ error: error.message });
@@ -65,6 +78,17 @@ class ItemListController extends GenericCRUDController {
         { $unwind: `$itemList` },
         { $project: { _id: 0, itemName: '$itemList.itemName' } }
       ]);
+      // After adding the item, fetch the updated business document
+      const business = await Business.findById(businessId);
+      if (!business) {
+        return res.status(404).json({ error: 'Business not found' });
+      }
+
+      // Sort the itemList array by itemName
+      business.itemList.sort((a, b) => a.itemName.localeCompare(b.itemName));
+
+      // Save the updated business document
+      await business.save();
       //req.query.printedFieldName
       return res.status(200).json({ output: fieldValues });
     } catch (error) {
