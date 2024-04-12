@@ -131,7 +131,10 @@ router.post('/business/item-location/read-one', readOneItemLocation); // ?busine
 router.post('/business/item-location/update-name', updateItemLocationName); // ?businessId { itemName, findLocationName, newLocationName }
 router.post('/business/item-location/delete', deleteItemLocation); // ?businessId { itemName, locationName }
 router.post('/business/item-location/get-one-recent-date', getOneRecentDate); // ?businessId { itemName, locationName }
-router.post('/business/item-location/total-item-count', getTotalLocationCount); // ?businessId { itemName, locationName }
+router.post(
+  '/business/item-location/total-location-count',
+  getTotalLocationCount
+); // ?businessId { itemName, locationName }
 
 //
 // Item Location Inventory
