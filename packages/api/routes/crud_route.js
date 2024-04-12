@@ -72,6 +72,7 @@ const {
 const {
   createDistributorMetaData,
   readAllDistributorMetaData,
+  readOneDistributorMetaData,
   updateDistributorMetaDataName,
   updateDistributorMetaDataDeadlineDate,
   updateDistributorMetaDataDeliveryDate,
@@ -98,9 +99,7 @@ router.post('/business/item-list/total-item-count', getTotalItemCount); // ?busi
 // Portion List Info
 router.post('/business/portion-info-list/create', createPortionInfo); // ?businessId {itemName, unitName,unitNumber}
 router.post('/business/portion-info-list/read-all', readAllPortionInfo); // ?businessId  {itemName}
-// NOTE: Updating Name does not affect portioning of itemNeededList and usedInList Items
 router.post('/business/portion-info-list/update-name', updatePortionInfoName); // ?businessId { itemName, findUnitName, newUnitName }
-// NOTE: Updating Number does not affect portioning of itemNeededList and usedInList Items
 router.post(
   '/business/portion-info-list/update-number',
   updatePortionInfoNumber
@@ -128,7 +127,7 @@ router.post('/business/estimate-deduction/update', updateEstimateDeduction); // 
 router.post('/business/item-location/create', createItemLocation); // ?businessId {itemName, locationName}
 router.post('/business/item-location/read-all', readAllItemLocationName); // ?businessId { itemName }
 router.post('/business/item-location/read-one', readOneItemLocation); // ?businessId { itemName, locationName }
-// TODO: DOES NOT UPDATE LOCATION META DATA & LOG YET
+// NOT RECOMMENDED TO DO: DOES NOT UPDATE LOCATION META DATA & LOG
 router.post('/business/item-location/update-name', updateItemLocationName); // ?businessId { itemName, findLocationName, newLocationName }
 router.post('/business/item-location/delete', deleteItemLocation); // ?businessId { itemName, locationName }
 router.post('/business/item-location/get-one-recent-date', getOneRecentDate); // ?businessId { itemName, locationName }
@@ -221,6 +220,10 @@ router.post(
   '/business/distributor-metadata-list/read-all',
   readAllDistributorMetaData
 ); // ?businessId
+router.post(
+  '/business/distributor-metadata-list/read-one',
+  readOneDistributorMetaData
+); // ?businessId {distributorName}
 router.post(
   '/business/distributor-metadata-list/update-name',
   updateDistributorMetaDataName
