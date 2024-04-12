@@ -54,6 +54,7 @@ const {
 const {
   createLocationMetaData,
   readAllLocationMetaData,
+  readOneLocationMetaData,
   updateLocationMetaDataName,
   updateLocationMetaDataAddress,
   updateLocationMetaDataMetaData,
@@ -167,6 +168,10 @@ router.post(
   '/business/location-metadata-list/read-all',
   readAllLocationMetaData
 ); // ?businessId
+router.post(
+  '/business/location-metadata-list/read-one',
+  readOneLocationMetaData
+); // ?businessId { locationName }
 // TODO: Update Name does not update all locations with the same name in itemList and Log
 router.post(
   '/business/location-metadata-list/update-name',

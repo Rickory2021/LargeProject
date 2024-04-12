@@ -87,6 +87,37 @@ class LocationMetaDataController extends GenericCRUDController {
     }
   }
 
+  // req.query.businessId);
+  async readOneLocationMetaData(req, res) {
+    try {
+      let businessId = new mongoose.Types.ObjectId(req.query.businessId);
+      const { locationName } = req.body;
+
+      // Step 1: Find the business document with the given businessId
+      const business = await Business.findById(businessId);
+
+      if (!business) {
+        throw new Error('Business not found');
+      }
+
+      // Step 2: Navigate to the locationMetaDataList and find the object with the matching locationName
+      const locationMetaData = business.locationMetaDataList.find(
+        location => location.locationName === locationName
+      );
+
+      if (!locationMetaData) {
+        throw new Error('Location not found in locationMetaDataList');
+      }
+
+      return res.status(200).json({
+        outputList: [locationMetaData]
+      });
+    } catch (error) {
+      console.error('Error reading location metadata:', error);
+      return res.status(500).json({ error: error.message });
+    }
+  }
+
   // TODO: UpdateLocationMetaDataName NEEDS TO UPDATE ALL EXISTING LOCATIONS in Items and Logs
   // req.query.businessId { findLocationName, newLocationName }
   async updateLocationMetaDataName(req, res) {
@@ -217,6 +248,8 @@ module.exports = {
     locationMetadataListController.createLocationMetaData(req, res),
   readAllLocationMetaData: (req, res) =>
     locationMetadataListController.readAllLocationMetaData(req, res),
+  readOneLocationMetaData: (req, res) =>
+    locationMetadataListController.readOneLocationMetaData(req, res),
   updateLocationMetaDataName: (req, res) =>
     locationMetadataListController.updateLocationMetaDataName(req, res),
   updateLocationMetaDataAddress: (req, res) =>
