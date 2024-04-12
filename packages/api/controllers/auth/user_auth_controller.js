@@ -1,9 +1,11 @@
 const { User } = require('../../models/user_model');
 const crypto = require('crypto');
 const { sendVerificationEmail } = require('../../util/email'); // Import the sendVerificationEmail function
+const { sendResetEmail } = require('../../util/email'); // Import the sendResetEmail function
 const { createSecretAccessToken } = require('../../util/secret_token');
 const bcrypt = require('bcryptjs'); // Import bcrypt for password comparison
 const { MongoServerError } = require('mongodb');
+const validator = require('validator');
 
 /**
  * Register user endpoint\
@@ -84,6 +86,101 @@ module.exports.VerifyEmail = async (req, res) => {
     return res
       .status(500)
       .json({ error: 'An error occurred during the verification process.' });
+  }
+};
+
+module.exports.forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    // Find the user by email
+    const user = await User.findOne({ email });
+
+    // If user not found, send error msg
+    if (!user) {
+      return res.status(400).json({
+        status: 'Failed',
+        message: 'User not found'
+      });
+    }
+
+    const resetToken = user.generatePasswordResetToken();
+    await user.save({ validateBeforeSave: false });
+
+    const resetUrl = `${req.protocol}://${req.get('host')}/api/auth/user/reset-password/${resetToken}`;
+    const emailText = `Forgot password? Reset password by clicking on the following link: ${resetUrl}`;
+
+    // Call function
+    const emailSent = await sendResetEmail(
+      user.email,
+      'Slicer: Reset Password',
+      emailText
+    );
+
+    if (emailSent) {
+      return res.status(200).json({
+        status: 'Success',
+        message: 'Password reset link sent to your email'
+      });
+    } else {
+      return res.status(500).json({
+        status: 'Failed',
+        message: 'Error sending reset password email to user. Please try again.'
+      });
+    }
+  } catch (error) {
+    console.error('Error in forgotPassword:', error);
+    return res.status(500).json({
+      status: 'Failed',
+      message: 'Internal server error'
+    });
+  }
+};
+
+exports.resetPassword = async (req, res) => {
+  try {
+    const { token } = req.params;
+    const { password } = req.body;
+
+    const hashedToken = crypto
+      .createHash('sha256')
+      .update(req.params.token)
+      .digest('hex');
+
+    const user = await User.findOne({
+      passwordResetToken: hashedToken,
+      passworResetExpires: { $gt: Date.now() }
+    });
+
+    if (!user) {
+      return res.status(400).json({
+        status: 'Failed',
+        message: 'Invalid or expired token'
+      });
+    }
+
+    user.password = req.body.password;
+    user.passwordResetToken = undefined;
+    user.passworResetExpires = undefined;
+
+    await user.save();
+
+    const accessToken = createSecretAccessToken(user._id);
+
+    res.cookie('accessToken', accessToken, {
+      withCredentials: true,
+      httpOnly: false,
+      sameSite: 'None', //cross-site cookie
+      maxAge: 6 * 24 * 60 * 60 * 1000
+    });
+
+    return res.status(200).json({ id: user._id, results: { accessToken } });
+  } catch (error) {
+    console.error('Error in resetPassword:', error);
+    return res.status(500).json({
+      status: 'Failed',
+      message: 'Internal server error'
+    });
   }
 };
 
