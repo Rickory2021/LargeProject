@@ -2,9 +2,8 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
 
-export default function SignIn() {
+export default function ForgotPassword() {
   const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
   const handleSubmit = async e => {
@@ -15,7 +14,7 @@ export default function SignIn() {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({ username, })
       });
       if (res.ok) {
         const data = await res.json();
@@ -23,8 +22,8 @@ export default function SignIn() {
         const expires = new Date();
         expires.setTime(expires.getTime() + 3 * 24 * 60 * 60 * 1000);
         document.cookie = `accessToken=${accessToken};expires=${expires.toUTCString()};path=/`;
-        // Redirect to dashboard if login is successful
-        window.location.href = '/dashboard';
+
+        window.location.href = '/sign-in';
       } else {
         // If response is not ok, get error message from response body
         const { error } = await res.json();
@@ -42,37 +41,34 @@ export default function SignIn() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <h1 className="text-4xl font-bold mb-8">Sign In</h1>
+    
+    <div className="flex flex-col items-center pt-64 ">
+      <h1 className="text-2xl font-bold mb-4">Forgot Password?</h1>
+      
+        <div className="card w-96 rounded-lg ">
+          <div className="card-body p-3 h-32 text-center">
+            <p>
+            Enter the email associated with your account and we will 
+            send instructions on resetting your password
+            </p>
+          </div>
+        </div>
+      
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="Username"
+          placeholder="Email"
           value={username}
           onChange={e => setUsername(e.target.value)}
-          className="p-2 border border-gray-300 rounded-md"
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
           className="p-2 border border-gray-300 rounded-md"
         />
         <button
           type="submit"
           className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-700"
         >
-          Sign In
+          Reset Password
         </button>
       </form>
-      <Link href="/sign-up">
-        <button className="mt-4 text-blue-500">Not a user? Register now</button>
-      </Link>
-
-      <Link href="/forgot-password">
-        <button className="mt-4 text-blue-500">Forgot Password?</button>
-      </Link>
 
       {/* Error popup */}
       {error && (
