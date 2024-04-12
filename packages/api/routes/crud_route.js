@@ -10,7 +10,7 @@ const {
   readOneItem,
   updateItemName,
   deleteItem,
-  getTotalCount
+  getTotalItemCount
 } = require('../controllers/crud/item_controller');
 const {
   createPortionInfo,
@@ -36,6 +36,7 @@ const {
   readOneItemLocation,
   updateItemLocationName,
   deleteItemLocation,
+  getTotalLocationCount,
   getOneRecentDate
 } = require('../controllers/crud/item_location_controller');
 const {
@@ -90,7 +91,7 @@ router.post('/business/item-list/read-one', readOneItem); // ?businessId {itemNa
 //TODO: Update Name doesn't Update Relations, Log, etc.
 router.post('/business/item-list/update-name', updateItemName); // ?businessId {findItemName, newItemName}
 router.post('/business/item-list/delete', deleteItem); // ?businessId {itemName}
-router.post('/business/item-list/total-count', getTotalCount); // ?businessId {itemName}
+router.post('/business/item-list/total-item-count', getTotalItemCount); // ?businessId {itemName}
 
 //
 // Portion List Info
@@ -129,8 +130,8 @@ router.post('/business/item-location/read-one', readOneItemLocation); // ?busine
 // TODO: DOES NOT UPDATE LOCATION META DATA & LOG YET
 router.post('/business/item-location/update-name', updateItemLocationName); // ?businessId { itemName, findLocationName, newLocationName }
 router.post('/business/item-location/delete', deleteItemLocation); // ?businessId { itemName, locationName }
-router.post('/business/item-location/delete', deleteItemLocation); // ?businessId { itemName, locationName }
 router.post('/business/item-location/get-one-recent-date', getOneRecentDate); // ?businessId { itemName, locationName }
+router.post('/business/item-location/total-item-count', getTotalLocationCount); // ?businessId { itemName, locationName }
 
 //
 // Item Location Inventory

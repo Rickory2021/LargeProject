@@ -360,6 +360,52 @@ class ItemLocationController extends GenericCRUDController {
       return res.status(500).json({ error: error.message });
     }
   }
+
+  //req.query.businessId  req.body.itemName
+  async getTotalLocationCount(req, res) {
+    try {
+      const businessId = req.query.businessId;
+      let mongooseBusinessID = new mongoose.Types.ObjectId(businessId);
+      let { itemName, locationName } = req.body;
+      // Find the business by its ID
+      const business = await Business.findById(businessId).populate(
+        'itemList.locationItemList.inventoryList'
+      );
+
+      if (!business) {
+        throw new Error('Business not found');
+      }
+
+      // Find the specific item in the business's itemList based on the given itemName
+      const item = business.itemList.find(item => item.itemName === itemName);
+
+      if (!item) {
+        throw new Error('Item not found in the specified business');
+      }
+      console.log('Location Name:', locationName);
+      console.log('Location Item List:', item.locationItemList);
+
+      const locationItem = item.locationItemList.find(
+        location => location.locationName === locationName
+      );
+
+      if (!locationItem) {
+        throw new Error('locationItem not found in the specified item');
+      }
+
+      // Calculate the sum of all portionNumber in the inventoryList
+      let sum = 0;
+
+      locationItem.inventoryList.forEach(inventory => {
+        sum += inventory.portionNumber;
+      });
+
+      //req.query.printedFieldName
+      return res.status(200).json({ outputList: [sum] });
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
+    }
+  }
 }
 let itemLocationController = new ItemLocationController();
 module.exports = {
@@ -374,5 +420,7 @@ module.exports = {
   deleteItemLocation: (req, res) =>
     itemLocationController.deleteItemLocation(req, res),
   getOneRecentDate: (req, res) =>
-    itemLocationController.getOneRecentDate(req, res)
+    itemLocationController.getOneRecentDate(req, res),
+  getTotalLocationCount: (req, res) =>
+    itemLocationController.getTotalLocationCount(req, res)
 };

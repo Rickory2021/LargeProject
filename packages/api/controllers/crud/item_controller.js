@@ -178,7 +178,7 @@ class ItemListController extends GenericCRUDController {
     }
   }
   //req.query.businessId  req.body.itemName
-  async getTotalCount(req, res) {
+  async getTotalItemCount(req, res) {
     try {
       const businessId = req.query.businessId;
       let mongooseBusinessID = new mongoose.Types.ObjectId(businessId);
@@ -221,5 +221,6 @@ module.exports = {
   readOneItem: (req, res) => itemListController.readOneItem(req, res),
   updateItemName: (req, res) => itemListController.updateItemName(req, res),
   deleteItem: (req, res) => itemListController.deleteItem(req, res),
-  getTotalCount: (req, res) => itemListController.getTotalCount(req, res)
+  getTotalItemCount: (req, res) =>
+    itemListController.getTotalItemCount(req, res)
 };
