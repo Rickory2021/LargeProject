@@ -89,6 +89,15 @@ module.exports.VerifyEmail = async (req, res) => {
   }
 };
 
+/**
+ * Email verification endpoint\
+ * - Given Email, will send a forget Password Email\
+ * - passwordResetToken: => Generated Token\
+ * - passworResetExpires: => Expires in 10 Minutes
+ * @param {Request} req Incoming: JSON{email}
+ * @param {Result} res The Express response object.
+ * @returns \{error:null} || {error:'Failed. User not found.'} || {error:'Failed Error sending reset password email to user. Please try again.'}
+ * error: 'Failed: Internal server error: ${error}' */
 module.exports.forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
@@ -98,16 +107,18 @@ module.exports.forgotPassword = async (req, res) => {
 
     // If user not found, send error msg
     if (!user) {
-      return res.status(400).json({
-        status: 'Failed',
-        message: 'User not found'
-      });
+      return res.status(400).json({ error: 'Failed. User not found.' });
     }
 
     const resetToken = user.generatePasswordResetToken();
     await user.save({ validateBeforeSave: false });
+    console.log(`resetToken ${resetToken}`);
+    console.log(`user ${user}`);
+    console.log(
+      `UnHASHED:${crypto.createHash('sha256').update(resetToken).digest('hex')}`
+    );
 
-    const resetUrl = `${req.protocol}://${req.get('host')}/api/auth/user/reset-password/${resetToken}`;
+    const resetUrl = `${req.protocol}://${req.get('host')}/api/auth/user/reset-password?token=${resetToken}`;
     const emailText = `Forgot password? Reset password by clicking on the following link: ${resetUrl}`;
 
     // Call function
@@ -119,49 +130,56 @@ module.exports.forgotPassword = async (req, res) => {
 
     if (emailSent) {
       return res.status(200).json({
-        status: 'Success',
-        message: 'Password reset link sent to your email'
+        error: null
       });
     } else {
       return res.status(500).json({
-        status: 'Failed',
-        message: 'Error sending reset password email to user. Please try again.'
+        error:
+          'Failed Error sending reset password email to user. Please try again.'
       });
     }
   } catch (error) {
     console.error('Error in forgotPassword:', error);
     return res.status(500).json({
-      status: 'Failed',
-      message: 'Internal server error'
+      error: `Failed: Internal server error: ${error}`
     });
   }
 };
 
+/**
+ * Reset Password endpoint\
+ * - Given passwordResetToken and new password, will change the password, and return the token for Auto-Login\
+ * - passwordResetToken: => null\
+ * - passworResetExpires: => null
+ * @param {Request} req Incoming: QUERY ?token
+ * @param {Result} res The Express response object.
+ * @returns \{error:null} || {error:'Failed. User not found.'} || {error:'Failed Error sending reset password email to user. Please try again.'}
+ * error: 'Failed: Internal server error: ${error}' */
 exports.resetPassword = async (req, res) => {
   try {
-    const { token } = req.params;
+    const { token } = req.query;
     const { password } = req.body;
 
-    const hashedToken = crypto
-      .createHash('sha256')
-      .update(req.params.token)
-      .digest('hex');
+    // const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+    // const user = await User.findOne({
+    //   passwordResetToken: hashedToken,
+    //   passworResetExpires: { $gt: Date.now() }
+    // });
 
     const user = await User.findOne({
-      passwordResetToken: hashedToken,
+      passwordResetToken: token,
       passworResetExpires: { $gt: Date.now() }
     });
 
     if (!user) {
-      return res.status(400).json({
-        status: 'Failed',
-        message: 'Invalid or expired token'
-      });
+      return res
+        .status(400)
+        .json({ error: 'Failed: Invalid or expired token' });
     }
 
-    user.password = req.body.password;
-    user.passwordResetToken = undefined;
-    user.passworResetExpires = undefined;
+    user.password = password;
+    user.passwordResetToken = '';
+    user.passworResetExpires = null;
 
     await user.save();
 
@@ -174,13 +192,22 @@ exports.resetPassword = async (req, res) => {
       maxAge: 6 * 24 * 60 * 60 * 1000
     });
 
-    return res.status(200).json({ id: user._id, results: { accessToken } });
+    // Return user details and token
+    return res.status(200).json({
+      error: null,
+      userId: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      username: user.username,
+      email: user.email,
+      businessIdList: user.businessIdList,
+      accessToken: accessToken
+    });
   } catch (error) {
     console.error('Error in resetPassword:', error);
-    return res.status(500).json({
-      status: 'Failed',
-      message: 'Internal server error'
-    });
+    return res
+      .status(500)
+      .json({ error: `Failed:Internal server error:${error}` });
   }
 };
 
