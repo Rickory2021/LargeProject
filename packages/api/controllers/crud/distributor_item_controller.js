@@ -252,7 +252,17 @@ class DistributorItemController extends GenericCRUDController {
       }
       const statusDetails = await business.save();
       console.log(`Distributor's ItemName updated successfully`);
-      return res.status(200).json({ statusDetails: [statusDetails] });
+      return res.status(200).json({
+        statusDetails: [
+          {
+            acknowledged: true,
+            modifiedCount: 1,
+            upsertedId: null,
+            upsertedCount: 0,
+            matchedCount: 1
+          }
+        ]
+      });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
@@ -289,7 +299,17 @@ class DistributorItemController extends GenericCRUDController {
       }
       const statusDetails = await business.save();
       console.log(`Distributor's ItemPortion updated successfully`);
-      return res.status(200).json({ statusDetails: [statusDetails] });
+      return res.status(200).json({
+        statusDetails: [
+          {
+            acknowledged: true,
+            modifiedCount: 1,
+            upsertedId: null,
+            upsertedCount: 0,
+            matchedCount: 1
+          }
+        ]
+      });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
@@ -326,7 +346,17 @@ class DistributorItemController extends GenericCRUDController {
       }
       const statusDetails = await business.save();
       console.log(`Distributor's ItemCost updated successfully`);
-      return res.status(200).json({ statusDetails: [statusDetails] });
+      return res.status(200).json({
+        statusDetails: [
+          {
+            acknowledged: true,
+            modifiedCount: 1,
+            upsertedId: null,
+            upsertedCount: 0,
+            matchedCount: 1
+          }
+        ]
+      });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
@@ -370,7 +400,17 @@ class DistributorItemController extends GenericCRUDController {
       await business.save();
       const statusDetails = await business.save();
       console.log(`Distributor Item's Priority Choice updated successfully`);
-      return res.status(200).json({ statusDetails: [statusDetails] });
+      return res.status(200).json({
+        statusDetails: [
+          {
+            acknowledged: true,
+            modifiedCount: 1,
+            upsertedId: null,
+            upsertedCount: 0,
+            matchedCount: 1
+          }
+        ]
+      });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
@@ -410,7 +450,17 @@ class DistributorItemController extends GenericCRUDController {
       // Save the changes to the database
       const statusData = await business.save();
       console.log('Distributor item deleted successfully');
-      return res.status(200).json({ statusDetails: [statusData] });
+      return res.status(200).json({
+        statusDetails: [
+          {
+            acknowledged: true,
+            modifiedCount: 1,
+            upsertedId: null,
+            upsertedCount: 0,
+            matchedCount: 1
+          }
+        ]
+      });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }

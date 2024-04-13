@@ -98,6 +98,37 @@ class DistributorMetaDataController extends GenericCRUDController {
     }
   }
 
+  // ?businessId
+  async readOneDistributorMetaData(req, res) {
+    try {
+      let businessId = new mongoose.Types.ObjectId(req.query.businessId);
+      const { distributorName } = req.body;
+
+      // Step 1: Find the business document with the given businessId
+      const business = await Business.findById(businessId);
+
+      if (!business) {
+        throw new Error('Business not found');
+      }
+
+      // Step 2: Navigate to the locationMetaDataList and find the object with the matching locationName
+      const distributorMetaData = business.distributorMetaDataList.find(
+        distributor => distributor.distributorName === distributorName
+      );
+
+      if (!distributorMetaData) {
+        throw new Error('Distributor not found in distributorMetaData');
+      }
+
+      return res.status(200).json({
+        outputList: [distributorMetaData]
+      });
+    } catch (error) {
+      console.error('Error reading distributor metadata:', error);
+      return res.status(500).json({ error: error.message });
+    }
+  }
+
   // TODO: UpdateDistributorMetaDataName NEEDS TO UPDATE ALL EXISTING LOCATIONS in Items
   // ?businessId { findDistributorName, newDistributorName }
   async updateDistributorMetaDataName(req, res) {
@@ -262,6 +293,8 @@ module.exports = {
     distributorMetadataListController.createDistributorMetaData(req, res),
   readAllDistributorMetaData: (req, res) =>
     distributorMetadataListController.readAllDistributorMetaData(req, res),
+  readOneDistributorMetaData: (req, res) =>
+    distributorMetadataListController.readOneDistributorMetaData(req, res),
   updateDistributorMetaDataName: (req, res) =>
     distributorMetadataListController.updateDistributorMetaDataName(req, res),
   updateDistributorMetaDataDeadlineDate: (req, res) =>

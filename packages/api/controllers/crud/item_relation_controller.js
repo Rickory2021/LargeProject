@@ -76,6 +76,24 @@ class ItemRelationController extends GenericCRUDController {
 
     try {
       console.log('Check if Both Items Exist');
+      let doesExistRaw = await this.doesExistItem(
+        businessId,
+        'itemList.itemName',
+        rawItemName
+      );
+      if (!doesExistRaw) {
+        console.log(`Raw Item Doesn't Exist`);
+        return res.status(409).json({ error: `Raw Item Doesn't Exist` });
+      }
+      let doesExistFinished = await this.doesExistItem(
+        businessId,
+        'itemList.itemName',
+        finishedItemName
+      );
+      if (!doesExistFinished) {
+        console.log(`Finished Item Doesn't Exist`);
+        return res.status(409).json({ error: `Finished Item Doesn't Exist` });
+      }
       let doesConnectionExist = await this.doesExistRelation(
         businessId,
         rawItemName,
