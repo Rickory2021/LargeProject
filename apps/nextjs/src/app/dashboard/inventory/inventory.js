@@ -1,108 +1,47 @@
 'use client';
-import React, { useState, useEffect } from 'react';
-import SideNav from '../components/side-nav';
+import { SideNav } from '@repo/ui/side-nav';
 import CookieComponent from '../components/CookieComponent';
-import Location from '../components/location';
-import LargestPortion from '../components/LargestPortion';
-import LocationPopup from '../components/LocationPopup';
-import ItemTotalCount from '../components/ItemTotalCount';
-import LocationTotalCount from '../components/LocationTotalCount';
-import ItemLog from '../components/ItemLog'; // Import ItemLog here
+import React from 'react';
+import { useState, useEffect } from 'react';
+import Table from '../components/Table';
 import '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 export function Inventory() {
   const [userId, setUserId] = useState('');
-  const [businessId, setBusinessId] = useState('');
+  const [businessId, setbusinessId] = useState('');
   const [loading, setLoading] = useState(true);
   const [itemList, setItemList] = useState([]);
-  const [locationList, setLocationList] = useState([]);
-  const [locationMetaData, setLocationMetaData] = useState({});
-  const [itemLog, setItemLog] = useState([]);
+  const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
   const [openIndex, setOpenIndex] = useState(null);
-  const [popupLocation, setPopupLocation] = useState('');
-  const [popupItemLog, setPopupItemLog] = useState(false);
-  const [selectedItemName, setSelectedItemName] = useState('');
-  const [itemCountMap, setItemCountMap] = useState({});
-  const [locationInventory, setLocationInventory] = useState({});
-  const [maxPortionMap, setMaxPortionMap] = useState({});
+  const [popupLocation, setPopupLocation] = useState(null);
+  const [popupItemLog, setPopupItemLog] = useState(null);
+  const [selectedItemName, setSelectedItemName] = useState(null);
 
+  const Location = [{ locations: ['On-site'] }, { locations: ['Garage'] }];
   // Function to handle userId change
   const handleUserIdChange = userId => {
     setUserId(userId);
   };
 
-  const updateLocationList = newLocationList => {
-    setLocationList(newLocationList);
-  };
-
-  const updataLocationMetaData = newLocationMetaData => {
-    setLocationMetaData(newLocationMetaData);
-  };
-
-  const updateItemLog = newItemLog => {
-    setItemLog(newItemLog);
-  };
-
-  const defaultLocationInventory = {
-    portionNumber: 0,
-    metaData: 'No Input Exists'
-  };
-
-  const updateLocationInventory = (
-    locationName,
-    itemName,
-    newLocationInventory
-  ) => {
-    if (newLocationInventory == null) {
-      setLocationInventory(prevState => ({
-        ...prevState,
-        [locationName]: {
-          ...prevState[locationName],
-          [itemName]: defaultLocationInventory
-        }
-      }));
-      console.log(locationInventory);
-    } else {
-      setLocationInventory(prevState => ({
-        ...prevState,
-        [locationName]: {
-          ...prevState[locationName],
-          [itemName]: newLocationInventory
-        }
-      }));
-      console.log(locationInventory);
-    }
-  };
-
-  const updateItemCount = (itemName, newItemTotal) => {
-    setItemCountMap(prevState => ({
-      ...prevState,
-      [itemName]: newItemTotal
-    }));
-  };
-
-  const updateMaxPortionForItem = (itemName, newMaxPortion) => {
-    setMaxPortionMap(prevState => ({
-      ...prevState,
-      [itemName]: newMaxPortion
-    }));
-  };
-
   const handleLocationPopup = location => {
+    // Handle logic to show popup with information about the location
+    // For now, let's just set the location for simplicity
     setPopupLocation(location);
   };
 
   const handleItemLogPopup = itemName => {
+    // Add logic to handle the Item Log popup
     setSelectedItemName(itemName);
     setPopupItemLog(true);
   };
 
   const handleClosePopup = () => {
     setPopupLocation(null);
-    setPopupItemLog(false); // Set popupItemLog to false to close the popup
+    setPopupItemLog(null);
   };
 
   const getBusinessId = async () => {
+    console.log(userId);
     const response = await fetch(
       'http://localhost:3001/api/auth/user/user-info?id=' + userId,
       {
@@ -117,6 +56,7 @@ export function Inventory() {
       const { businessIdList } = responseData;
       return { businessIdList };
     } else {
+      //nothing returned (wont happen with how api is setup but just in case)
       console.log('error');
       const errorData = await response.json();
       return null;
@@ -124,25 +64,7 @@ export function Inventory() {
   };
 
   useEffect(() => {
-    if (userId !== '') {
-      setLoading(false);
-      getBusinessId().then(data => {
-        console.log('Business: ', data.businessIdList[0]);
-        setBusinessId(data.businessIdList[0]);
-      });
-    }
-  }, [userId]);
-
-  useEffect(() => {
-    if (businessId !== '') readAll();
-  }, [businessId]);
-
-  const readAll = async () => {
-    try {
-      console.log(
-        'http://localhost:3001/api/crud/business/item-list/read-all/?businessId=' +
-          businessId
-      );
+    const readAll = async () => {
       const response = await fetch(
         'http://localhost:3001/api/crud/business/item-list/read-all/?businessId=' +
           businessId,
@@ -153,17 +75,26 @@ export function Inventory() {
           }
         }
       );
-      if (!response.ok) {
-        throw new Error('Failed to fetch item names');
+      if (response.ok) {
+        const responseData = await response.json();
+        const { fieldValues } = responseData;
+        setItemList(fieldValues);
+      } else {
+        console.log('error');
       }
-      const data = await response.json();
-      const fieldValues = data.output;
+    };
+    readAll();
+  }, [businessId]);
 
-      setItemList(fieldValues);
-    } catch (error) {
-      console.error('Error fetching item names:', error);
+  useEffect(() => {
+    if (userId != '') {
+      setLoading(false);
+      getBusinessId().then(data => {
+        console.log('Business: ', data.businessIdList[0]);
+        setbusinessId(data.businessIdList[0]);
+      });
     }
-  };
+  }, [userId]);
 
   if (loading) {
     return (
@@ -174,11 +105,13 @@ export function Inventory() {
     );
   }
 
-  if (businessId !== '') {
+  if (businessId != '') {
     return (
-      <div>
-        <SideNav />
-        <div className="flex justify-center items-center flex-col flex-1">
+      <div className="w-full h-screen grid grid-cols-[min-content_auto] grid-rows-[5fr_1fr]">
+        <div className="bg-green-500">
+          <SideNav />
+        </div>
+        <div className="justify-center flex-col items-center">
           <ul>
             {itemList.map((item, index) => (
               <li key={index}>
@@ -225,36 +158,12 @@ export function Inventory() {
                     >
                       {item.itemName}
                     </button>
-                    {!itemCountMap[item.itemName] && (
-                      <div>
-                        <ItemTotalCount
-                          businessId={businessId}
-                          itemName={item.itemName}
-                          updateItemCount={updateItemCount}
-                        />
-                      </div>
-                    )}
-                    <LargestPortion
-                      businessId={businessId}
-                      itemName={item.itemName}
-                      updateMaxPortion={updateMaxPortionForItem}
-                    />
-                    {/* Display the item count if available */}
-
-                    <>
-                      <p className="m-8">
-                        Total Count:{' '}
-                        {maxPortionMap[item.itemName] &&
-                          itemCountMap[item.itemName] /
-                            maxPortionMap[item.itemName].unitNumber}{' '}
-                        {maxPortionMap[item.itemName] &&
-                          maxPortionMap[item.itemName].unitName}
-                      </p>
-                      <p className="m-8">Estimated:</p>
-                    </>
+                    Total Count: Estimated:
                   </div>
                   {openIndex === index && (
                     <div className="ml-12">
+                      {' '}
+                      {/* Adjust the value to fit your design */}
                       <div className="flex items-center ml-2">
                         <h6 className="mr-auto">Location:</h6>
                         <button
@@ -269,65 +178,24 @@ export function Inventory() {
                           Item Log
                         </button>
                       </div>
-                      <Location
-                        itemName={item.itemName}
-                        businessId={businessId}
-                        updateLocationList={updateLocationList}
-                      />
                       <ul>
-                        {locationList.map((location, i) => (
+                        {Location.map((location, i) => (
                           <li
                             key={i}
                             className="block px-4 py-2 text-sm text-gray-700"
                           >
-                            {location}
+                            {location.locations}
                             <button
-                              onClick={() => handleLocationPopup(location)}
+                              onClick={() =>
+                                handleLocationPopup(location.locations)
+                              }
                               type="button"
                               className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
                             >
+                              {/* Your button icon (e.g., an 'i' for information) */}
                               i
                             </button>
-
-                            {!locationInventory[location] ||
-                            !locationInventory[location][item.itemName] ? (
-                              <div>
-                                <LocationTotalCount
-                                  itemName={item.itemName}
-                                  businessId={businessId}
-                                  locationName={location}
-                                  updateLocationInventory={
-                                    updateLocationInventory
-                                  }
-                                />
-                                <LargestPortion
-                                  businessId={businessId}
-                                  itemName={item.itemName}
-                                  updateMaxPortion={updateMaxPortionForItem}
-                                />
-                              </div>
-                            ) : (
-                              <>
-                                <p className="m-8">
-                                  Total count:{' '}
-                                  {maxPortionMap[item.itemName] &&
-                                    locationInventory[location][item.itemName]
-                                      .portionNumber /
-                                      maxPortionMap[item.itemName]
-                                        .unitNumber}{' '}
-                                  {maxPortionMap[item.itemName] &&
-                                    maxPortionMap[item.itemName].unitName}
-                                </p>
-                                <p className="m-8">
-                                  Last Updated:{' '}
-                                  {
-                                    locationInventory[location][item.itemName]
-                                      .metaData
-                                  }
-                                </p>
-                                <p className="m-8">Estimated:</p>
-                              </>
-                            )}
+                            Total Count: Last Updated: Estimated:
                           </li>
                         ))}
                       </ul>
@@ -344,11 +212,6 @@ export function Inventory() {
             className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50"
             onClick={handleClosePopup}
           >
-            <LocationPopup
-              locationName={popupLocation}
-              businessId={businessId}
-              updataLocationMetaData={updataLocationMetaData}
-            />
             <div
               className="bg-white p-4 rounded-md relative"
               onClick={e => e.stopPropagation()}
@@ -360,11 +223,13 @@ export function Inventory() {
                 X
               </button>
               <p>Information about {popupLocation}</p>
-              <p>Address: {locationMetaData.locationAddress}</p>
-              <p>Notes(MetaData): {locationMetaData.locationMetaData}</p>
+              <p>Address: </p>
+              <p>Notes(MetaData): </p>
+              {/* Add more information about the location as needed */}
             </div>
           </div>
         )}
+
         {popupItemLog && (
           <div
             className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50"
@@ -380,24 +245,13 @@ export function Inventory() {
               >
                 X
               </button>
-              {/* Render ItemLog component here */}
-              <ItemLog
-                itemName={selectedItemName}
-                businessId={businessId}
-                locationBucket={'2024'}
-                updateItemLog={updateItemLog}
-              />
               <p>{selectedItemName} Log</p>
-              {itemLog.map((log, index) => (
-                <div key={index}>
-                  <p>Location: {log.locationName}</p>
-                  <p>Date + Time: {log.updateDate}</p>
-                  <p>Description: {log.logReason}</p>
-                  <p>Initial Portion: {log.initialPortion}</p>
-                  <p>Final Portion: {log.finalPortion}</p>
-                  <br />
-                </div>
-              ))}
+              <p>Location: </p>
+              <p>Date + Time: </p>
+              <p>Description: </p>
+              <p>Initial Portion: </p>
+              <p>Final Portion: </p>
+              {/* Add item log content here */}
             </div>
           </div>
         )}
@@ -405,5 +259,3 @@ export function Inventory() {
     );
   }
 }
-
-export default Inventory;

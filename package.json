@@ -2,7 +2,7 @@
   "name": "largeproject",
   "private": true,
   "scripts": {
-    "build": "pnpm install && turbo build",
+    "build": "turbo build",
     "start": "node packages/api/server.js",
     "dev": "pnpm install && turbo dev",
     "lint": "turbo lint",
