@@ -59,12 +59,19 @@ export default function SignIn() {
           onChange={e => setPassword(e.target.value)}
           className="p-2 border border-gray-300 rounded-md"
         />
-        <button type="submit" className="bg-blue-500 text-white p-2 rounded-md">
+        <button
+          type="submit"
+          className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-700"
+        >
           Sign In
         </button>
       </form>
       <Link href="/sign-up">
         <button className="mt-4 text-blue-500">Not a user? Register now</button>
+      </Link>
+
+      <Link href="/forgot-password">
+        <button className="mt-4 text-blue-500">Forgot Password?</button>
       </Link>
 
       {/* Error popup */}

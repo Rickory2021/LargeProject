@@ -1,5 +1,5 @@
 const { Business } = require('../../models/business_model');
-const User = require('../../models/user_model');
+const { User } = require('../../models/user_model');
 
 /**
  * Register Business endpoint\

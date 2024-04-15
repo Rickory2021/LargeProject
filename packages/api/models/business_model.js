@@ -12,14 +12,14 @@ const locationInventorySchema = new mongoose.Schema({
 
 const locationLogSchema = new mongoose.Schema({
   locationName: String,
+  logReason: String,
   initialPortion: Number,
   finalPortion: Number,
   updateDate: {
-    type: Date,
-    default: Date.now
+    type: Date
   }
 });
-
+//default: Date.now
 const locationBucketLogSchema = new mongoose.Schema({
   locationBucket: String,
   locationBucketLog: [locationLogSchema]
@@ -44,10 +44,9 @@ const distributorMetaDataSchema = new mongoose.Schema({
 });
 
 const locationMetaDataSchema = new mongoose.Schema({
-  distributorName: String,
-  distributorDeadlineDate: String,
-  distributorDeliveryDate: String,
-  distributorMetaData: String
+  locationName: String,
+  locationAddress: String,
+  locationMetaData: String
 });
 
 const itemSchema = new mongoose.Schema({
@@ -65,6 +64,7 @@ const itemSchema = new mongoose.Schema({
       unitCost: Number
     }
   ],
+  estimateDeduction: { type: Number, default: 0 },
   locationItemList: [
     {
       locationName: String,
