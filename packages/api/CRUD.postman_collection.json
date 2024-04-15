@@ -1,0 +1,2436 @@
+{
+  "info": {
+    "_postman_id": "92625aae-cfa1-465b-bfb9-66aab0a72783",
+    "name": "CRUD",
+    "description": "# 🚀 Get started here\n\nThis template guides you through CRUD operations (GET, POST, PUT, DELETE), variables, and tests.\n\n## 🔖 **How to use this template**\n\n#### **Step 1: Send requests**\n\nRESTful APIs allow you to perform CRUD operations using the POST, GET, PUT, and DELETE HTTP methods.\n\nThis collection contains each of these [request](https://learning.postman.com/docs/sending-requests/requests/) types. Open each request and click \"Send\" to see what happens.\n\n#### **Step 2: View responses**\n\nObserve the response tab for status code (200 OK), response time, and size.\n\n#### **Step 3: Send new Body data**\n\nUpdate or add new data in \"Body\" in the POST request. Typically, Body data is also used in PUT request.\n\n```\n{\n    \"name\": \"Add your name in the body\"\n}\n\n ```\n\n#### **Step 4: Update the variable**\n\nVariables enable you to store and reuse values in Postman. We have created a [variable](https://learning.postman.com/docs/sending-requests/variables/) called `base_url` with the sample request [https://postman-api-learner.glitch.me](https://postman-api-learner.glitch.me). Replace it with your API endpoint to customize this collection.\n\n#### **Step 5: Add tests in the \"Tests\" tab**\n\nTests help you confirm that your API is working as expected. You can write test scripts in JavaScript and view the output in the \"Test Results\" tab.\n\n<img src=\"https://content.pstmn.io/b5f280a7-4b09-48ec-857f-0a7ed99d7ef8/U2NyZWVuc2hvdCAyMDIzLTAzLTI3IGF0IDkuNDcuMjggUE0ucG5n\">\n\n## 💪 Pro tips\n\n- Use folders to group related requests and organize the collection.\n- Add more [scripts](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/) in \"Tests\" to verify if the API works as expected and execute workflows.\n    \n\n## 💡Related templates\n\n[API testing basics](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9a37a28-055b-49cd-8c7e-97494a21eb54&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[API documentation](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9c28f47-1253-44af-a2f3-20dce4da1f18&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[Authorization methods](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=31a9a6ed-4cdf-4ced-984c-d12c9aec1c27&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+    "_exporter_id": "33956871"
+  },
+  "item": [
+    {
+      "name": "Employee Id List",
+      "item": [
+        {
+          "name": "read-all",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/employee-id-list/read-all?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "employee-id-list",
+                "read-all"
+              ],
+              "query": [
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            },
+            "description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"employeeId\":\"66143854055ed73df9bda014\"}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/employee-id-list/delete?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "crud", "business", "employee-id-list", "delete"],
+              "query": [
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            },
+            "description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Item List/Item name",
+      "item": [
+        {
+          "name": "create",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"itemName\":\"Finished Item\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/item-list/create?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "crud", "business", "item-list", "create"],
+              "query": [
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "read-all",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/item-list/read-all?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "crud", "business", "item-list", "read-all"],
+              "query": [
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            },
+            "description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+          },
+          "response": []
+        },
+        {
+          "name": "read-one",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"itemName\":\"Fluid Item\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/item-list/read-one?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "crud", "business", "item-list", "read-one"],
+              "query": [
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            },
+            "description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+          },
+          "response": []
+        },
+        {
+          "name": "update-name",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Successful PUT request\", function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"findItemName\":\"Raw Item\", \"newItemName\":\"Dry Item\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/item-list/update-name?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "crud", "business", "item-list", "update-name"],
+              "query": [
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            },
+            "description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Successful DELETE request\", function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 202, 204]);",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"itemName\":\"Dry Item\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/item-list/delete?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "crud", "business", "item-list", "delete"],
+              "query": [
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            },
+            "description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+          },
+          "response": []
+        },
+        {
+          "name": "total-item-count",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Successful DELETE request\", function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 202, 204]);",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"itemName\":\"Fluid Item\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/item-list/total-item-count?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "item-list",
+                "total-item-count"
+              ],
+              "query": [
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            },
+            "description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Portion Info",
+      "item": [
+        {
+          "name": "create",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"itemName\":\"Fluid Item\",\r\n    \"unitName\": \"litter\",\r\n    \"unitNumber\": \"1000\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/portion-info-list/create?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "portion-info-list",
+                "create"
+              ],
+              "query": [
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "read-all",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"itemName\":\"Fluid Item\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/portion-info-list/read-all?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "portion-info-list",
+                "read-all"
+              ],
+              "query": [
+                {
+                  "key": "itemName",
+                  "value": "Fluid Item",
+                  "disabled": true
+                },
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update-name",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"itemName\":\"Fluid Item\",\r\n    \"findUnitName\": \"ml\",\r\n    \"newUnitName\": \"milliter\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/portion-info-list/update-name?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "portion-info-list",
+                "update-name"
+              ],
+              "query": [
+                {
+                  "key": "itemName",
+                  "value": "Fluid Item",
+                  "disabled": true
+                },
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update-number",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"itemName\":\"Fluid Item\", \"findUnitName\":\"milliter\", \"newUnitNumber\":1 }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/portion-info-list/update-number?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "portion-info-list",
+                "update-number"
+              ],
+              "query": [
+                {
+                  "key": "",
+                  "value": null,
+                  "disabled": true
+                },
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"itemName\":\"Fluid Item\", \"unitName\":\"milliter\" }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/portion-info-list/delete?businessId=65f1e3282ce46bcd9e280ae6",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "portion-info-list",
+                "delete"
+              ],
+              "query": [
+                {
+                  "key": "itemName",
+                  "value": "Fluid Item",
+                  "disabled": true
+                },
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "businessId",
+                  "value": "65f1e3282ce46bcd9e280ae6"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Item Relation",
+      "item": [
+        {
+          "name": "create",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"rawItemName\":\"Fluid Item\", \"finishedItemName\":\"Finished Item\", \"unitCost\":20 }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/item-relation/create?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "crud", "business", "item-relation", "create"],
+              "query": [
+                {
+                  "key": "",
+                  "value": null,
+                  "disabled": true
+                },
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "read-used-in",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"itemName\":\"Fluid Item\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/item-relation/read-used-in?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "item-relation",
+                "read-used-in"
+              ],
+              "query": [
+                {
+                  "key": "",
+                  "value": null,
+                  "disabled": true
+                },
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "read-needed",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"itemName\":\"Finished Item\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/item-relation/read-needed?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "item-relation",
+                "read-needed"
+              ],
+              "query": [
+                {
+                  "key": "",
+                  "value": null,
+                  "disabled": true
+                },
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update-unit-cost",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"rawItemName\": \"Fluid Item\",\r\n    \"finishedItemName\": \"Finished Item\",\r\n    \"newUnitCost\": 100\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/item-relation/update-unit-cost?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "item-relation",
+                "update-unit-cost"
+              ],
+              "query": [
+                {
+                  "key": "",
+                  "value": null,
+                  "disabled": true
+                },
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"rawItemName\":\"Fluid Item\", \"finishedItemName\" :\"Finished Item\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/item-relation/delete?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "crud", "business", "item-relation", "delete"],
+              "query": [
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Estimate Deduction",
+      "item": [
+        {
+          "name": "read",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"itemName\":\"Fluid Item\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/estimate-deduction/read?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "crud", "business", "estimate-deduction", "read"],
+              "query": [
+                {
+                  "key": "itemName",
+                  "value": "Fluid Item",
+                  "disabled": true
+                },
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"newEstimateDeduction\":10, \"findItemName\":\"Fluid Item\" }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/estimate-deduction/update?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "estimate-deduction",
+                "update"
+              ],
+              "query": [
+                {
+                  "key": "itemName",
+                  "value": "Fluid Item",
+                  "disabled": true
+                },
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Item Location",
+      "item": [
+        {
+          "name": "create",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"itemName\": \"Fluid Item\",\r\n    \"locationName\": \"Location A\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/item-location/create?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "crud", "business", "item-location", "create"],
+              "query": [
+                {
+                  "key": "",
+                  "value": null,
+                  "disabled": true
+                },
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "read-all",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"itemName\":\"Fluid Item\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/item-location/read-all?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "crud", "business", "item-location", "read-all"],
+              "query": [
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "read-one",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"itemName\":\"Fluid Item\", \"locationName\":\"Location A\" }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/item-location/read-one?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "crud", "business", "item-location", "read-one"],
+              "query": [
+                {
+                  "key": "itemName",
+                  "value": "Fluid Item",
+                  "disabled": true
+                },
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update-name",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"itemName\":\"Fluid Item\", \"findLocationName\":\"Location A\", \"newLocationName\":\"Location A\" }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/item-location/update-name?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "item-location",
+                "update-name"
+              ],
+              "query": [
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"itemName\":\"Fluid Item\", \"locationName\":\"Location A\" }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/item-location/delete?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "crud", "business", "item-location", "delete"],
+              "query": [
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-one-recent-date",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"itemName\":\"Fluid Item\", \"locationName\":\"Location A\" }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/item-location/get-one-recent-date?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "item-location",
+                "get-one-recent-date"
+              ],
+              "query": [
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "total-location-count",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"itemName\":\"Fluid Item\", \"locationName\":\"Location A\" }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/item-location/total-location-count?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "item-location",
+                "total-location-count"
+              ],
+              "query": [
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Item Inventory",
+      "item": [
+        {
+          "name": "create",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"itemName\": \"Fluid Item\",\r\n    \"locationName\": \"Location A\",\r\n    \"portionNumber\": \"20\",\r\n    \"metaData\": \"First Item\",\r\n    \"logReason\": \"Inventory Arrival\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/item-inventory/create?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "crud", "business", "item-inventory", "create"],
+              "query": [
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "read-all",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"itemName\":\"Fluid Item\", \"locationName\":\"Location A\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/item-inventory/read-all?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "crud", "business", "item-inventory", "read-all"],
+              "query": [
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update-number",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"itemName\":\"Fluid Item\", \"findLocationName\":\"locationA\" , \"index\":0, \"newNumber\":200 }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/item-inventory/update-number?businessId=65dce937180adcfff367ccaf",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "item-inventory",
+                "update-number"
+              ],
+              "query": [
+                {
+                  "key": "businessId",
+                  "value": "65dce937180adcfff367ccaf"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update-name",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"itemName\":\"Fluid Item\", \"findLocationName\":\"locationA\" , \"index\":0, \"newMetaData\":\"NEW DATA????\" }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/item-inventory/update-metadata?businessId=65dce937180adcfff367ccaf",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "item-inventory",
+                "update-metadata"
+              ],
+              "query": [
+                {
+                  "key": "businessId",
+                  "value": "65dce937180adcfff367ccaf"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"itemName\":\"Fluid Item\", \"locationName\":\"locationB\", \"index\":0 }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/item-inventory/delete?businessId=65dce937180adcfff367ccaf",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "crud", "business", "item-inventory", "delete"],
+              "query": [
+                {
+                  "key": "businessId",
+                  "value": "65dce937180adcfff367ccaf"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Item Location Log",
+      "item": [
+        {
+          "name": "create",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"itemName\": \"Fluid Item\",\r\n    \"locationName\": \"locationB\",\r\n    \"logReason\": \"Manual Count\",\r\n    \"initialPortion\": 10,\r\n    \"finalPortion\": 10,\r\n    \"updateDate\": \"2024-05-01T12:00:00Z\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/item-location-log/create?businessId=65dce937180adcfff367ccaf",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "item-location-log",
+                "create"
+              ],
+              "query": [
+                {
+                  "key": "businessId",
+                  "value": "65dce937180adcfff367ccaf"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "read-all",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"itemName\":\"Fluid Item\", \"locationBucket\":\"2024\" }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/item-location-log/read-all?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "item-location-log",
+                "read-all"
+              ],
+              "query": [
+                {
+                  "key": "itemName",
+                  "value": "Fluid Item",
+                  "disabled": true
+                },
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"itemName\": \"Fluid Item\",\r\n    \"updateDate\": \"2023-04-05T12:00:00Z\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/item-location-log/delete?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "item-location-log",
+                "delete"
+              ],
+              "query": [
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Location MetaData",
+      "item": [
+        {
+          "name": "create",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"locationName\": \"Location Z\",\r\n    \"locationAddress\": \"1234 Drive\",\r\n    \"locationMetaData\": \"New Location\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/location-metadata-list/create?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "location-metadata-list",
+                "create"
+              ],
+              "query": [
+                {
+                  "key": "",
+                  "value": null,
+                  "disabled": true
+                },
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "read-all",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/location-metadata-list/read-all?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "location-metadata-list",
+                "read-all"
+              ],
+              "query": [
+                {
+                  "key": "itemName",
+                  "value": "Fluid Item",
+                  "disabled": true
+                },
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "read-one",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"locationName\":\"Location Location\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/location-metadata-list/read-one?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "location-metadata-list",
+                "read-one"
+              ],
+              "query": [
+                {
+                  "key": "itemName",
+                  "value": "Fluid Item",
+                  "disabled": true
+                },
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update-name",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"findLocationName\":\"Location Z\", \"newLocationName\":\"Location Location\" }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/location-metadata-list/update-name?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "location-metadata-list",
+                "update-name"
+              ],
+              "query": [
+                {
+                  "key": "itemName",
+                  "value": "Fluid Item",
+                  "disabled": true
+                },
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update-address",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"findLocationName\":\"Location Location\", \"newLocationAddress\":\"NEW STORAGE CLOUD\" }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/location-metadata-list/update-address?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "location-metadata-list",
+                "update-address"
+              ],
+              "query": [
+                {
+                  "key": "itemName",
+                  "value": "Fluid Item",
+                  "disabled": true
+                },
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update-metadata",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"findLocationName\":\"Location Location\", \"newLocationMetaData\":\"NEW META DATA???\" }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/location-metadata-list/update-metadata?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "location-metadata-list",
+                "update-metadata"
+              ],
+              "query": [
+                {
+                  "key": "itemName",
+                  "value": "Fluid Item",
+                  "disabled": true
+                },
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"locationName\":\"Location Location\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/location-metadata-list/delete?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "location-metadata-list",
+                "delete"
+              ],
+              "query": [
+                {
+                  "key": "itemName",
+                  "value": "Fluid Item",
+                  "disabled": true
+                },
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Distributor Item",
+      "item": [
+        {
+          "name": "create",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": " {\"itemName\":\"Fluid Item\", \"distributorName\":\"PepsiCo\", \"distributorItemName\":\"WaterLife 3/8 Pack\", \"distributorItemPortion\":405.6, \"distributorItemCost\":\"25\", \"priorityChoice\":1}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/distributor-item/create?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "crud", "business", "distributor-item", "create"],
+              "query": [
+                {
+                  "key": "",
+                  "value": null,
+                  "disabled": true
+                },
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "read-all",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"itemName\":\"Fluid Item\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/distributor-item/read-all?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "distributor-item",
+                "read-all"
+              ],
+              "query": [
+                {
+                  "key": "itemName",
+                  "value": "Fluid Item",
+                  "disabled": true
+                },
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update-distributor-item-name",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"itemName\":\"Fluid Item\", \"index\":0, \"newDistributorItemName\":\"WaterLife 3/8/16.9Foz\" }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/distributor-item/update-distributor-item-name?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "distributor-item",
+                "update-distributor-item-name"
+              ],
+              "query": [
+                {
+                  "key": "itemName",
+                  "value": "Fluid Item",
+                  "disabled": true
+                },
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update-item-portion",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"itemName\":\"Fluid Item\", \"index\":0, \"newItemPortion\":340 }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/distributor-item/update-item-portion?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "distributor-item",
+                "update-item-portion"
+              ],
+              "query": [
+                {
+                  "key": "itemName",
+                  "value": "Fluid Item",
+                  "disabled": true
+                },
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update-item-cost",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"itemName\":\"Fluid Item\", \"index\":0, \"newItemCost\":4.99 }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/distributor-item/update-item-cost?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "distributor-item",
+                "update-item-cost"
+              ],
+              "query": [
+                {
+                  "key": "itemName",
+                  "value": "Fluid Item",
+                  "disabled": true
+                },
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update-priority-choice",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"itemName\":\"Fluid Item\", \"index\":0, \"newPriorityChoice\":200 }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/distributor-item/update-priority-choice?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "distributor-item",
+                "update-priority-choice"
+              ],
+              "query": [
+                {
+                  "key": "itemName",
+                  "value": "Fluid Item",
+                  "disabled": true
+                },
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"itemName\":\"Fluid Item\", \"index\":0 }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/distributor-item/delete?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "crud", "business", "distributor-item", "delete"],
+              "query": [
+                {
+                  "key": "itemName",
+                  "value": "Fluid Item",
+                  "disabled": true
+                },
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Distributor MetaData",
+      "item": [
+        {
+          "name": "create",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"distributorName\": \"DistributorZZ\",\r\n    \"distributorDeadlineDate\": \"Monday\",\r\n    \"distributorDeliveryDate\": \"Tuesday\",\r\n    \"distributorMetaData\": \"Weekly\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/distributor-metadata-list/create?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "distributor-metadata-list",
+                "create"
+              ],
+              "query": [
+                {
+                  "key": "",
+                  "value": null,
+                  "disabled": true
+                },
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "read-all",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/distributor-metadata-list/read-all?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "distributor-metadata-list",
+                "read-all"
+              ],
+              "query": [
+                {
+                  "key": "itemName",
+                  "value": "Fluid Item",
+                  "disabled": true
+                },
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "read-one",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"distributorName\":\"PepsiCo\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/distributor-metadata-list/read-one?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "distributor-metadata-list",
+                "read-one"
+              ],
+              "query": [
+                {
+                  "key": "itemName",
+                  "value": "Fluid Item",
+                  "disabled": true
+                },
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update-name",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"findDistributorName\":\"DistributorZZ\", \"newDistributorName\":\"Distributor ZZ\" }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/distributor-metadata-list/update-name?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "distributor-metadata-list",
+                "update-name"
+              ],
+              "query": [
+                {
+                  "key": "itemName",
+                  "value": "Fluid Item",
+                  "disabled": true
+                },
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update-deadline-date",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"findDistributorName\":\"PepsiCo\", \"newDistributorDeadlineDate\":\"Wednesday Night\" }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/distributor-metadata-list/update-deadline-date?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "distributor-metadata-list",
+                "update-deadline-date"
+              ],
+              "query": [
+                {
+                  "key": "itemName",
+                  "value": "Fluid Item",
+                  "disabled": true
+                },
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update-delivery-date",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"findDistributorName\":\"PepsiCo\", \"newDistributorDeliveryDate\":\"DEC\" }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/distributor-metadata-list/update-delivery-date?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "distributor-metadata-list",
+                "update-delivery-date"
+              ],
+              "query": [
+                {
+                  "key": "itemName",
+                  "value": "Fluid Item",
+                  "disabled": true
+                },
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update-meta-data",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"findDistributorName\":\"PepsiCo\", \"newDeliveryMetaData\":\"NEW NOTE\" }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/distributor-metadata-list/update-meta-data?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "distributor-metadata-list",
+                "update-meta-data"
+              ],
+              "query": [
+                {
+                  "key": "itemName",
+                  "value": "Fluid Item",
+                  "disabled": true
+                },
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"distributorName\":\"Distributor ZZ\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/crud/business/distributor-metadata-list/delete?businessId=6619a6969cb09d729201a801",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": [
+                "api",
+                "crud",
+                "business",
+                "distributor-metadata-list",
+                "delete"
+              ],
+              "query": [
+                {
+                  "key": "itemName",
+                  "value": "Fluid Item",
+                  "disabled": true
+                },
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "businessId",
+                  "value": "6619a6969cb09d729201a801"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "id",
+      "value": "1"
+    },
+    {
+      "key": "base_url",
+      "value": "https://postman-rest-api-learner.glitch.me/"
+    }
+  ]
+}

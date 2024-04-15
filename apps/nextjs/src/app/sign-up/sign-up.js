@@ -1,8 +1,9 @@
 'use client';
+
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 export default function SignUp() {
   const [email, setEmail] = useState('');
@@ -12,24 +13,11 @@ export default function SignUp() {
   const [username, setUsername] = useState('');
   const [businessIdList, setBusinessIdList] = useState('');
   const [error, setError] = useState('');
-  const [passwordFocused, setPasswordFocused] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [passwordRequirements, setPasswordRequirements] = useState({
-    minLength: false,
-    uppercase: false,
-    lowercase: false,
-    specialCharacter: false
-  });
 
   const router = useRouter();
 
   const handleSubmit = async e => {
     e.preventDefault();
-    if (!validatePassword(password)) {
-      setError('Entered password does not meet validation requirements!');
-      return;
-    }
-
     try {
       const res = await fetch('http://localhost:3001/api/auth/user/signup', {
         method: 'POST',
@@ -47,11 +35,14 @@ export default function SignUp() {
       });
       if (res.ok) {
         router.push('/sign-in');
-      } else if (res.status === 400) {
+      } else if (res == 400) {
+        // If response is not ok, get error message from response body
         const { error } = await res.json();
+        console.log(error);
         setError(error);
       } else {
         const { error } = await res.json();
+        console.log(error);
         setError(error);
       }
     } catch (error) {
@@ -60,41 +51,9 @@ export default function SignUp() {
     }
   };
 
-  const validatePassword = password => {
-    const passwordRegex =
-      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
-    const newPasswordRequirements = {
-      minLength: password.length >= 8,
-      uppercase: /[A-Z]/.test(password),
-      lowercase: /[a-z]/.test(password),
-      specialCharacter: /[!@#$%^&*]/.test(password)
-    };
-    setPasswordRequirements(newPasswordRequirements);
-    return passwordRegex.test(password);
-  };
-
+  // Function to close the error popup
   const closeErrorPopup = () => {
     setError('');
-  };
-
-  const handlePasswordFocus = () => {
-    setPasswordFocused(true);
-  };
-
-  const handlePasswordBlur = () => {
-    setPasswordFocused(false);
-    setShowPassword(false); // Hide the button when the password input is blurred
-  };
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(prevShowPassword => !prevShowPassword);
-  };
-
-  const handlePasswordChange = e => {
-    setPassword(e.target.value);
-    if (passwordFocused) {
-      validatePassword(e.target.value);
-    }
   };
 
   return (
@@ -102,93 +61,45 @@ export default function SignUp() {
       <h1 className="text-4xl font-bold mb-8">Sign Up</h1>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <input
-          type="text"
-          placeholder="First Name"
+          type="firstName"
+          placeholder="FirstName"
           value={firstName}
           onChange={e => setFirstName(e.target.value)}
           className="p-2 border border-gray-300 rounded-md"
         />
         <input
-          type="text"
-          placeholder="Last Name"
+          type="lastName"
+          placeholder="LastName"
           value={lastName}
           onChange={e => setLastName(e.target.value)}
           className="p-2 border border-gray-300 rounded-md"
         />
         <input
-          type="text"
-          placeholder="Username"
+          type="username"
+          placeholder="username"
           value={username}
           onChange={e => setUsername(e.target.value)}
           className="p-2 border border-gray-300 rounded-md"
         />
-        <div className="relative">
-          <input
-            type={showPassword ? 'text' : 'password'}
-            placeholder="Password"
-            value={password}
-            onChange={handlePasswordChange}
-            onFocus={handlePasswordFocus}
-            onBlur={handlePasswordBlur}
-            className="p-2 border border-gray-300 rounded-md"
-          />
-          {!showPassword && !passwordFocused && (
-            <button
-              type="button"
-              className="absolute top-3 right-2"
-              onClick={togglePasswordVisibility}
-            >
-              <FaEye />
-            </button>
-          )}
-          {showPassword && !passwordFocused && (
-            <button
-              type="button"
-              className="absolute top-3 right-2"
-              onClick={togglePasswordVisibility}
-            >
-              <FaEyeSlash />
-            </button>
-          )}
-        </div>
-        {passwordFocused && (
-          <div className="p-2 border border-gray-300 rounded-md">
-            <ul>
-              <li>
-                {passwordRequirements.minLength ? '✓' : '-'} Password must be at
-                least 8 characters long
-              </li>
-              <li>
-                {passwordRequirements.uppercase ? '✓' : '-'} Contain at least
-                one uppercase letter
-              </li>
-              <li>
-                {passwordRequirements.lowercase ? '✓' : '-'} Contain at least
-                one lowercase letter
-              </li>
-              <li>
-                {passwordRequirements.specialCharacter ? '✓' : '-'} Contain at
-                least one special character: !@#$%^&*
-              </li>
-            </ul>
-          </div>
-        )}
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+          className="p-2 border border-gray-300 rounded-md"
+        />
         <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={e => setEmail(e.target.value)}
-          className={`p-2 border border-gray-300 rounded-md ${passwordFocused ? 'mt-4' : ''}`}
-        />
-        <input
-          type="text"
-          placeholder="Business ID"
-          value={businessIdList}
-          onChange={e => setBusinessIdList(e.target.value)}
-          className={`p-2 border border-gray-300 rounded-md ${passwordFocused ? 'mt-4' : ''}`}
+          className="p-2 border border-gray-300 rounded-md"
         />
 
-        <button type="submit" className="bg-blue-500 text-white p-2 rounded-md">
+        <button
+          type="submit"
+          className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-700"
+        >
           Sign Up
         </button>
       </form>

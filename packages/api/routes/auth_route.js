@@ -3,7 +3,9 @@ const {
   VerifyEmail,
   Login,
   Logout,
-  GetUserInfo
+  GetUserInfo,
+  forgotPassword,
+  resetPassword
 } = require('../controllers/auth/user_auth_controller');
 const {
   RegisterBusiness,
@@ -14,8 +16,6 @@ const {
 const {
   userVerification
 } = require('../controllers/auth/middlewares/auth_middleware_controller');
-// TODO: Uncomment when making these endpoints
-// const { RemoveUserBusinessConn } = require('../controllers/business_auth_controller');
 const router = require('express').Router();
 
 // User routes /api/auth
@@ -24,6 +24,8 @@ router.post('/user/verify-email', VerifyEmail); // POST /api/auth/user/verify-em
 router.post('/user/login', Login); // POST /api/auth/user/signup
 router.post('/user/logout', Logout); // POST /api/auth/user/logout
 router.get('/user/user-info', GetUserInfo); // GET /api/auth/user/user-info?id
+router.post('/user/forgot-password', forgotPassword); // POST /api/auth/user/forgot-password
+router.post('/user/reset-password', resetPassword); // POST /api/auth/user/reset-password?token
 
 // Home route /api/auth
 router.post('/:accessToken', userVerification); // POST /api/auth/sdasjcbweqioqiudbbd
