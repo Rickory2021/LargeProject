@@ -5,7 +5,6 @@ import CookieComponent from '../components/CookieComponent';
 import Distributor from '../components/Distributor';
 import DistributorPopup from '../components/DistributorPopup';
 import '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import { ResponseCookies } from 'next/dist/compiled/@edge-runtime/cookies';
 
 export function Suppliers() {
   const [userId, setUserId] = useState('');

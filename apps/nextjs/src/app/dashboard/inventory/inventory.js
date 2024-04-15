@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import SideNav from '../components/side-nav';
 import CookieComponent from '../components/CookieComponent';
 import Location from '../components/location';
+import LargestPortion from '../components/LargestPortion';
 import LocationPopup from '../components/LocationPopup';
 import ItemTotalCount from '../components/ItemTotalCount';
 import LocationTotalCount from '../components/LocationTotalCount';
@@ -23,6 +24,7 @@ export function Inventory() {
   const [selectedItemName, setSelectedItemName] = useState('');
   const [itemCountMap, setItemCountMap] = useState({});
   const [locationInventory, setLocationInventory] = useState({});
+  const [maxPortionMap, setMaxPortionMap] = useState({});
 
   // Function to handle userId change
   const handleUserIdChange = userId => {
@@ -76,6 +78,13 @@ export function Inventory() {
     setItemCountMap(prevState => ({
       ...prevState,
       [itemName]: newItemTotal
+    }));
+  };
+
+  const updateMaxPortionForItem = (itemName, newMaxPortion) => {
+    setMaxPortionMap(prevState => ({
+      ...prevState,
+      [itemName]: newMaxPortion
     }));
   };
 
@@ -225,13 +234,21 @@ export function Inventory() {
                         />
                       </div>
                     )}
-
+                    <LargestPortion
+                      businessId={businessId}
+                      itemName={item.itemName}
+                      updateMaxPortion={updateMaxPortionForItem}
+                    />
                     {/* Display the item count if available */}
 
                     <>
                       <p className="m-8">
-                        Total Count: {itemCountMap[item.itemName]} Largest
-                        Portion
+                        Total Count:{' '}
+                        {maxPortionMap[item.itemName] &&
+                          itemCountMap[item.itemName] /
+                            maxPortionMap[item.itemName].unitNumber}{' '}
+                        {maxPortionMap[item.itemName] &&
+                          maxPortionMap[item.itemName].unitName}
                       </p>
                       <p className="m-8">Estimated:</p>
                     </>
@@ -283,15 +300,23 @@ export function Inventory() {
                                     updateLocationInventory
                                   }
                                 />
+                                <LargestPortion
+                                  businessId={businessId}
+                                  itemName={item.itemName}
+                                  updateMaxPortion={updateMaxPortionForItem}
+                                />
                               </div>
                             ) : (
                               <>
                                 <p className="m-8">
                                   Total count:{' '}
-                                  {
+                                  {maxPortionMap[item.itemName] &&
                                     locationInventory[location][item.itemName]
-                                      .portionNumber
-                                  }
+                                      .portionNumber /
+                                      maxPortionMap[item.itemName]
+                                        .unitNumber}{' '}
+                                  {maxPortionMap[item.itemName] &&
+                                    maxPortionMap[item.itemName].unitName}
                                 </p>
                                 <p className="m-8">
                                   Last Updated:{' '}
