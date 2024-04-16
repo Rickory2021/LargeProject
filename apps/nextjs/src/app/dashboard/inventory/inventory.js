@@ -4,7 +4,7 @@ import CookieComponent from '../components/CookieComponent';
 import React from 'react';
 import { useState, useEffect } from 'react';
 import Table from '../components/Table';
-import '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
 
 export function Inventory() {
   const [userId, setUserId] = useState('');
