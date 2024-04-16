@@ -5,7 +5,7 @@ import { TbReportSearch } from 'react-icons/tb';
 import Link from 'next/link';
 import { IoPersonSharp } from "react-icons/io5";
 import { GiKnifeFork } from 'react-icons/gi';
-import {BsArrowLeftShort, BsChevronDown, BsReverseLayoutTextSidebarReverse} from "react-icons/bs";
+import {BsArrowLeftShort, BsChevronRight, BsReverseLayoutTextSidebarReverse} from "react-icons/bs";
 
 const SideNav = () => {
   const [open, setOpen] = useState(false);
@@ -79,11 +79,15 @@ const SideNav = () => {
       </div>
 
       <ul className = "pt-1">
+      
         {Menus.map((menu,index) =>(
           <>
-            <li 
-            key = {index} 
-            className = {`text-white-300  text-sm flex items-center gap-x-4 cursor-pointer p-5 hover:bg-black rounded-md ${menu.spacing ? "mt-9" : "mt-2"}`}>
+            <Link href={menu.title === "Dashboard" ? "/dashboard" : `/dashboard/${menu.title.toLowerCase()}`}
+            onClick={menu.title === "Update" ? (e) => { e.preventDefault(); setSubmenuOpen(!submenuOpen); } : null} 
+            key={index}
+            >
+
+            <li key = {index} className = {`text-white-300  text-sm flex items-center gap-x-4 cursor-pointer p-5 hover:bg-black rounded-md ${menu.spacing ? "mt-9" : "mt-2"}`}>
               <span className = "text-2xl block float-left">
               {menu.title === "Dashboard" ? (
               <Link href="/dashboard">
@@ -116,8 +120,8 @@ const SideNav = () => {
               </span>
           
             {menu.submenu && !open && ( 
-              <BsChevronDown 
-              className={`absolute right-4 duration-300 ${submenuOpen && "rotate-180"}`} 
+              <BsChevronRight 
+              className={`absolute right-4 duration-300 ${submenuOpen && "rotate-90"}`} 
               style={{ fontSize: "1.3rem" }} // Adjust the font size here to make the icon bigger
               onClick={() => setSubmenuOpen(!submenuOpen)} 
             />
@@ -125,11 +129,13 @@ const SideNav = () => {
 
             )}
             </li>
+            </Link>
+            
 
             {menu.submenu && submenuOpen && !open &&(
               <ul>
                 {menu.submenuItems.map((submenuItem, index) => (
-                
+                <Link href={submenuItem.title === "By Item" ? "/dashboard/update" : "/dashboard/orders"} key={index}>
                 <li key = {index} className = "text-white-300 text-sm gap-x-4 cursor-pointer p-4 pl-10 hover:bg-black rounded-md">
                  {submenuItem.title === "By Item" ? (
           
@@ -143,11 +149,15 @@ const SideNav = () => {
                   )}
                   
                 </li>
+                </Link>
+                
             ))}
             </ul>   
         )}
       </>
+     
     ))}
+
   </ul>
 
       
@@ -162,12 +172,12 @@ const SideNav = () => {
 }
 
 const SideBarIcon = ({ icon, text, open }) => (
-  <div className = "inline-flex">
+  <div className = {`inline-flex hover:bg-black hover:rounded-md duration-300 ${open ? "w-32" : "w-72"}`}>
 
 
     
   <div className={`group relative flex items-center justify-center h-20 w-20 m-3  
-    text-white hover:bg-black hover:text-blue-600 hover:rounded-xl duration-500 
+    text-white  duration-500 
     ${!open && "rotate-[360deg]"} `}>
     {icon}
     
@@ -181,4 +191,4 @@ const SideBarIcon = ({ icon, text, open }) => (
   </div>
 );
 
-export default SideNav;
+export default SideNav; 
