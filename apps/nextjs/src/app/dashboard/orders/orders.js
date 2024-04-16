@@ -806,3 +806,5 @@ export function Orders() {
     </div>
   );
 }
+
+export default Orders;
