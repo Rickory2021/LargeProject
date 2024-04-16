@@ -44,7 +44,7 @@ export default function SignUp() {
         })
       });
       if (res.ok) {
-        router.push('/sign-in');
+        router.push('/verify-email');
       } else if (res.status === 400) {
         const { error } = await res.json();
         setError(error);

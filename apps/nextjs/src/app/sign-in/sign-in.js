@@ -28,6 +28,8 @@ export default function SignIn() {
       } else {
         // If response is not ok, get error message from response body
         const { error } = await res.json();
+        if (error === 'Email not Verified')
+          window.location.href = '/verify-email';
         setError(error);
       }
     } catch (error) {
