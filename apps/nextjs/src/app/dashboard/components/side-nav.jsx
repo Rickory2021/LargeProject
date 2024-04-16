@@ -29,7 +29,7 @@ const SideNav = () => {
       ],
     },
 
-    { title: "Suppliers", icon: <FaTruck size = "60"/>},
+    { title: "Distributors", icon: <FaTruck size = "60"/>},
     { title: "Account", icon: <IoPersonSharp size = "60"/>},
   
   
@@ -97,11 +97,18 @@ const SideNav = () => {
               </span>
               
               <span className={`text-white font-medium font-cursive text-lg m-2 duration-300 ${open && "hidden"}`}>
-                {menu.title === "Dashboard" ? (
+                {menu.title === "Dashboard" ? 
+                (
                   <Link href="/dashboard">
                     {menu.title}
                   </Link>
-                ) : (
+                ) : menu.title === "Update" ? (
+                  <div onClick={() => setSubmenuOpen(!submenuOpen)}>
+                    {menu.title}
+                  </div>
+                ) :
+                
+                (
                   <Link href={`/dashboard/${menu.title.toLowerCase()}`}>
                     {menu.title}
                   </Link>
@@ -109,8 +116,11 @@ const SideNav = () => {
               </span>
           
             {menu.submenu && !open && ( 
-              <BsChevronDown className = {`absolute right-4 duration-300 ${submenuOpen && "rotate-180"}`} onClick= {() => 
-                setSubmenuOpen(!submenuOpen)} />
+              <BsChevronDown 
+              className={`absolute right-4 duration-300 ${submenuOpen && "rotate-180"}`} 
+              style={{ fontSize: "1.3rem" }} // Adjust the font size here to make the icon bigger
+              onClick={() => setSubmenuOpen(!submenuOpen)} 
+            />
               
 
             )}
@@ -121,9 +131,17 @@ const SideNav = () => {
                 {menu.submenuItems.map((submenuItem, index) => (
                 
                 <li key = {index} className = "text-white-300 text-sm gap-x-4 cursor-pointer p-4 pl-10 hover:bg-black rounded-md">
-                 <Link href={`/dashboard/inventory/${submenuItem.title.toLowerCase()}`} >
-                   {submenuItem.title}
+                 {submenuItem.title === "By Item" ? (
+          
+                  <Link href="/dashboard/update">
+                    {submenuItem.title}
                   </Link>
+                ) : (
+                  <Link href="/dashboard/orders">
+                    {submenuItem.title}
+                  </Link>
+                  )}
+                  
                 </li>
             ))}
             </ul>   
