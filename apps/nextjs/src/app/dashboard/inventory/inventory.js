@@ -8,7 +8,6 @@ import LocationPopup from '../components/LocationPopup';
 import ItemTotalCount from '../components/ItemTotalCount';
 import LocationTotalCount from '../components/LocationTotalCount';
 import ItemLog from '../components/ItemLog'; // Import ItemLog here
-import '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 export function Inventory() {
   const [userId, setUserId] = useState('');

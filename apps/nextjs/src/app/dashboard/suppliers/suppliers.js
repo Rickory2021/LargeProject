@@ -4,7 +4,6 @@ import SideNav from '../components/side-nav';
 import CookieComponent from '../components/CookieComponent';
 import Distributor from '../components/Distributor';
 import DistributorPopup from '../components/DistributorPopup';
-import '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 export function Suppliers() {
   const [userId, setUserId] = useState('');

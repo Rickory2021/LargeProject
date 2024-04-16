@@ -6,7 +6,6 @@ import ItemTotalCount from '../components/ItemTotalCount';
 import LargestPortion from '../components/LargestPortion';
 import Distributor from '../components/Distributor';
 import DistributorPopup from '../components/DistributorPopup';
-import '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 export function Orders() {
   const [userId, setUserId] = useState('');
