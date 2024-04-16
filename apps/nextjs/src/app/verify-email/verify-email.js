@@ -9,24 +9,26 @@ export default function VerifyEmail() {
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
 
-  useEffect(async () => {
-    try {
-      const response = await fetch(
-        `http://localhost:3001/api/auth/user/verify-email?token=${token}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify() // Replace with your payload
-        }
-      );
-      const responseData = await response.json();
-      console.log(responseData); // Logging response from server
-      // Handle response as needed
-    } catch (error) {
-      console.error('Error:', error);
-    }
+  useEffect(() => {
+    async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3001/api/auth/user/verify-email?token=${token}`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify() // Replace with your payload
+          }
+        );
+        const responseData = await response.json();
+        console.log(responseData); // Logging response from server
+        // Handle response as needed
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
   }, []);
 
   return (
