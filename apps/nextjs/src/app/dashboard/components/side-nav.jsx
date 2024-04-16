@@ -60,19 +60,8 @@ const SideBarIcon = ({ icon, text }) => (
             text-white hover:bg-white hover:text-blue-600 hover:rounded-xl "
   >
     {icon}
-<<<<<<< HEAD
-    
-    </div>
-    <h1 className = {`text-white font-medium font-cursive text-2xl m-3 pt-6 duration-300 
-  ${open && "hidden"}`}>
-    {text}
-    </h1>
-   
-  
-=======
     <span className="group-hover:scale-100 absolute w-auto p-3 m-5 min-w-max left-20 rounded-md shadow-md text-white bg-blue-600 text-s font-bold transition-all duration-100 scale-0 origin-left">
       {text}
     </span>
->>>>>>> a5ef33dacc929c6fa0ae2f4d9f788aa284042e5e
   </div>
 );
