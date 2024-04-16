@@ -157,7 +157,7 @@ const SideBarIcon = ({ icon, text, open }) => (
     
     </div>
     <h1 className = {`text-white font-medium font-cursive text-2xl m-3 pt-6 duration-300 
-  ${open && "hidden"}`}>
+  ${open && "scale-0"}`}>
     {text}
     </h1>
    
