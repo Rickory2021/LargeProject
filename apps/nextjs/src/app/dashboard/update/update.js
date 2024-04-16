@@ -8,7 +8,6 @@ import LocationPopup from '../components/LocationPopup';
 import ItemTotalCount from '../components/ItemTotalCount';
 import LocationTotalCount from '../components/LocationTotalCount';
 import ItemLog from '../components/ItemLog'; // Import ItemLog here
-import '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 export function Inventory() {
   const [userId, setUserId] = useState('');
@@ -176,7 +175,7 @@ export function Inventory() {
 
   if (businessId !== '') {
     return (
-      <div>
+      <div className = "flex">
         <SideNav />
         <div className="flex justify-center items-center flex-col flex-1">
           <ul>
@@ -338,7 +337,6 @@ export function Inventory() {
             ))}
           </ul>
         </div>
-        <div>Player</div>
         {popupLocation && (
           <div
             className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50"
