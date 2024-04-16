@@ -1,12 +1,12 @@
 import React from 'react';
-import { SimpleNav } from '../components/simple-nav';
-import SignUp from './sign-up';
+import SignIn from './sign-in';
+import { BusinessNav } from '../components/business-nav';
 
 export default async function Page() {
   return (
     <div className="flex flex-col flex-1 justify-between">
-      <SimpleNav />
-      <SignUp />
+      <BusinessNav />
+      <SignIn />
     </div>
   );
 }
