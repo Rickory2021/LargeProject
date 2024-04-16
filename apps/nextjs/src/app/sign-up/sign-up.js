@@ -1,9 +1,8 @@
 'use client';
-
 import Link from 'next/link';
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 export default function SignUp() {
   const [email, setEmail] = useState('');
@@ -11,13 +10,25 @@ export default function SignUp() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [username, setUsername] = useState('');
-  const [businessIdList, setBusinessIdList] = useState('');
   const [error, setError] = useState('');
+  const [passwordFocused, setPasswordFocused] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [passwordRequirements, setPasswordRequirements] = useState({
+    minLength: false,
+    uppercase: false,
+    lowercase: false,
+    specialCharacter: false
+  });
 
   const router = useRouter();
 
   const handleSubmit = async e => {
     e.preventDefault();
+    if (!validatePassword(password)) {
+      setError('Entered password does not meet validation requirements!');
+      return;
+    }
+
     try {
       const res = await fetch('http://localhost:3001/api/auth/user/signup', {
         method: 'POST',
@@ -29,20 +40,16 @@ export default function SignUp() {
           lastName,
           username,
           password,
-          email,
-          businessIdList
+          email
         })
       });
       if (res.ok) {
         router.push('/sign-in');
-      } else if (res == 400) {
-        // If response is not ok, get error message from response body
+      } else if (res.status === 400) {
         const { error } = await res.json();
-        console.log(error);
         setError(error);
       } else {
         const { error } = await res.json();
-        console.log(error);
         setError(error);
       }
     } catch (error) {
@@ -51,55 +58,144 @@ export default function SignUp() {
     }
   };
 
-  // Function to close the error popup
+  const validatePassword = password => {
+    const passwordRegex =
+      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[0123456789])(?=.*[!@#$%^&*]).{8,}$/;
+    const newPasswordRequirements = {
+      minLength: password.length >= 8,
+      uppercase: /[A-Z]/.test(password),
+      lowercase: /[a-z]/.test(password),
+      number: /[01234567890]/.test(password),
+      specialCharacter: /[!@#$%^&*]/.test(password),
+      passwordLength: password.length
+    };
+    setPasswordRequirements(newPasswordRequirements);
+    return passwordRegex.test(password);
+  };
+
   const closeErrorPopup = () => {
     setError('');
   };
 
+  const handlePasswordFocus = () => {
+    setPasswordFocused(true);
+  };
+
+  const handlePasswordBlur = () => {
+    setPasswordFocused(false);
+    // setShowPassword(false); // Hide the button when the password input is blurred
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(prevShowPassword => !prevShowPassword);
+  };
+
+  const handlePasswordChange = e => {
+    setPassword(e.target.value);
+    if (passwordFocused) {
+      validatePassword(e.target.value);
+    }
+  };
+
+  // ✓ vs ✅
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <h1 className="text-4xl font-bold mb-8">Sign Up</h1>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <input
-          type="firstName"
-          placeholder="FirstName"
+          type="text"
+          placeholder="First Name"
           value={firstName}
           onChange={e => setFirstName(e.target.value)}
           className="p-2 border border-gray-300 rounded-md"
         />
         <input
-          type="lastName"
-          placeholder="LastName"
+          type="text"
+          placeholder="Last Name"
           value={lastName}
           onChange={e => setLastName(e.target.value)}
           className="p-2 border border-gray-300 rounded-md"
         />
         <input
-          type="username"
-          placeholder="username"
+          type="text"
+          placeholder="Username"
           value={username}
           onChange={e => setUsername(e.target.value)}
           className="p-2 border border-gray-300 rounded-md"
         />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-          className="p-2 border border-gray-300 rounded-md"
-        />
+        <div className="relative">
+          <input
+            type={showPassword ? 'text' : 'password'}
+            placeholder="Password"
+            value={password}
+            onChange={handlePasswordChange}
+            onFocus={handlePasswordFocus}
+            onBlur={handlePasswordBlur}
+            className="p-2 border border-gray-300 rounded-md"
+          />
+          {!showPassword && (
+            <button
+              type="button"
+              className="absolute top-3 right-2"
+              onClick={togglePasswordVisibility}
+            >
+              <FaEye />
+            </button>
+          )}
+          {showPassword && (
+            <button
+              type="button"
+              className="absolute top-3 right-2"
+              onClick={togglePasswordVisibility}
+            >
+              <FaEyeSlash />
+            </button>
+          )}
+        </div>
+        {(passwordFocused ||
+          (passwordRequirements &&
+            passwordRequirements.passwordLength > 0 &&
+            !(
+              passwordRequirements.minLength &&
+              passwordRequirements.uppercase &&
+              passwordRequirements.lowercase &&
+              passwordRequirements.number &&
+              passwordRequirements.specialCharacter &&
+              !passwordFocused
+            ))) && (
+          <div className="p-2 border border-gray-300 rounded-md">
+            <ul>
+              <li>
+                {passwordRequirements.minLength ? '✅' : '-'} Password must be
+                at least 8 characters long
+              </li>
+              <li>
+                {passwordRequirements.uppercase ? '✅' : '-'} Contain at least
+                one uppercase letter
+              </li>
+              <li>
+                {passwordRequirements.lowercase ? '✅' : '-'} Contain at least
+                one lowercase letter
+              </li>
+              <li>
+                {passwordRequirements.number ? '✅' : '-'} Contain at one number
+              </li>
+              <li>
+                {passwordRequirements.specialCharacter ? '✅' : '-'} Contain at
+                least one special character: !@#$%^&*
+              </li>
+            </ul>
+          </div>
+        )}
         <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={e => setEmail(e.target.value)}
-          className="p-2 border border-gray-300 rounded-md"
+          className={`p-2 border border-gray-300 rounded-md`}
         />
 
-        <button
-          type="submit"
-          className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-700"
-        >
+        <button type="submit" className="bg-blue-500 text-white p-2 rounded-md">
           Sign Up
         </button>
       </form>
