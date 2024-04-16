@@ -118,9 +118,9 @@ module.exports.forgotPassword = async (req, res) => {
       `UnHASHED:${crypto.createHash('sha256').update(resetToken).digest('hex')}`
     );
 
-    const resetUrl = `${req.protocol}://${req.get('host')}/api/auth/user/reset-password?token=${resetToken}`;
-    const emailText = `Forgot password? Reset password by clicking on the following link: ${resetUrl}`;
-
+    // const resetUrl = `${req.protocol}://${req.get('host')}/forgot-password-change?token=${resetToken}`;
+    const resetUrl = `https://slicer-nine.vercel.app/forgot-password-change?token=${resetToken}`;
+    const emailText = `<p>Forgot password? Reset password by clicking on the link below: </p><a href="${resetUrl}">Reset Password</a>`;
     // Call function
     const emailSent = await sendResetEmail(
       user.email,
