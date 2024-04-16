@@ -19,16 +19,13 @@ export default function SignIn() {
       });
       if (res.ok) {
         const data = await res.json();
-        const { accessToken, businessIdList } = data;
+        const { accessToken } = data;
         const expires = new Date();
         expires.setTime(expires.getTime() + 3 * 24 * 60 * 60 * 1000);
         document.cookie = `accessToken=${accessToken};expires=${expires.toUTCString()};path=/`;
-
-        if (businessIdList.length < 1) {
-          window.location.href = '/business-sign-in';
-        } else {
-          window.location.href = '/dashboard';
-        }
+        // Redirect to dashboard if login is successful
+        window.location.href = '/dashboard';
+      } else {
         // If response is not ok, get error message from response body
         const { error } = await res.json();
         setError(error);
@@ -45,7 +42,7 @@ export default function SignIn() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen pb-16">
+    <div className="flex flex-col items-center justify-center h-screen">
       <h1 className="text-4xl font-bold mb-8">Sign In</h1>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <input

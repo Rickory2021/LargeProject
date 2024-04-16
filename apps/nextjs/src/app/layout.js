@@ -6,10 +6,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
   title: 'Slicer',
-  description: 'Inventorty management system',
-  icons: {
-    icon: '/favicon.svg'
-  }
+  description: 'Inventorty management system'
 };
 
 export default function RootLayout({ children }) {
