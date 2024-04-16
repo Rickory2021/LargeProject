@@ -10,7 +10,6 @@ export default function SignUp() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [username, setUsername] = useState('');
-  const [businessIdList, setBusinessIdList] = useState('');
   const [error, setError] = useState('');
   const [passwordFocused, setPasswordFocused] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -41,8 +40,7 @@ export default function SignUp() {
           lastName,
           username,
           password,
-          email,
-          businessIdList
+          email
         })
       });
       if (res.ok) {
@@ -62,12 +60,14 @@ export default function SignUp() {
 
   const validatePassword = password => {
     const passwordRegex =
-      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
+      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[0123456789])(?=.*[!@#$%^&*]).{8,}$/;
     const newPasswordRequirements = {
       minLength: password.length >= 8,
       uppercase: /[A-Z]/.test(password),
       lowercase: /[a-z]/.test(password),
-      specialCharacter: /[!@#$%^&*]/.test(password)
+      number: /[01234567890]/.test(password),
+      specialCharacter: /[!@#$%^&*]/.test(password),
+      passwordLength: password.length
     };
     setPasswordRequirements(newPasswordRequirements);
     return passwordRegex.test(password);
@@ -83,7 +83,7 @@ export default function SignUp() {
 
   const handlePasswordBlur = () => {
     setPasswordFocused(false);
-    setShowPassword(false); // Hide the button when the password input is blurred
+    // setShowPassword(false); // Hide the button when the password input is blurred
   };
 
   const togglePasswordVisibility = () => {
@@ -97,6 +97,7 @@ export default function SignUp() {
     }
   };
 
+  // ✓ vs ✅
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <h1 className="text-4xl font-bold mb-8">Sign Up</h1>
@@ -132,7 +133,7 @@ export default function SignUp() {
             onBlur={handlePasswordBlur}
             className="p-2 border border-gray-300 rounded-md"
           />
-          {!showPassword && !passwordFocused && (
+          {!showPassword && (
             <button
               type="button"
               className="absolute top-3 right-2"
@@ -141,7 +142,7 @@ export default function SignUp() {
               <FaEye />
             </button>
           )}
-          {showPassword && !passwordFocused && (
+          {showPassword && (
             <button
               type="button"
               className="absolute top-3 right-2"
@@ -151,23 +152,36 @@ export default function SignUp() {
             </button>
           )}
         </div>
-        {passwordFocused && (
+        {(passwordFocused ||
+          (passwordRequirements &&
+            passwordRequirements.passwordLength > 0 &&
+            !(
+              passwordRequirements.minLength &&
+              passwordRequirements.uppercase &&
+              passwordRequirements.lowercase &&
+              passwordRequirements.number &&
+              passwordRequirements.specialCharacter &&
+              !passwordFocused
+            ))) && (
           <div className="p-2 border border-gray-300 rounded-md">
             <ul>
               <li>
-                {passwordRequirements.minLength ? '✓' : '-'} Password must be at
-                least 8 characters long
+                {passwordRequirements.minLength ? '✅' : '-'} Password must be
+                at least 8 characters long
               </li>
               <li>
-                {passwordRequirements.uppercase ? '✓' : '-'} Contain at least
+                {passwordRequirements.uppercase ? '✅' : '-'} Contain at least
                 one uppercase letter
               </li>
               <li>
-                {passwordRequirements.lowercase ? '✓' : '-'} Contain at least
+                {passwordRequirements.lowercase ? '✅' : '-'} Contain at least
                 one lowercase letter
               </li>
               <li>
-                {passwordRequirements.specialCharacter ? '✓' : '-'} Contain at
+                {passwordRequirements.number ? '✅' : '-'} Contain at one number
+              </li>
+              <li>
+                {passwordRequirements.specialCharacter ? '✅' : '-'} Contain at
                 least one special character: !@#$%^&*
               </li>
             </ul>
@@ -178,14 +192,7 @@ export default function SignUp() {
           placeholder="Email"
           value={email}
           onChange={e => setEmail(e.target.value)}
-          className={`p-2 border border-gray-300 rounded-md ${passwordFocused ? 'mt-4' : ''}`}
-        />
-        <input
-          type="text"
-          placeholder="Business ID"
-          value={businessIdList}
-          onChange={e => setBusinessIdList(e.target.value)}
-          className={`p-2 border border-gray-300 rounded-md ${passwordFocused ? 'mt-4' : ''}`}
+          className={`p-2 border border-gray-300 rounded-md`}
         />
 
         <button type="submit" className="bg-blue-500 text-white p-2 rounded-md">
