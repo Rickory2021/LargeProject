@@ -76,6 +76,24 @@ class ItemRelationController extends GenericCRUDController {
 
     try {
       console.log('Check if Both Items Exist');
+      let doesExistRaw = await this.doesExistItem(
+        businessId,
+        'itemList.itemName',
+        rawItemName
+      );
+      if (!doesExistRaw) {
+        console.log(`Raw Item Doesn't Exist`);
+        return res.status(409).json({ error: `Raw Item Doesn't Exist` });
+      }
+      let doesExistFinished = await this.doesExistItem(
+        businessId,
+        'itemList.itemName',
+        finishedItemName
+      );
+      if (!doesExistFinished) {
+        console.log(`Finished Item Doesn't Exist`);
+        return res.status(409).json({ error: `Finished Item Doesn't Exist` });
+      }
       let doesConnectionExist = await this.doesExistRelation(
         businessId,
         rawItemName,
@@ -106,7 +124,34 @@ class ItemRelationController extends GenericCRUDController {
         },
         { $push: { 'itemList.$.itemNeededList': finishedNeededData } }
       );
-      //req.query.printedFieldName
+      // Fetch the updated business document
+      const business = await Business.findById(businessId);
+      if (!business) {
+        return res.status(404).json({ error: 'Business not found' });
+      }
+
+      // Find the raw item in the business document
+      const rawItem = business.itemList.find(
+        item => item.itemName === rawItemName
+      );
+      if (rawItem) {
+        // Sort the usedInList by itemName in ascending order
+        rawItem.usedInList.sort((a, b) => a.itemName.localeCompare(b.itemName));
+      }
+
+      // Find the finished item in the business document
+      const finishedItem = business.itemList.find(
+        item => item.itemName === finishedItemName
+      );
+      if (finishedItem) {
+        // Sort the itemNeededList by itemName in ascending order
+        finishedItem.itemNeededList.sort((a, b) =>
+          a.itemName.localeCompare(b.itemName)
+        );
+      }
+
+      // Save the updated business document
+      await business.save();
       return res
         .status(200)
         .json({ statusDetails: [statusDataRaw, statusDataFinished] });
@@ -268,24 +313,3 @@ module.exports = {
     itemRelationController.updateItemRelationUnitCost(req, res),
   deleteRelation: (req, res) => itemRelationController.deleteRelation(req, res)
 };
-
-// let mongooseBusinessID = new mongoose.Types.ObjectId(
-//   req.query.businessId
-// );
-// // { $limit: outputSize }, // Project only the name field for each post
-// // { $skip: outset } // Project only the name field for each post
-// let index = await super.readGeneric([
-//   { $match: { _id: mongooseBusinessID } },
-//   {
-//     $project: {
-//       _id: 0,
-//       index: {
-//         $indexOfArray: ['$itemList.itemName', req.query.itemName] // Get the index of matched itemName
-//       }
-//     }
-//   }
-// ]);
-// if (index.length === 0)
-//   return res.status(400).json({ error: 'No Item Found' });
-// console.log(index);
-// const value = index[0].index;

@@ -93,6 +93,9 @@ importers:
       '@repo/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      '@sendgrid/mail':
+        specifier: ^8.1.1
+        version: 8.1.1
       axios:
         specifier: ^1.6.7
         version: 1.6.7
@@ -217,6 +220,9 @@ importers:
       nodemon:
         specifier: ^3.1.0
         version: 3.1.0
+      validator:
+        specifier: ^13.11.0
+        version: 13.11.0
 
   packages/eslint-config:
     devDependencies:
@@ -12325,6 +12331,11 @@ packages:
     dependencies:
       builtins: 5.0.1
     dev: true
+
+  /validator@13.11.0:
+    resolution: {integrity: sha512-Ii+sehpSfZy+At5nPdnyMhx78fEoPDkR2XW/zimHEL3MyGJQOCQ7WeP20jPYRz7ZCpcKLB21NxuXHF3bxjStBQ==}
+    engines: {node: '>= 0.10'}
+    dev: false
 
   /vary@1.1.2:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}

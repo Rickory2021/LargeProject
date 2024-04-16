@@ -108,7 +108,31 @@ class ItemLocationController extends GenericCRUDController {
           }
         }
       );
+      // Fetch the updated business document
+      const business = await Business.findById(businessId);
 
+      if (!business) {
+        console.log('Business not found');
+        return res.status(500).json({ error: 'Business not found' });
+      }
+
+      // Find the item within the business document by its itemName
+      const item = business.itemList.find(item => item.itemName === itemName);
+
+      if (!item) {
+        console.log('Item not found in the Business');
+        return res
+          .status(500)
+          .json({ error: 'Item not found in the Business' });
+      }
+
+      // Sort the locationItemList array by locationName in alphabetical order
+      item.locationItemList.sort((a, b) =>
+        a.locationName.localeCompare(b.locationName)
+      );
+
+      // Save the changes to the database
+      await business.save();
       // Check MetaData
       try {
         // Need locationName to check if the document exists
@@ -287,6 +311,101 @@ class ItemLocationController extends GenericCRUDController {
       return res.status(500).json({ error: error.message });
     }
   }
+
+  async getOneRecentDate(req, res) {
+    try {
+      const businessId = req.query.businessId;
+      let mongooseBusinessID = new mongoose.Types.ObjectId(businessId);
+      let { itemName, locationName } = req.body;
+      const business = await Business.findById(businessId);
+
+      if (!business) {
+        throw new Error('Business not found');
+      }
+
+      // Step 2: Filter the item in the itemList of the business document by itemName
+      const item = business.itemList.find(item => item.itemName === itemName);
+
+      if (!item) {
+        throw new Error('Item not found');
+      }
+      let locationItemLog, sortedLogs;
+      for (let i = 0; i < 5; i++) {
+        const currentDate = new Date();
+
+        // Get the current year
+        let currentYear = currentDate.getFullYear();
+        let testYear = currentYear - i;
+        // Step 3: Search the locationItemLog within the item for logs with the provided locationName
+        locationItemLog = item.locationItemLog.find(
+          log => log.locationBucket === testYear.toString()
+        );
+
+        if (!locationItemLog) {
+          continue;
+        }
+        sortedLogs = locationItemLog.locationBucketLog.sort(
+          (a, b) => b.updateDate - a.updateDate
+        );
+        if (sortedLogs.length > 0) {
+          // Return the most recent updateDate
+          return res
+            .status(200)
+            .json({ outputList: [sortedLogs[0].updateDate] });
+        }
+        // Else go check the next year
+      }
+      throw new Error('Location not found in item log within the past 5 years');
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
+    }
+  }
+
+  //req.query.businessId  req.body.itemName
+  async getTotalLocationCount(req, res) {
+    try {
+      const businessId = req.query.businessId;
+      let mongooseBusinessID = new mongoose.Types.ObjectId(businessId);
+      let { itemName, locationName } = req.body;
+      // Find the business by its ID
+      const business = await Business.findById(businessId).populate(
+        'itemList.locationItemList.inventoryList'
+      );
+
+      if (!business) {
+        throw new Error('Business not found');
+      }
+
+      // Find the specific item in the business's itemList based on the given itemName
+      const item = business.itemList.find(item => item.itemName === itemName);
+
+      if (!item) {
+        throw new Error('Item not found in the specified business');
+      }
+      console.log('Location Name:', locationName);
+      console.log('Location Item List:', item.locationItemList);
+
+      const locationItem = item.locationItemList.find(
+        location => location.locationName === locationName
+      );
+
+      if (!locationItem) {
+        throw new Error('locationItem not found in the specified item');
+      }
+
+      // Calculate the sum of all portionNumber in the inventoryList
+      let sum = 0;
+
+      locationItem.inventoryList.forEach(inventory => {
+        sum += inventory.portionNumber;
+      });
+
+      //req.query.printedFieldName
+      return res.status(200).json({ outputList: [sum] });
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
+    }
+  }
 }
 let itemLocationController = new ItemLocationController();
 module.exports = {
@@ -299,5 +418,9 @@ module.exports = {
   updateItemLocationName: (req, res) =>
     itemLocationController.updateItemLocationName(req, res),
   deleteItemLocation: (req, res) =>
-    itemLocationController.deleteItemLocation(req, res)
+    itemLocationController.deleteItemLocation(req, res),
+  getOneRecentDate: (req, res) =>
+    itemLocationController.getOneRecentDate(req, res),
+  getTotalLocationCount: (req, res) =>
+    itemLocationController.getTotalLocationCount(req, res)
 };

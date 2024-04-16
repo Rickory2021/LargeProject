@@ -1,5 +1,5 @@
 // Rename to business_operations.js?
-const { Item } = require('../../models/business_model');
+const { Business, Item } = require('../../models/business_model');
 const GenericCRUDController = require('./generic_crud_controller');
 
 const mongoose = require('mongoose');
@@ -45,7 +45,20 @@ class ItemListController extends GenericCRUDController {
         Item,
         { itemName: itemName }
       );
-      //req.query.printedFieldName
+
+      // After adding the item, fetch the updated business document
+      const business = await Business.findById(businessId);
+      if (!business) {
+        return res.status(404).json({ error: 'Business not found' });
+      }
+
+      // Sort the itemList array by itemName
+      business.itemList.sort((a, b) => a.itemName.localeCompare(b.itemName));
+
+      // Save the updated business document
+      await business.save();
+
+      // Return the status details
       return res.status(200).json({ statusDetails: [statusData] });
     } catch (error) {
       return res.status(500).json({ error: error.message });
@@ -65,6 +78,17 @@ class ItemListController extends GenericCRUDController {
         { $unwind: `$itemList` },
         { $project: { _id: 0, itemName: '$itemList.itemName' } }
       ]);
+      // After adding the item, fetch the updated business document
+      const business = await Business.findById(businessId);
+      if (!business) {
+        return res.status(404).json({ error: 'Business not found' });
+      }
+
+      // Sort the itemList array by itemName
+      business.itemList.sort((a, b) => a.itemName.localeCompare(b.itemName));
+
+      // Save the updated business document
+      await business.save();
       //req.query.printedFieldName
       return res.status(200).json({ output: fieldValues });
     } catch (error) {
@@ -153,6 +177,42 @@ class ItemListController extends GenericCRUDController {
       return res.status(500).json({ error: error.message });
     }
   }
+  //req.query.businessId  req.body.itemName
+  async getTotalItemCount(req, res) {
+    try {
+      const businessId = req.query.businessId;
+      let mongooseBusinessID = new mongoose.Types.ObjectId(businessId);
+      let { itemName } = req.body;
+      // Find the business by its ID
+      const business = await Business.findById(businessId).populate(
+        'itemList.locationItemList.inventoryList'
+      );
+
+      if (!business) {
+        throw new Error('Business not found');
+      }
+
+      // Find the specific item in the business's itemList based on the given itemName
+      const item = business.itemList.find(item => item.itemName === itemName);
+
+      if (!item) {
+        throw new Error('Item not found in the specified business');
+      }
+
+      // Calculate the sum of all portionNumber in the inventoryList
+      let sum = 0;
+      item.locationItemList.forEach(locationItem => {
+        locationItem.inventoryList.forEach(inventory => {
+          sum += inventory.portionNumber;
+        });
+      });
+
+      //req.query.printedFieldName
+      return res.status(200).json({ outputList: [sum] });
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
+    }
+  }
 }
 let itemListController = new ItemListController();
 module.exports = {
@@ -160,26 +220,7 @@ module.exports = {
   readAllItemName: (req, res) => itemListController.readAllItemName(req, res),
   readOneItem: (req, res) => itemListController.readOneItem(req, res),
   updateItemName: (req, res) => itemListController.updateItemName(req, res),
-  deleteItem: (req, res) => itemListController.deleteItem(req, res)
+  deleteItem: (req, res) => itemListController.deleteItem(req, res),
+  getTotalItemCount: (req, res) =>
+    itemListController.getTotalItemCount(req, res)
 };
-
-// let mongooseBusinessID = new mongoose.Types.ObjectId(
-//   req.query.businessId
-// );
-// // { $limit: outputSize }, // Project only the name field for each post
-// // { $skip: outset } // Project only the name field for each post
-// let index = await super.readGeneric([
-//   { $match: { _id: mongooseBusinessID } },
-//   {
-//     $project: {
-//       _id: 0,
-//       index: {
-//         $indexOfArray: ['$itemList.itemName', req.query.itemName] // Get the index of matched itemName
-//       }
-//     }
-//   }
-// ]);
-// if (index.length === 0)
-//   return res.status(400).json({ error: 'No Item Found' });
-// console.log(index);
-// const value = index[0].index;

@@ -28,7 +28,7 @@ MongoDB with Mern (From Leinecker):<br>
 
 # Large Project ERD
 
-Note: This ERD is just a Rough Outline, the actual database will and has changed based on what the project needs.<br>
+Note: This ERD is the mostly Final ERD, the actual database may changed based on what the project needs.<br>
 To ensure you know the current Diagram, check the actual Database.
 ![ERD Diagram of Project](images\MONGODB\0_ERD.png)
 

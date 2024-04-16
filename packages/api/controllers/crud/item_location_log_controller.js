@@ -77,6 +77,10 @@ class ItemLocationLogController extends GenericCRUDController {
         };
         item.locationItemLog.push(locationItemLog);
       }
+      // Step 5: Sort the locationItemLog array by locationBucket in descending order
+      item.locationItemLog.sort((a, b) =>
+        b.locationBucket.localeCompare(a.locationBucket)
+      );
       await business.save();
       return true;
     } catch (error) {
@@ -144,6 +148,11 @@ class ItemLocationLogController extends GenericCRUDController {
 
       // Step 4: Add a new entry to the locationBucketLog array
       locationItemLog.locationBucketLog.push(newLocationLogObject);
+
+      // Step 5: Sort the locationBucketLog array by updateDate in descending order
+      locationItemLog.locationBucketLog.sort(
+        (a, b) => b.updateDate - a.updateDate
+      );
 
       // Save the changes to the database
       const statusDetails = await business.save();

@@ -16,6 +16,7 @@
     "@radix-ui/react-navigation-menu": "^1.1.4",
     "@radix-ui/react-select": "^2.0.0",
     "@repo/ui": "workspace:*",
+    "@sendgrid/mail": "^8.1.1",
     "axios": "^1.6.7",
     "bcrypt": "^5.1.1",
     "bootstrap": "^5.3.3",
