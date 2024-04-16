@@ -5,7 +5,6 @@ import { TbReportSearch } from 'react-icons/tb';
 import Link from 'next/link';
 import { GiKnifeFork } from 'react-icons/gi';
 import {BsArrowLeftShort, BsChevronDown, BsReverseLayoutTextSidebarReverse} from "react-icons/bs";
-import {useSidebar} from './SidebarContext';
 
 const SideNav = () => {
   const [open, setOpen] = useState(false);
