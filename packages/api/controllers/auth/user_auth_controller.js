@@ -118,7 +118,7 @@ module.exports.forgotPassword = async (req, res) => {
       `UnHASHED:${crypto.createHash('sha256').update(resetToken).digest('hex')}`
     );
 
-    const resetUrl = `${req.protocol}://${req.get('host')}/api/auth/user/reset-password?token=${resetToken}`;
+    const resetUrl = `${req.protocol}://${req.get('host')}/forgot-password-change?token=${resetToken}`;
     const emailText = `Forgot password? Reset password by clicking on the following link: ${resetUrl}`;
 
     // Call function
