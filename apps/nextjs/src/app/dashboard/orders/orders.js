@@ -6,7 +6,6 @@ import ItemTotalCount from '../components/ItemTotalCount';
 import LargestPortion from '../components/LargestPortion';
 import Distributor from '../components/Distributor';
 import DistributorPopup from '../components/DistributorPopup';
-import '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 export function Orders() {
   const [userId, setUserId] = useState('');
@@ -443,7 +442,7 @@ export function Orders() {
   return (
     <div className="flex">
       <SideNav />
-      <div className="flex justify-center items-center flex-col flex-1">
+      <div className="flex justify-center items-center flex-row flex-1">
         {loading ? (
           <CookieComponent
             cookieName={'accessToken'}

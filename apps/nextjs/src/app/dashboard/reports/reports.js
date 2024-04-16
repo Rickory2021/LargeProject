@@ -20,7 +20,13 @@ export function Reports() {
         cookieName={'accessToken'}
         onUserIdChange={handleUserIdChange}
       />
-      <SideNav />
+      <div className="flex flex-row">
+        <SideNav />
+
+        <div>
+          <h1>hello </h1>
+        </div>
+      </div>
     </div>
   );
 }
