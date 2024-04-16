@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { HiArchive, HiCreditCard } from 'react-icons/hi';
-import { FaHome, FaTruck, FaSignOutAlt } from 'react-icons/fa'; // Added FaSignOutAlt icon
+import { FaHome, FaTruck, FaSignOutAlt} from 'react-icons/fa'; // Added FaSignOutAlt icon
 import { TbReportSearch } from 'react-icons/tb';
 import Link from 'next/link';
+import { IoPersonSharp } from "react-icons/io5";
 import { GiKnifeFork } from 'react-icons/gi';
 import {BsArrowLeftShort, BsChevronDown, BsReverseLayoutTextSidebarReverse} from "react-icons/bs";
 
@@ -17,21 +18,19 @@ const SideNav = () => {
     
     
     {
-      title: "Inventory",
-      icon: <BsReverseLayoutTextSidebarReverse size = "60"/>,
+      title: "Update",
+      icon: <HiArchive size = "60"/>,
       submenu: true,
       submenuItems: [
 
-      {title: "Products", icon: <TbReportSearch />  },
-      {title: "Materials", icon: <TbReportSearch />},
+      {title: "By Item", icon: <TbReportSearch />  },
+      {title: "By Calculator", icon: <TbReportSearch />},
 
       ],
     },
 
-
-    { title: "Orders", icon: <HiCreditCard size = "60"/>},
     { title: "Suppliers", icon: <FaTruck size = "60"/>},
-    { title: "Reports", icon: <TbReportSearch size = "60"/>},
+    { title: "Account", icon: <IoPersonSharp size = "60"/>},
   
   
   ];

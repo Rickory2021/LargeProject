@@ -1,6 +1,6 @@
-import { Reports } from './reports';
+import { Account } from './account';
 import React from 'react';
 
 export default async function Page() {
-  return <Reports />;
+  return <Account />;
 }

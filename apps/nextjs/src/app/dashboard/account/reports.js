@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 const userId = <CookieComponent cookieName={'accessToken'} />;
 
-export function Reports() {
+export function Account() {
   const [userId, setUserId] = useState(null);
 
   // Function to handle userId change
