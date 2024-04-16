@@ -3,166 +3,65 @@ import { HiArchive, HiCreditCard } from 'react-icons/hi';
 import { FaHome, FaTruck, FaSignOutAlt } from 'react-icons/fa'; // Added FaSignOutAlt icon
 import { TbReportSearch } from 'react-icons/tb';
 import Link from 'next/link';
-import { GiKnifeFork } from 'react-icons/gi';
-import {BsArrowLeftShort, BsChevronDown, BsReverseLayoutTextSidebarReverse} from "react-icons/bs";
-import {useSidebar} from './SidebarContext';
+import { useRouter } from 'next/navigation';
 
-const SideNav = () => {
-  const [open, setOpen] = useState(false);
-  const [submenuOpen, setSubmenuOpen] = useState(false);
-
-  const Menus = [
-
-    
-    {title: "Dashboard", spacing: true, icon: <FaHome size = "60"/> },
-    
-    
-    {
-      title: "Inventory",
-      icon: <BsReverseLayoutTextSidebarReverse size = "60"/>,
-      submenu: true,
-      submenuItems: [
-
-      {title: "Products", icon: <TbReportSearch />  },
-      {title: "Materials", icon: <TbReportSearch />},
-
-      ],
-    },
-
-
-    { title: "Orders", icon: <HiCreditCard size = "60"/>},
-    { title: "Suppliers", icon: <FaTruck size = "60"/>},
-    { title: "Reports", icon: <TbReportSearch size = "60"/>},
-  
-  
-  ];
-
-
-
-  const handleLogout = async () => {
-    try {
-      const response = await fetch('http://localhost:3001/api/auth/user/logout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-
-      if (response.ok) {
-        // Clear the cookie upon successful logout
-        document.cookie =
-          'accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'; // Change yourCookieName to the name of your cookie
-        // Redirect to login page or any other appropriate page after successful logout
-        window.location.href = '/sign-in'; // Adjust the path to your login page
-      } else {
-        console.error('Logout failed');
-      }
-    } catch (error) {
-      console.error('Error occurred while logging out:', error);
-    }
-  };
-
+export default function SideNav() {
   return (
-    <div className={`fixed top-0 left-0 h-screen m-0 flex flex-col 
-      bg-blue-600 text-white ${open ? "w-32" : "w-72"} duration-300 relative`}>
-        
-      <BsArrowLeftShort 
-        className={`bg-black text-white text-3xl rounded-full
-        absolute -right-3 top-9 border border-blue cursor-pointer 
-        ${open && "rotate-180"}`} 
-        onClick={() => setOpen(!open)} 
-        open={open} 
-      />
-
-      <div classname = "inline-flex">
-      <Link href = "/">
-      <SideBarIcon icon={<GiKnifeFork size="60" />} text="Slicer" open={open} />
+    <div className="top-0 left-0 h-screen w-auto m-0 flex flex-col bg-blue-600 text-white">
+      <Link href="/dashboard">
+        <SideBarIcon icon={<FaHome size="66" />} text="Dashboard" />
       </Link>
-      </div>
-
-      <ul className = "pt-1">
-        {Menus.map((menu,index) =>(
-          <>
-            <li 
-            key = {index} 
-            className = {`text-white-300  text-sm flex items-center gap-x-4 cursor-pointer p-5 hover:bg-black rounded-md ${menu.spacing ? "mt-9" : "mt-2"}`}>
-              <span className = "text-2xl block float-left">
-              {menu.title === "Dashboard" ? (
-              <Link href="/dashboard">
-                {menu.icon ? menu.icon : <FaHome />}
-              </Link>
-              ) : (
-                <Link href={`/dashboard/${menu.title.toLowerCase()}`}>
-                {menu.icon ? menu.icon : <FaHome />}
-              </Link>
-              )}
-              </span>
-              
-              <span className={`text-white font-medium font-cursive text-lg m-2 duration-300 ${open && "hidden"}`}>
-                {menu.title === "Dashboard" ? (
-                  <Link href="/dashboard">
-                    {menu.title}
-                  </Link>
-                ) : (
-                  <Link href={`/dashboard/${menu.title.toLowerCase()}`}>
-                    {menu.title}
-                  </Link>
-                )}
-              </span>
-          
-            {menu.submenu && !open && ( 
-              <BsChevronDown className = {`absolute right-4 duration-300 ${submenuOpen && "rotate-180"}`} onClick= {() => 
-                setSubmenuOpen(!submenuOpen)} />
-              
-
-            )}
-            </li>
-
-            {menu.submenu && submenuOpen && !open &&(
-              <ul>
-                {menu.submenuItems.map((submenuItem, index) => (
-                
-                <li key = {index} className = "text-white-300 text-sm gap-x-4 cursor-pointer p-4 pl-10 hover:bg-black rounded-md">
-                 <Link href={`/dashboard/inventory/${submenuItem.title.toLowerCase()}`} >
-                   {submenuItem.title}
-                  </Link>
-                </li>
-            ))}
-            </ul>   
-        )}
-      </>
-    ))}
-  </ul>
-
-      
-      
+      <Link href="/dashboard/inventory">
+        <SideBarIcon icon={<HiArchive size="66" />} text="Inventory" />
+      </Link>
+      <Link href="/dashboard/orders">
+        <SideBarIcon icon={<HiCreditCard size="66" />} text="Orders" />
+      </Link>
+      <Link href="/dashboard/suppliers">
+        <SideBarIcon icon={<FaTruck size="62" />} text="Suppliers" />
+      </Link>
+      <Link href="/dashboard/reports">
+        <SideBarIcon icon={<TbReportSearch size="62" />} text="Reports" />
+      </Link>
       <div className="mt-auto">
         <button onClick={handleLogout}>
-          <SideBarIcon icon={<FaSignOutAlt size="60" />} text="Logout" open={open} />
+          <SideBarIcon icon={<FaSignOutAlt size="60" />} text="Logout" />
         </button>
       </div>
     </div>
   );
 }
+const handleLogout = async () => {
+  try {
+    const response = await fetch('http://localhost:3001/api/auth/user/logout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
 
-const SideBarIcon = ({ icon, text, open }) => (
-  <div className = "inline-flex">
+    if (response.ok) {
+      // Clear the cookie upon successful logout
+      document.cookie =
+        'accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'; // Change yourCookieName to the name of your cookie
+      // Redirect to login page or any other appropriate page after successful logout
+      window.location.href = '/sign-in'; // Adjust the path to your login page
+    } else {
+      console.error('Logout failed');
+    }
+  } catch (error) {
+    console.error('Error occurred while logging out:', error);
+  }
+};
 
-
-    
-  <div className={`group relative flex items-center justify-center h-20 w-20 m-3  
-    text-white hover:bg-black hover:text-blue-600 hover:rounded-xl duration-500 
-    ${!open && "rotate-[360deg]"} `}>
+const SideBarIcon = ({ icon, text }) => (
+  <div
+    className="group relative flex items-center justify-center h-20 w-20 m-3  
+            text-white hover:bg-white hover:text-blue-600 hover:rounded-xl "
+  >
     {icon}
-    
-    </div>
-    <h1 className = {`text-white font-medium font-cursive text-2xl m-3 pt-6 duration-300 
-  ${open && "scale-0"}`}>
-    {text}
-    </h1>
-   
-  
+    <span className="group-hover:scale-100 absolute w-auto p-3 m-5 min-w-max left-20 rounded-md shadow-md text-white bg-blue-600 text-s font-bold transition-all duration-100 scale-0 origin-left">
+      {text}
+    </span>
   </div>
 );
-
-export default SideNav;
