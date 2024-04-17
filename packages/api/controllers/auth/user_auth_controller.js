@@ -259,6 +259,9 @@ module.exports.Login = async (req, res) => {
       maxAge: 6 * 24 * 60 * 60 * 1000
     });
 
+    // Set the Authorization header with the Bearer token
+    res.set('Authorization', `Bearer ${accessToken}`);
+
     // Return user details and token
     return res.status(200).json({
       error: null,
