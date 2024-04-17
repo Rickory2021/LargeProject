@@ -167,7 +167,7 @@ exports.resetPassword = async (req, res) => {
     // });
     const currentDate = new Date();
     console.log(currentDate);
-    console.log(currentDate.toISOString);
+    console.log(currentDate.toISOString());
 
     const user = await User.findOne({
       passwordResetToken: token,

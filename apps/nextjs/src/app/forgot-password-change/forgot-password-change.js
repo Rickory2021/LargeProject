@@ -52,6 +52,9 @@ export default function ForgotPasswordChange() {
     } catch (error) {
       console.error('An unexpected error happened:', error);
       setError('An unexpected error occurred. Please try again later.');
+      setError(
+        `An unexpected error occurred. Please try again later. ${error}`
+      );
     }
   };
 

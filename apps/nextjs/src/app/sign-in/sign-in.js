@@ -37,6 +37,10 @@ export default function SignIn() {
           window.location.href = '/verify-email';
           setError(error);
         }
+      } else {
+        const data = await res.json();
+        const { error } = data;
+        setError(error);
       }
     } catch (error) {
       console.error('An unexpected error happened:', error);
