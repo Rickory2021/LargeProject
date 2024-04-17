@@ -173,7 +173,8 @@ export function Dashboard() {
   const getBusinessId = async () => {
     try {
       const response = await fetch(
-        'http://localhost:3001/api/auth/user/user-info?id=' + userId,
+        'https://slicer-backend.vercel.app/api/auth/user/user-info?id=' +
+          userId,
         {
           method: 'GET',
           headers: {
