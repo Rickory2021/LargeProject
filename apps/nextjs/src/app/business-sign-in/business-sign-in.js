@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import CookieComponent from '../dashboard/components/CookieComponent.jsx';
 
-export default function SignUp() {
+export default function BusinessSignUp() {
   const [businessId, setBusinessId] = useState('');
   const [userId, setUserId] = useState('');
   const [error, setError] = useState('');
@@ -35,8 +35,8 @@ export default function SignUp() {
         }
       );
       if (res.ok) {
-        router.push('/sign-in');
-      } else if (res == 400) {
+        router.push('/dashboard');
+      } else if (res.status == 400) {
         // If response is not ok, get error message from response body
         const { error } = await res.json();
         console.log(error);
