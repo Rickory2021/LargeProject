@@ -17,7 +17,7 @@ export default function VerifyEmail() {
     async function verifyEmail() {
       try {
         const response = await fetch(
-          `http://localhost:3001/api/auth/user/verify-email?token=${token}`,
+          `https://slicer-backend.vercel.app/api/auth/user/verify-email?token=${token}`,
           {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' }

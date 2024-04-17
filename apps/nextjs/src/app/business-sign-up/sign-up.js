@@ -20,7 +20,7 @@ export default function SignUp() {
     e.preventDefault();
     try {
       const res = await fetch(
-        'http://localhost:3001/api/auth/business/register',
+        'https://slicer-backend.vercel.app/api/auth/business/register',
         {
           method: 'POST',
           headers: {
