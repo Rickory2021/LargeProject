@@ -30,7 +30,8 @@ app.use((req, res, next) => {
 
 app.use(
   cors({
-    origin: ['http://localhost:' + PORT],
+    // origin: ['http://localhost:' + PORT],
+    origin: ['https://large-project-nextjs.vercel.app'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
   })
