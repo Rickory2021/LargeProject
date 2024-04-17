@@ -30,7 +30,7 @@ const sendResetEmail = async (toEmail, subject, text) => {
     to: toEmail,
     from: 'poosd.group24@gmail.com',
     subject: subject,
-    text: text
+    html: text
   };
 
   try {
