@@ -51,7 +51,7 @@ module.exports.Signup = async (req, res) => {
       return res.status(400).json({ error: `${errorField} Taken` });
     }
     // Generic error response
-    return res.status(500).json({ error: 'Internal server error' });
+    return res.status(500).json({ error: `Internal server error:${e}` });
   }
 };
 
