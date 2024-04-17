@@ -148,8 +148,8 @@ const SideNav = () => {
                   <Link
                     href={
                       submenuItem.title === 'By Item'
-                        ? '/dashboard/orders'
-                        : '/dashboard/update'
+                        ? '/dashboard/update-by-item'
+                        : '/dashboard/update-by-calculator'
                     }
                     key={index}
                   >
@@ -158,11 +158,11 @@ const SideNav = () => {
                       className="text-white-300 text-sm gap-x-4 cursor-pointer p-4 pl-10 hover:bg-black rounded-md"
                     >
                       {submenuItem.title === 'By Item' ? (
-                        <Link href="/dashboard/update">
+                        <Link href="/dashboard/update-by-calculator">
                           {submenuItem.title}
                         </Link>
                       ) : (
-                        <Link href="/dashboard/orders">
+                        <Link href="/dashboard/update-by-item">
                           {submenuItem.title}
                         </Link>
                       )}
