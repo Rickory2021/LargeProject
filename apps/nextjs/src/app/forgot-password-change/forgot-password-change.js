@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
-export default function ForgotPassword() {
+export default function ForgotPasswordChange() {
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
 
@@ -32,7 +32,7 @@ export default function ForgotPassword() {
 
     try {
       const res = await fetch(
-        'https://slicer-backend.vercel.app/api/auth/user/forgot-password',
+        `https://slicer-backend.vercel.app/api/auth/user/reset-password?token=${token}`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

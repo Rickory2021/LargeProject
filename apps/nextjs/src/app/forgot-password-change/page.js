@@ -1,12 +1,15 @@
 import React from 'react';
 import { SimpleNav } from '../components/simple-nav';
-import ForgotPassword from './forgot-password-change';
+import ForgotPasswordChange from './forgot-password-change';
+import { Suspense } from 'react';
 
 export default async function Page() {
   return (
     <div>
       <SimpleNav />
-      <ForgotPassword />
+      <Suspense>
+        <ForgotPasswordChange />
+      </Suspense>
     </div>
   );
 }
