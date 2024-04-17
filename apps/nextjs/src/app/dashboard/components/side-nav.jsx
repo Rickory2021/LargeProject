@@ -60,8 +60,9 @@ const SideNav = () => {
 
   return (
     <div
-      className={`fixed top-0 left-0 h-screen m-0 flex flex-col 
-      bg-blue-600 text-white ${open ? 'w-32' : 'w-72'} duration-300 relative`}
+      // className={`fixed top-0 left-0 h-screen m-0 flex flex-col
+      // bg-blue-600 text-white ${open ? 'w-32' : 'w-72'} duration-300 relative`}
+      className={`fixed top-0 left-0 h-screen m-0 flex flex-col bg-blue-600 text-white ${open ? 'w-32' : 'w-72'} duration-300`}
     >
       <BsArrowLeftShort
         className={`bg-black text-white text-3xl rounded-full

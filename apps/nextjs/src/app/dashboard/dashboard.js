@@ -241,7 +241,9 @@ export function Dashboard() {
   return (
     <div className="flex">
       <SideNav />
-      <div className="flex justify-center items-center flex-col flex-1">
+      <div
+        className={`flex justify-center items-center flex-col flex-1 ml-72 lg:ml-80 xlml-88`}
+      >
         {loading ? (
           <CookieComponent
             cookieName={'accessToken'}
