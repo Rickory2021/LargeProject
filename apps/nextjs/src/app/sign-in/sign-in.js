@@ -22,7 +22,7 @@ export default function SignIn() {
       );
       if (res.ok) {
         const data = await res.json();
-        const { accessToken, businessIdList } = data;
+        const { accessToken, businessIdList, error } = data;
         const expires = new Date();
         expires.setTime(expires.getTime() + 3 * 24 * 60 * 60 * 1000);
         document.cookie = `accessToken=${accessToken};expires=${expires.toUTCString()};path=/`;
@@ -33,14 +33,16 @@ export default function SignIn() {
           window.location.href = '/dashboard';
         }
         // If response is not ok, get error message from response body
-        const { error } = await res.json();
-        if (error === 'Email not Verified')
+        if (error === 'Email not Verified') {
           window.location.href = '/verify-email';
-        setError(error);
+          setError(error);
+        }
       }
     } catch (error) {
       console.error('An unexpected error happened:', error);
-      setError('An unexpected error occurred. Please try again later.');
+      setError(
+        `An unexpected error occurred. Please try again later. Error:${error}`
+      );
     }
   };
 
