@@ -30,7 +30,7 @@ app.use((req, res, next) => {
 
 app.use(
   cors({
-    origin: ['https://slicer-nine.vercel.app'],
+    origin: ['http://localhost:' + PORT],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
   })
