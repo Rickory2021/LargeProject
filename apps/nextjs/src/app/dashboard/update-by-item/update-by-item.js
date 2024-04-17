@@ -13,7 +13,7 @@ import LocationTotalCount from '../components/LocationTotalCount';
 import DropdownSelection from '../components/DropdownSelection';
 // import '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
-export function Orders() {
+export function UpdateByItem() {
   const [userId, setUserId] = useState('');
   const [businessId, setBusinessId] = useState('');
   const [loading, setLoading] = useState(true);
@@ -1320,4 +1320,4 @@ export function Orders() {
   );
 }
 
-export default Orders;
+export default UpdateByItem;

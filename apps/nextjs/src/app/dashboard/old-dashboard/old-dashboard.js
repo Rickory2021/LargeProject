@@ -13,7 +13,7 @@ import {
   CardTitle
 } from '@/components/ui/card';
 
-export function Account() {
+export function Dashboard() {
   const [userId, setUserId] = useState(null);
 
   // Function to handle userId change

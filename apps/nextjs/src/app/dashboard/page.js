@@ -1,3 +1,4 @@
+'use client';
 import { Dashboard } from './dashboard';
 import React from 'react';
 
