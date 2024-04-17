@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
-  const [message, setMessage] = useState('');
+  const [showSuccess, setShowSuccess] = useState('');
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -22,9 +22,7 @@ export default function ForgotPassword() {
       );
       if (res.ok) {
         const data = await res.json();
-        setMessage(
-          'We have sent an email to your email. Click the Link to change your password.'
-        );
+        setShowSuccess(true);
       } else {
         // If response is not ok, get error message from response body
         const { error } = await res.json();
@@ -68,8 +66,13 @@ export default function ForgotPassword() {
         >
           Reset Password
         </button>
-        <p>{message}</p>
       </form>
+      {showSuccess && (
+        <p style={{ textAlign: 'center' }}>
+          We have sent an email to your email. <br></br>Click the Link to change
+          your password.
+        </p>
+      )}
 
       {/* Error popup */}
       {error && (
