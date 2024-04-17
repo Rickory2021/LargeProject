@@ -151,7 +151,7 @@ module.exports.forgotPassword = async (req, res) => {
  * - Given passwordResetToken and new password, will change the password, and return the token for Auto-Login\
  * - passwordResetToken: => null\
  * - passworResetExpires: => null
- * @param {Request} req Incoming: QUERY ?token
+ * @param {Request} req Incoming: QUERY ?token JSON{password}
  * @param {Result} res The Express response object.
  * @returns \{error:null} || {error:'Failed. User not found.'} || {error:'Failed Error sending reset password email to user. Please try again.'}
  * error: 'Failed: Internal server error: ${error}' */
@@ -165,10 +165,13 @@ exports.resetPassword = async (req, res) => {
     //   passwordResetToken: hashedToken,
     //   passworResetExpires: { $gt: Date.now() }
     // });
+    const currentDate = new Date();
+    console.log(currentDate);
+    console.log(currentDate.toISOString);
 
     const user = await User.findOne({
       passwordResetToken: token,
-      passworResetExpires: { $gt: Date.now() }
+      passworResetExpires: { $gt: currentDate }
     });
 
     if (!user) {
