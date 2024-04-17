@@ -4,8 +4,14 @@ import SideNav from '../components/side-nav';
 import CookieComponent from '../components/CookieComponent';
 import ItemTotalCount from '../components/ItemTotalCount';
 import LargestPortion from '../components/LargestPortion';
+import Location from '../components/location';
+import LocationPopup from '../components/LocationPopup';
+import ItemLocationList from '../components/ItemLocationList';
 import Distributor from '../components/Distributor';
 import DistributorPopup from '../components/DistributorPopup';
+import LocationTotalCount from '../components/LocationTotalCount';
+import DropdownSelection from '../components/DropdownSelection';
+// import '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 export function Orders() {
   const [userId, setUserId] = useState('');
@@ -14,6 +20,7 @@ export function Orders() {
   const [itemList, setItemList] = useState([]);
   const [itemName, setItemName] = useState('');
   const [index, setIndex] = useState('');
+  const [locationList, setLocationList] = useState([]);
   const [itemCountMap, setItemCountMap] = useState({});
   const [distributorList, setDistributorList] = useState([]);
   const [openIndex, setOpenIndex] = useState(null);
@@ -21,8 +28,27 @@ export function Orders() {
   const [editPopupDistributor, setEditPopup] = useState('');
   const [updataDistributorMetaData, setDistributorMetaData] = useState([]);
   const [editMode, setEditMode] = useState(false);
-  const [addDistributorPopup, setaddDistributorPopup] = useState('');
   const [maxPortionMap, setMaxPortionMap] = useState({});
+  const [popupLocation, setPopupLocation] = useState('');
+  const [locationInventory, setLocationInventory] = useState({});
+  const [locationMetaData, setLocationMetaData] = useState({});
+  const [addLocationPopup, setAddLocationPopup] = useState('');
+  const [dropdownOpen, setDropdownOpen] = useState(null);
+  const [dropdownStates, setDropdownStates] = useState({});
+  const [showDropdownMap, setShowDropdownMap] = useState({});
+  const [itemLocationList, setItemLocationList] = useState([]);
+  const [editInventoryItemPopup, setEditInventoryItemPopup] = useState('');
+  const [locationName, setLocationName] = useState('');
+  const [addInventoryPopup, setAddInventoryPopup] = useState('');
+  const [deleteInventoryPopup, setDeleteInventoryPopup] = useState('');
+  const [selectedItem, setSelectedItem] = useState({});
+
+  const toggleDropdownForLocation = location => {
+    setShowDropdownMap(prevState => ({
+      ...prevState,
+      [location]: !prevState[location] || false
+    }));
+  };
 
   const [editedDistributorData, setEditedDistributorData] = useState({
     distributorName: '',
@@ -45,34 +71,51 @@ export function Orders() {
     priority: ''
   });
 
+  const [newLocation, setNewLocation] = useState({
+    itemName: '',
+    locationName: ''
+  });
+
+  const [newLocationMetaData, setNewLocationMetaData] = useState({
+    locationAddress: '',
+    locationMetaData: ''
+  });
+
+  const [newInventoryItem, setNewInventoryItem] = useState({
+    newMetaData: '',
+    index: '',
+    newNumber: '',
+    logReason: ''
+  });
+
   const [defaultPortion] = useState({
     unitName: 'N/A',
     unitNumber: 0
   });
 
-  const handleInputChange = (event, name, distributorType) => {
+  const handleInputChange = (event, name, type) => {
     const value = event.target.value;
-    if (distributorType === 'edited') {
-      if (
-        name === 'deadlineDate' ||
-        name === 'deliveryDate' ||
-        name === 'noteMetaData'
-      ) {
-        setEditedDistributorMetaData(prevState => ({
+    if (type === 'locationMetaData') {
+      {
+        setNewLocationMetaData(prevState => ({
           ...prevState,
           [name]: value
         }));
-      } else {
-        setEditedDistributorData(prevState => ({
+      }
+    } else if (type === 'location') {
+      {
+        setNewLocation(prevState => ({
           ...prevState,
-          [event.target.name]: value
+          [name]: value
         }));
       }
-    } else if (distributorType === 'new') {
-      setNewDistributor(prevState => ({
-        ...prevState,
-        [event.target.name]: value
-      }));
+    } else if (type === 'Item') {
+      {
+        setNewInventoryItem(prevState => ({
+          ...prevState,
+          [name]: value
+        }));
+      }
     }
   };
 
@@ -93,15 +136,82 @@ export function Orders() {
     setDistributorPopup(distributor);
   };
 
-  const handleAddPopup = item => {
-    setaddDistributorPopup(item);
+  const handleDeleteInventoryPopup = (location, index) => {
+    setIndex(index);
+    setDeleteInventoryPopup(location);
+  };
+
+  const handleEditInventoryItemPopup = (item, index) => {
+    setNewInventoryItem({
+      newMetaData: item.metaData,
+      index: index,
+      newNumber: item.portionNumber
+    });
+    setEditInventoryItemPopup(item);
+  };
+
+  const handleAddLocationPopup = item => {
+    setAddLocationPopup(item);
+  };
+  const handleAddInventoryPopup = item => {
+    setAddInventoryPopup(item);
+    setNewInventoryItem({
+      newMetaData: '',
+      index: '',
+      newNumber: ''
+    });
+  };
+
+  const updataLocationMetaData = newLocationMetaData => {
+    setLocationMetaData(newLocationMetaData);
+  };
+
+  const updateLocationList = newLocationList => {
+    setLocationList(newLocationList);
+  };
+
+  const handleLocationPopup = location => {
+    setPopupLocation(location);
   };
 
   const handleClosePopup = () => {
-    setDistributorPopup(null);
-    setEditPopup(null);
-    setaddDistributorPopup(null);
+    setAddLocationPopup(false);
+    setAddInventoryPopup(false);
+    setDeleteInventoryPopup(false);
+    setPopupLocation(null);
+    setEditInventoryItemPopup(false);
     setEditMode(false);
+  };
+
+  const updateLocationInventory = (
+    locationName,
+    itemName,
+    newLocationInventory
+  ) => {
+    if (newLocationInventory == null) {
+      setLocationInventory(prevState => ({
+        ...prevState,
+        [locationName]: {
+          ...prevState[locationName],
+          [itemName]: defaultLocationInventory
+        }
+      }));
+      console.log(locationInventory);
+    } else {
+      setLocationInventory(prevState => ({
+        ...prevState,
+        [locationName]: {
+          ...prevState[locationName],
+          [itemName]: newLocationInventory
+        }
+      }));
+      console.log(locationInventory);
+    }
+  };
+
+  const defaultLocationInventory = {
+    portionNumber: 0,
+    metaData: 'No Input Exists'
   };
 
   const handleEditDistributor = distributor => {
@@ -112,6 +222,12 @@ export function Orders() {
       unitAmount: distributor.distributorItemPortion,
       cost: distributor.distributorItemCost
     });
+  };
+
+  const handleItemSelected = selectedItem => {
+    console.log('selectedItem: ' + setSelectedItem);
+    setSelectedItem(selectedItem);
+    // Do something with the selected item
   };
 
   const updateEditedMetaData = () => {
@@ -149,10 +265,10 @@ export function Orders() {
     }));
   };
 
-  const addDistributor = async () => {
+  const addLocation = async () => {
     try {
       const response = await fetch(
-        'http://localhost:3001/api/crud/business/distributor-item/create?businessId=' +
+        'http://localhost:3001/api/crud/business/item-location/create?businessId=' +
           businessId,
         {
           method: 'POST',
@@ -161,25 +277,101 @@ export function Orders() {
           },
           body: JSON.stringify({
             itemName: itemName,
-            distributorName: newDistributor.distributorName,
-            distributorItemName: newDistributor.itemName,
-            distributorItemPortion: newDistributor.itemPortion,
-            distributorItemCost: newDistributor.itemCost,
-            priorityChoice: newDistributor.priorityChoice
+            locationName: newLocation.locationName
           })
         }
       );
       if (!response.ok) {
-        console.error('Error creating new distributor: ', Error);
+        console.error('Error creating new location: ', Error);
       }
       // Fetch the updated distributor list
-      const updatedDistributorList = await fetchUpdatedDistributorList();
+      const updatedLocationList = await fetchUpdatedLocationList();
 
-      console.log(updatedDistributorList);
+      console.log(updatedLocationList);
       // Update the distributor list state with the updated list
-      setDistributorList(updatedDistributorList);
+      updateLocationList(updatedLocationList);
     } catch (error) {
       console.error('Error creating distributor:', error);
+    }
+  };
+
+  const addInventoryItem = async () => {
+    try {
+      const response = await fetch(
+        'http://localhost:3001/api/crud/business/item-inventory/create?businessId=' +
+          businessId,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            itemName: itemName,
+            locationName: locationName,
+            portionNumber: newInventoryItem.newNumber,
+            metaData: newInventoryItem.newMetaData,
+            logReason: newInventoryItem.logReason
+          })
+        }
+      );
+      if (!response.ok) {
+        console.error('Error creating new location: ', Error);
+      }
+      // Fetch the updated distributor list
+      await fetchUpdatedInventoryList();
+    } catch (error) {
+      console.error('Error creating distributor:', error);
+    }
+  };
+
+  const updateInventoryItem = async () => {
+    console.log(itemName);
+    console.log(locationName);
+    console.log(newInventoryItem.index);
+    console.log(newInventoryItem.newNumber);
+    try {
+      const response1 = await fetch(
+        'http://localhost:3001/api/crud/business/item-inventory/update-number?businessId=' +
+          businessId,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            itemName: itemName,
+            findLocationName: locationName,
+            index: newInventoryItem.index,
+            newNumber: newInventoryItem.newNumber
+          })
+        }
+      );
+      if (!response1.ok) {
+        console.Error('Error updating inventory item name: ', Error);
+      }
+      const response2 = await fetch(
+        'http://localhost:3001/api/crud/business/item-inventory/update-metadata?businessId=' +
+          businessId,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            itemName: itemName,
+            findLocationName: locationName,
+            index: newInventoryItem.index,
+            newMetaData: newInventoryItem.newMetaData
+          })
+        }
+      );
+      if (!response2.ok) {
+        console.Error('Error updating inventory item metaData: ', Error);
+      }
+
+      await fetchUpdatedInventoryList();
+    } catch (error) {
+      console.error('Error updating new Inventory Item');
     }
   };
 
@@ -248,7 +440,7 @@ export function Orders() {
       }
 
       // Fetch the updated distributor list
-      const updatedDistributorList = await fetchUpdatedDistributorList();
+      const updatedDistributorList = await fetchUpdatedLocationList();
 
       console.log(updatedDistributorList);
       // Update the distributor list state with the updated list
@@ -260,6 +452,32 @@ export function Orders() {
       handleClosePopup();
     } catch (error) {
       console.error('Error updating distributor information:', error);
+    }
+  };
+
+  const handleDeleteItem = async () => {
+    try {
+      const response = await fetch(
+        'http://localhost:3001/api/crud/business/item-inventory/delete?businessId=' +
+          businessId,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            itemName: itemName,
+            locationName: locationName,
+            index: index
+          })
+        }
+      );
+      if (!response.ok) {
+        throw new Error('Failed to delete item');
+      }
+      await fetchUpdatedInventoryList();
+    } catch (error) {
+      console.error('Error deleting Item: ', error);
     }
   };
 
@@ -326,15 +544,55 @@ export function Orders() {
     }
   };
 
-  const fetchUpdatedDistributorList = async () => {
-    // Fetch the updated distributor list from the server
+  const EditLocationMetaData = async location => {
+    try {
+      const response1 = await fetch(
+        'http://localhost:3001/api/crud/business/location-metadata-list/update-address?businessId=' +
+          businessId,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            findLocationName: location,
+            newLocationAddress: newLocationMetaData.locationAddress
+          })
+        }
+      );
+      if (!response1.ok) {
+        throw new Error('Failed to update location address: ', Error);
+      }
+      const response2 = await fetch(
+        'http://localhost:3001/api/crud/business/location-metadata-list/update-metadata?businessId=' +
+          businessId,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            findLocationName: location,
+            newLocationMetaData: newLocationMetaData.locationMetaData
+          })
+        }
+      );
+      if (!response2.ok) {
+        throw new Error('Failed to update location metadata: ', Error);
+      }
+    } catch (error) {
+      console.error('Error updating location meta data: ', error);
+    }
+  };
 
+  const fetchUpdatedInventoryList = async () => {
     const requestBody = {
-      itemName: itemName
+      itemName: itemName,
+      locationName: locationName
     };
 
     const response = await fetch(
-      'http://localhost:3001/api/crud/business/distributor-item/read-all?businessId=' +
+      'http://localhost:3001/api/crud/business/item-inventory/read-all?businessId=' +
         businessId,
       {
         method: 'POST',
@@ -345,14 +603,40 @@ export function Orders() {
       }
     );
     if (!response.ok) {
-      throw new Error('Failed to fetch updated distributor list');
+      throw new Error('Failed to fetch Item list');
+    }
+    const data = await response.json();
+    const itemList = data.outputList.map(item => item.inventoryList).flat();
+    console.log(itemList);
+    setItemLocationList(itemList);
+  };
+
+  const fetchUpdatedLocationList = async () => {
+    // Fetch the updated distributor list from the server
+
+    const requestBody = {
+      itemName: itemName
+    };
+
+    const response = await fetch(
+      'http://localhost:3001/api/crud/business/item-location/read-all?businessId=' +
+        businessId,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch item names');
     }
     const data = await response.json();
     const outputList = data.outputList;
-    const distributorNames = outputList
-      .map(item => item.distributorItemList)
-      .flat();
-    return distributorNames; // Assuming the response contains the updated distributor list
+    const locationNames = outputList.map(item => item.locationName).flat();
+    return locationNames; // Assuming the response contains the updated distributor list
   };
 
   const getBusinessId = async () => {
@@ -418,6 +702,31 @@ export function Orders() {
     }
   };
 
+  const upItemCount = async () => {
+    try {
+      const response = await fetch(
+        'http://localhost:3001/api/crud/business/item-list/total-item-count?businessId=' +
+          businessId,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ itemName: itemName })
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch item count');
+      }
+      const data = await response.json();
+      const itemCount = data.outputList[0];
+      updateItemCount(itemName, itemCount);
+    } catch (error) {
+      console.error('Error fetching item count:', error);
+    }
+  };
+
   useEffect(() => {
     console.log(distributorList);
   }, [distributorList]);
@@ -438,6 +747,14 @@ export function Orders() {
   useEffect(() => {
     console.log('Maxportion' + maxPortionMap);
   }, [maxPortionMap]);
+
+  useEffect(() => {
+    console.log('newInventoryItem: ' + newInventoryItem.newNumber);
+  }, [newInventoryItem]);
+
+  useEffect(() => {
+    upItemCount();
+  }, [itemLocationList]);
 
   return (
     <div className="flex">
@@ -529,278 +846,474 @@ export function Orders() {
                   </div>
                   {openIndex === index && (
                     <div className="ml-12">
-                      {/* //   <div className="flex items-center ml-2">
-                    //     <h6 className="mr-auto">Distributors:</h6>
-                    //   </div>
-                    //   <Distributor
-                    //     itemName={item.itemName}
-                    //     businessId={businessId}
-                    //     updateDistributorList={updateDistributorList}
-                    //   />
+                      <div className="flex items-center ml-2">
+                        <h6 className="mr-auto">Location: </h6>
+                        <button
+                          onClick={handleAddLocationPopup}
+                          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                        >
+                          Add new location
+                        </button>
+                      </div>
+                      <Location
+                        itemName={item.itemName}
+                        businessId={businessId}
+                        updateLocationList={updateLocationList}
+                      />
+                      <ul>
+                        {locationList.map((location, i) => (
+                          <li
+                            key={i}
+                            className="block px-4 py-2 text-sm text-gray-700"
+                          >
+                            {!locationInventory[location] ||
+                            !locationInventory[location][item.itemName] ? (
+                              <div>
+                                <LocationTotalCount
+                                  itemName={item.itemName}
+                                  businessId={businessId}
+                                  locationName={location}
+                                  updateLocationInventory={
+                                    updateLocationInventory
+                                  }
+                                />
+                                <LargestPortion
+                                  businessId={businessId}
+                                  itemName={item.itemName}
+                                  updateMaxPortion={updateMaxPortionForItem}
+                                />
+                              </div>
+                            ) : (
+                              <div className="flex items-center">
+                                <button
+                                  onClick={() => {
+                                    setItemName(item.itemName);
+                                    toggleDropdownForLocation(location);
+                                  }}
+                                >
+                                  {location}
+                                </button>
+                                <button
+                                  onClick={() => handleLocationPopup(location)}
+                                  type="button"
+                                  className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
+                                >
+                                  i
+                                </button>
+                                <p className="m-8">
+                                  Last Updated:{' '}
+                                  {
+                                    locationInventory[location][item.itemName]
+                                      .metaData
+                                  }
+                                </p>
+                                <p className="m-8">Estimated:</p>
+                                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                                  {' '}
+                                  Clear estimate{' '}
+                                </button>
+                              </div>
+                            )}
+                            {showDropdownMap[location] && (
+                              <div>
+                                <div className="flex items-center space-x-4 mb-4">
+                                  <p className="font-bold">Inventory List:</p>
+                                  <DropdownSelection
+                                    businessId={businessId}
+                                    itemName={item.itemName}
+                                    onItemSelected={handleItemSelected}
+                                  />
+                                  <button
+                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                                    onClick={() => {
+                                      setLocationName(location);
+                                      handleAddInventoryPopup(item);
+                                    }}
+                                  >
+                                    Add Inventory element{' '}
+                                  </button>
+                                </div>
+                                <div className="flex flex-col items-start space-y-4">
+                                  <ItemLocationList
+                                    businessId={businessId}
+                                    itemName={itemName}
+                                    locationName={location}
+                                    setItemLocationList={setItemLocationList}
+                                  />
+                                  {itemLocationList.map((item, index) => (
+                                    <div
+                                      key={index}
+                                      className="flex items-center justify-between w-full border p-4 rounded-md"
+                                    >
+                                      <div className="w-1/2 pl-4 flex items-center">
+                                        {selectedItem &&
+                                        selectedItem.unitNumber !== 0 &&
+                                        selectedItem.unitNumber ? (
+                                          <p>
+                                            portionNumber:{' '}
+                                            {item.portionNumber /
+                                              selectedItem.unitNumber}{' '}
+                                            {selectedItem.unitName}
+                                          </p>
+                                        ) : (
+                                          <p>
+                                            portionNumber: {item.portionNumber}{' '}
+                                            Base Units
+                                          </p>
+                                        )}
+                                        <p className="ml-4">
+                                          Note: {item.metaData}
+                                        </p>
+                                      </div>
+                                      <div className="flex space-x-4">
+                                        <button
+                                          onClick={() => {
+                                            setLocationName(location);
+                                            console.log(index);
+                                            handleEditInventoryItemPopup(
+                                              item,
+                                              index
+                                            );
+                                          }}
+                                          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                                        >
+                                          Edit
+                                        </button>
+                                        <button
+                                          onClick={() => {
+                                            setLocationName(location);
+                                            handleDeleteInventoryPopup(
+                                              location,
+                                              index
+                                            );
+                                          }}
+                                          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                                        >
+                                          Delete
+                                        </button>
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {popupLocation && (
+                    <div>
+                      <div
+                        className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-opacity-50"
+                        onClick={handleClosePopup}
+                      >
+                        <LocationPopup
+                          locationName={popupLocation}
+                          businessId={businessId}
+                          updataLocationMetaData={updataLocationMetaData}
+                        />
+                        <div
+                          className="bg-white p-4 rounded-md relative"
+                          onClick={e => e.stopPropagation()}
+                        >
+                          <button
+                            className="absolute top-2 right-2"
+                            onClick={handleClosePopup}
+                          >
+                            X
+                          </button>
+                          {/* <h6>Information about {popupLocation}</h6> */}
 
-                    //   <ul>
-                    //     {distributorList.map((distributor, i) => (
-                    //       <li
-                    //         key={i}
-                    //         className="block px-4 py-2 text-sm text-gray-700"
-                    //       >
-                    //         <p>
-                    //           Distributor: {distributor.distributorName}
-                    //           <button
-                    //             onClick={() =>
-                    //               handleDistributorPopup(distributor)
-                    //             }
-                    //             type="button"
-                    //             className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
-                    //           >
-                    //             i
-                    //           </button>
-                    //         </p>
-                    //         <div className="flex items-baseline">
-                    //           <p className="mr-2">
-                    //             Item: {distributor.distributorItemName}
-                    //           </p>
-                    //           <button
-                    //             onClick={() => {
-                    //               setIndex(i);
-                    //               handleEditDistributor(distributor);
-                    //             }}
-                    //             type="button"
-                    //             className="inline-flex items-center justify-center w-8 h-8 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
-                    //           >
-                    //             Edit
-                    //           </button>
-                    //         </div>
-                    //         <p>
-                    //           PortionSize: {distributor.distributorItemPortion}
-                    //         </p>
-                    //         <p>Cost: {distributor.distributorItemCost}</p>
-                    //         <p>Priority: {distributor.priorityChoice}</p>
-                    //       </li>
-                    //     ))}
-                    //   </ul> */}
+                          {editMode ? (
+                            <>
+                              <h6>Edit {popupLocation}</h6>
+                              <p>Address: </p>
+                              <input
+                                type="text"
+                                name="locationAddress"
+                                value={newLocationMetaData.locationAddress}
+                                onChange={e =>
+                                  handleInputChange(
+                                    e,
+                                    'locationAddress',
+                                    'locationMetaData'
+                                  )
+                                }
+                                className="bg-gray-100 rounded-md p-2 mb-2"
+                              />
+                              <p>Notes(MetaData): </p>
+                              <input
+                                type="text"
+                                name="locationMetaData"
+                                value={newLocationMetaData.locationMetaData}
+                                onChange={e =>
+                                  handleInputChange(
+                                    e,
+                                    'locationMetaData',
+                                    'locationMetaData'
+                                  )
+                                }
+                                className="bg-gray-100 rounded-md p-2 mb-2"
+                              />
+                              <br />
+                              <button
+                                onClick={() => {
+                                  EditLocationMetaData(popupLocation);
+                                  handleClosePopup(); // Close the popup after saving
+                                }}
+                              >
+                                Save
+                              </button>
+                            </>
+                          ) : (
+                            <>
+                              <br></br>
+                              <h6>Information about {popupLocation}: </h6>
+                              <p>Address: {locationMetaData.locationAddress}</p>
+                              <p>
+                                Notes (MetaData):{' '}
+                                {locationMetaData.locationMetaData}
+                              </p>
+                              <br></br>
+                              <button
+                                onClick={() => {
+                                  setNewLocationMetaData(locationMetaData);
+                                  setEditMode(true);
+                                }}
+                              >
+                                Edit
+                              </button>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  {addLocationPopup && (
+                    <div>
+                      <div>
+                        <div
+                          className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-opacity-50"
+                          onClick={handleClosePopup}
+                        >
+                          <div
+                            className="bg-white p-4 rounded-md relative"
+                            onClick={e => e.stopPropagation()}
+                          >
+                            <button
+                              className="absolute top-2 right-2"
+                              onClick={handleClosePopup}
+                            >
+                              X
+                            </button>
+                            <h6>Create a new Location: </h6>
+                            <p>Location name: </p>
+
+                            <input
+                              type="text"
+                              name="locationName"
+                              value={newLocation.locationName}
+                              onChange={e =>
+                                handleInputChange(e, 'locationName', 'location')
+                              }
+                              className="bg-gray-100 rounded-md p-2 mb-2"
+                            />
+                            <br></br>
+                            <button
+                              onClick={() => {
+                                addLocation();
+                                handleClosePopup();
+                              }}
+                            >
+                              Create
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  {editInventoryItemPopup && (
+                    <div>
+                      <div
+                        className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-opacity-50"
+                        onClick={handleClosePopup}
+                      >
+                        <div
+                          className="bg-white p-4 rounded-md relative"
+                          onClick={e => e.stopPropagation()}
+                        >
+                          <button
+                            className="absolute top-2 right-2"
+                            onClick={handleClosePopup}
+                          >
+                            X
+                          </button>
+                          <h6>Edit Inventory Input: </h6>
+                          <p>Portion Number: </p>
+                          <input
+                            type="text"
+                            name="newNumber"
+                            value={newInventoryItem.newNumber}
+                            onChange={e =>
+                              handleInputChange(e, 'newNumber', 'Item')
+                            }
+                            className="bg-gray-100 rounded-md p-2 mb-2"
+                          />
+                          <p>Note: </p>
+                          <input
+                            type="text"
+                            name="newMetaData"
+                            value={newInventoryItem.newMetaData}
+                            onChange={e =>
+                              handleInputChange(e, 'newMetaData', 'Item')
+                            }
+                            className="bg-gray-100 rounded-md p-2 mb-2"
+                          />
+                          <br />
+                          <button
+                            onClick={() => {
+                              updateInventoryItem(), handleClosePopup();
+                            }}
+                          >
+                            Save
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  {addInventoryPopup && (
+                    <div>
+                      <div>
+                        <div
+                          className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-opacity-50"
+                          onClick={handleClosePopup}
+                        >
+                          <div
+                            className="bg-white p-4 rounded-md relative"
+                            onClick={e => e.stopPropagation()}
+                          >
+                            <button
+                              className="absolute top-2 right-2"
+                              onClick={handleClosePopup}
+                            >
+                              X
+                            </button>
+                            <h6>Create a new Inventory Item: </h6>
+                            <p>Item Name: </p>
+
+                            <input
+                              type="text"
+                              name="itemName"
+                              value={itemName}
+                              readOnly
+                              className="bg-gray-100 rounded-md p-2 mb-2"
+                            />
+                            <p>Location Name: </p>
+
+                            <input
+                              type="text"
+                              name="locationName"
+                              value={locationName}
+                              readOnly
+                              className="bg-gray-100 rounded-md p-2 mb-2"
+                            />
+                            <p>Portion Number: </p>
+
+                            <input
+                              type="text"
+                              name="newNumber"
+                              value={newInventoryItem.newNumber}
+                              onChange={e =>
+                                handleInputChange(e, 'newNumber', 'Item')
+                              }
+                              className="bg-gray-100 rounded-md p-2 mb-2"
+                            />
+                            <p>Note(MetaData): </p>
+
+                            <input
+                              type="text"
+                              name="newMetaData"
+                              value={newInventoryItem.newMetaData}
+                              onChange={e =>
+                                handleInputChange(e, 'newMetaData', 'Item')
+                              }
+                              className="bg-gray-100 rounded-md p-2 mb-2"
+                            />
+                            <p>Log Reason: </p>
+
+                            <input
+                              type="text"
+                              name="logReason"
+                              value={newLocation.logReason}
+                              onChange={e =>
+                                handleInputChange(e, 'logReason', 'Item')
+                              }
+                              className="bg-gray-100 rounded-md p-2 mb-2"
+                            />
+                            <br></br>
+                            <button
+                              onClick={() => {
+                                addInventoryItem();
+                                handleClosePopup();
+                              }}
+                            >
+                              Create
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  {deleteInventoryPopup && (
+                    <div>
+                      <div>
+                        <div
+                          className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-opacity-50"
+                          onClick={handleClosePopup}
+                        >
+                          <div
+                            className="bg-white p-4 rounded-md relative"
+                            onClick={e => e.stopPropagation()}
+                          >
+                            <button
+                              className="absolute top-2 right-2"
+                              onClick={handleClosePopup}
+                            >
+                              X
+                            </button>
+                            <br />
+                            <p className="max-w-sm text-center">
+                              Are you sure you want to delete this Inventory
+                              Item?
+                            </p>
+                            <br />
+                            <div className="flex justify-between">
+                              <button
+                                className="bg-green-500 text-white px-4 py-2 rounded-md mr-2"
+                                onClick={() => {
+                                  handleDeleteItem();
+                                  handleClosePopup();
+                                }}
+                              >
+                                Yes
+                              </button>
+                              <button
+                                className="bg-red-500 text-white px-4 py-2 rounded-md"
+                                onClick={handleClosePopup}
+                              >
+                                No
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   )}
                 </div>
               </li>
             ))}
           </ul>
-        )}
-        {popupDistributor && (
-          <div>
-            <div
-              className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-opacity-50"
-              onClick={handleClosePopup}
-            >
-              <div
-                className="bg-white p-4 rounded-md relative"
-                onClick={e => e.stopPropagation()}
-              >
-                <DistributorPopup
-                  businessId={businessId}
-                  distributorName={popupDistributor.distributorName}
-                  updateDistributorMetaData={updateDistributorMetaData}
-                />
-                <button
-                  className="absolute top-2 right-2"
-                  onClick={handleClosePopup}
-                >
-                  X
-                </button>
-                <h6>{updataDistributorMetaData.distributorName} MetaData</h6>
-                {editMode ? (
-                  <>
-                    <p>Deadline Date: </p>
-                    <input
-                      type="text"
-                      value={editedDistributorMetaData.deadlineDate}
-                      onChange={e =>
-                        handleInputChange(e, 'deadlineDate', 'edited')
-                      }
-                      className="bg-gray-100 rounded-md p-2 mb-2"
-                    />
-                    <p>Delivery Date: </p>
-                    <input
-                      type="text"
-                      value={editedDistributorMetaData.deliveryDate}
-                      onChange={e =>
-                        handleInputChange(e, 'deliveryDate', 'edited')
-                      }
-                      className="bg-gray-100 rounded-md p-2 mb-2"
-                    />
-                    <p>Notes (MetaData): </p>
-                    <input
-                      type="text"
-                      value={editedDistributorMetaData.noteMetaData}
-                      onChange={e =>
-                        handleInputChange(e, 'noteMetaData', 'edited')
-                      }
-                      className="bg-gray-100 rounded-md p-2 mb-2"
-                    />
-                    {/* Add other input fields */}
-                    <br />
-                    {/* Save button */}
-                    <button onClick={EditDistributorMetaData}>Save</button>
-                  </>
-                ) : (
-                  <>
-                    <p>
-                      Deadline Date:{' '}
-                      {updataDistributorMetaData.distributorDeadlineDate}
-                    </p>
-                    <p>
-                      Delivery Date:{' '}
-                      {updataDistributorMetaData.distributorDeliveryDate}
-                    </p>
-                    <p>
-                      Notes (MetaData):{' '}
-                      {updataDistributorMetaData.distributorMetaData}
-                    </p>
-                    {/* Display other metadata */}
-                    <br />
-                    {/* Edit button */}
-                    <button onClick={() => setEditMode(true)}>Edit</button>
-                  </>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
-        {editPopupDistributor && (
-          <div>
-            <div
-              className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-opacity-50"
-              onClick={handleClosePopup}
-            >
-              <div
-                className="bg-white p-4 rounded-md relative"
-                onClick={e => e.stopPropagation()}
-              >
-                <button
-                  className="absolute top-2 right-2"
-                  onClick={handleClosePopup}
-                >
-                  X
-                </button>
-                <h6>Edit: {updataDistributorMetaData.distributorName}</h6>
-                <p>Distributor Item Name: </p>
-                <input
-                  type="text"
-                  name="distributorItemName"
-                  value={editedDistributorData.distributorItemName}
-                  onChange={e =>
-                    handleInputChange(e, 'distributorItemName', 'edited')
-                  }
-                  className="bg-gray-100 rounded-md p-2 mb-2"
-                />
-                <p>Unit Amount: </p>
-                <input
-                  type="text"
-                  name="unitAmount"
-                  value={editedDistributorData.unitAmount}
-                  onChange={e => handleInputChange(e, 'unitAmount', 'edited')}
-                  className="bg-gray-100 rounded-md p-2 mb-2"
-                />
-                <p>Cost: </p>
-                <input
-                  type="text"
-                  name="cost"
-                  value={editedDistributorData.cost}
-                  onChange={e => handleInputChange(e, 'cost', 'edited')}
-                  className="bg-gray-100 rounded-md p-2 mb-2"
-                />
-                <br></br>
-                <button onClick={() => EditDistributor(itemName)}>Save</button>
-              </div>
-            </div>
-          </div>
-        )}
-        {addDistributorPopup && (
-          <div>
-            <div
-              className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-opacity-50"
-              onClick={handleClosePopup}
-            >
-              <div
-                className="bg-white p-4 rounded-md relative"
-                onClick={e => e.stopPropagation()}
-              >
-                <button
-                  className="absolute top-2 right-2"
-                  onClick={handleClosePopup}
-                >
-                  X
-                </button>
-                <h6>Create a new distributor/distributor item: </h6>
-
-                {/* const [newDistributor, setNewDistributor] = useState({
-                  distributorName: '',
-                  itemName: '',
-                  itemPortion: '',
-                  itemCost: '',
-                  priortiy: ''
-                }) */}
-
-                <p>Distributor name: </p>
-
-                <input
-                  type="text"
-                  name="distributorName"
-                  value={newDistributor.distributorName}
-                  onChange={e => handleInputChange(e, 'distributorName', 'new')}
-                  className="bg-gray-100 rounded-md p-2 mb-2"
-                />
-
-                <p>Item name: </p>
-
-                <input
-                  type="text"
-                  name="itemName"
-                  value={newDistributor.itemName}
-                  onChange={e => handleInputChange(e, 'itemName', 'new')}
-                  className="bg-gray-100 rounded-md p-2 mb-2"
-                />
-                <p>Item Portion: </p>
-
-                <input
-                  type="text"
-                  name="itemPortion"
-                  value={newDistributor.itemPortion}
-                  onChange={e => handleInputChange(e, 'itemPortion', 'new')}
-                  className="bg-gray-100 rounded-md p-2 mb-2"
-                />
-
-                <p>Item Cost: </p>
-
-                <input
-                  type="text"
-                  name="itemCost"
-                  value={newDistributor.itemCost}
-                  onChange={e => handleInputChange(e, 'itemCost', 'new')}
-                  className="bg-gray-100 rounded-md p-2 mb-2"
-                />
-
-                <p>Priority: </p>
-
-                <input
-                  type="text"
-                  name="priority"
-                  value={newDistributor.priority}
-                  onChange={e => handleInputChange(e, 'priority', 'new')}
-                  className="bg-gray-100 rounded-md p-2 mb-2"
-                />
-                <br></br>
-                <button
-                  onClick={() => {
-                    addDistributor();
-                    handleClosePopup();
-                  }}
-                >
-                  Create
-                </button>
-              </div>
-            </div>
-          </div>
         )}
       </div>
     </div>

@@ -8,6 +8,7 @@ import LocationPopup from '../components/LocationPopup';
 import ItemTotalCount from '../components/ItemTotalCount';
 import LocationTotalCount from '../components/LocationTotalCount';
 import ItemLog from '../components/ItemLog'; // Import ItemLog here
+// import '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 export function Inventory() {
   const [userId, setUserId] = useState('');
@@ -24,6 +25,7 @@ export function Inventory() {
   const [itemCountMap, setItemCountMap] = useState({});
   const [locationInventory, setLocationInventory] = useState({});
   const [maxPortionMap, setMaxPortionMap] = useState({});
+  const [editMode, setEditMode] = useState(false);
 
   // Function to handle userId change
   const handleUserIdChange = userId => {
@@ -45,6 +47,64 @@ export function Inventory() {
   const defaultLocationInventory = {
     portionNumber: 0,
     metaData: 'No Input Exists'
+  };
+
+  const [newLocationMetaData, setNewLocationMetaData] = useState({
+    locationAddress: '',
+    locationMetaData: ''
+  });
+
+  const handleInputChange = (event, name, type) => {
+    const value = event.target.value;
+    if (type === 'location') {
+      {
+        setNewLocationMetaData(prevState => ({
+          ...prevState,
+          [name]: value
+        }));
+      }
+    }
+  };
+
+  const EditLocationMetaData = async location => {
+    try {
+      const response1 = await fetch(
+        'http://localhost:3001/api/crud/business/location-metadata-list/update-address?businessId=' +
+          businessId,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            findLocationName: location,
+            newLocationAddress: newLocationMetaData.locationAddress
+          })
+        }
+      );
+      if (!response1.ok) {
+        throw new Error('Failed to update location address: ', Error);
+      }
+      const response2 = await fetch(
+        'http://localhost:3001/api/crud/business/location-metadata-list/update-metadata?businessId=' +
+          businessId,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            findLocationName: location,
+            newLocationMetaData: newLocationMetaData.locationMetaData
+          })
+        }
+      );
+      if (!response2.ok) {
+        throw new Error('Failed to update location metadata: ', Error);
+      }
+    } catch (error) {
+      console.error('Error updating location meta data: ', error);
+    }
   };
 
   const updateLocationInventory = (
@@ -99,6 +159,7 @@ export function Inventory() {
   const handleClosePopup = () => {
     setPopupLocation(null);
     setPopupItemLog(false); // Set popupItemLog to false to close the popup
+    setEditMode(false);
   };
 
   const getBusinessId = async () => {
@@ -175,7 +236,7 @@ export function Inventory() {
 
   if (businessId !== '') {
     return (
-      <div className = "flex">
+      <div className="flex">
         <SideNav />
         <div className="flex justify-center items-center flex-col flex-1">
           <ul>
@@ -338,28 +399,79 @@ export function Inventory() {
           </ul>
         </div>
         {popupLocation && (
-          <div
-            className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50"
-            onClick={handleClosePopup}
-          >
-            <LocationPopup
-              locationName={popupLocation}
-              businessId={businessId}
-              updataLocationMetaData={updataLocationMetaData}
-            />
+          <div>
             <div
-              className="bg-white p-4 rounded-md relative"
-              onClick={e => e.stopPropagation()}
+              className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-opacity-50"
+              onClick={handleClosePopup}
             >
-              <button
-                className="absolute top-2 right-2"
-                onClick={handleClosePopup}
+              <LocationPopup
+                locationName={popupLocation}
+                businessId={businessId}
+                updataLocationMetaData={updataLocationMetaData}
+              />
+              <div
+                className="bg-white p-4 rounded-md relative"
+                onClick={e => e.stopPropagation()}
               >
-                X
-              </button>
-              <p>Information about {popupLocation}</p>
-              <p>Address: {locationMetaData.locationAddress}</p>
-              <p>Notes(MetaData): {locationMetaData.locationMetaData}</p>
+                <button
+                  className="absolute top-2 right-2"
+                  onClick={handleClosePopup}
+                >
+                  X
+                </button>
+                {/* <h6>Information about {popupLocation}</h6> */}
+
+                {editMode ? (
+                  <>
+                    <h6>Edit {popupLocation}</h6>
+                    <p>Address: </p>
+                    <input
+                      type="text"
+                      name="locationAddress"
+                      value={newLocationMetaData.locationAddress}
+                      onChange={e =>
+                        handleInputChange(e, 'locationAddress', 'location')
+                      }
+                      className="bg-gray-100 rounded-md p-2 mb-2"
+                    />
+                    <p>Notes(MetaData): </p>
+                    <input
+                      type="text"
+                      name="locationMetaData"
+                      value={newLocationMetaData.locationMetaData}
+                      onChange={e =>
+                        handleInputChange(e, 'locationMetaData', 'location')
+                      }
+                      className="bg-gray-100 rounded-md p-2 mb-2"
+                    />
+                    <br />
+                    <button
+                      onClick={() => {
+                        EditLocationMetaData(popupLocation);
+                        handleClosePopup(); // Close the popup after saving
+                      }}
+                    >
+                      Save
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <br></br>
+                    <h6>Information about {popupLocation}: </h6>
+                    <p>Address: {locationMetaData.locationAddress}</p>
+                    <p>Notes (MetaData): {locationMetaData.locationMetaData}</p>
+                    <br></br>
+                    <button
+                      onClick={() => {
+                        setNewLocationMetaData(locationMetaData);
+                        setEditMode(true);
+                      }}
+                    >
+                      Edit
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
           </div>
         )}

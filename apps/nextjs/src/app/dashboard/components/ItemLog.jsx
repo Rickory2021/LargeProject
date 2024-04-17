@@ -21,7 +21,7 @@ function ItemLog({ itemName, businessId, locationBucket, updateItemLog }) {
       );
 
       if (!response.ok) {
-        throw new Error('Failed to fetch item names');
+        throw new Error('Failed to fetch item Log');
       }
       const data = await response.json();
       const locationLogs = data.outputList
@@ -30,7 +30,7 @@ function ItemLog({ itemName, businessId, locationBucket, updateItemLog }) {
       console.log(locationLogs);
       updateItemLog(locationLogs);
     } catch (error) {
-      console.error('Error fetching item names:', error);
+      console.error('Error fetching item Log:', error);
     }
   };
 
