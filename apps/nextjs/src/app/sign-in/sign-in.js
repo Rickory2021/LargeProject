@@ -11,7 +11,7 @@ export default function SignIn() {
     e.preventDefault();
     try {
       const res = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/auth/user/login`,
+        `${process.env.REACT_APP_API_URL}/auth/user/login`,
         {
           method: 'POST',
           headers: {
