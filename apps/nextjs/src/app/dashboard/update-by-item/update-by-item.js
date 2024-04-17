@@ -42,6 +42,14 @@ export function UpdateByItem() {
   const [addInventoryPopup, setAddInventoryPopup] = useState('');
   const [deleteInventoryPopup, setDeleteInventoryPopup] = useState('');
   const [selectedItem, setSelectedItem] = useState({});
+  const [isSideNavOpen, setIsSideNavOpen] = useState(true);
+
+  const handleSideNavOpen = openState => {
+    setIsSideNavOpen(openState);
+    console.log(`openState:${openState}`);
+    // Adjust the main page layout based on the open state
+    // For example, you can set the left margin of the main page here
+  };
 
   const toggleDropdownForLocation = location => {
     setShowDropdownMap(prevState => ({
@@ -758,8 +766,10 @@ export function UpdateByItem() {
 
   return (
     <div className="flex">
-      <SideNav />
-      <div className="flex justify-center items-center flex-col flex-1">
+      <SideNav openCallback={handleSideNavOpen} />
+      <div
+        className={`flex justify-center items-center flex-col flex-1 ${isSideNavOpen ? 'ml-72' : 'ml-36'} lg:${isSideNavOpen ? 'ml-80' : 'ml-40'} xl:${isSideNavOpen ? 'ml-88' : 'ml-44'}`}
+      >
         {loading ? (
           <CookieComponent
             cookieName={'accessToken'}

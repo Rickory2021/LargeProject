@@ -15,6 +15,14 @@ import {
 
 export function Account() {
   const [userId, setUserId] = useState(null);
+  const [isSideNavOpen, setIsSideNavOpen] = useState(true);
+
+  const handleSideNavOpen = openState => {
+    setIsSideNavOpen(openState);
+    console.log(`openState:${openState}`);
+    // Adjust the main page layout based on the open state
+    // For example, you can set the left margin of the main page here
+  };
 
   // Function to handle userId change
   const handleUserIdChange = userId => {
@@ -29,7 +37,7 @@ export function Account() {
           cookieName={'accessToken'}
           onUserIdChange={handleUserIdChange}
         />
-        <SideNav />
+        <SideNav openCallback={handleSideNavOpen} />
       </div>
       <div className="flex flex-col">
         {/* Right Section (Card Components) */}
