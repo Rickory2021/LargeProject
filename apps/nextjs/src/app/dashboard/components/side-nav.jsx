@@ -11,7 +11,7 @@ import {
   BsReverseLayoutTextSidebarReverse
 } from 'react-icons/bs';
 
-const SideNav = () => {
+const SideNav = ({ openCallback }) => {
   const [open, setOpen] = useState(false);
   const [submenuOpen, setSubmenuOpen] = useState(false);
 
@@ -62,13 +62,16 @@ const SideNav = () => {
     <div
       // className={`fixed top-0 left-0 h-screen m-0 flex flex-col
       // bg-blue-600 text-white ${open ? 'w-32' : 'w-72'} duration-300 relative`}
-      className={`fixed top-0 left-0 h-screen m-0 flex flex-col bg-blue-600 text-white ${open ? 'w-32' : 'w-72'} duration-300`}
+      className={`fixed top-0 left-0 h-screen m-0 flex flex-col bg-blue-600 text-white ${open ? 'w-32' : 'w-60'} duration-300`}
     >
       <BsArrowLeftShort
         className={`bg-black text-white text-3xl rounded-full
         absolute -right-3 top-9 border border-blue cursor-pointer 
         ${open && 'rotate-180'}`}
-        onClick={() => setOpen(!open)}
+        onClick={() => {
+          setOpen(!open);
+          openCallback(open);
+        }}
         open={open}
       />
 
@@ -191,7 +194,7 @@ const SideNav = () => {
 
 const SideBarIcon = ({ icon, text, open }) => (
   <div
-    className={`inline-flex hover:bg-black hover:rounded-md duration-300 ${open ? 'w-32' : 'w-72'}`}
+    className={`inline-flex hover:bg-black hover:rounded-md duration-300 ${open ? 'w-32' : 'w-60'}`}
   >
     <div
       className={`group relative flex items-center justify-center h-20 w-20 m-3  

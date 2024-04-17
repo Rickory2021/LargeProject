@@ -26,6 +26,14 @@ export function Dashboard() {
   const [locationInventory, setLocationInventory] = useState({});
   const [maxPortionMap, setMaxPortionMap] = useState({});
   const [editMode, setEditMode] = useState(false);
+  const [isSideNavOpen, setIsSideNavOpen] = useState(true);
+
+  const handleSideNavOpen = openState => {
+    setIsSideNavOpen(openState);
+    console.log(`openState:${openState}`);
+    // Adjust the main page layout based on the open state
+    // For example, you can set the left margin of the main page here
+  };
 
   // Function to handle userId change
   const handleUserIdChange = userId => {
@@ -240,9 +248,9 @@ export function Dashboard() {
 
   return (
     <div className="flex">
-      <SideNav />
+      <SideNav openCallback={handleSideNavOpen} />
       <div
-        className={`flex justify-center items-center flex-col flex-1 ml-72 lg:ml-80 xlml-88`}
+        className={`flex justify-center items-center flex-col flex-1 ${isSideNavOpen ? 'ml-72' : 'ml-36'} lg:${isSideNavOpen ? 'ml-80' : 'ml-40'} xl:${isSideNavOpen ? 'ml-88' : 'ml-44'}`}
       >
         {loading ? (
           <CookieComponent
