@@ -1,23 +1,27 @@
 'use client';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [retypePassword, setRetypePassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [username, setUsername] = useState('');
   const [error, setError] = useState('');
   const [passwordFocused, setPasswordFocused] = useState(false);
+  const [retypePasswordFocused, setRetypePasswordFocused] = useState(false);
+  const [showRetypePassword, setShowRetypePassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [passwordRequirements, setPasswordRequirements] = useState({
     minLength: false,
     uppercase: false,
     lowercase: false,
-    specialCharacter: false
+    specialCharacter: false,
+    samePasswordRetype: false
   });
 
   const router = useRouter();
@@ -61,7 +65,8 @@ export default function SignUp() {
     }
   };
 
-  const validatePassword = password => {
+  const validatePassword = (password, retypePassword) => {
+    console.log(password + 'vs' + retypePassword);
     const passwordRegex =
       /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[0123456789])(?=.*[!@#$%^&*]).{8,}$/;
     const newPasswordRequirements = {
@@ -70,10 +75,13 @@ export default function SignUp() {
       lowercase: /[a-z]/.test(password),
       number: /[01234567890]/.test(password),
       specialCharacter: /[!@#$%^&*]/.test(password),
-      passwordLength: password.length
+      passwordLength: password.length,
+      samePasswordRetype: password === retypePassword
     };
+    console.log(`password:${password}`);
+    console.log(`retypePassword:${retypePassword}`);
     setPasswordRequirements(newPasswordRequirements);
-    return passwordRegex.test(password);
+    return passwordRegex.test(password) && password === retypePassword;
   };
 
   const closeErrorPopup = () => {
@@ -89,71 +97,150 @@ export default function SignUp() {
     // setShowPassword(false); // Hide the button when the password input is blurred
   };
 
+  const handleRetypePasswordFocus = () => {
+    setRetypePasswordFocused(true);
+  };
+
+  const handleRetypePasswordBlur = () => {
+    setRetypePasswordFocused(false);
+    // setShowPassword(false); // Hide the button when the password input is blurred
+  };
+
   const togglePasswordVisibility = () => {
     setShowPassword(prevShowPassword => !prevShowPassword);
   };
 
+  const toggleRetypePasswordVisibility = () => {
+    setShowRetypePassword(prevShowPassword => !prevShowPassword);
+  };
+
   const handlePasswordChange = e => {
     setPassword(e.target.value);
-    if (passwordFocused) {
-      validatePassword(e.target.value);
-    }
+    // if (passwordFocused) {
+    //   validatePassword(e.target.value);
+    // }
   };
+
+  const handleRetypePasswordChange = e => {
+    setRetypePassword(prevRetypePassword => e.target.value);
+  };
+
+  useEffect(() => {
+    if (passwordFocused || retypePasswordFocused) {
+      validatePassword(password, retypePassword);
+    }
+  }, [password, retypePassword]);
 
   // ✓ vs ✅
   return (
-    <div className="flex flex-col items-center justify-center h-screen pb-16">
+    <div className="flex flex-col items-center justify-center h-screen pb-16 mt:16">
       <h1 className="text-4xl font-bold mb-8">Sign Up</h1>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="First Name"
-          value={firstName}
-          onChange={e => setFirstName(e.target.value)}
-          className="p-2 border border-gray-300 rounded-md"
-        />
-        <input
-          type="text"
-          placeholder="Last Name"
-          value={lastName}
-          onChange={e => setLastName(e.target.value)}
-          className="p-2 border border-gray-300 rounded-md"
-        />
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={e => setUsername(e.target.value)}
-          className="p-2 border border-gray-300 rounded-md"
-        />
-        <div className="relative">
+        <div>
+          <label className="block text-gray-700 font-medium mb-2 text-sm">
+            First Name
+          </label>{' '}
           <input
-            type={showPassword ? 'text' : 'password'}
-            placeholder="Password"
-            value={password}
-            onChange={handlePasswordChange}
-            onFocus={handlePasswordFocus}
-            onBlur={handlePasswordBlur}
+            type="text"
+            placeholder="First Name"
+            value={firstName}
+            onChange={e => setFirstName(e.target.value)}
             className="p-2 border border-gray-300 rounded-md"
           />
-          {!showPassword && (
-            <button
-              type="button"
-              className="absolute top-3 right-2"
-              onClick={togglePasswordVisibility}
-            >
-              <FaEye />
-            </button>
-          )}
-          {showPassword && (
-            <button
-              type="button"
-              className="absolute top-3 right-2"
-              onClick={togglePasswordVisibility}
-            >
-              <FaEyeSlash />
-            </button>
-          )}
+        </div>
+
+        <div>
+          <label className="block text-gray-700 font-medium mb-2 text-sm">
+            Last Name
+          </label>
+          <input
+            type="text"
+            placeholder="Last Name"
+            value={lastName}
+            onChange={e => setLastName(e.target.value)}
+            className="p-2 border border-gray-300 rounded-md"
+          />
+        </div>
+        <div>
+          <label className="block text-gray-700 font-medium mb-2 text-sm">
+            Username
+          </label>
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={e => setUsername(e.target.value)}
+            className="p-2 border border-gray-300 rounded-md"
+          />
+        </div>
+
+        <div className="relative">
+          <label className="block text-gray-700 font-medium mb-2 text-sm">
+            Password
+          </label>
+          <div className="relative">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              placeholder="Password"
+              value={password}
+              onChange={handlePasswordChange}
+              onFocus={handlePasswordFocus}
+              onBlur={handlePasswordBlur}
+              className="p-2 border border-gray-300 rounded-md"
+            />
+            {!showPassword && (
+              <button
+                type="button"
+                className="absolute top-3 right-2"
+                onClick={togglePasswordVisibility}
+              >
+                <FaEye />
+              </button>
+            )}
+            {showPassword && (
+              <button
+                type="button"
+                className="absolute top-3 right-2"
+                onClick={togglePasswordVisibility}
+              >
+                <FaEyeSlash />
+              </button>
+            )}
+          </div>
+        </div>
+        <div className="relative">
+          <label className="block text-gray-700 font-medium mb-2 text-sm">
+            Confirm Password
+          </label>
+          <div className="relative">
+            <input
+              type={showRetypePassword ? 'text' : 'password'}
+              placeholder="Retype Password"
+              value={retypePassword}
+              onChange={handleRetypePasswordChange}
+              onFocus={handleRetypePasswordFocus}
+              onBlur={handleRetypePasswordBlur}
+              className="p-2 border border-gray-300 rounded-md"
+            />
+            {!showRetypePassword && (
+              <button
+                type="button"
+                className="absolute top-3 right-2"
+                onClick={toggleRetypePasswordVisibility}
+              >
+                <FaEye />
+              </button>
+            )}
+            {showRetypePassword && (
+              <button
+                type="button"
+                className="absolute top-3 right-2"
+                onClick={toggleRetypePasswordVisibility}
+              >
+                <FaEyeSlash />
+              </button>
+            )}
+          </div>
         </div>
         {(passwordFocused ||
           (passwordRequirements &&
@@ -164,6 +251,7 @@ export default function SignUp() {
               passwordRequirements.lowercase &&
               passwordRequirements.number &&
               passwordRequirements.specialCharacter &&
+              passwordRequirements.samePasswordRetype &&
               !passwordFocused
             ))) && (
           <div className="p-2 border border-gray-300 rounded-md">
@@ -187,16 +275,25 @@ export default function SignUp() {
                 {passwordRequirements.specialCharacter ? '✅' : '-'} Contain at
                 least one special character: !@#$%^&*
               </li>
+              <li>
+                {passwordRequirements.samePasswordRetype ? '✅' : '-'} Password
+                & Retype Password need to be the same
+              </li>
             </ul>
           </div>
         )}
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-          className={`p-2 border border-gray-300 rounded-md`}
-        />
+        <div>
+          <label className="block text-gray-700 font-medium mb-2 text-sm">
+            Email
+          </label>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            className={`p-2 border border-gray-300 rounded-md`}
+          />
+        </div>
 
         <button type="submit" className="bg-blue-500 text-white p-2 rounded-md">
           Sign Up

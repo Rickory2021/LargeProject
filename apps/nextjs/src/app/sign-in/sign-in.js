@@ -59,20 +59,31 @@ export default function SignIn() {
     <div className="flex flex-col items-center justify-center h-screen pb-16">
       <h1 className="text-4xl font-bold mb-8">Sign In</h1>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={e => setUsername(e.target.value)}
-          className="p-2 border border-gray-300 rounded-md"
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-          className="p-2 border border-gray-300 rounded-md"
-        />
+        <div>
+          <label className="block text-gray-700 font-medium mb-2 text-sm">
+            Username
+          </label>
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={e => setUsername(e.target.value)}
+            className="p-2 border border-gray-300 rounded-md"
+          />
+        </div>
+        <div>
+          <label className="block text-gray-700 font-medium mb-2 text-sm">
+            Password
+          </label>
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            className="p-2 border border-gray-300 rounded-md"
+          />
+        </div>
+
         <button
           type="submit"
           className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-700"

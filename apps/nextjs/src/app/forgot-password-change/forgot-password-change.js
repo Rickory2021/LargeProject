@@ -20,8 +20,12 @@ export default function ForgotPasswordChange() {
     minLength: false,
     uppercase: false,
     lowercase: false,
-    specialCharacter: false
+    specialCharacter: false,
+    samePasswordRetype: false
   });
+  const [retypePassword, setRetypePassword] = useState('');
+  const [retypePasswordFocused, setRetypePasswordFocused] = useState(false);
+  const [showRetypePassword, setShowRetypePassword] = useState('');
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -58,7 +62,8 @@ export default function ForgotPasswordChange() {
     }
   };
 
-  const validatePassword = password => {
+  const validatePassword = (password, retypePassword) => {
+    console.log(password + 'vs' + retypePassword);
     const passwordRegex =
       /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[0123456789])(?=.*[!@#$%^&*]).{8,}$/;
     const newPasswordRequirements = {
@@ -67,13 +72,15 @@ export default function ForgotPasswordChange() {
       lowercase: /[a-z]/.test(password),
       number: /[01234567890]/.test(password),
       specialCharacter: /[!@#$%^&*]/.test(password),
-      passwordLength: password.length
+      passwordLength: password.length,
+      samePasswordRetype: password === retypePassword
     };
+    console.log(`password:${password}`);
+    console.log(`retypePassword:${retypePassword}`);
     setPasswordRequirements(newPasswordRequirements);
-    return passwordRegex.test(password);
+    return passwordRegex.test(password) && password === retypePassword;
   };
 
-  // Function to close the error popup
   const closeErrorPopup = () => {
     setError('');
   };
@@ -87,49 +94,111 @@ export default function ForgotPasswordChange() {
     // setShowPassword(false); // Hide the button when the password input is blurred
   };
 
+  const handleRetypePasswordFocus = () => {
+    setRetypePasswordFocused(true);
+  };
+
+  const handleRetypePasswordBlur = () => {
+    setRetypePasswordFocused(false);
+    // setShowPassword(false); // Hide the button when the password input is blurred
+  };
+
   const togglePasswordVisibility = () => {
     setShowPassword(prevShowPassword => !prevShowPassword);
   };
 
+  const toggleRetypePasswordVisibility = () => {
+    setShowRetypePassword(prevShowPassword => !prevShowPassword);
+  };
+
   const handlePasswordChange = e => {
     setPassword(e.target.value);
-    if (passwordFocused) {
-      validatePassword(e.target.value);
-    }
+    // if (passwordFocused) {
+    //   validatePassword(e.target.value);
+    // }
   };
+
+  const handleRetypePasswordChange = e => {
+    setRetypePassword(prevRetypePassword => e.target.value);
+  };
+
+  useEffect(() => {
+    if (passwordFocused || retypePasswordFocused) {
+      validatePassword(password, retypePassword);
+    }
+  }, [password, retypePassword]);
 
   return (
     <div className="flex flex-col items-center justify-center h-screen pb-16">
       <h1 className="text-4xl font-bold mb-8">Reset Password</h1>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <div className="relative">
-          <input
-            type={showPassword ? 'text' : 'password'}
-            placeholder="Password"
-            value={password}
-            onChange={handlePasswordChange}
-            onFocus={handlePasswordFocus}
-            onBlur={handlePasswordBlur}
-            className="p-2 border border-gray-300 rounded-md"
-          />
-          {!showPassword && (
-            <button
-              type="button"
-              className="absolute top-3 right-2"
-              onClick={togglePasswordVisibility}
-            >
-              <FaEye />
-            </button>
-          )}
-          {showPassword && (
-            <button
-              type="button"
-              className="absolute top-3 right-2"
-              onClick={togglePasswordVisibility}
-            >
-              <FaEyeSlash />
-            </button>
-          )}
+          <label className="block text-gray-700 font-medium mb-2 text-sm">
+            Password
+          </label>
+          <div className="relative">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              placeholder="Password"
+              value={password}
+              onChange={handlePasswordChange}
+              onFocus={handlePasswordFocus}
+              onBlur={handlePasswordBlur}
+              className="p-2 border border-gray-300 rounded-md"
+            />
+            {!showPassword && (
+              <button
+                type="button"
+                className="absolute top-3 right-2"
+                onClick={togglePasswordVisibility}
+              >
+                <FaEye />
+              </button>
+            )}
+            {showPassword && (
+              <button
+                type="button"
+                className="absolute top-3 right-2"
+                onClick={togglePasswordVisibility}
+              >
+                <FaEyeSlash />
+              </button>
+            )}
+          </div>
+        </div>
+        <div className="relative">
+          <label className="block text-gray-700 font-medium mb-2 text-sm">
+            Confirm Password
+          </label>
+          <div className="relative">
+            <input
+              type={showRetypePassword ? 'text' : 'password'}
+              placeholder="Retype Password"
+              value={retypePassword}
+              onChange={handleRetypePasswordChange}
+              onFocus={handleRetypePasswordFocus}
+              onBlur={handleRetypePasswordBlur}
+              className="p-2 border border-gray-300 rounded-md"
+            />
+            {!showRetypePassword && (
+              <button
+                type="button"
+                className="absolute top-3 right-2"
+                onClick={toggleRetypePasswordVisibility}
+              >
+                <FaEye />
+              </button>
+            )}
+            {showRetypePassword && (
+              <button
+                type="button"
+                className="absolute top-3 right-2"
+                onClick={toggleRetypePasswordVisibility}
+              >
+                <FaEyeSlash />
+              </button>
+            )}
+          </div>
         </div>
         {(passwordFocused ||
           (passwordRequirements &&
@@ -140,6 +209,7 @@ export default function ForgotPasswordChange() {
               passwordRequirements.lowercase &&
               passwordRequirements.number &&
               passwordRequirements.specialCharacter &&
+              passwordRequirements.samePasswordRetype &&
               !passwordFocused
             ))) && (
           <div className="p-2 border border-gray-300 rounded-md">
@@ -162,6 +232,10 @@ export default function ForgotPasswordChange() {
               <li>
                 {passwordRequirements.specialCharacter ? '✅' : '-'} Contain at
                 least one special character: !@#$%^&*
+              </li>
+              <li>
+                {passwordRequirements.samePasswordRetype ? '✅' : '-'} Password
+                & Retype Password need to be the same
               </li>
             </ul>
           </div>
