@@ -1,4 +1,4 @@
-'use client';
+'use client'
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
@@ -8,25 +8,34 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 export default function ForgotPasswordChange() {
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
-
+  
   const router = useRouter();
 
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
-  const [saved, setSaved] = useState('');
+  const [saved, setSaved] = useState(false);
   const [passwordFocused, setPasswordFocused] = useState(false);
+  const [confirmPasswordHovered, setConfirmPasswordHovered] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [passwordRequirements, setPasswordRequirements] = useState({
     minLength: false,
     uppercase: false,
     lowercase: false,
-    specialCharacter: false
+    specialCharacter: false,
   });
+  const [passwordsMatch, setPasswordsMatch] = useState(false);
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!validatePassword(password)) {
       setError('Entered password does not meet validation requirements!');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError('Passwords do not match!');
       return;
     }
 
@@ -36,11 +45,10 @@ export default function ForgotPasswordChange() {
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ password })
+          body: JSON.stringify({ password }),
         }
       );
       if (res.ok) {
-        // router.push('/verify-email');
         setSaved(true);
       } else if (res.status === 400) {
         const { error } = await res.json();
@@ -51,29 +59,25 @@ export default function ForgotPasswordChange() {
       }
     } catch (error) {
       console.error('An unexpected error happened:', error);
-      setError('An unexpected error occurred. Please try again later.');
       setError(
-        `An unexpected error occurred. Please try again later. ${error}`
+        'An unexpected error occurred. Please try again later. ' + error
       );
     }
   };
 
-  const validatePassword = password => {
+  const validatePassword = (password) => {
     const passwordRegex =
-      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[0123456789])(?=.*[!@#$%^&*]).{8,}$/;
+      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
     const newPasswordRequirements = {
       minLength: password.length >= 8,
       uppercase: /[A-Z]/.test(password),
       lowercase: /[a-z]/.test(password),
-      number: /[01234567890]/.test(password),
       specialCharacter: /[!@#$%^&*]/.test(password),
-      passwordLength: password.length
     };
     setPasswordRequirements(newPasswordRequirements);
     return passwordRegex.test(password);
   };
 
-  // Function to close the error popup
   const closeErrorPopup = () => {
     setError('');
   };
@@ -84,18 +88,31 @@ export default function ForgotPasswordChange() {
 
   const handlePasswordBlur = () => {
     setPasswordFocused(false);
-    // setShowPassword(false); // Hide the button when the password input is blurred
+  };
+
+  const handleConfirmPasswordHover = () => {
+    setConfirmPasswordHovered(true);
+  };
+
+  const handleConfirmPasswordLeave = () => {
+    setConfirmPasswordHovered(false);
   };
 
   const togglePasswordVisibility = () => {
-    setShowPassword(prevShowPassword => !prevShowPassword);
+    setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
-  const handlePasswordChange = e => {
+  const handlePasswordChange = (e) => {
     setPassword(e.target.value);
     if (passwordFocused) {
       validatePassword(e.target.value);
     }
+    setPasswordsMatch(e.target.value === confirmPassword);
+  };
+
+  const handleConfirmPasswordChange = (e) => {
+    setConfirmPassword(e.target.value);
+    setPasswordsMatch(e.target.value === password);
   };
 
   return (
@@ -112,6 +129,7 @@ export default function ForgotPasswordChange() {
             onBlur={handlePasswordBlur}
             className="p-2 border border-gray-300 rounded-md"
           />
+
           {!showPassword && (
             <button
               type="button"
@@ -131,18 +149,17 @@ export default function ForgotPasswordChange() {
             </button>
           )}
         </div>
-        {(passwordFocused ||
-          (passwordRequirements &&
-            passwordRequirements.passwordLength > 0 &&
-            !(
-              passwordRequirements.minLength &&
-              passwordRequirements.uppercase &&
-              passwordRequirements.lowercase &&
-              passwordRequirements.number &&
-              passwordRequirements.specialCharacter &&
-              !passwordFocused
-            ))) && (
-          <div className="p-2 border border-gray-300 rounded-md">
+        <input
+          type="password"
+          placeholder="Confirm Password"
+          value={confirmPassword}
+          onChange={handleConfirmPasswordChange}
+          onFocus={handleConfirmPasswordHover}
+          onBlur={handleConfirmPasswordLeave}
+          className="p-2 border border-gray-300 rounded-md"
+        />
+        {(passwordRequirements && (passwordFocused || confirmPasswordHovered)) && (
+          <div className="flex p-2 border border-gray-300 rounded-md">
             <ul>
               <li>
                 {passwordRequirements.minLength ? '✅' : '-'} Password must be
@@ -157,20 +174,24 @@ export default function ForgotPasswordChange() {
                 one lowercase letter
               </li>
               <li>
-                {passwordRequirements.number ? '✅' : '-'} Contain at one number
+                {passwordRequirements.specialCharacter ? '✅' : '-'} Contain
+                at least one special character: !@#$%^&*
               </li>
               <li>
-                {passwordRequirements.specialCharacter ? '✅' : '-'} Contain at
-                least one special character: !@#$%^&*
+                {(passwordsMatch && password.length > 0)? '✅' : '-'} Passwords Match
               </li>
             </ul>
           </div>
         )}
-        <button type="submit" className="bg-blue-500 text-white p-2 rounded-md">
+
+        <button
+          type="submit"
+          className="bg-blue-500 text-white p-2 rounded-md"
+        >
           Sign Up
         </button>
       </form>
-      <br></br>
+      <br />
       {saved && (
         <div>
           <Link href="/sign-in" className="px-5">
