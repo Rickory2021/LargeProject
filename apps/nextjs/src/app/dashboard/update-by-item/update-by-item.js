@@ -871,12 +871,12 @@ export function UpdateByItem() {
                                   itemCountMap[item.itemName] /
                                   maxPortionMap[item.itemName].unitNumber
                                 ).toFixed(2)
-                              : '0.00'}{' '}
+                              : 'No'}{' '}
                             {maxPortionMap[item.itemName] &&
                             itemCountMap[item.itemName] &&
                             maxPortionMap[item.itemName].unitNumber
                               ? maxPortionMap[item.itemName].unitName
-                              : 'Units'}{' '}
+                              : 'Portion Details'}{' '}
                           </p>
                           <p className="m-8">
                             Estimate:{' '}
@@ -888,12 +888,12 @@ export function UpdateByItem() {
                                     .estimateDeduction /
                                   maxPortionMap[item.itemName].unitNumber
                                 ).toFixed(2)
-                              : '0.00'}{' '}
+                              : 'No'}{' '}
                             {maxPortionMap[item.itemName] &&
                             itemCountMap[item.itemName] &&
                             maxPortionMap[item.itemName].unitNumber
                               ? maxPortionMap[item.itemName].unitName
-                              : 'Units'}{' '}
+                              : 'Portion Details'}{' '}
                           </p>
                         </>
                       </div>

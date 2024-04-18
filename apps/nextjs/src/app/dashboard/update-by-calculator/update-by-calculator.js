@@ -1697,12 +1697,12 @@ export function UpdateByCalculator() {
                                     itemCountMap[item.itemName] /
                                     maxPortionMap[item.itemName].unitNumber
                                   ).toFixed(2)
-                                : '0.00'}{' '}
+                                : 'No'}{' '}
                               {maxPortionMap[item.itemName] &&
                               itemCountMap[item.itemName] &&
                               maxPortionMap[item.itemName].unitNumber
                                 ? maxPortionMap[item.itemName].unitName
-                                : 'Units'}{' '}
+                                : 'Portion Details'}{' '}
                             </td>
                             <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
                               {maxPortionMap[item.itemName] &&
@@ -1713,12 +1713,12 @@ export function UpdateByCalculator() {
                                       .estimateDeduction /
                                     maxPortionMap[item.itemName].unitNumber
                                   ).toFixed(2)
-                                : '0.00'}{' '}
+                                : 'No'}{' '}
                               {maxPortionMap[item.itemName] &&
                               itemCountMap[item.itemName] &&
                               maxPortionMap[item.itemName].unitNumber
                                 ? maxPortionMap[item.itemName].unitName
-                                : 'Units'}{' '}
+                                : 'Portion Details'}{' '}
                             </td>
                             <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
                               <button
