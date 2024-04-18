@@ -5,6 +5,7 @@ import CookieComponent from '../components/CookieComponent';
 import ItemTotalCount from '../components/ItemTotalCount';
 import LargestPortion from '../components/LargestPortion';
 import PortionInfo from '../components/PortionInfo';
+import ItemEstimateDeduction from '../components/ItemEstimateDeduction';
 import ItemsNeeded from '../components/ItemsNeeded';
 import ItemsUsedIn from '../components/ItemsUsedIn';
 import Portal from '../components/Portal';
@@ -18,6 +19,7 @@ export function UpdateByCalculator() {
   const [itemName, setItemName] = useState('');
   const [itemCountMap, setItemCountMap] = useState({});
   const [openIndex, setOpenIndex] = useState(null);
+  const [estimatedDeductionMap, setEstimatedDeductionMap] = useState({});
   const [maxPortionMap, setMaxPortionMap] = useState({});
   const [openPortionInfo, setOpenPortionInfo] = useState(false);
   const [openItemNeeded, setOpenItemNeeded] = useState(false);
@@ -100,6 +102,12 @@ export function UpdateByCalculator() {
         [name]: value
       }));
     }
+  };
+  const updateEstimateDeduction = (itemName, newEstimatedDeduction) => {
+    setEstimatedDeductionMap(prevState => ({
+      ...prevState,
+      [itemName]: newEstimatedDeduction
+    }));
   };
 
   const handleButtonClick = (itemName, index, action) => {
@@ -604,6 +612,15 @@ export function UpdateByCalculator() {
                           businessId={businessId}
                           itemName={item.itemName}
                           updateItemCount={updateItemCount}
+                        />
+                      </div>
+                    )}
+                    {!estimatedDeductionMap[item.itemName] && (
+                      <div>
+                        <ItemEstimateDeduction
+                          businessId={businessId}
+                          itemName={item.itemName}
+                          estimateDeduction={updateEstimateDeduction}
                         />
                       </div>
                     )}
@@ -1677,8 +1694,28 @@ export function UpdateByCalculator() {
                                   maxPortionMap[item.itemName].unitNumber
                                 ).toFixed(2)
                               : '0.00'}{' '}
+                            {maxPortionMap[item.itemName] &&
+                            itemCountMap[item.itemName] &&
+                            maxPortionMap[item.itemName].unitNumber
+                              ? maxPortionMap[item.itemName].unitName
+                              : 'Units'}{' '}
                           </td>
-                          <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]"></td>
+                          <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
+                            {maxPortionMap[item.itemName] &&
+                            estimatedDeductionMap[item.itemName] &&
+                            maxPortionMap[item.itemName].unitNumber
+                              ? (
+                                  estimatedDeductionMap[item.itemName]
+                                    .estimateDeduction /
+                                  maxPortionMap[item.itemName].unitNumber
+                                ).toFixed(2)
+                              : '0.00'}{' '}
+                            {maxPortionMap[item.itemName] &&
+                            itemCountMap[item.itemName] &&
+                            maxPortionMap[item.itemName].unitNumber
+                              ? maxPortionMap[item.itemName].unitName
+                              : 'Units'}{' '}
+                          </td>
                           <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
                             <button
                               onClick={e => {

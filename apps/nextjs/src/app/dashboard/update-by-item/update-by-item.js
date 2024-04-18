@@ -7,6 +7,7 @@ import LargestPortion from '../components/LargestPortion';
 import Location from '../components/location';
 import LocationPopup from '../components/LocationPopup';
 import ItemLocationList from '../components/ItemLocationList';
+import ItemEstimateDeduction from '../components/ItemEstimateDeduction';
 import Distributor from '../components/Distributor';
 import DistributorPopup from '../components/DistributorPopup';
 import LocationTotalCount from '../components/LocationTotalCount';
@@ -23,6 +24,7 @@ export function UpdateByItem() {
   const [index, setIndex] = useState('');
   const [locationList, setLocationList] = useState([]);
   const [itemCountMap, setItemCountMap] = useState({});
+  const [estimatedDeductionMap, setEstimatedDeductionMap] = useState({});
   const [distributorList, setDistributorList] = useState([]);
   const [openIndex, setOpenIndex] = useState(null);
   const [popupDistributor, setDistributorPopup] = useState('');
@@ -44,6 +46,13 @@ export function UpdateByItem() {
   const [deleteInventoryPopup, setDeleteInventoryPopup] = useState('');
   const [selectedItem, setSelectedItem] = useState({});
   const [isSideNavOpen, setIsSideNavOpen] = useState(true);
+
+  const updateEstimateDeduction = (itemName, newEstimatedDeduction) => {
+    setEstimatedDeductionMap(prevState => ({
+      ...prevState,
+      [itemName]: newEstimatedDeduction
+    }));
+  };
 
   const handleSideNavOpen = openState => {
     setIsSideNavOpen(openState);
@@ -836,6 +845,15 @@ export function UpdateByItem() {
                             />
                           </div>
                         )}
+                        {!estimatedDeductionMap[item.itemName] && (
+                          <div>
+                            <ItemEstimateDeduction
+                              businessId={businessId}
+                              itemName={item.itemName}
+                              estimateDeduction={updateEstimateDeduction}
+                            />
+                          </div>
+                        )}
                         <LargestPortion
                           businessId={businessId}
                           itemName={item.itemName}
@@ -854,8 +872,29 @@ export function UpdateByItem() {
                                   maxPortionMap[item.itemName].unitNumber
                                 ).toFixed(2)
                               : '0.00'}{' '}
+                            {maxPortionMap[item.itemName] &&
+                            itemCountMap[item.itemName] &&
+                            maxPortionMap[item.itemName].unitNumber
+                              ? maxPortionMap[item.itemName].unitName
+                              : 'Units'}{' '}
                           </p>
-                          <p className="m-8">Estimated:</p>
+                          <p className="m-8">
+                            Estimate:{' '}
+                            {maxPortionMap[item.itemName] &&
+                            estimatedDeductionMap[item.itemName] &&
+                            maxPortionMap[item.itemName].unitNumber
+                              ? (
+                                  estimatedDeductionMap[item.itemName]
+                                    .estimateDeduction /
+                                  maxPortionMap[item.itemName].unitNumber
+                                ).toFixed(2)
+                              : '0.00'}{' '}
+                            {maxPortionMap[item.itemName] &&
+                            itemCountMap[item.itemName] &&
+                            maxPortionMap[item.itemName].unitNumber
+                              ? maxPortionMap[item.itemName].unitName
+                              : 'Units'}{' '}
+                          </p>
                         </>
                       </div>
                     </div>
