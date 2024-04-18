@@ -6,8 +6,11 @@ import Location from './components/location';
 import LargestPortion from './components/LargestPortion';
 import LocationPopup from './components/LocationPopup';
 import ItemTotalCount from './components/ItemTotalCount';
+import ItemEstimateDeduction from './components/ItemEstimateDeduction';
 import LocationTotalCount from './components/LocationTotalCount';
 import ItemLog from './components/ItemLog'; // Import ItemLog here
+import LocationTotal from './components/LocationTotal';
+import DateComponent from './components/DateComponent';
 // import '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 export function Dashboard() {
@@ -23,11 +26,14 @@ export function Dashboard() {
   const [popupItemLog, setPopupItemLog] = useState(false);
   const [selectedItemName, setSelectedItemName] = useState('');
   const [itemCountMap, setItemCountMap] = useState({});
+  const [estimatedDeductionMap, setEstimatedDeductionMap] = useState({});
   const [locationInventory, setLocationInventory] = useState({});
   const [maxPortionMap, setMaxPortionMap] = useState({});
   const [editMode, setEditMode] = useState(false);
   const [isSideNavOpen, setIsSideNavOpen] = useState(true);
   const [addItemPopup, setAddItemPopups] = useState('');
+  const [count, setCount] = useState('');
+  const [maxPortionNumber, setMaxPortionNumber] = useState('');
 
   const handleSideNavOpen = openState => {
     setIsSideNavOpen(openState);
@@ -155,6 +161,13 @@ export function Dashboard() {
     setItemCountMap(prevState => ({
       ...prevState,
       [itemName]: newItemTotal
+    }));
+  };
+
+  const updateEstimateDeduction = (itemName, newEstimatedDeduction) => {
+    setEstimatedDeductionMap(prevState => ({
+      ...prevState,
+      [itemName]: newEstimatedDeduction
     }));
   };
 
@@ -386,6 +399,15 @@ export function Dashboard() {
                         />
                       </div>
                     )}
+                    {!estimatedDeductionMap[item.itemName] && (
+                      <div>
+                        <ItemEstimateDeduction
+                          businessId={businessId}
+                          itemName={item.itemName}
+                          estimateDeduction={updateEstimateDeduction}
+                        />
+                      </div>
+                    )}
                     <LargestPortion
                       businessId={businessId}
                       itemName={item.itemName}
@@ -397,12 +419,36 @@ export function Dashboard() {
                       <p className="m-8">
                         Total Count:{' '}
                         {maxPortionMap[item.itemName] &&
-                          itemCountMap[item.itemName] /
-                            maxPortionMap[item.itemName].unitNumber}{' '}
+                        itemCountMap[item.itemName] &&
+                        maxPortionMap[item.itemName].unitNumber
+                          ? (
+                              itemCountMap[item.itemName] /
+                              maxPortionMap[item.itemName].unitNumber
+                            ).toFixed(2)
+                          : '0.00'}{' '}
                         {maxPortionMap[item.itemName] &&
-                          maxPortionMap[item.itemName].unitName}
+                        itemCountMap[item.itemName] &&
+                        maxPortionMap[item.itemName].unitNumber
+                          ? maxPortionMap[item.itemName].unitName
+                          : 'Units'}{' '}
                       </p>
-                      <p className="m-8">Estimated:</p>
+                      <p className="m-8">
+                        Estimate:{' '}
+                        {maxPortionMap[item.itemName] &&
+                        estimatedDeductionMap[item.itemName] &&
+                        maxPortionMap[item.itemName].unitNumber
+                          ? (
+                              estimatedDeductionMap[item.itemName]
+                                .estimateDeduction /
+                              maxPortionMap[item.itemName].unitNumber
+                            ).toFixed(2)
+                          : '0.00'}{' '}
+                        {maxPortionMap[item.itemName] &&
+                        itemCountMap[item.itemName] &&
+                        maxPortionMap[item.itemName].unitNumber
+                          ? maxPortionMap[item.itemName].unitName
+                          : 'Units'}{' '}
+                      </p>
                     </>
                   </div>
                   {openIndex === index && (
@@ -460,22 +506,19 @@ export function Dashboard() {
                               </div>
                             ) : (
                               <>
+                                <LocationTotal
+                                  itemName={item.itemName}
+                                  location={location}
+                                  businessId={businessId}
+                                  setCount={setCount}
+                                />
                                 <p className="m-8">
-                                  Total count:{' '}
-                                  {maxPortionMap[item.itemName] &&
-                                    locationInventory[location][item.itemName]
-                                      .portionNumber /
-                                      maxPortionMap[item.itemName]
-                                        .unitNumber}{' '}
-                                  {maxPortionMap[item.itemName] &&
-                                    maxPortionMap[item.itemName].unitName}
-                                </p>
-                                <p className="m-8">
-                                  Last Updated:{' '}
-                                  {
-                                    locationInventory[location][item.itemName]
-                                      .metaData
-                                  }
+                                  Last Updated:
+                                  <DateComponent
+                                    itemName={item.itemName}
+                                    location={location}
+                                    businessId={businessId}
+                                  />
                                 </p>
                                 <p className="m-8">Estimated:</p>
                               </>
