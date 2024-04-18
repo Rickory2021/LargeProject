@@ -435,122 +435,124 @@ export function Distributors() {
           />
         ) : (
           <ul>
-            {itemList.map((item, index) => (
-              <li key={index}>
-                <div className="relative">
-                  <div className="flex items-center ml-2">
-                    <button
-                      onClick={() => {
-                        getItemName(item.itemName);
-                        setOpenIndex(openIndex === index ? null : index);
-                      }}
-                      type="button"
-                      className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-4 w-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        {openIndex === index ? (
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M5 15l7-7 7 7"
-                          />
-                        ) : (
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 9l-7 7-7-7"
-                          />
-                        )}
-                      </svg>
-                    </button>
-                    <div className="mb-2">
+            {itemList !== null &&
+              itemList.map((item, index) => (
+                <li key={index}>
+                  <div className="relative">
+                    <div className="flex items-center ml-2">
                       <button
                         onClick={() => {
                           getItemName(item.itemName);
                           setOpenIndex(openIndex === index ? null : index);
                         }}
                         type="button"
-                        className="inline-flex items-center justify-center ml-2 mr-2 rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
-                        id="dropdown-menu-button"
+                        className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
                       >
-                        {item.itemName}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-4 w-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          {openIndex === index ? (
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M5 15l7-7 7 7"
+                            />
+                          ) : (
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M19 9l-7 7-7-7"
+                            />
+                          )}
+                        </svg>
                       </button>
-                      <button
-                        className="rounded-full bg-blue-500 hover:bg-blue-600 text-white px-4 py-2"
-                        onClick={() => {
-                          getItemName(item.itemName);
-                          handleAddPopup(item);
-                        }}
-                      >
-                        Add
-                      </button>
-                    </div>
-                  </div>
-                  {openIndex === index && (
-                    <div className="ml-12">
-                      <div className="flex items-center ml-2">
-                        <h6 className="mr-auto">Distributors:</h6>
+                      <div className="mb-2">
+                        <button
+                          onClick={() => {
+                            getItemName(item.itemName);
+                            setOpenIndex(openIndex === index ? null : index);
+                          }}
+                          type="button"
+                          className="inline-flex items-center justify-center ml-2 mr-2 rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
+                          id="dropdown-menu-button"
+                        >
+                          {item.itemName}
+                        </button>
+                        <button
+                          className="rounded-full bg-blue-500 hover:bg-blue-600 text-white px-4 py-2"
+                          onClick={() => {
+                            getItemName(item.itemName);
+                            handleAddPopup(item);
+                          }}
+                        >
+                          Add
+                        </button>
                       </div>
-                      <Distributor
-                        itemName={item.itemName}
-                        businessId={businessId}
-                        updateDistributorList={updateDistributorList}
-                      />
-
-                      <ul>
-                        {distributorList.map((distributor, i) => (
-                          <li
-                            key={i}
-                            className="block px-4 py-2 text-sm text-gray-700"
-                          >
-                            <p>
-                              Distributor: {distributor.distributorName}
-                              <button
-                                onClick={() =>
-                                  handleDistributorPopup(distributor)
-                                }
-                                type="button"
-                                className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
-                              >
-                                i
-                              </button>
-                            </p>
-                            <div className="flex items-baseline">
-                              <p className="mr-2">
-                                Item: {distributor.distributorItemName}
-                              </p>
-                              <button
-                                onClick={() => {
-                                  setIndex(i);
-                                  handleEditDistributor(distributor);
-                                }}
-                                type="button"
-                                className="inline-flex items-center justify-center w-8 h-8 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
-                              >
-                                Edit
-                              </button>
-                            </div>
-                            <p>
-                              PortionSize: {distributor.distributorItemPortion}
-                            </p>
-                            <p>Cost: {distributor.distributorItemCost}</p>
-                            <p>Priority: {distributor.priorityChoice}</p>
-                          </li>
-                        ))}
-                      </ul>
                     </div>
-                  )}
-                </div>
-              </li>
-            ))}
+                    {openIndex === index && (
+                      <div className="ml-12">
+                        <div className="flex items-center ml-2">
+                          <h6 className="mr-auto">Distributors:</h6>
+                        </div>
+                        <Distributor
+                          itemName={item.itemName}
+                          businessId={businessId}
+                          updateDistributorList={updateDistributorList}
+                        />
+
+                        <ul>
+                          {distributorList.map((distributor, i) => (
+                            <li
+                              key={i}
+                              className="block px-4 py-2 text-sm text-gray-700"
+                            >
+                              <p>
+                                Distributor: {distributor.distributorName}
+                                <button
+                                  onClick={() =>
+                                    handleDistributorPopup(distributor)
+                                  }
+                                  type="button"
+                                  className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
+                                >
+                                  i
+                                </button>
+                              </p>
+                              <div className="flex items-baseline">
+                                <p className="mr-2">
+                                  Item: {distributor.distributorItemName}
+                                </p>
+                                <button
+                                  onClick={() => {
+                                    setIndex(i);
+                                    handleEditDistributor(distributor);
+                                  }}
+                                  type="button"
+                                  className="inline-flex items-center justify-center w-8 h-8 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
+                                >
+                                  Edit
+                                </button>
+                              </div>
+                              <p>
+                                PortionSize:{' '}
+                                {distributor.distributorItemPortion}
+                              </p>
+                              <p>Cost: {distributor.distributorItemCost}</p>
+                              <p>Priority: {distributor.priorityChoice}</p>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                </li>
+              ))}
           </ul>
         )}
         {popupDistributor && (

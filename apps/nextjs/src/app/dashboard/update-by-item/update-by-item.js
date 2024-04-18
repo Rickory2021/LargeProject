@@ -777,42 +777,10 @@ export function UpdateByItem() {
           />
         ) : (
           <ul>
-            {itemList.map((item, index) => (
-              <li key={index}>
-                <div className="relative">
-                  <div className="flex items-center ml-2">
-                    <button
-                      onClick={() => {
-                        getItemName(item.itemName);
-                        setOpenIndex(openIndex === index ? null : index);
-                      }}
-                      type="button"
-                      className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-4 w-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        {openIndex === index ? (
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M5 15l7-7 7 7"
-                          />
-                        ) : (
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 9l-7 7-7-7"
-                          />
-                        )}
-                      </svg>
-                    </button>
+            {itemList !== null &&
+              itemList.map((item, index) => (
+                <li key={index}>
+                  <div className="relative">
                     <div className="flex items-center ml-2">
                       <button
                         onClick={() => {
@@ -820,293 +788,244 @@ export function UpdateByItem() {
                           setOpenIndex(openIndex === index ? null : index);
                         }}
                         type="button"
-                        className="inline-flex items-center justify-center ml-2 mr-2 rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
-                        id="dropdown-menu-button"
+                        className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
                       >
-                        {item.itemName}
-                      </button>
-                      {!itemCountMap[item.itemName] && (
-                        <div>
-                          <ItemTotalCount
-                            businessId={businessId}
-                            itemName={item.itemName}
-                            updateItemCount={updateItemCount}
-                          />
-                        </div>
-                      )}
-                      <LargestPortion
-                        businessId={businessId}
-                        itemName={item.itemName}
-                        updateMaxPortion={updateMaxPortionForItem}
-                      />
-                      {/* Display the item count if available */}
-
-                      <>
-                        <p className="m-8">
-                          Total Count:{' '}
-                          {maxPortionMap[item.itemName] &&
-                            itemCountMap[item.itemName] /
-                              maxPortionMap[item.itemName].unitNumber}{' '}
-                          {maxPortionMap[item.itemName] &&
-                            maxPortionMap[item.itemName].unitName}
-                        </p>
-                        <p className="m-8">Estimated:</p>
-                      </>
-                    </div>
-                  </div>
-                  {openIndex === index && (
-                    <div className="ml-12">
-                      <div className="flex items-center ml-2">
-                        <h6 className="mr-auto">Location: </h6>
-                        <button
-                          onClick={handleAddLocationPopup}
-                          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-4 w-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
                         >
-                          Add new location
+                          {openIndex === index ? (
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M5 15l7-7 7 7"
+                            />
+                          ) : (
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M19 9l-7 7-7-7"
+                            />
+                          )}
+                        </svg>
+                      </button>
+                      <div className="flex items-center ml-2">
+                        <button
+                          onClick={() => {
+                            getItemName(item.itemName);
+                            setOpenIndex(openIndex === index ? null : index);
+                          }}
+                          type="button"
+                          className="inline-flex items-center justify-center ml-2 mr-2 rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
+                          id="dropdown-menu-button"
+                        >
+                          {item.itemName}
                         </button>
+                        {!itemCountMap[item.itemName] && (
+                          <div>
+                            <ItemTotalCount
+                              businessId={businessId}
+                              itemName={item.itemName}
+                              updateItemCount={updateItemCount}
+                            />
+                          </div>
+                        )}
+                        <LargestPortion
+                          businessId={businessId}
+                          itemName={item.itemName}
+                          updateMaxPortion={updateMaxPortionForItem}
+                        />
+                        {/* Display the item count if available */}
+
+                        <>
+                          <p className="m-8">
+                            Total Count:{' '}
+                            {maxPortionMap[item.itemName] &&
+                              itemCountMap[item.itemName] /
+                                maxPortionMap[item.itemName].unitNumber}{' '}
+                            {maxPortionMap[item.itemName] &&
+                              maxPortionMap[item.itemName].unitName}
+                          </p>
+                          <p className="m-8">Estimated:</p>
+                        </>
                       </div>
-                      <Location
-                        itemName={item.itemName}
-                        businessId={businessId}
-                        updateLocationList={updateLocationList}
-                      />
-                      <ul>
-                        {locationList.map((location, i) => (
-                          <li
-                            key={i}
-                            className="block px-4 py-2 text-sm text-gray-700"
+                    </div>
+                    {openIndex === index && (
+                      <div className="ml-12">
+                        <div className="flex items-center ml-2">
+                          <h6 className="mr-auto">Location: </h6>
+                          <button
+                            onClick={handleAddLocationPopup}
+                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
                           >
-                            {!locationInventory[location] ||
-                            !locationInventory[location][item.itemName] ? (
-                              <div>
-                                <LocationTotalCount
-                                  itemName={item.itemName}
-                                  businessId={businessId}
-                                  locationName={location}
-                                  updateLocationInventory={
-                                    updateLocationInventory
-                                  }
-                                />
-                                <LargestPortion
-                                  businessId={businessId}
-                                  itemName={item.itemName}
-                                  updateMaxPortion={updateMaxPortionForItem}
-                                />
-                              </div>
-                            ) : (
-                              <div className="flex items-center">
-                                <button
-                                  onClick={() => {
-                                    setItemName(item.itemName);
-                                    toggleDropdownForLocation(location);
-                                  }}
-                                >
-                                  {location}
-                                </button>
-                                <button
-                                  onClick={() => handleLocationPopup(location)}
-                                  type="button"
-                                  className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
-                                >
-                                  i
-                                </button>
-                                <p className="m-8">
-                                  Last Updated:{' '}
-                                  {
-                                    locationInventory[location][item.itemName]
-                                      .metaData
-                                  }
-                                </p>
-                                <p className="m-8">Estimated:</p>
-                                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-                                  {' '}
-                                  Clear estimate{' '}
-                                </button>
-                              </div>
-                            )}
-                            {showDropdownMap[location] && (
-                              <div>
-                                <div className="flex items-center space-x-4 mb-4">
-                                  <p className="font-bold">Inventory List:</p>
-                                  <DropdownSelection
+                            Add new location
+                          </button>
+                        </div>
+                        <Location
+                          itemName={item.itemName}
+                          businessId={businessId}
+                          updateLocationList={updateLocationList}
+                        />
+                        <ul>
+                          {locationList.map((location, i) => (
+                            <li
+                              key={i}
+                              className="block px-4 py-2 text-sm text-gray-700"
+                            >
+                              {!locationInventory[location] ||
+                              !locationInventory[location][item.itemName] ? (
+                                <div>
+                                  <LocationTotalCount
+                                    itemName={item.itemName}
+                                    businessId={businessId}
+                                    locationName={location}
+                                    updateLocationInventory={
+                                      updateLocationInventory
+                                    }
+                                  />
+                                  <LargestPortion
                                     businessId={businessId}
                                     itemName={item.itemName}
-                                    onItemSelected={handleItemSelected}
+                                    updateMaxPortion={updateMaxPortionForItem}
                                   />
+                                </div>
+                              ) : (
+                                <div className="flex items-center">
                                   <button
-                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
                                     onClick={() => {
-                                      setLocationName(location);
-                                      handleAddInventoryPopup(item);
+                                      setItemName(item.itemName);
+                                      toggleDropdownForLocation(location);
                                     }}
                                   >
-                                    Add Inventory element{' '}
+                                    {location}
+                                  </button>
+                                  <button
+                                    onClick={() =>
+                                      handleLocationPopup(location)
+                                    }
+                                    type="button"
+                                    className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
+                                  >
+                                    i
+                                  </button>
+                                  <p className="m-8">
+                                    Last Updated:{' '}
+                                    {
+                                      locationInventory[location][item.itemName]
+                                        .metaData
+                                    }
+                                  </p>
+                                  <p className="m-8">Estimated:</p>
+                                  <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                                    {' '}
+                                    Clear estimate{' '}
                                   </button>
                                 </div>
-                                <div className="flex flex-col items-start space-y-4">
-                                  <ItemLocationList
-                                    businessId={businessId}
-                                    itemName={itemName}
-                                    locationName={location}
-                                    setItemLocationList={setItemLocationList}
-                                  />
-                                  {itemLocationList.map((item, index) => (
-                                    <div
-                                      key={index}
-                                      className="flex items-center justify-between w-full border p-4 rounded-md"
+                              )}
+                              {showDropdownMap[location] && (
+                                <div>
+                                  <div className="flex items-center space-x-4 mb-4">
+                                    <p className="font-bold">Inventory List:</p>
+                                    <DropdownSelection
+                                      businessId={businessId}
+                                      itemName={item.itemName}
+                                      onItemSelected={handleItemSelected}
+                                    />
+                                    <button
+                                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                                      onClick={() => {
+                                        setLocationName(location);
+                                        handleAddInventoryPopup(item);
+                                      }}
                                     >
-                                      <div className="w-1/2 pl-4 flex items-center">
-                                        {selectedItem &&
-                                        selectedItem.unitNumber !== 0 &&
-                                        selectedItem.unitNumber ? (
-                                          <p>
-                                            portionNumber:{' '}
-                                            {item.portionNumber /
-                                              selectedItem.unitNumber}{' '}
-                                            {selectedItem.unitName}
+                                      Add Inventory element{' '}
+                                    </button>
+                                  </div>
+                                  <div className="flex flex-col items-start space-y-4">
+                                    <ItemLocationList
+                                      businessId={businessId}
+                                      itemName={itemName}
+                                      locationName={location}
+                                      setItemLocationList={setItemLocationList}
+                                    />
+                                    {itemLocationList.map((item, index) => (
+                                      <div
+                                        key={index}
+                                        className="flex items-center justify-between w-full border p-4 rounded-md"
+                                      >
+                                        <div className="w-1/2 pl-4 flex items-center">
+                                          {selectedItem &&
+                                          selectedItem.unitNumber !== 0 &&
+                                          selectedItem.unitNumber ? (
+                                            <p>
+                                              portionNumber:{' '}
+                                              {item.portionNumber /
+                                                selectedItem.unitNumber}{' '}
+                                              {selectedItem.unitName}
+                                            </p>
+                                          ) : (
+                                            <p>
+                                              portionNumber:{' '}
+                                              {item.portionNumber} Base Units
+                                            </p>
+                                          )}
+                                          <p className="ml-4">
+                                            Note: {item.metaData}
                                           </p>
-                                        ) : (
-                                          <p>
-                                            portionNumber: {item.portionNumber}{' '}
-                                            Base Units
-                                          </p>
-                                        )}
-                                        <p className="ml-4">
-                                          Note: {item.metaData}
-                                        </p>
+                                        </div>
+                                        <div className="flex space-x-4">
+                                          <button
+                                            onClick={() => {
+                                              setLocationName(location);
+                                              console.log(index);
+                                              handleEditInventoryItemPopup(
+                                                item,
+                                                index
+                                              );
+                                            }}
+                                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                                          >
+                                            Edit
+                                          </button>
+                                          <button
+                                            onClick={() => {
+                                              setLocationName(location);
+                                              handleDeleteInventoryPopup(
+                                                location,
+                                                index
+                                              );
+                                            }}
+                                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                                          >
+                                            Delete
+                                          </button>
+                                        </div>
                                       </div>
-                                      <div className="flex space-x-4">
-                                        <button
-                                          onClick={() => {
-                                            setLocationName(location);
-                                            console.log(index);
-                                            handleEditInventoryItemPopup(
-                                              item,
-                                              index
-                                            );
-                                          }}
-                                          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-                                        >
-                                          Edit
-                                        </button>
-                                        <button
-                                          onClick={() => {
-                                            setLocationName(location);
-                                            handleDeleteInventoryPopup(
-                                              location,
-                                              index
-                                            );
-                                          }}
-                                          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-                                        >
-                                          Delete
-                                        </button>
-                                      </div>
-                                    </div>
-                                  ))}
+                                    ))}
+                                  </div>
                                 </div>
-                              </div>
-                            )}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                  {popupLocation && (
-                    <div>
-                      <div
-                        className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-opacity-50"
-                        onClick={handleClosePopup}
-                      >
-                        <LocationPopup
-                          locationName={popupLocation}
-                          businessId={businessId}
-                          updataLocationMetaData={updataLocationMetaData}
-                        />
-                        <div
-                          className="bg-white p-4 rounded-md relative"
-                          onClick={e => e.stopPropagation()}
-                        >
-                          <button
-                            className="absolute top-2 right-2"
-                            onClick={handleClosePopup}
-                          >
-                            X
-                          </button>
-                          {/* <h6>Information about {popupLocation}</h6> */}
-
-                          {editMode ? (
-                            <>
-                              <h6>Edit {popupLocation}</h6>
-                              <p>Address: </p>
-                              <input
-                                type="text"
-                                name="locationAddress"
-                                value={newLocationMetaData.locationAddress}
-                                onChange={e =>
-                                  handleInputChange(
-                                    e,
-                                    'locationAddress',
-                                    'locationMetaData'
-                                  )
-                                }
-                                className="bg-gray-100 rounded-md p-2 mb-2"
-                              />
-                              <p>Notes(MetaData): </p>
-                              <input
-                                type="text"
-                                name="locationMetaData"
-                                value={newLocationMetaData.locationMetaData}
-                                onChange={e =>
-                                  handleInputChange(
-                                    e,
-                                    'locationMetaData',
-                                    'locationMetaData'
-                                  )
-                                }
-                                className="bg-gray-100 rounded-md p-2 mb-2"
-                              />
-                              <br />
-                              <button
-                                onClick={() => {
-                                  EditLocationMetaData(popupLocation);
-                                  handleClosePopup(); // Close the popup after saving
-                                }}
-                              >
-                                Save
-                              </button>
-                            </>
-                          ) : (
-                            <>
-                              <br></br>
-                              <h6>Information about {popupLocation}: </h6>
-                              <p>Address: {locationMetaData.locationAddress}</p>
-                              <p>
-                                Notes (MetaData):{' '}
-                                {locationMetaData.locationMetaData}
-                              </p>
-                              <br></br>
-                              <button
-                                onClick={() => {
-                                  setNewLocationMetaData(locationMetaData);
-                                  setEditMode(true);
-                                }}
-                              >
-                                Edit
-                              </button>
-                            </>
-                          )}
-                        </div>
+                              )}
+                            </li>
+                          ))}
+                        </ul>
                       </div>
-                    </div>
-                  )}
-                  {addLocationPopup && (
-                    <div>
+                    )}
+                    {popupLocation && (
                       <div>
                         <div
                           className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-opacity-50"
                           onClick={handleClosePopup}
                         >
+                          <LocationPopup
+                            locationName={popupLocation}
+                            businessId={businessId}
+                            updataLocationMetaData={updataLocationMetaData}
+                          />
                           <div
                             className="bg-white p-4 rounded-md relative"
                             onClick={e => e.stopPropagation()}
@@ -1117,83 +1036,123 @@ export function UpdateByItem() {
                             >
                               X
                             </button>
-                            <h6>Create a new Location: </h6>
-                            <p>Location name: </p>
+                            {/* <h6>Information about {popupLocation}</h6> */}
 
-                            <input
-                              type="text"
-                              name="locationName"
-                              value={newLocation.locationName}
-                              onChange={e =>
-                                handleInputChange(e, 'locationName', 'location')
-                              }
-                              className="bg-gray-100 rounded-md p-2 mb-2"
-                            />
-                            <br></br>
-                            <button
-                              onClick={() => {
-                                addLocation();
-                                handleClosePopup();
-                              }}
-                            >
-                              Create
-                            </button>
+                            {editMode ? (
+                              <>
+                                <h6>Edit {popupLocation}</h6>
+                                <p>Address: </p>
+                                <input
+                                  type="text"
+                                  name="locationAddress"
+                                  value={newLocationMetaData.locationAddress}
+                                  onChange={e =>
+                                    handleInputChange(
+                                      e,
+                                      'locationAddress',
+                                      'locationMetaData'
+                                    )
+                                  }
+                                  className="bg-gray-100 rounded-md p-2 mb-2"
+                                />
+                                <p>Notes(MetaData): </p>
+                                <input
+                                  type="text"
+                                  name="locationMetaData"
+                                  value={newLocationMetaData.locationMetaData}
+                                  onChange={e =>
+                                    handleInputChange(
+                                      e,
+                                      'locationMetaData',
+                                      'locationMetaData'
+                                    )
+                                  }
+                                  className="bg-gray-100 rounded-md p-2 mb-2"
+                                />
+                                <br />
+                                <button
+                                  onClick={() => {
+                                    EditLocationMetaData(popupLocation);
+                                    handleClosePopup(); // Close the popup after saving
+                                  }}
+                                >
+                                  Save
+                                </button>
+                              </>
+                            ) : (
+                              <>
+                                <br></br>
+                                <h6>Information about {popupLocation}: </h6>
+                                <p>
+                                  Address: {locationMetaData.locationAddress}
+                                </p>
+                                <p>
+                                  Notes (MetaData):{' '}
+                                  {locationMetaData.locationMetaData}
+                                </p>
+                                <br></br>
+                                <button
+                                  onClick={() => {
+                                    setNewLocationMetaData(locationMetaData);
+                                    setEditMode(true);
+                                  }}
+                                >
+                                  Edit
+                                </button>
+                              </>
+                            )}
                           </div>
                         </div>
                       </div>
-                    </div>
-                  )}
-                  {editInventoryItemPopup && (
-                    <div>
-                      <div
-                        className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-opacity-50"
-                        onClick={handleClosePopup}
-                      >
-                        <div
-                          className="bg-white p-4 rounded-md relative"
-                          onClick={e => e.stopPropagation()}
-                        >
-                          <button
-                            className="absolute top-2 right-2"
+                    )}
+                    {addLocationPopup && (
+                      <div>
+                        <div>
+                          <div
+                            className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-opacity-50"
                             onClick={handleClosePopup}
                           >
-                            X
-                          </button>
-                          <h6>Edit Inventory Input: </h6>
-                          <p>Portion Number: </p>
-                          <input
-                            type="text"
-                            name="newNumber"
-                            value={newInventoryItem.newNumber}
-                            onChange={e =>
-                              handleInputChange(e, 'newNumber', 'Item')
-                            }
-                            className="bg-gray-100 rounded-md p-2 mb-2"
-                          />
-                          <p>Note: </p>
-                          <input
-                            type="text"
-                            name="newMetaData"
-                            value={newInventoryItem.newMetaData}
-                            onChange={e =>
-                              handleInputChange(e, 'newMetaData', 'Item')
-                            }
-                            className="bg-gray-100 rounded-md p-2 mb-2"
-                          />
-                          <br />
-                          <button
-                            onClick={() => {
-                              updateInventoryItem(), handleClosePopup();
-                            }}
-                          >
-                            Save
-                          </button>
+                            <div
+                              className="bg-white p-4 rounded-md relative"
+                              onClick={e => e.stopPropagation()}
+                            >
+                              <button
+                                className="absolute top-2 right-2"
+                                onClick={handleClosePopup}
+                              >
+                                X
+                              </button>
+                              <h6>Create a new Location: </h6>
+                              <p>Location name: </p>
+
+                              <input
+                                type="text"
+                                name="locationName"
+                                value={newLocation.locationName}
+                                onChange={e =>
+                                  handleInputChange(
+                                    e,
+                                    'locationName',
+                                    'location'
+                                  )
+                                }
+                                className="bg-gray-100 rounded-md p-2 mb-2"
+                              />
+                              <br></br>
+                              <button
+                                onClick={() => {
+                                  addLocation();
+                                  handleClosePopup();
+                                }}
+                              >
+                                Create
+                              </button>
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  )}
-                  {addInventoryPopup && (
-                    <div>
+                    )}
+                    {editInventoryItemPopup && (
                       <div>
                         <div
                           className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-opacity-50"
@@ -1209,27 +1168,8 @@ export function UpdateByItem() {
                             >
                               X
                             </button>
-                            <h6>Create a new Inventory Item: </h6>
-                            <p>Item Name: </p>
-
-                            <input
-                              type="text"
-                              name="itemName"
-                              value={itemName}
-                              readOnly
-                              className="bg-gray-100 rounded-md p-2 mb-2"
-                            />
-                            <p>Location Name: </p>
-
-                            <input
-                              type="text"
-                              name="locationName"
-                              value={locationName}
-                              readOnly
-                              className="bg-gray-100 rounded-md p-2 mb-2"
-                            />
+                            <h6>Edit Inventory Input: </h6>
                             <p>Portion Number: </p>
-
                             <input
                               type="text"
                               name="newNumber"
@@ -1239,8 +1179,7 @@ export function UpdateByItem() {
                               }
                               className="bg-gray-100 rounded-md p-2 mb-2"
                             />
-                            <p>Note(MetaData): </p>
-
+                            <p>Note: </p>
                             <input
                               type="text"
                               name="newMetaData"
@@ -1250,79 +1189,149 @@ export function UpdateByItem() {
                               }
                               className="bg-gray-100 rounded-md p-2 mb-2"
                             />
-                            <p>Log Reason: </p>
-
-                            <input
-                              type="text"
-                              name="logReason"
-                              value={newLocation.logReason}
-                              onChange={e =>
-                                handleInputChange(e, 'logReason', 'Item')
-                              }
-                              className="bg-gray-100 rounded-md p-2 mb-2"
-                            />
-                            <br></br>
+                            <br />
                             <button
                               onClick={() => {
-                                addInventoryItem();
-                                handleClosePopup();
+                                updateInventoryItem(), handleClosePopup();
                               }}
                             >
-                              Create
+                              Save
                             </button>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  )}
-                  {deleteInventoryPopup && (
-                    <div>
+                    )}
+                    {addInventoryPopup && (
                       <div>
-                        <div
-                          className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-opacity-50"
-                          onClick={handleClosePopup}
-                        >
+                        <div>
                           <div
-                            className="bg-white p-4 rounded-md relative"
-                            onClick={e => e.stopPropagation()}
+                            className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-opacity-50"
+                            onClick={handleClosePopup}
                           >
-                            <button
-                              className="absolute top-2 right-2"
-                              onClick={handleClosePopup}
+                            <div
+                              className="bg-white p-4 rounded-md relative"
+                              onClick={e => e.stopPropagation()}
                             >
-                              X
-                            </button>
-                            <br />
-                            <p className="max-w-sm text-center">
-                              Are you sure you want to delete this Inventory
-                              Item?
-                            </p>
-                            <br />
-                            <div className="flex justify-between">
                               <button
-                                className="bg-green-500 text-white px-4 py-2 rounded-md mr-2"
+                                className="absolute top-2 right-2"
+                                onClick={handleClosePopup}
+                              >
+                                X
+                              </button>
+                              <h6>Create a new Inventory Item: </h6>
+                              <p>Item Name: </p>
+
+                              <input
+                                type="text"
+                                name="itemName"
+                                value={itemName}
+                                readOnly
+                                className="bg-gray-100 rounded-md p-2 mb-2"
+                              />
+                              <p>Location Name: </p>
+
+                              <input
+                                type="text"
+                                name="locationName"
+                                value={locationName}
+                                readOnly
+                                className="bg-gray-100 rounded-md p-2 mb-2"
+                              />
+                              <p>Portion Number: </p>
+
+                              <input
+                                type="text"
+                                name="newNumber"
+                                value={newInventoryItem.newNumber}
+                                onChange={e =>
+                                  handleInputChange(e, 'newNumber', 'Item')
+                                }
+                                className="bg-gray-100 rounded-md p-2 mb-2"
+                              />
+                              <p>Note(MetaData): </p>
+
+                              <input
+                                type="text"
+                                name="newMetaData"
+                                value={newInventoryItem.newMetaData}
+                                onChange={e =>
+                                  handleInputChange(e, 'newMetaData', 'Item')
+                                }
+                                className="bg-gray-100 rounded-md p-2 mb-2"
+                              />
+                              <p>Log Reason: </p>
+
+                              <input
+                                type="text"
+                                name="logReason"
+                                value={newLocation.logReason}
+                                onChange={e =>
+                                  handleInputChange(e, 'logReason', 'Item')
+                                }
+                                className="bg-gray-100 rounded-md p-2 mb-2"
+                              />
+                              <br></br>
+                              <button
                                 onClick={() => {
-                                  handleDeleteItem();
+                                  addInventoryItem();
                                   handleClosePopup();
                                 }}
                               >
-                                Yes
-                              </button>
-                              <button
-                                className="bg-red-500 text-white px-4 py-2 rounded-md"
-                                onClick={handleClosePopup}
-                              >
-                                No
+                                Create
                               </button>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  )}
-                </div>
-              </li>
-            ))}
+                    )}
+                    {deleteInventoryPopup && (
+                      <div>
+                        <div>
+                          <div
+                            className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-opacity-50"
+                            onClick={handleClosePopup}
+                          >
+                            <div
+                              className="bg-white p-4 rounded-md relative"
+                              onClick={e => e.stopPropagation()}
+                            >
+                              <button
+                                className="absolute top-2 right-2"
+                                onClick={handleClosePopup}
+                              >
+                                X
+                              </button>
+                              <br />
+                              <p className="max-w-sm text-center">
+                                Are you sure you want to delete this Inventory
+                                Item?
+                              </p>
+                              <br />
+                              <div className="flex justify-between">
+                                <button
+                                  className="bg-green-500 text-white px-4 py-2 rounded-md mr-2"
+                                  onClick={() => {
+                                    handleDeleteItem();
+                                    handleClosePopup();
+                                  }}
+                                >
+                                  Yes
+                                </button>
+                                <button
+                                  className="bg-red-500 text-white px-4 py-2 rounded-md"
+                                  onClick={handleClosePopup}
+                                >
+                                  No
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </li>
+              ))}
           </ul>
         )}
       </div>
