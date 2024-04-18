@@ -27,6 +27,7 @@ export function Dashboard() {
   const [maxPortionMap, setMaxPortionMap] = useState({});
   const [editMode, setEditMode] = useState(false);
   const [isSideNavOpen, setIsSideNavOpen] = useState(true);
+  const [addItemPopup, setAddItemPopups] = useState('');
 
   const handleSideNavOpen = openState => {
     setIsSideNavOpen(openState);
@@ -62,6 +63,10 @@ export function Dashboard() {
     locationMetaData: ''
   });
 
+  const [addJson, setAddJson] = useState({
+    itemName: ''
+  });
+
   const handleInputChange = (event, name, type) => {
     const value = event.target.value;
     if (type === 'location') {
@@ -71,6 +76,11 @@ export function Dashboard() {
           [name]: value
         }));
       }
+    } else if (type === 'item') {
+      setAddJson(prevState => ({
+        ...prevState,
+        [name]: value
+      }));
     }
   };
 
@@ -159,6 +169,10 @@ export function Dashboard() {
     setPopupLocation(location);
   };
 
+  const handleAddPopup = () => {
+    setAddItemPopups(true);
+  };
+
   const handleItemLogPopup = itemName => {
     setSelectedItemName(itemName);
     setPopupItemLog(true);
@@ -168,6 +182,7 @@ export function Dashboard() {
     setPopupLocation(null);
     setPopupItemLog(false); // Set popupItemLog to false to close the popup
     setEditMode(false);
+    setAddItemPopups(false);
   };
 
   const getBusinessId = async () => {
@@ -192,6 +207,55 @@ export function Dashboard() {
       }
     } catch (error) {
       console.log(error.error);
+    }
+  };
+
+  const addItem = async () => {
+    console.log(addJson.itemName);
+    try {
+      const response = await fetch(
+        'http://localhost:3001/api/crud/business/item-list/create?businessId=' +
+          businessId,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ itemName: addJson.itemName })
+        }
+      );
+      if (!response.ok) {
+        console.log('error');
+        return null;
+      }
+      await fetchNewItemList(); // Wait for fetchNewItemList to complete
+    } catch (error) {
+      console.log(error.error);
+    }
+  };
+
+  const fetchNewItemList = async () => {
+    try {
+      const response = await fetch(
+        'http://localhost:3001/api/crud/business/item-list/read-all/?businessId=' +
+          businessId,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+      if (!response.ok) {
+        console.log('error');
+        return null;
+      }
+      const data = await response.json();
+      const fieldValues = data.output;
+
+      setItemList(fieldValues); // Update itemList state with new data
+    } catch (error) {
+      console.error('Error fetching item names:', error);
     }
   };
 
@@ -260,163 +324,163 @@ export function Dashboard() {
           />
         ) : (
           <ul>
-            {itemList !== null &&
-              itemList.map((item, index) => (
-                <li key={index}>
-                  <div className="relative">
-                    <div className="flex items-center ml-2">
-                      <button
-                        onClick={() =>
-                          setOpenIndex(openIndex === index ? null : index)
-                        }
-                        type="button"
-                        className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
+            <button onClick={handleAddPopup}>Add Item</button>
+            {itemList.map((item, index) => (
+              <li key={index}>
+                <div className="relative">
+                  <div className="flex items-center ml-2">
+                    <button
+                      onClick={() =>
+                        setOpenIndex(openIndex === index ? null : index)
+                      }
+                      type="button"
+                      className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-4 w-4"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          {openIndex === index ? (
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M5 15l7-7 7 7"
-                            />
-                          ) : (
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M19 9l-7 7-7-7"
-                            />
-                          )}
-                        </svg>
-                      </button>
-                      <button
-                        onClick={() =>
-                          setOpenIndex(openIndex === index ? null : index)
-                        }
-                        type="button"
-                        className="inline-flex items-center justify-center ml-2 rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
-                        id="dropdown-menu-button"
-                      >
-                        {item.itemName}
-                      </button>
-                      {!itemCountMap[item.itemName] && (
-                        <div>
-                          <ItemTotalCount
-                            businessId={businessId}
-                            itemName={item.itemName}
-                            updateItemCount={updateItemCount}
+                        {openIndex === index ? (
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M5 15l7-7 7 7"
                           />
-                        </div>
-                      )}
-                      <LargestPortion
-                        businessId={businessId}
-                        itemName={item.itemName}
-                        updateMaxPortion={updateMaxPortionForItem}
-                      />
-                      {/* Display the item count if available */}
-
-                      <>
-                        <p className="m-8">
-                          Total Count:{' '}
-                          {maxPortionMap[item.itemName] &&
-                            itemCountMap[item.itemName] /
-                              maxPortionMap[item.itemName].unitNumber}{' '}
-                          {maxPortionMap[item.itemName] &&
-                            maxPortionMap[item.itemName].unitName}
-                        </p>
-                        <p className="m-8">Estimated:</p>
-                      </>
-                    </div>
-                    {openIndex === index && (
-                      <div className="ml-12">
-                        <div className="flex items-center ml-2">
-                          <h6 className="mr-auto">Location:</h6>
-                          <button
-                            onClick={() => handleItemLogPopup(item.itemName)}
-                            type="button"
-                            className="inline-flex items-center justify-center rounded-md border border-gray-300 shadow-sm px-3 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
-                            style={{
-                              marginRight: '100px',
-                              verticalAlign: 'middle'
-                            }}
-                          >
-                            Item Log
-                          </button>
-                        </div>
-                        <Location
-                          itemName={item.itemName}
+                        ) : (
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M19 9l-7 7-7-7"
+                          />
+                        )}
+                      </svg>
+                    </button>
+                    <button
+                      onClick={() =>
+                        setOpenIndex(openIndex === index ? null : index)
+                      }
+                      type="button"
+                      className="inline-flex items-center justify-center ml-2 rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
+                      id="dropdown-menu-button"
+                    >
+                      {item.itemName}
+                    </button>
+                    {!itemCountMap[item.itemName] && (
+                      <div>
+                        <ItemTotalCount
                           businessId={businessId}
-                          updateLocationList={updateLocationList}
+                          itemName={item.itemName}
+                          updateItemCount={updateItemCount}
                         />
-                        <ul>
-                          {locationList.map((location, i) => (
-                            <li
-                              key={i}
-                              className="block px-4 py-2 text-sm text-gray-700"
-                            >
-                              {location}
-                              <button
-                                onClick={() => handleLocationPopup(location)}
-                                type="button"
-                                className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
-                              >
-                                i
-                              </button>
-
-                              {!locationInventory[location] ||
-                              !locationInventory[location][item.itemName] ? (
-                                <div>
-                                  <LocationTotalCount
-                                    itemName={item.itemName}
-                                    businessId={businessId}
-                                    locationName={location}
-                                    updateLocationInventory={
-                                      updateLocationInventory
-                                    }
-                                  />
-                                  <LargestPortion
-                                    businessId={businessId}
-                                    itemName={item.itemName}
-                                    updateMaxPortion={updateMaxPortionForItem}
-                                  />
-                                </div>
-                              ) : (
-                                <>
-                                  <p className="m-8">
-                                    Total count:{' '}
-                                    {maxPortionMap[item.itemName] &&
-                                      locationInventory[location][item.itemName]
-                                        .portionNumber /
-                                        maxPortionMap[item.itemName]
-                                          .unitNumber}{' '}
-                                    {maxPortionMap[item.itemName] &&
-                                      maxPortionMap[item.itemName].unitName}
-                                  </p>
-                                  <p className="m-8">
-                                    Last Updated:{' '}
-                                    {
-                                      locationInventory[location][item.itemName]
-                                        .metaData
-                                    }
-                                  </p>
-                                  <p className="m-8">Estimated:</p>
-                                </>
-                              )}
-                            </li>
-                          ))}
-                        </ul>
                       </div>
                     )}
+                    <LargestPortion
+                      businessId={businessId}
+                      itemName={item.itemName}
+                      updateMaxPortion={updateMaxPortionForItem}
+                    />
+                    {/* Display the item count if available */}
+
+                    <>
+                      <p className="m-8">
+                        Total Count:{' '}
+                        {maxPortionMap[item.itemName] &&
+                          itemCountMap[item.itemName] /
+                            maxPortionMap[item.itemName].unitNumber}{' '}
+                        {maxPortionMap[item.itemName] &&
+                          maxPortionMap[item.itemName].unitName}
+                      </p>
+                      <p className="m-8">Estimated:</p>
+                    </>
                   </div>
-                </li>
-              ))}
+                  {openIndex === index && (
+                    <div className="ml-12">
+                      <div className="flex items-center ml-2">
+                        <h6 className="mr-auto">Location:</h6>
+                        <button
+                          onClick={() => handleItemLogPopup(item.itemName)}
+                          type="button"
+                          className="inline-flex items-center justify-center rounded-md border border-gray-300 shadow-sm px-3 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
+                          style={{
+                            marginRight: '100px',
+                            verticalAlign: 'middle'
+                          }}
+                        >
+                          Item Log
+                        </button>
+                      </div>
+                      <Location
+                        itemName={item.itemName}
+                        businessId={businessId}
+                        updateLocationList={updateLocationList}
+                      />
+                      <ul>
+                        {locationList.map((location, i) => (
+                          <li
+                            key={i}
+                            className="block px-4 py-2 text-sm text-gray-700"
+                          >
+                            {location}
+                            <button
+                              onClick={() => handleLocationPopup(location)}
+                              type="button"
+                              className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
+                            >
+                              i
+                            </button>
+
+                            {!locationInventory[location] ||
+                            !locationInventory[location][item.itemName] ? (
+                              <div>
+                                <LocationTotalCount
+                                  itemName={item.itemName}
+                                  businessId={businessId}
+                                  locationName={location}
+                                  updateLocationInventory={
+                                    updateLocationInventory
+                                  }
+                                />
+                                <LargestPortion
+                                  businessId={businessId}
+                                  itemName={item.itemName}
+                                  updateMaxPortion={updateMaxPortionForItem}
+                                />
+                              </div>
+                            ) : (
+                              <>
+                                <p className="m-8">
+                                  Total count:{' '}
+                                  {maxPortionMap[item.itemName] &&
+                                    locationInventory[location][item.itemName]
+                                      .portionNumber /
+                                      maxPortionMap[item.itemName]
+                                        .unitNumber}{' '}
+                                  {maxPortionMap[item.itemName] &&
+                                    maxPortionMap[item.itemName].unitName}
+                                </p>
+                                <p className="m-8">
+                                  Last Updated:{' '}
+                                  {
+                                    locationInventory[location][item.itemName]
+                                      .metaData
+                                  }
+                                </p>
+                                <p className="m-8">Estimated:</p>
+                              </>
+                            )}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              </li>
+            ))}
           </ul>
         )}
       </div>
@@ -530,6 +594,74 @@ export function Dashboard() {
                 <br />
               </div>
             ))}
+          </div>
+        </div>
+      )}
+      {addItemPopup && (
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 1000,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backdropFilter: 'blur(4px)'
+          }}
+          onClick={e => e.stopPropagation()}
+        >
+          <div
+            className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150"
+            style={{
+              width: '40%',
+              maxHeight: '70%',
+              maxWidth: '90%',
+              zIndex: 110,
+              position: 'relative'
+            }}
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="flex justify-end p-2">
+              <button
+                onClick={handleClosePopup}
+                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+            <h6 className="text-center mb-4">Add new portion size: </h6>
+            <p className="text-center mb-2">Item Name: </p>
+            <input
+              type="text"
+              name="itemName"
+              value={addJson.itemName}
+              onChange={e => handleInputChange(e, 'itemName', 'item')}
+              className="bg-gray-200 rounded-md p-2 mb-2"
+            />
+            <br />
+            <button
+              onClick={() => {
+                addItem();
+                handleClosePopup();
+              }}
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            >
+              Save
+            </button>
           </div>
         </div>
       )}
