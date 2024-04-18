@@ -28,7 +28,7 @@ export default function SignUp() {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    if (!validatePassword(password || retypePassword)) {
+    if (!validatePassword(password, retypePassword)) {
       setError('Entered password does not meet validation requirements!');
       return;
     }
