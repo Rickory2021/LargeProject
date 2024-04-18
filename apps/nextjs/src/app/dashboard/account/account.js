@@ -36,7 +36,7 @@ export function Account() {
 
   const getBusinessId = async () => {
     const response = await fetch(
-      'http://localhost:3001/api/auth/user/user-info?id=' + userId,
+      'https://slicer-backend.vercel.app/api/auth/user/user-info?id=' + userId,
       {
         method: 'GET',
         headers: {
@@ -58,7 +58,7 @@ export function Account() {
 
   const getBusinessName = async () => {
     const response = await fetch(
-      'http://localhost:3001/api/auth/business/business-name?businessId=' +
+      'https://slicer-backend.vercel.app/api/auth/business/business-name?businessId=' +
         businessId,
       {
         method: 'GET',
@@ -109,7 +109,7 @@ export function Account() {
 
   const getUserInfo = async () => {
     const response = await fetch(
-      'http://localhost:3001/api/auth/user/user-info?id=' + userId,
+      'https://slicer-backend.vercel.app/api/auth/user/user-info?id=' + userId,
       {
         method: 'GET',
         headers: {
@@ -150,7 +150,9 @@ export function Account() {
           />
         ) : (
           <div className="flex flex-col items-center justify-center h-screen pb-16">
-            <h2 className="text-2xl font-bold text-center mb-4 border-b border-gray-700">User Information</h2>
+            <h2 className="text-2xl font-bold text-center mb-4 border-b border-gray-700">
+              User Information
+            </h2>
             <div className="bg-blue-400 shadow-lg rounded-lg p-8 text-center">
               <table className="table-fixed min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
                 <tbody className="divide-y divide-gray-200 dark:divide-neutral-700">

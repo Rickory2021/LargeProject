@@ -12,7 +12,7 @@ function DistributorPopup({
   const getDistributorMetaData = async () => {
     try {
       const response = await fetch(
-        'http://localhost:3001/api/crud/business/distributor-metadata-list/read-all?businessId=' +
+        'https://slicer-backend.vercel.app/api/crud/business/distributor-metadata-list/read-all?businessId=' +
           businessId,
         {
           method: 'POST',

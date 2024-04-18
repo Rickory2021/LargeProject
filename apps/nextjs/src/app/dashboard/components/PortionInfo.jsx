@@ -9,7 +9,7 @@ function PortionInfo({ businessId, itemName, setPortionInfoMap }) {
   const fetchPortionInfo = async () => {
     try {
       const response = await fetch(
-        'http://localhost:3001/api/crud/business/portion-info-list/read-all?businessId=' +
+        'https://slicer-backend.vercel.app/api/crud/business/portion-info-list/read-all?businessId=' +
           businessId,
         {
           method: 'POST',

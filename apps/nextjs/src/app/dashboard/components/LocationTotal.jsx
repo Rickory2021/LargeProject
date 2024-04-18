@@ -8,7 +8,7 @@ const LocationTotal = ({ itemName, location, businessId, setCount }) => {
     const fetchTotalLocationCount = async () => {
       try {
         const response = await fetch(
-          'http://localhost:3001/api/crud/business/item-location/total-location-count?businessId=' +
+          'https://slicer-backend.vercel.app/api/crud/business/item-location/total-location-count?businessId=' +
             businessId,
           {
             method: 'POST',

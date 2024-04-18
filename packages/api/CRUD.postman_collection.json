@@ -30,7 +30,7 @@
             "method": "POST",
             "header": [],
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/employee-id-list/read-all?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/employee-id-list/read-all?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -81,7 +81,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/employee-id-list/delete?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/employee-id-list/delete?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -117,7 +117,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/item-list/create?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/item-list/create?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -152,7 +152,7 @@
             "method": "POST",
             "header": [],
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/item-list/read-all?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/item-list/read-all?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -197,7 +197,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/item-list/read-one?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/item-list/read-one?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -243,7 +243,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/item-list/update-name?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/item-list/update-name?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -289,7 +289,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/item-list/delete?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/item-list/delete?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -335,7 +335,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/item-list/total-item-count?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/item-list/total-item-count?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -377,7 +377,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/portion-info-list/create?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/portion-info-list/create?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -418,7 +418,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/portion-info-list/read-all?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/portion-info-list/read-all?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -464,7 +464,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/portion-info-list/update-name?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/portion-info-list/update-name?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -510,7 +510,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/portion-info-list/update-number?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/portion-info-list/update-number?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -551,7 +551,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/portion-info-list/delete?businessId=65f1e3282ce46bcd9e280ae6",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/portion-info-list/delete?businessId=65f1e3282ce46bcd9e280ae6",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -602,7 +602,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/item-relation/create?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/item-relation/create?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -637,7 +637,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/item-relation/read-used-in?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/item-relation/read-used-in?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -678,7 +678,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/item-relation/read-needed?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/item-relation/read-needed?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -719,7 +719,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/item-relation/update-unit-cost?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/item-relation/update-unit-cost?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -760,7 +760,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/item-relation/delete?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/item-relation/delete?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -795,7 +795,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/estimate-deduction/read?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/estimate-deduction/read?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -835,7 +835,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/estimate-deduction/update?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/estimate-deduction/update?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -886,7 +886,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/item-location/create?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/item-location/create?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -921,7 +921,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/item-location/read-all?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/item-location/read-all?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -951,7 +951,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/item-location/read-one?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/item-location/read-one?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -991,7 +991,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/item-location/update-name?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/item-location/update-name?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -1027,7 +1027,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/item-location/delete?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/item-location/delete?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -1057,7 +1057,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/item-location/get-one-recent-date?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/item-location/get-one-recent-date?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -1093,7 +1093,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/item-location/total-location-count?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/item-location/total-location-count?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -1134,7 +1134,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/item-inventory/create?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/item-inventory/create?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -1164,7 +1164,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/item-inventory/read-all?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/item-inventory/read-all?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -1194,7 +1194,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/item-inventory/update-number?businessId=65dce937180adcfff367ccaf",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/item-inventory/update-number?businessId=65dce937180adcfff367ccaf",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -1230,7 +1230,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/item-inventory/update-metadata?businessId=65dce937180adcfff367ccaf",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/item-inventory/update-metadata?businessId=65dce937180adcfff367ccaf",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -1266,7 +1266,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/item-inventory/delete?businessId=65dce937180adcfff367ccaf",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/item-inventory/delete?businessId=65dce937180adcfff367ccaf",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -1301,7 +1301,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/item-location-log/create?businessId=65dce937180adcfff367ccaf",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/item-location-log/create?businessId=65dce937180adcfff367ccaf",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -1337,7 +1337,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/item-location-log/read-all?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/item-location-log/read-all?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -1383,7 +1383,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/item-location-log/delete?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/item-location-log/delete?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -1424,7 +1424,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/location-metadata-list/create?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/location-metadata-list/create?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -1465,7 +1465,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/location-metadata-list/read-all?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/location-metadata-list/read-all?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -1511,7 +1511,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/location-metadata-list/read-one?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/location-metadata-list/read-one?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -1557,7 +1557,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/location-metadata-list/update-name?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/location-metadata-list/update-name?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -1603,7 +1603,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/location-metadata-list/update-address?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/location-metadata-list/update-address?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -1649,7 +1649,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/location-metadata-list/update-metadata?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/location-metadata-list/update-metadata?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -1695,7 +1695,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/location-metadata-list/delete?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/location-metadata-list/delete?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -1746,7 +1746,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/distributor-item/create?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/distributor-item/create?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -1781,7 +1781,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/distributor-item/read-all?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/distributor-item/read-all?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -1827,7 +1827,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/distributor-item/update-distributor-item-name?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/distributor-item/update-distributor-item-name?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -1873,7 +1873,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/distributor-item/update-item-portion?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/distributor-item/update-item-portion?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -1919,7 +1919,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/distributor-item/update-item-cost?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/distributor-item/update-item-cost?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -1965,7 +1965,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/distributor-item/update-priority-choice?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/distributor-item/update-priority-choice?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -2011,7 +2011,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/distributor-item/delete?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/distributor-item/delete?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -2056,7 +2056,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/distributor-metadata-list/create?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/distributor-metadata-list/create?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -2097,7 +2097,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/distributor-metadata-list/read-all?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/distributor-metadata-list/read-all?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -2143,7 +2143,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/distributor-metadata-list/read-one?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/distributor-metadata-list/read-one?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -2189,7 +2189,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/distributor-metadata-list/update-name?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/distributor-metadata-list/update-name?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -2235,7 +2235,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/distributor-metadata-list/update-deadline-date?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/distributor-metadata-list/update-deadline-date?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -2281,7 +2281,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/distributor-metadata-list/update-delivery-date?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/distributor-metadata-list/update-delivery-date?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -2327,7 +2327,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/distributor-metadata-list/update-meta-data?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/distributor-metadata-list/update-meta-data?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",
@@ -2373,7 +2373,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3001/api/crud/business/distributor-metadata-list/delete?businessId=6619a6969cb09d729201a801",
+              "raw": "https://slicer-backend.vercel.app/api/crud/business/distributor-metadata-list/delete?businessId=6619a6969cb09d729201a801",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3001",

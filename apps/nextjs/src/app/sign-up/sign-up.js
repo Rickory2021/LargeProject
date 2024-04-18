@@ -34,19 +34,22 @@ export default function SignUp() {
     }
 
     try {
-      const res = await fetch('http://localhost:3001/api/auth/user/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          firstName,
-          lastName,
-          username,
-          password,
-          email
-        })
-      });
+      const res = await fetch(
+        'https://slicer-backend.vercel.app/api/auth/user/signup',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            firstName,
+            lastName,
+            username,
+            password,
+            email
+          })
+        }
+      );
       if (res.ok) {
         router.push('/verify-email');
       } else if (res.status === 400) {

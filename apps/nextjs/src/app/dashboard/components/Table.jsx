@@ -46,7 +46,7 @@ const Table = ({ businessId }) => {
     };
 
     const response = await fetch(
-      'http://localhost:3001/api/crud/business/item-list/update?businessId=' +
+      'https://slicer-backend.vercel.app/api/crud/business/item-list/update?businessId=' +
         businessId +
         '&findItemName=' +
         posts[editPostId].itemName +
@@ -77,7 +77,7 @@ const Table = ({ businessId }) => {
     const newPosts = [...posts];
 
     const response = await fetch(
-      'http://localhost:3001/api/crud/business/item-list/delete?businessId=' +
+      'https://slicer-backend.vercel.app/api/crud/business/item-list/delete?businessId=' +
         businessId +
         '&itemName=' +
         posts[editPostId].itemName,
@@ -109,7 +109,7 @@ const Table = ({ businessId }) => {
       itemName: addPost.itemName
     };
     const response = await fetch(
-      'http://localhost:3001/api/crud/business/item-list/create?businessId=' +
+      'https://slicer-backend.vercel.app/api/crud/business/item-list/create?businessId=' +
         businessId +
         '&itemName=' +
         addPost.itemName,
@@ -137,7 +137,7 @@ const Table = ({ businessId }) => {
   useEffect(() => {
     const readAll = async () => {
       const response = await fetch(
-        'http://localhost:3001/api/crud/business/item-list/read-all/?businessId=' +
+        'https://slicer-backend.vercel.app/api/crud/business/item-list/read-all/?businessId=' +
           businessId,
         {
           method: 'POST',

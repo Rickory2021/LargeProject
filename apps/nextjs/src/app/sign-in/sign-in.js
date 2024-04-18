@@ -10,13 +10,16 @@ export default function SignIn() {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      const res = await fetch(`http://localhost:3001/api/auth/user/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ username, password })
-      });
+      const res = await fetch(
+        `https://slicer-backend.vercel.app/api/auth/user/login`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ username, password })
+        }
+      );
       if (res.ok) {
         const data = await res.json();
         const { accessToken, businessIdList, error } = data;

@@ -22,7 +22,7 @@ export default function BusinessSignUp() {
     try {
       console.log(userId);
       const res = await fetch(
-        'http://localhost:3001/api/auth/business/add-connection',
+        'https://slicer-backend.vercel.app/api/auth/business/add-connection',
         {
           method: 'POST',
           headers: {

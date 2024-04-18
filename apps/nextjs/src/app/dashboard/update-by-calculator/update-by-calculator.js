@@ -72,7 +72,7 @@ export function UpdateByCalculator() {
     findItemName
   ) => {
     const endpoint =
-      'http://localhost:3001/api/crud/business/estimate-deduction/update?businessId=' +
+      'https://slicer-backend.vercel.app/api/crud/business/estimate-deduction/update?businessId=' +
       businessId;
 
     const payload = {
@@ -100,7 +100,7 @@ export function UpdateByCalculator() {
 
   const getEstimateDeduction = async (businessId, itemName) => {
     const url =
-      'http://localhost:3001/api/crud/business/estimate-deduction/read?businessId=' +
+      'https://slicer-backend.vercel.app/api/crud/business/estimate-deduction/read?businessId=' +
       businessId;
 
     const requestOptions = {
@@ -164,7 +164,6 @@ export function UpdateByCalculator() {
       });
     }
   };
-
 
   const handleCloseTablePopup = () => {
     setOpenStates(prevStates => ({
@@ -291,7 +290,7 @@ export function UpdateByCalculator() {
   const updateItem = async () => {
     try {
       const response = await fetch(
-        'http://localhost:3001/api/crud/business/item-relation/update-unit-cost?businessId=' +
+        'https://slicer-backend.vercel.app/api/crud/business/item-relation/update-unit-cost?businessId=' +
           businessId,
         {
           method: 'POST',
@@ -318,7 +317,7 @@ export function UpdateByCalculator() {
   const updateItemNeeded = async () => {
     try {
       const response = await fetch(
-        'http://localhost:3001/api/crud/business/item-relation/update-unit-cost?businessId=' +
+        'https://slicer-backend.vercel.app/api/crud/business/item-relation/update-unit-cost?businessId=' +
           businessId,
         {
           method: 'POST',
@@ -345,7 +344,7 @@ export function UpdateByCalculator() {
   const updatePortion = async () => {
     try {
       const response1 = await fetch(
-        'http://localhost:3001/api/crud/business/portion-info-list/update-name?businessId=' +
+        'https://slicer-backend.vercel.app/api/crud/business/portion-info-list/update-name?businessId=' +
           businessId,
         {
           method: 'POST',
@@ -363,7 +362,7 @@ export function UpdateByCalculator() {
         console.error('Failed to update portion name: ' + Error);
       }
       const response2 = await fetch(
-        'http://localhost:3001/api/crud/business/portion-info-list/update-number?businessId=' +
+        'https://slicer-backend.vercel.app/api/crud/business/portion-info-list/update-number?businessId=' +
           businessId,
         {
           method: 'POST',
@@ -389,7 +388,7 @@ export function UpdateByCalculator() {
   const fetchNewPortion = async () => {
     try {
       const response = await fetch(
-        'http://localhost:3001/api/crud/business/portion-info-list/read-all?businessId=' +
+        'https://slicer-backend.vercel.app/api/crud/business/portion-info-list/read-all?businessId=' +
           businessId,
         {
           method: 'POST',
@@ -414,7 +413,7 @@ export function UpdateByCalculator() {
   const addNewPortion = async () => {
     try {
       const response = await fetch(
-        'http://localhost:3001/api/crud/business/portion-info-list/create?businessId=' +
+        'https://slicer-backend.vercel.app/api/crud/business/portion-info-list/create?businessId=' +
           businessId,
         {
           method: 'POST',
@@ -443,7 +442,7 @@ export function UpdateByCalculator() {
     console.log(editedInventory.newUnitCost);
     try {
       const response = await fetch(
-        'http://localhost:3001/api/crud/business/item-relation/create?businessId=' +
+        'https://slicer-backend.vercel.app/api/crud/business/item-relation/create?businessId=' +
           businessId,
         {
           method: 'POST',
@@ -471,7 +470,7 @@ export function UpdateByCalculator() {
   const deleteItemConnection = async () => {
     try {
       const response = await fetch(
-        'http://localhost:3001/api/crud/business/item-relation/delete?businessId=' +
+        'https://slicer-backend.vercel.app/api/crud/business/item-relation/delete?businessId=' +
           businessId,
         {
           method: 'POST',
@@ -500,7 +499,7 @@ export function UpdateByCalculator() {
   const deletePortion = async () => {
     try {
       const response = await fetch(
-        'http://localhost:3001/api/crud/business/portion-info-list/delete?businessId=' +
+        'https://slicer-backend.vercel.app/api/crud/business/portion-info-list/delete?businessId=' +
           businessId,
         {
           method: 'POST',
@@ -527,7 +526,7 @@ export function UpdateByCalculator() {
     console.log(itemName);
     try {
       const response = await fetch(
-        'http://localhost:3001/api/crud/business/item-relation/read-used-in?businessId=' +
+        'https://slicer-backend.vercel.app/api/crud/business/item-relation/read-used-in?businessId=' +
           businessId,
         {
           method: 'POST',
@@ -557,7 +556,7 @@ export function UpdateByCalculator() {
   const fetchItemNeeded = async () => {
     try {
       const response = await fetch(
-        'http://localhost:3001/api/crud/business/item-relation/read-needed?businessId=' +
+        'https://slicer-backend.vercel.app/api/crud/business/item-relation/read-needed?businessId=' +
           businessId,
         {
           method: 'POST',
@@ -593,7 +592,7 @@ export function UpdateByCalculator() {
 
   const getBusinessId = async () => {
     const response = await fetch(
-      'http://localhost:3001/api/auth/user/user-info?id=' + userId,
+      'https://slicer-backend.vercel.app/api/auth/user/user-info?id=' + userId,
       {
         method: 'GET',
         headers: {
@@ -629,11 +628,11 @@ export function UpdateByCalculator() {
   const readAll = async () => {
     try {
       console.log(
-        'http://localhost:3001/api/crud/business/item-list/read-all/?businessId=' +
+        'https://slicer-backend.vercel.app/api/crud/business/item-list/read-all/?businessId=' +
           businessId
       );
       const response = await fetch(
-        'http://localhost:3001/api/crud/business/item-list/read-all/?businessId=' +
+        'https://slicer-backend.vercel.app/api/crud/business/item-list/read-all/?businessId=' +
           businessId,
         {
           method: 'POST',
@@ -1821,7 +1820,6 @@ export function UpdateByCalculator() {
                       </div>
                     </Portal>
                   )}
-
                 </li>
               ))}
             <div className="-m-1.5 overflow-x-auto">
@@ -1964,17 +1962,17 @@ export function UpdateByCalculator() {
                               </button>
                             </td>
                             <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
-                            <button
-                              onClick={e => {
-                                setItemName(item.itemName);
-                                handleMakeEstimatePopup();
-                                e.stopPropagation();
-                              }}
-                              type="button"
-                              className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 w-[20%]"
-                            >
-                              Make Estimate
-                            </button>
+                              <button
+                                onClick={e => {
+                                  setItemName(item.itemName);
+                                  handleMakeEstimatePopup();
+                                  e.stopPropagation();
+                                }}
+                                type="button"
+                                className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 w-[20%]"
+                              >
+                                Make Estimate
+                              </button>
                             </td>
                           </tr>
                         ))}

@@ -93,7 +93,7 @@ export function Dashboard() {
   const EditLocationMetaData = async location => {
     try {
       const response1 = await fetch(
-        'http://localhost:3001/api/crud/business/location-metadata-list/update-address?businessId=' +
+        'https://slicer-backend.vercel.app/api/crud/business/location-metadata-list/update-address?businessId=' +
           businessId,
         {
           method: 'POST',
@@ -110,7 +110,7 @@ export function Dashboard() {
         throw new Error('Failed to update location address: ', Error);
       }
       const response2 = await fetch(
-        'http://localhost:3001/api/crud/business/location-metadata-list/update-metadata?businessId=' +
+        'https://slicer-backend.vercel.app/api/crud/business/location-metadata-list/update-metadata?businessId=' +
           businessId,
         {
           method: 'POST',
@@ -201,7 +201,8 @@ export function Dashboard() {
   const getBusinessId = async () => {
     try {
       const response = await fetch(
-        'http://localhost:3001/api/auth/user/user-info?id=' + userId,
+        'https://slicer-backend.vercel.app/api/auth/user/user-info?id=' +
+          userId,
         {
           method: 'GET',
           headers: {
@@ -227,7 +228,7 @@ export function Dashboard() {
     console.log(addJson.itemName);
     try {
       const response = await fetch(
-        'http://localhost:3001/api/crud/business/item-list/create?businessId=' +
+        'https://slicer-backend.vercel.app/api/crud/business/item-list/create?businessId=' +
           businessId,
         {
           method: 'POST',
@@ -250,7 +251,7 @@ export function Dashboard() {
   const fetchNewItemList = async () => {
     try {
       const response = await fetch(
-        'http://localhost:3001/api/crud/business/item-list/read-all/?businessId=' +
+        'https://slicer-backend.vercel.app/api/crud/business/item-list/read-all/?businessId=' +
           businessId,
         {
           method: 'POST',
@@ -289,11 +290,11 @@ export function Dashboard() {
   const readAll = async () => {
     try {
       console.log(
-        'http://localhost:3001/api/crud/business/item-list/read-all/?businessId=' +
+        'https://slicer-backend.vercel.app/api/crud/business/item-list/read-all/?businessId=' +
           businessId
       );
       const response = await fetch(
-        'http://localhost:3001/api/crud/business/item-list/read-all/?businessId=' +
+        'https://slicer-backend.vercel.app/api/crud/business/item-list/read-all/?businessId=' +
           businessId,
         {
           method: 'POST',
@@ -337,30 +338,31 @@ export function Dashboard() {
           />
         ) : (
           <ul>
-
-          <div>
-          <h2 className="text-2xl font-bold text-center mb-4 border-b border-gray-700">Current Inventory</h2>        
-          </div>
+            <div>
+              <h2 className="text-2xl font-bold text-center mb-4 border-b border-gray-700">
+                Current Inventory
+              </h2>
+            </div>
             <div className="flex justify-center">
-            <button
-            onClick={handleAddPopup}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow"
-            >
-            Add Item
-            </button>
+              <button
+                onClick={handleAddPopup}
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow"
+              >
+                Add Item
+              </button>
             </div>
             {itemList !== null &&
               itemList.map((item, index) => (
-              <li key={index}>
-                <div className="relative">
-                  <div className="flex items-center ml-2">
-                    <button
-                      onClick={() =>
-                        setOpenIndex(openIndex === index ? null : index)
-                      }
-                      type="button"
-                      className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
-                    >
+                <li key={index}>
+                  <div className="relative">
+                    <div className="flex items-center ml-2">
+                      <button
+                        onClick={() =>
+                          setOpenIndex(openIndex === index ? null : index)
+                        }
+                        type="button"
+                        className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
+                      >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           className="h-4 w-4"
@@ -616,45 +618,44 @@ export function Dashboard() {
           </div>
         </div>
       )}
-  
-  {popupItemLog && (
-  <div
-    className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50"
-    onClick={handleClosePopup}
-  >
-    <div
-      className="bg-white p-4 rounded-md relative overflow-y-auto max-h-80" 
-      onClick={e => e.stopPropagation()}
-    >
-      <button
-        className="absolute top-2 right-2"
-        onClick={handleClosePopup}
-      >
-        X
-      </button>
-      {/* Render ItemLog component here */}
-      <ItemLog
-        itemName={selectedItemName}
-        businessId={businessId}
-        locationBucket={'2024'}
-        updateItemLog={updateItemLog}
-      />
-      <p>{selectedItemName}</p>
-      
-      {itemLog.map((log, index) => (
-        <div key={index}>
-          <p>Location: {log.locationName}</p>
-          <p>Date + Time: {log.updateDate}</p>
-          <p>Description: {log.logReason}</p>
-          <p>Initial Portion: {log.initialPortion}</p>
-          <p>Final Portion: {log.finalPortion}</p>
-          <br />
+
+      {popupItemLog && (
+        <div
+          className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50"
+          onClick={handleClosePopup}
+        >
+          <div
+            className="bg-white p-4 rounded-md relative overflow-y-auto max-h-80"
+            onClick={e => e.stopPropagation()}
+          >
+            <button
+              className="absolute top-2 right-2"
+              onClick={handleClosePopup}
+            >
+              X
+            </button>
+            {/* Render ItemLog component here */}
+            <ItemLog
+              itemName={selectedItemName}
+              businessId={businessId}
+              locationBucket={'2024'}
+              updateItemLog={updateItemLog}
+            />
+            <p>{selectedItemName}</p>
+
+            {itemLog.map((log, index) => (
+              <div key={index}>
+                <p>Location: {log.locationName}</p>
+                <p>Date + Time: {log.updateDate}</p>
+                <p>Description: {log.logReason}</p>
+                <p>Initial Portion: {log.initialPortion}</p>
+                <p>Final Portion: {log.finalPortion}</p>
+                <br />
+              </div>
+            ))}
+          </div>
         </div>
-      ))}
-      
-    </div>
-  </div>
-)}
+      )}
       {addItemPopup && (
         <div
           style={{
