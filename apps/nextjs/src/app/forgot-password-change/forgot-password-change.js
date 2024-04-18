@@ -63,7 +63,7 @@ export default function ForgotPasswordChange() {
   };
 
   const validatePassword = (password, retypePassword) => {
-    console.log(password + 'vs' + retypePassword);
+    console.log(password + ': vs :' + retypePassword);
     const passwordRegex =
       /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[0123456789])(?=.*[!@#$%^&*]).{8,}$/;
     const newPasswordRequirements = {
