@@ -419,7 +419,11 @@ export function Dashboard() {
                               maxPortionMap[item.itemName].unitNumber
                             ).toFixed(2)
                           : '0.00'}{' '}
-                        {maxPortionMap[item.itemName].unitName}
+                        {maxPortionMap[item.itemName] &&
+                        itemCountMap[item.itemName] &&
+                        maxPortionMap[item.itemName].unitNumber
+                          ? maxPortionMap[item.itemName].unitName
+                          : 'Units'}{' '}
                       </p>
                       <p className="m-8">
                         Estimate:{' '}
@@ -432,7 +436,11 @@ export function Dashboard() {
                               maxPortionMap[item.itemName].unitNumber
                             ).toFixed(2)
                           : '0.00'}{' '}
-                        {maxPortionMap[item.itemName].unitName}
+                        {maxPortionMap[item.itemName] &&
+                        itemCountMap[item.itemName] &&
+                        maxPortionMap[item.itemName].unitNumber
+                          ? maxPortionMap[item.itemName].unitName
+                          : 'Units'}{' '}
                       </p>
                     </>
                   </div>
