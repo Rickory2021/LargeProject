@@ -602,341 +602,213 @@ export function UpdateByCalculator() {
           />
         ) : (
           <ul>
-            {itemList.map((item, index) => (
-              <li key={index}>
-                <div className="flex items-center ml-2">
+            {itemList !== null &&
+              itemList.map((item, index) => (
+                <li key={index}>
                   <div className="flex items-center ml-2">
-                    {!itemCountMap[item.itemName] && (
-                      <div>
-                        <ItemTotalCount
-                          businessId={businessId}
-                          itemName={item.itemName}
-                          updateItemCount={updateItemCount}
-                        />
-                      </div>
-                    )}
-                    {!estimatedDeductionMap[item.itemName] && (
-                      <div>
-                        <ItemEstimateDeduction
-                          businessId={businessId}
-                          itemName={item.itemName}
-                          estimateDeduction={updateEstimateDeduction}
-                        />
-                      </div>
-                    )}
-                    <LargestPortion
-                      businessId={businessId}
-                      itemName={item.itemName}
-                      updateMaxPortion={updateMaxPortionForItem}
-                    />
-                    {/* Display the item count if available */}
+                    <div className="flex items-center ml-2">
+                      {!itemCountMap[item.itemName] && (
+                        <div>
+                          <ItemTotalCount
+                            businessId={businessId}
+                            itemName={item.itemName}
+                            updateItemCount={updateItemCount}
+                          />
+                        </div>
+                      )}
+                      {!estimatedDeductionMap[item.itemName] && (
+                        <div>
+                          <ItemEstimateDeduction
+                            businessId={businessId}
+                            itemName={item.itemName}
+                            estimateDeduction={updateEstimateDeduction}
+                          />
+                        </div>
+                      )}
+                      <LargestPortion
+                        businessId={businessId}
+                        itemName={item.itemName}
+                        updateMaxPortion={updateMaxPortionForItem}
+                      />
+                      {/* Display the item count if available */}
+                    </div>
                   </div>
-                </div>
 
-                {openPortionInfo && (
-                  <div>
-                    {/* Content for Portion Info dropdown */}
-                    <PortionInfo
-                      businessId={businessId}
-                      itemName={itemName}
-                      setPortionInfoMap={updatePortionInfo}
-                    />
-                    {/* Display the portionInfoList */}
-                    {itemPortionMap[item.itemName] && (
-                      <ul key={tableKey}>
-                        <div
-                          onClick={handleCloseTablePopup}
-                          className="fixed top-0 left-0 w-full h-full backdrop-blur-sm z-50"
-                        >
-                          <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center backdrop-blur-sm">
-                            <div className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm">
-                              <div className="flex justify-end p-2">
-                                <button
-                                  onClick={handleCloseTablePopup}
-                                  className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
-                                >
-                                  <svg
-                                    className="w-5 h-5"
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
-                                    xmlns="http://www.w3.org/2000/svg"
+                  {openPortionInfo && (
+                    <div>
+                      {/* Content for Portion Info dropdown */}
+                      <PortionInfo
+                        businessId={businessId}
+                        itemName={itemName}
+                        setPortionInfoMap={updatePortionInfo}
+                      />
+                      {/* Display the portionInfoList */}
+                      {itemPortionMap[item.itemName] && (
+                        <ul key={tableKey}>
+                          <div
+                            onClick={handleCloseTablePopup}
+                            className="fixed top-0 left-0 w-full h-full backdrop-blur-sm z-50"
+                          >
+                            <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center backdrop-blur-sm">
+                              <div className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm">
+                                <div className="flex justify-end p-2">
+                                  <button
+                                    onClick={handleCloseTablePopup}
+                                    className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
                                   >
-                                    <path
-                                      fillRule="evenodd"
-                                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                      clipRule="evenodd"
-                                    ></path>
-                                  </svg>
+                                    <svg
+                                      className="w-5 h-5"
+                                      fill="currentColor"
+                                      viewBox="0 0 20 20"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        fillRule="evenodd"
+                                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                        clipRule="evenodd"
+                                      ></path>
+                                    </svg>
+                                  </button>
+                                </div>
+                                <h6 className="text-center mb-4">
+                                  Selected portion size:
+                                </h6>
+                                <button
+                                  onClick={e => {
+                                    setEditedPortion({
+                                      itemName: item.itemName
+                                    });
+                                    handleAddPortion();
+                                    e.stopPropagation();
+                                  }}
+                                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mb-4"
+                                >
+                                  Add portion size
                                 </button>
+                                <table className="min-w-full border border-collapse border-gray-300">
+                                  <thead>
+                                    <tr>
+                                      <th className="px-6 py-3 border-r border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Unit Name
+                                      </th>
+                                      <th className="px-6 py-3 border-r border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Unit Number
+                                      </th>
+                                      <th className="px-6 py-3 border-r border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Edit
+                                      </th>
+                                      <th className="px-6 py-3 border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Delete
+                                      </th>
+                                    </tr>
+                                  </thead>
+                                  <tbody className="bg-white">
+                                    {itemPortionMap[item.itemName].map(
+                                      (portion, index) => (
+                                        <tr key={index}>
+                                          <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
+                                            {portion.unitName}
+                                          </td>
+                                          <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
+                                            {portion.unitNumber}
+                                          </td>
+                                          <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
+                                            <button
+                                              className="bg-green-500 text-white px-2 py-1 rounded text-sm"
+                                              onClick={e => {
+                                                handleEditPortionPopup(portion);
+                                                e.stopPropagation();
+                                              }}
+                                            >
+                                              Edit
+                                            </button>
+                                          </td>
+                                          <td className="px-6 py-4 border-b border-gray-300 whitespace-nowrap text-center">
+                                            <button
+                                              className="bg-red-500 text-white px-2 py-1 rounded text-sm"
+                                              onClick={e => {
+                                                handleDeletePortion(portion);
+                                                e.stopPropagation();
+                                              }}
+                                            >
+                                              Delete
+                                            </button>
+                                          </td>
+                                        </tr>
+                                      )
+                                    )}
+                                  </tbody>
+                                </table>
                               </div>
-                              <h6 className="text-center mb-4">
-                                Selected portion size:
-                              </h6>
-                              <button
-                                onClick={e => {
-                                  setEditedPortion({
-                                    itemName: item.itemName
-                                  });
-                                  handleAddPortion();
-                                  e.stopPropagation();
-                                }}
-                                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mb-4"
-                              >
-                                Add portion size
-                              </button>
-                              <table className="min-w-full border border-collapse border-gray-300">
-                                <thead>
-                                  <tr>
-                                    <th className="px-6 py-3 border-r border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                      Unit Name
-                                    </th>
-                                    <th className="px-6 py-3 border-r border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                      Unit Number
-                                    </th>
-                                    <th className="px-6 py-3 border-r border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                      Edit
-                                    </th>
-                                    <th className="px-6 py-3 border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                      Delete
-                                    </th>
-                                  </tr>
-                                </thead>
-                                <tbody className="bg-white">
-                                  {itemPortionMap[item.itemName].map(
-                                    (portion, index) => (
-                                      <tr key={index}>
-                                        <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
-                                          {portion.unitName}
-                                        </td>
-                                        <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
-                                          {portion.unitNumber}
-                                        </td>
-                                        <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
-                                          <button
-                                            className="bg-green-500 text-white px-2 py-1 rounded text-sm"
-                                            onClick={e => {
-                                              handleEditPortionPopup(portion);
-                                              e.stopPropagation();
-                                            }}
-                                          >
-                                            Edit
-                                          </button>
-                                        </td>
-                                        <td className="px-6 py-4 border-b border-gray-300 whitespace-nowrap text-center">
-                                          <button
-                                            className="bg-red-500 text-white px-2 py-1 rounded text-sm"
-                                            onClick={e => {
-                                              handleDeletePortion(portion);
-                                              e.stopPropagation();
-                                            }}
-                                          >
-                                            Delete
-                                          </button>
-                                        </td>
-                                      </tr>
-                                    )
-                                  )}
-                                </tbody>
-                              </table>
                             </div>
                           </div>
-                        </div>
-                      </ul>
-                    )}
-                  </div>
-                )}
+                        </ul>
+                      )}
+                    </div>
+                  )}
 
-                {openItemNeeded && (
-                  <div>
-                    <ItemsNeeded
-                      businessId={businessId}
-                      itemName={item.itemName}
-                      setItemsNeeded={setItemsNeeded}
-                      onEditItem={() => {
-                        fetchItemNeeded();
-                      }}
-                    />
-                    {/* Content for Item Needed dropdown */}
-                    {itemsNeededMap[itemName] && (
-                      <ul key={tableKey}>
-                        <div
-                          onClick={handleCloseTablePopup}
-                          className="fixed top-0 left-0 w-full h-full backdrop-blur-sm z-50"
-                        >
-                          <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center backdrop-blur-sm">
-                            <div
-                              className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm"
-                              style={{
-                                width: '40%',
-                                maxHeight: '70%',
-                                maxWidth: '90%'
-                              }}
-                            >
-                              <div className="flex justify-end p-2">
-                                <button
-                                  onClick={handleCloseTablePopup}
-                                  className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
-                                >
-                                  <svg
-                                    className="w-5 h-5"
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                  >
-                                    <path
-                                      fillRule="evenodd"
-                                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                      clipRule="evenodd"
-                                    ></path>
-                                  </svg>
-                                </button>
-                              </div>
-                              <h6 className="text-center mb-4">
-                                Items {itemName} needs:
-                              </h6>
-                              <button
-                                onClick={e => {
-                                  setEditedInventory({
-                                    rawItemName: '',
-                                    finishedItemName: '',
-                                    newUnitCost: ''
-                                  });
-                                  handleAddInventory(item);
-                                  e.stopPropagation();
+                  {openItemNeeded && (
+                    <div>
+                      <ItemsNeeded
+                        businessId={businessId}
+                        itemName={item.itemName}
+                        setItemsNeeded={setItemsNeeded}
+                        onEditItem={() => {
+                          fetchItemNeeded();
+                        }}
+                      />
+                      {/* Content for Item Needed dropdown */}
+                      {itemsNeededMap[itemName] && (
+                        <ul key={tableKey}>
+                          <div
+                            onClick={handleCloseTablePopup}
+                            className="fixed top-0 left-0 w-full h-full backdrop-blur-sm z-50"
+                          >
+                            <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center backdrop-blur-sm">
+                              <div
+                                className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm"
+                                style={{
+                                  width: '40%',
+                                  maxHeight: '70%',
+                                  maxWidth: '90%'
                                 }}
-                                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mb-4"
                               >
-                                Add item connection
-                              </button>
-                              <table className="min-w-full border border-collapse border-gray-300">
-                                <thead>
-                                  <tr>
-                                    <th className="px-6 py-3 border-r border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                      Item Name
-                                    </th>
-                                    <th className="px-6 py-3 border-r border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                      Unit Cost
-                                    </th>
-                                    <th className="px-6 py-3 border-r border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                      Edit
-                                    </th>
-                                    <th className="px-6 py-3 border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                      Delete
-                                    </th>
-                                  </tr>
-                                </thead>
-                                <tbody className="bg-white">
-                                  {itemsNeededMap[itemName].map(
-                                    (item, index) => (
-                                      <tr key={index}>
-                                        <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
-                                          {item.itemName}
-                                        </td>
-                                        <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
-                                          {item.unitCost}
-                                        </td>
-                                        <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
-                                          <button
-                                            onClick={e => {
-                                              handleEditInventoryNeededPopup(
-                                                item
-                                              );
-                                              e.stopPropagation();
-                                            }}
-                                            className="bg-green-500 text-white px-2 py-1 rounded text-sm"
-                                          >
-                                            Edit
-                                          </button>
-                                        </td>
-                                        <td className="px-6 py-4 border-b border-gray-300 whitespace-nowrap text-center">
-                                          <button
-                                            onClick={e => {
-                                              setEditedInventory({
-                                                rawItemName: item.itemName,
-                                                finishedItemName: itemName,
-                                                newUnitCost: item.unitCost
-                                              });
-                                              handleDeleteItemsUsed();
-                                              e.stopPropagation();
-                                            }}
-                                            className="bg-red-500 text-white px-2 py-1 rounded text-sm"
-                                          >
-                                            Delete
-                                          </button>
-                                        </td>
-                                      </tr>
-                                    )
-                                  )}
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      </ul>
-                    )}
-                  </div>
-                )}
-                {openItemUsedIn && (
-                  <div>
-                    <ItemsUsedIn
-                      key={
-                        itemsUsedInMap[itemName]
-                          ? itemsUsedInMap[itemName].length
-                          : 0
-                      }
-                      businessId={businessId}
-                      itemName={item.itemName}
-                      setItemsUsedIn={updateItemsUsedIn}
-                      onEditItem={() => {
-                        fetchItem;
-                      }}
-                    />
-                    {itemsUsedInMap[itemName] ? (
-                      <ul key={tableKey}>
-                        {/* Full-screen overlay with blur effect */}
-                        <div
-                          onClick={handleCloseTablePopup}
-                          className="fixed top-0 left-0 w-full h-full backdrop-blur-sm z-50"
-                        >
-                          <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center backdrop-blur-sm">
-                            <div className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm">
-                              <div className="flex justify-end p-2">
-                                <button
-                                  onClick={handleCloseTablePopup}
-                                  className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
-                                >
-                                  <svg
-                                    className="w-5 h-5"
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
-                                    xmlns="http://www.w3.org/2000/svg"
+                                <div className="flex justify-end p-2">
+                                  <button
+                                    onClick={handleCloseTablePopup}
+                                    className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
                                   >
-                                    <path
-                                      fillRule="evenodd"
-                                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                      clipRule="evenodd"
-                                    ></path>
-                                  </svg>
+                                    <svg
+                                      className="w-5 h-5"
+                                      fill="currentColor"
+                                      viewBox="0 0 20 20"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        fillRule="evenodd"
+                                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                        clipRule="evenodd"
+                                      ></path>
+                                    </svg>
+                                  </button>
+                                </div>
+                                <h6 className="text-center mb-4">
+                                  Items {itemName} needs:
+                                </h6>
+                                <button
+                                  onClick={e => {
+                                    setEditedInventory({
+                                      rawItemName: '',
+                                      finishedItemName: '',
+                                      newUnitCost: ''
+                                    });
+                                    handleAddInventory(item);
+                                    e.stopPropagation();
+                                  }}
+                                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mb-4"
+                                >
+                                  Add item connection
                                 </button>
-                              </div>
-                              <h6 className="text-center mb-4">
-                                Items {itemName} is used in:
-                              </h6>
-                              <button
-                                onClick={e => {
-                                  setEditedInventory({
-                                    rawItemName: '',
-                                    finishedItemName: '',
-                                    newUnitCost: ''
-                                  });
-                                  handleAddInventory(item);
-                                  e.stopPropagation();
-                                }}
-                                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mb-4"
-                              >
-                                Add Item Connection
-                              </button>
-                              {itemsUsedInMap[itemName].length > 0 && (
                                 <table className="min-w-full border border-collapse border-gray-300">
                                   <thead>
                                     <tr>
@@ -955,7 +827,7 @@ export function UpdateByCalculator() {
                                     </tr>
                                   </thead>
                                   <tbody className="bg-white">
-                                    {itemsUsedInMap[itemName].map(
+                                    {itemsNeededMap[itemName].map(
                                       (item, index) => (
                                         <tr key={index}>
                                           <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
@@ -967,7 +839,7 @@ export function UpdateByCalculator() {
                                           <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
                                             <button
                                               onClick={e => {
-                                                handleEditInventoryUsedPopup(
+                                                handleEditInventoryNeededPopup(
                                                   item
                                                 );
                                                 e.stopPropagation();
@@ -981,9 +853,8 @@ export function UpdateByCalculator() {
                                             <button
                                               onClick={e => {
                                                 setEditedInventory({
-                                                  rawItemName: itemName,
-                                                  finishedItemName:
-                                                    item.itemName,
+                                                  rawItemName: item.itemName,
+                                                  finishedItemName: itemName,
                                                   newUnitCost: item.unitCost
                                                 });
                                                 handleDeleteItemsUsed();
@@ -999,147 +870,362 @@ export function UpdateByCalculator() {
                                     )}
                                   </tbody>
                                 </table>
-                              )}
+                              </div>
                             </div>
                           </div>
+                        </ul>
+                      )}
+                    </div>
+                  )}
+                  {openItemUsedIn && (
+                    <div>
+                      <ItemsUsedIn
+                        key={
+                          itemsUsedInMap[itemName]
+                            ? itemsUsedInMap[itemName].length
+                            : 0
+                        }
+                        businessId={businessId}
+                        itemName={item.itemName}
+                        setItemsUsedIn={updateItemsUsedIn}
+                        onEditItem={() => {
+                          fetchItem;
+                        }}
+                      />
+                      {itemsUsedInMap[itemName] ? (
+                        <ul key={tableKey}>
+                          {/* Full-screen overlay with blur effect */}
+                          <div
+                            onClick={handleCloseTablePopup}
+                            className="fixed top-0 left-0 w-full h-full backdrop-blur-sm z-50"
+                          >
+                            <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center backdrop-blur-sm">
+                              <div className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm">
+                                <div className="flex justify-end p-2">
+                                  <button
+                                    onClick={handleCloseTablePopup}
+                                    className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+                                  >
+                                    <svg
+                                      className="w-5 h-5"
+                                      fill="currentColor"
+                                      viewBox="0 0 20 20"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        fillRule="evenodd"
+                                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                        clipRule="evenodd"
+                                      ></path>
+                                    </svg>
+                                  </button>
+                                </div>
+                                <h6 className="text-center mb-4">
+                                  Items {itemName} is used in:
+                                </h6>
+                                <button
+                                  onClick={e => {
+                                    setEditedInventory({
+                                      rawItemName: '',
+                                      finishedItemName: '',
+                                      newUnitCost: ''
+                                    });
+                                    handleAddInventory(item);
+                                    e.stopPropagation();
+                                  }}
+                                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mb-4"
+                                >
+                                  Add Item Connection
+                                </button>
+                                {itemsUsedInMap[itemName].length > 0 && (
+                                  <table className="min-w-full border border-collapse border-gray-300">
+                                    <thead>
+                                      <tr>
+                                        <th className="px-6 py-3 border-r border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                          Item Name
+                                        </th>
+                                        <th className="px-6 py-3 border-r border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                          Unit Cost
+                                        </th>
+                                        <th className="px-6 py-3 border-r border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                          Edit
+                                        </th>
+                                        <th className="px-6 py-3 border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                          Delete
+                                        </th>
+                                      </tr>
+                                    </thead>
+                                    <tbody className="bg-white">
+                                      {itemsUsedInMap[itemName].map(
+                                        (item, index) => (
+                                          <tr key={index}>
+                                            <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
+                                              {item.itemName}
+                                            </td>
+                                            <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
+                                              {item.unitCost}
+                                            </td>
+                                            <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
+                                              <button
+                                                onClick={e => {
+                                                  handleEditInventoryUsedPopup(
+                                                    item
+                                                  );
+                                                  e.stopPropagation();
+                                                }}
+                                                className="bg-green-500 text-white px-2 py-1 rounded text-sm"
+                                              >
+                                                Edit
+                                              </button>
+                                            </td>
+                                            <td className="px-6 py-4 border-b border-gray-300 whitespace-nowrap text-center">
+                                              <button
+                                                onClick={e => {
+                                                  setEditedInventory({
+                                                    rawItemName: itemName,
+                                                    finishedItemName:
+                                                      item.itemName,
+                                                    newUnitCost: item.unitCost
+                                                  });
+                                                  handleDeleteItemsUsed();
+                                                  e.stopPropagation();
+                                                }}
+                                                className="bg-red-500 text-white px-2 py-1 rounded text-sm"
+                                              >
+                                                Delete
+                                              </button>
+                                            </td>
+                                          </tr>
+                                        )
+                                      )}
+                                    </tbody>
+                                  </table>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </ul>
+                      ) : (
+                        <div>
+                          {/* Popup with Add button when itemsUsedInMap[itemName] is empty */}
+                          <button
+                            onClick={e => {
+                              setEditedInventory({
+                                rawItemName: '',
+                                finishedItemName: '',
+                                newUnitCost: ''
+                              });
+                              handleAddInventory(item);
+                              e.stopPropagation();
+                            }}
+                            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                          >
+                            Add Item Connection
+                          </button>
                         </div>
-                      </ul>
-                    ) : (
+                      )}
+                    </div>
+                  )}
+                  {editInventoryUsedInPopup && (
+                    <Portal>
                       <div>
-                        {/* Popup with Add button when itemsUsedInMap[itemName] is empty */}
-                        <button
-                          onClick={e => {
-                            setEditedInventory({
-                              rawItemName: '',
-                              finishedItemName: '',
-                              newUnitCost: ''
-                            });
-                            handleAddInventory(item);
-                            e.stopPropagation();
-                          }}
-                          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                        >
-                          Add Item Connection
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                )}
-                {editInventoryUsedInPopup && (
-                  <Portal>
-                    <div>
-                      <div
-                        style={{
-                          position: 'absolute', // Add absolute positioning
-                          top: 0,
-                          left: 0,
-                          right: 0,
-                          bottom: 0,
-                          zIndex: 1000, // Increase the z-index value
-                          display: 'flex',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          backdropFilter: 'blur(4px)' // Optional: Add a blur effect
-                        }}
-                        onClick={e => e.stopPropagation()}
-                      >
-                        {' '}
-                        {/* Increased z-index to 150 */}
                         <div
-                          className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150"
                           style={{
-                            width: '40%',
-                            maxHeight: '70%',
-                            maxWidth: '90%',
-                            zIndex: 110, // Increase the z-index value
-                            position: 'relative'
+                            position: 'absolute', // Add absolute positioning
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            zIndex: 1000, // Increase the z-index value
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            backdropFilter: 'blur(4px)' // Optional: Add a blur effect
                           }}
                           onClick={e => e.stopPropagation()}
                         >
-                          <div className="flex justify-end p-2">
-                            <button
-                              onClick={handleClosePopup}
-                              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
-                            >
-                              <svg
-                                className="w-5 h-5"
-                                fill="currentColor"
-                                viewBox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg"
+                          {' '}
+                          {/* Increased z-index to 150 */}
+                          <div
+                            className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150"
+                            style={{
+                              width: '40%',
+                              maxHeight: '70%',
+                              maxWidth: '90%',
+                              zIndex: 110, // Increase the z-index value
+                              position: 'relative'
+                            }}
+                            onClick={e => e.stopPropagation()}
+                          >
+                            <div className="flex justify-end p-2">
+                              <button
+                                onClick={handleClosePopup}
+                                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
                               >
-                                <path
-                                  fillRule="evenodd"
-                                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                  clipRule="evenodd"
-                                ></path>
-                              </svg>
+                                <svg
+                                  className="w-5 h-5"
+                                  fill="currentColor"
+                                  viewBox="0 0 20 20"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                    clipRule="evenodd"
+                                  ></path>
+                                </svg>
+                              </button>
+                            </div>
+                            <h6 className="text-center mb-4">
+                              Edit Item Connection(Item Cost Only):{' '}
+                            </h6>
+                            <p className="text-center mb-2">
+                              Selected Item (with which {itemName} is used in):{' '}
+                            </p>
+                            <input
+                              type="text"
+                              name="newMetaData"
+                              value={editedInventory.finishedItemName}
+                              readOnly
+                              className="bg-gray-200 rounded-md p-2 mb-2"
+                            />
+                            <p className="text-center mb-2">Unit Cost: </p>
+                            <input
+                              type="text"
+                              name="newUnitCost"
+                              value={editedInventory.newUnitCost}
+                              onChange={e =>
+                                handleInputChange(e, 'newUnitCost', 'usedIn')
+                              }
+                              className="bg-gray-200 rounded-md p-2 mb-2"
+                            />
+                            <br />
+                            <button
+                              onClick={() => {
+                                updateItem();
+                                handleClosePopup();
+                              }}
+                              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                            >
+                              Save
                             </button>
                           </div>
-                          <h6 className="text-center mb-4">
-                            Edit Item Connection(Item Cost Only):{' '}
-                          </h6>
-                          <p className="text-center mb-2">
-                            Selected Item (with which {itemName} is used in):{' '}
-                          </p>
-                          <input
-                            type="text"
-                            name="newMetaData"
-                            value={editedInventory.finishedItemName}
-                            readOnly
-                            className="bg-gray-200 rounded-md p-2 mb-2"
-                          />
-                          <p className="text-center mb-2">Unit Cost: </p>
-                          <input
-                            type="text"
-                            name="newUnitCost"
-                            value={editedInventory.newUnitCost}
-                            onChange={e =>
-                              handleInputChange(e, 'newUnitCost', 'usedIn')
-                            }
-                            className="bg-gray-200 rounded-md p-2 mb-2"
-                          />
-                          <br />
-                          <button
-                            onClick={() => {
-                              updateItem();
-                              handleClosePopup();
-                            }}
-                            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                          >
-                            Save
-                          </button>
                         </div>
                       </div>
-                    </div>
-                  </Portal>
-                )}
-                {editInventoryNeededInPopup && (
-                  <Portal>
-                    <div>
+                    </Portal>
+                  )}
+                  {editInventoryNeededInPopup && (
+                    <Portal>
+                      <div>
+                        <div
+                          style={{
+                            position: 'absolute', // Add absolute positioning
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            zIndex: 1000, // Increase the z-index value
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            backdropFilter: 'blur(4px)' // Optional: Add a blur effect
+                          }}
+                          onClick={e => e.stopPropagation()}
+                        >
+                          {' '}
+                          {/* Increased z-index to 150 */}
+                          <div
+                            className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150"
+                            style={{
+                              width: '40%',
+                              maxHeight: '70%',
+                              maxWidth: '90%',
+                              zIndex: 110, // Increase the z-index value
+                              position: 'relative'
+                            }}
+                            onClick={e => e.stopPropagation()}
+                          >
+                            <div className="flex justify-end p-2">
+                              <button
+                                onClick={handleClosePopup}
+                                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+                              >
+                                <svg
+                                  className="w-5 h-5"
+                                  fill="currentColor"
+                                  viewBox="0 0 20 20"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                    clipRule="evenodd"
+                                  ></path>
+                                </svg>
+                              </button>
+                            </div>
+                            <h6 className="text-center mb-4">
+                              Edit Item Connection(Item Cost Only):{' '}
+                            </h6>
+                            <p className="text-center mb-2">
+                              Item used in {itemName}:{' '}
+                            </p>
+                            <input
+                              type="text"
+                              name="newNumber"
+                              value={editedInventory.rawItemName}
+                              readOnly
+                              className="bg-gray-200 rounded-md p-2 mb-2"
+                            />
+                            <p className="text-center mb-2">Unit Cost: </p>
+                            <input
+                              type="text"
+                              name="newUnitCost"
+                              value={editedInventory.newUnitCost}
+                              onChange={e =>
+                                handleInputChange(e, 'newUnitCost', 'usedIn')
+                              }
+                              className="bg-gray-200 rounded-md p-2 mb-2"
+                            />
+                            <br />
+                            <button
+                              onClick={() => {
+                                updateItemNeeded();
+                                handleClosePopup();
+                              }}
+                              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                            >
+                              Save
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </Portal>
+                  )}
+                  {deletePortionPopup && (
+                    <Portal>
                       <div
                         style={{
-                          position: 'absolute', // Add absolute positioning
+                          position: 'absolute',
                           top: 0,
                           left: 0,
                           right: 0,
                           bottom: 0,
-                          zIndex: 1000, // Increase the z-index value
+                          zIndex: 1000,
                           display: 'flex',
                           justifyContent: 'center',
                           alignItems: 'center',
-                          backdropFilter: 'blur(4px)' // Optional: Add a blur effect
+                          backdropFilter: 'blur(4px)'
                         }}
                         onClick={e => e.stopPropagation()}
                       >
-                        {' '}
-                        {/* Increased z-index to 150 */}
                         <div
                           className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150"
                           style={{
                             width: '40%',
                             maxHeight: '70%',
                             maxWidth: '90%',
-                            zIndex: 110, // Increase the z-index value
+                            zIndex: 110,
                             position: 'relative'
                           }}
                           onClick={e => e.stopPropagation()}
@@ -1164,19 +1250,105 @@ export function UpdateByCalculator() {
                             </button>
                           </div>
                           <h6 className="text-center mb-4">
-                            Edit Item Connection(Item Cost Only):{' '}
+                            Are you sure you want to delete this connection?
+                          </h6>
+                          <div className="flex justify-center">
+                            <button
+                              onClick={() => {
+                                handleClosePopup();
+                                deleteItemConnection();
+                              }}
+                              className="bg-green-500 text-white px-4 py-2 rounded mr-4"
+                            >
+                              Yes
+                            </button>
+                            <button
+                              onClick={handleClosePopup}
+                              className="bg-red-500 text-white px-4 py-2 rounded"
+                            >
+                              No
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </Portal>
+                  )}
+                  {addItemConnection && (
+                    <Portal>
+                      <div
+                        style={{
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                          bottom: 0,
+                          zIndex: 1000,
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          backdropFilter: 'blur(4px)'
+                        }}
+                        onClick={e => e.stopPropagation()}
+                      >
+                        <div
+                          className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150"
+                          style={{
+                            width: '40%',
+                            maxHeight: '70%',
+                            maxWidth: '90%',
+                            zIndex: 110,
+                            position: 'relative'
+                          }}
+                          onClick={e => e.stopPropagation()}
+                        >
+                          <div className="flex justify-end p-2">
+                            <button
+                              onClick={handleClosePopup}
+                              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+                            >
+                              <svg
+                                className="w-5 h-5"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                  clipRule="evenodd"
+                                ></path>
+                              </svg>
+                            </button>
+                          </div>
+                          <h6 className="text-center mb-4">
+                            Add new Item Connection:{' '}
                           </h6>
                           <p className="text-center mb-2">
-                            Item used in {itemName}:{' '}
+                            Raw Item Component:{' '}
                           </p>
                           <input
                             type="text"
-                            name="newNumber"
+                            name="rawItemName"
                             value={editedInventory.rawItemName}
-                            readOnly
+                            onChange={e =>
+                              handleInputChange(e, 'rawItemName', 'usedIn')
+                            }
                             className="bg-gray-200 rounded-md p-2 mb-2"
                           />
-                          <p className="text-center mb-2">Unit Cost: </p>
+                          <p className="text-center mb-2">Finished Item: </p>
+                          <input
+                            type="text"
+                            name="finishedItemName"
+                            value={editedInventory.finishedItemName}
+                            onChange={e =>
+                              handleInputChange(e, 'finishedItemName', 'usedIn')
+                            }
+                            className="bg-gray-200 rounded-md p-2 mb-2"
+                          />
+                          <p className="text-center mb-2">
+                            Unit cost (how much the finished item needs of the
+                            raw item to make):{' '}
+                          </p>
                           <input
                             type="text"
                             name="newUnitCost"
@@ -1189,7 +1361,7 @@ export function UpdateByCalculator() {
                           <br />
                           <button
                             onClick={() => {
-                              updateItemNeeded();
+                              addNewItemConnection();
                               handleClosePopup();
                             }}
                             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
@@ -1198,204 +1370,130 @@ export function UpdateByCalculator() {
                           </button>
                         </div>
                       </div>
-                    </div>
-                  </Portal>
-                )}
-                {deletePortionPopup && (
-                  <Portal>
-                    <div
-                      style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        zIndex: 1000,
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        backdropFilter: 'blur(4px)'
-                      }}
-                      onClick={e => e.stopPropagation()}
-                    >
-                      <div
-                        className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150"
-                        style={{
-                          width: '40%',
-                          maxHeight: '70%',
-                          maxWidth: '90%',
-                          zIndex: 110,
-                          position: 'relative'
-                        }}
-                        onClick={e => e.stopPropagation()}
-                      >
-                        <div className="flex justify-end p-2">
-                          <button
-                            onClick={handleClosePopup}
-                            className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
-                          >
-                            <svg
-                              className="w-5 h-5"
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                clipRule="evenodd"
-                              ></path>
-                            </svg>
-                          </button>
-                        </div>
-                        <h6 className="text-center mb-4">
-                          Are you sure you want to delete this connection?
-                        </h6>
-                        <div className="flex justify-center">
-                          <button
-                            onClick={() => {
-                              handleClosePopup();
-                              deleteItemConnection();
-                            }}
-                            className="bg-green-500 text-white px-4 py-2 rounded mr-4"
-                          >
-                            Yes
-                          </button>
-                          <button
-                            onClick={handleClosePopup}
-                            className="bg-red-500 text-white px-4 py-2 rounded"
-                          >
-                            No
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </Portal>
-                )}
-                {addItemConnection && (
-                  <Portal>
-                    <div
-                      style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        zIndex: 1000,
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        backdropFilter: 'blur(4px)'
-                      }}
-                      onClick={e => e.stopPropagation()}
-                    >
-                      <div
-                        className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150"
-                        style={{
-                          width: '40%',
-                          maxHeight: '70%',
-                          maxWidth: '90%',
-                          zIndex: 110,
-                          position: 'relative'
-                        }}
-                        onClick={e => e.stopPropagation()}
-                      >
-                        <div className="flex justify-end p-2">
-                          <button
-                            onClick={handleClosePopup}
-                            className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
-                          >
-                            <svg
-                              className="w-5 h-5"
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                clipRule="evenodd"
-                              ></path>
-                            </svg>
-                          </button>
-                        </div>
-                        <h6 className="text-center mb-4">
-                          Add new Item Connection:{' '}
-                        </h6>
-                        <p className="text-center mb-2">Raw Item Component: </p>
-                        <input
-                          type="text"
-                          name="rawItemName"
-                          value={editedInventory.rawItemName}
-                          onChange={e =>
-                            handleInputChange(e, 'rawItemName', 'usedIn')
-                          }
-                          className="bg-gray-200 rounded-md p-2 mb-2"
-                        />
-                        <p className="text-center mb-2">Finished Item: </p>
-                        <input
-                          type="text"
-                          name="finishedItemName"
-                          value={editedInventory.finishedItemName}
-                          onChange={e =>
-                            handleInputChange(e, 'finishedItemName', 'usedIn')
-                          }
-                          className="bg-gray-200 rounded-md p-2 mb-2"
-                        />
-                        <p className="text-center mb-2">
-                          Unit cost (how much the finished item needs of the raw
-                          item to make):{' '}
-                        </p>
-                        <input
-                          type="text"
-                          name="newUnitCost"
-                          value={editedInventory.newUnitCost}
-                          onChange={e =>
-                            handleInputChange(e, 'newUnitCost', 'usedIn')
-                          }
-                          className="bg-gray-200 rounded-md p-2 mb-2"
-                        />
-                        <br />
-                        <button
-                          onClick={() => {
-                            addNewItemConnection();
-                            handleClosePopup();
+                    </Portal>
+                  )}
+                  {editPortionInfo && (
+                    <Portal>
+                      <div>
+                        <div
+                          style={{
+                            position: 'absolute', // Add absolute positioning
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            zIndex: 1000, // Increase the z-index value
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            backdropFilter: 'blur(4px)' // Optional: Add a blur effect
                           }}
-                          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                          onClick={e => e.stopPropagation()}
                         >
-                          Save
-                        </button>
+                          {' '}
+                          {/* Increased z-index to 150 */}
+                          <div
+                            className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150"
+                            style={{
+                              width: '40%',
+                              maxHeight: '70%',
+                              maxWidth: '90%',
+                              zIndex: 110, // Increase the z-index value
+                              position: 'relative'
+                            }}
+                            onClick={e => e.stopPropagation()}
+                          >
+                            <div className="flex justify-end p-2">
+                              <button
+                                onClick={handleClosePopup}
+                                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+                              >
+                                <svg
+                                  className="w-5 h-5"
+                                  fill="currentColor"
+                                  viewBox="0 0 20 20"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                    clipRule="evenodd"
+                                  ></path>
+                                </svg>
+                              </button>
+                            </div>
+                            <h6 className="text-center mb-4">
+                              Edit Portion Size:{' '}
+                            </h6>
+                            <p className="text-center mb-2">Item: </p>
+                            <input
+                              type="text"
+                              name="itemName"
+                              value={editedPortion.itemName}
+                              readOnly
+                              className="bg-gray-200 rounded-md p-2 mb-2"
+                            />
+                            <p className="text-center mb-2">
+                              Selection Portion:{' '}
+                            </p>
+                            <input
+                              type="text"
+                              name="newUnitName"
+                              value={editedPortion.newUnitName}
+                              onChange={e =>
+                                handleInputChange(e, 'newUnitName', 'portion')
+                              }
+                              className="bg-gray-200 rounded-md p-2 mb-2"
+                            />
+                            <p className="text-center mb-2">Units: </p>
+                            <input
+                              type="text"
+                              name="newUnitNumber"
+                              value={editedPortion.newUnitNumber}
+                              onChange={e =>
+                                handleInputChange(e, 'newUnitNumber', 'portion')
+                              }
+                              className="bg-gray-200 rounded-md p-2 mb-2"
+                            />
+                            <br />
+                            <button
+                              onClick={() => {
+                                updatePortion();
+                                handleClosePopup();
+                              }}
+                              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                            >
+                              Save
+                            </button>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </Portal>
-                )}
-                {editPortionInfo && (
-                  <Portal>
-                    <div>
+                    </Portal>
+                  )}
+                  {deletePopup && (
+                    <Portal>
                       <div
                         style={{
-                          position: 'absolute', // Add absolute positioning
+                          position: 'absolute',
                           top: 0,
                           left: 0,
                           right: 0,
                           bottom: 0,
-                          zIndex: 1000, // Increase the z-index value
+                          zIndex: 1000,
                           display: 'flex',
                           justifyContent: 'center',
                           alignItems: 'center',
-                          backdropFilter: 'blur(4px)' // Optional: Add a blur effect
+                          backdropFilter: 'blur(4px)'
                         }}
                         onClick={e => e.stopPropagation()}
                       >
-                        {' '}
-                        {/* Increased z-index to 150 */}
                         <div
                           className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150"
                           style={{
                             width: '40%',
                             maxHeight: '70%',
                             maxWidth: '90%',
-                            zIndex: 110, // Increase the z-index value
+                            zIndex: 110,
                             position: 'relative'
                           }}
                           onClick={e => e.stopPropagation()}
@@ -1420,19 +1518,88 @@ export function UpdateByCalculator() {
                             </button>
                           </div>
                           <h6 className="text-center mb-4">
-                            Edit Portion Size:{' '}
+                            Are you sure you want to delete this portion size?
                           </h6>
-                          <p className="text-center mb-2">Item: </p>
+                          <div className="flex justify-center">
+                            <button
+                              onClick={() => {
+                                handleClosePopup();
+                                deletePortion();
+                              }}
+                              className="bg-green-500 text-white px-4 py-2 rounded mr-4"
+                            >
+                              Yes
+                            </button>
+                            <button
+                              onClick={handleClosePopup}
+                              className="bg-red-500 text-white px-4 py-2 rounded"
+                            >
+                              No
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </Portal>
+                  )}
+                  {addPortionPopup && (
+                    <Portal>
+                      <div
+                        style={{
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                          bottom: 0,
+                          zIndex: 1000,
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          backdropFilter: 'blur(4px)'
+                        }}
+                        onClick={e => e.stopPropagation()}
+                      >
+                        <div
+                          className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150"
+                          style={{
+                            width: '40%',
+                            maxHeight: '70%',
+                            maxWidth: '90%',
+                            zIndex: 110,
+                            position: 'relative'
+                          }}
+                          onClick={e => e.stopPropagation()}
+                        >
+                          <div className="flex justify-end p-2">
+                            <button
+                              onClick={handleClosePopup}
+                              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+                            >
+                              <svg
+                                className="w-5 h-5"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                  clipRule="evenodd"
+                                ></path>
+                              </svg>
+                            </button>
+                          </div>
+                          <h6 className="text-center mb-4">
+                            Add new portion size:{' '}
+                          </h6>
+                          <p className="text-center mb-2">Item Name: </p>
                           <input
                             type="text"
-                            name="itemName"
+                            name="rawItemName"
                             value={editedPortion.itemName}
                             readOnly
                             className="bg-gray-200 rounded-md p-2 mb-2"
                           />
-                          <p className="text-center mb-2">
-                            Selection Portion:{' '}
-                          </p>
+                          <p className="text-center mb-2">Unit name: </p>
                           <input
                             type="text"
                             name="newUnitName"
@@ -1442,7 +1609,7 @@ export function UpdateByCalculator() {
                             }
                             className="bg-gray-200 rounded-md p-2 mb-2"
                           />
-                          <p className="text-center mb-2">Units: </p>
+                          <p className="text-center mb-2">Unit Number: </p>
                           <input
                             type="text"
                             name="newUnitNumber"
@@ -1455,7 +1622,7 @@ export function UpdateByCalculator() {
                           <br />
                           <button
                             onClick={() => {
-                              updatePortion();
+                              addNewPortion();
                               handleClosePopup();
                             }}
                             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
@@ -1464,174 +1631,10 @@ export function UpdateByCalculator() {
                           </button>
                         </div>
                       </div>
-                    </div>
-                  </Portal>
-                )}
-                {deletePopup && (
-                  <Portal>
-                    <div
-                      style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        zIndex: 1000,
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        backdropFilter: 'blur(4px)'
-                      }}
-                      onClick={e => e.stopPropagation()}
-                    >
-                      <div
-                        className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150"
-                        style={{
-                          width: '40%',
-                          maxHeight: '70%',
-                          maxWidth: '90%',
-                          zIndex: 110,
-                          position: 'relative'
-                        }}
-                        onClick={e => e.stopPropagation()}
-                      >
-                        <div className="flex justify-end p-2">
-                          <button
-                            onClick={handleClosePopup}
-                            className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
-                          >
-                            <svg
-                              className="w-5 h-5"
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                clipRule="evenodd"
-                              ></path>
-                            </svg>
-                          </button>
-                        </div>
-                        <h6 className="text-center mb-4">
-                          Are you sure you want to delete this portion size?
-                        </h6>
-                        <div className="flex justify-center">
-                          <button
-                            onClick={() => {
-                              handleClosePopup();
-                              deletePortion();
-                            }}
-                            className="bg-green-500 text-white px-4 py-2 rounded mr-4"
-                          >
-                            Yes
-                          </button>
-                          <button
-                            onClick={handleClosePopup}
-                            className="bg-red-500 text-white px-4 py-2 rounded"
-                          >
-                            No
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </Portal>
-                )}
-                {addPortionPopup && (
-                  <Portal>
-                    <div
-                      style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        zIndex: 1000,
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        backdropFilter: 'blur(4px)'
-                      }}
-                      onClick={e => e.stopPropagation()}
-                    >
-                      <div
-                        className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150"
-                        style={{
-                          width: '40%',
-                          maxHeight: '70%',
-                          maxWidth: '90%',
-                          zIndex: 110,
-                          position: 'relative'
-                        }}
-                        onClick={e => e.stopPropagation()}
-                      >
-                        <div className="flex justify-end p-2">
-                          <button
-                            onClick={handleClosePopup}
-                            className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
-                          >
-                            <svg
-                              className="w-5 h-5"
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                clipRule="evenodd"
-                              ></path>
-                            </svg>
-                          </button>
-                        </div>
-                        <h6 className="text-center mb-4">
-                          Add new portion size:{' '}
-                        </h6>
-                        <p className="text-center mb-2">Item Name: </p>
-                        <input
-                          type="text"
-                          name="rawItemName"
-                          value={editedPortion.itemName}
-                          readOnly
-                          className="bg-gray-200 rounded-md p-2 mb-2"
-                        />
-                        <p className="text-center mb-2">Unit name: </p>
-                        <input
-                          type="text"
-                          name="newUnitName"
-                          value={editedPortion.newUnitName}
-                          onChange={e =>
-                            handleInputChange(e, 'newUnitName', 'portion')
-                          }
-                          className="bg-gray-200 rounded-md p-2 mb-2"
-                        />
-                        <p className="text-center mb-2">Unit Number: </p>
-                        <input
-                          type="text"
-                          name="newUnitNumber"
-                          value={editedPortion.newUnitNumber}
-                          onChange={e =>
-                            handleInputChange(e, 'newUnitNumber', 'portion')
-                          }
-                          className="bg-gray-200 rounded-md p-2 mb-2"
-                        />
-                        <br />
-                        <button
-                          onClick={() => {
-                            addNewPortion();
-                            handleClosePopup();
-                          }}
-                          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                        >
-                          Save
-                        </button>
-                      </div>
-                    </div>
-                  </Portal>
-                )}
-              </li>
-            ))}
+                    </Portal>
+                  )}
+                </li>
+              ))}
             <div className="-m-1.5 overflow-x-auto">
               <div className="p-1.5 min-w-[1500px] inline-block align-middle">
                 <div className="overflow-hidden">
@@ -1677,95 +1680,96 @@ export function UpdateByCalculator() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 dark:divide-neutral-700">
-                      {itemList.map((item, index) => (
-                        <tr
-                          key={index}
-                          className="hover:bg-gray-100 dark:hover:bg-neutral-700 h-24 overflow-y-auto"
-                        >
-                          <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
-                            {item.itemName}
-                          </td>
-                          <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
-                            {maxPortionMap[item.itemName] &&
-                            itemCountMap[item.itemName] &&
-                            maxPortionMap[item.itemName].unitNumber
-                              ? (
-                                  itemCountMap[item.itemName] /
-                                  maxPortionMap[item.itemName].unitNumber
-                                ).toFixed(2)
-                              : '0.00'}{' '}
-                            {maxPortionMap[item.itemName] &&
-                            itemCountMap[item.itemName] &&
-                            maxPortionMap[item.itemName].unitNumber
-                              ? maxPortionMap[item.itemName].unitName
-                              : 'Units'}{' '}
-                          </td>
-                          <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
-                            {maxPortionMap[item.itemName] &&
-                            estimatedDeductionMap[item.itemName] &&
-                            maxPortionMap[item.itemName].unitNumber
-                              ? (
-                                  estimatedDeductionMap[item.itemName]
-                                    .estimateDeduction /
-                                  maxPortionMap[item.itemName].unitNumber
-                                ).toFixed(2)
-                              : '0.00'}{' '}
-                            {maxPortionMap[item.itemName] &&
-                            itemCountMap[item.itemName] &&
-                            maxPortionMap[item.itemName].unitNumber
-                              ? maxPortionMap[item.itemName].unitName
-                              : 'Units'}{' '}
-                          </td>
-                          <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
-                            <button
-                              onClick={e => {
-                                handleButtonClick(
-                                  item.itemName,
-                                  index,
-                                  'openPortionInfo'
-                                );
-                                e.stopPropagation();
-                              }}
-                              type="button"
-                              className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 w-[20%]"
-                            >
-                              Portion Info
-                            </button>
-                          </td>
-                          <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
-                            <button
-                              onClick={e => {
-                                handleButtonClick(
-                                  item.itemName,
-                                  index,
-                                  'openItemNeeded'
-                                );
-                                e.stopPropagation();
-                              }}
-                              type="button"
-                              className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 w-[20%]"
-                            >
-                              Items Needed
-                            </button>
-                          </td>
-                          <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
-                            <button
-                              onClick={e => {
-                                handleButtonClick(
-                                  item.itemName,
-                                  index,
-                                  'openItemUsedIn'
-                                );
-                                e.stopPropagation();
-                              }}
-                              type="button"
-                              className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 w-[20%]"
-                            >
-                              UsedIn
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
+                      {itemList !== null &&
+                        itemList.map((item, index) => (
+                          <tr
+                            key={index}
+                            className="hover:bg-gray-100 dark:hover:bg-neutral-700 h-24 overflow-y-auto"
+                          >
+                            <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
+                              {item.itemName}
+                            </td>
+                            <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
+                              {maxPortionMap[item.itemName] &&
+                              itemCountMap[item.itemName] &&
+                              maxPortionMap[item.itemName].unitNumber
+                                ? (
+                                    itemCountMap[item.itemName] /
+                                    maxPortionMap[item.itemName].unitNumber
+                                  ).toFixed(2)
+                                : '0.00'}{' '}
+                              {maxPortionMap[item.itemName] &&
+                              itemCountMap[item.itemName] &&
+                              maxPortionMap[item.itemName].unitNumber
+                                ? maxPortionMap[item.itemName].unitName
+                                : 'Units'}{' '}
+                            </td>
+                            <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
+                              {maxPortionMap[item.itemName] &&
+                              estimatedDeductionMap[item.itemName] &&
+                              maxPortionMap[item.itemName].unitNumber
+                                ? (
+                                    estimatedDeductionMap[item.itemName]
+                                      .estimateDeduction /
+                                    maxPortionMap[item.itemName].unitNumber
+                                  ).toFixed(2)
+                                : '0.00'}{' '}
+                              {maxPortionMap[item.itemName] &&
+                              itemCountMap[item.itemName] &&
+                              maxPortionMap[item.itemName].unitNumber
+                                ? maxPortionMap[item.itemName].unitName
+                                : 'Units'}{' '}
+                            </td>
+                            <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
+                              <button
+                                onClick={e => {
+                                  handleButtonClick(
+                                    item.itemName,
+                                    index,
+                                    'openPortionInfo'
+                                  );
+                                  e.stopPropagation();
+                                }}
+                                type="button"
+                                className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 w-[20%]"
+                              >
+                                Portion Info
+                              </button>
+                            </td>
+                            <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
+                              <button
+                                onClick={e => {
+                                  handleButtonClick(
+                                    item.itemName,
+                                    index,
+                                    'openItemNeeded'
+                                  );
+                                  e.stopPropagation();
+                                }}
+                                type="button"
+                                className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 w-[20%]"
+                              >
+                                Items Needed
+                              </button>
+                            </td>
+                            <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
+                              <button
+                                onClick={e => {
+                                  handleButtonClick(
+                                    item.itemName,
+                                    index,
+                                    'openItemUsedIn'
+                                  );
+                                  e.stopPropagation();
+                                }}
+                                type="button"
+                                className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 w-[20%]"
+                              >
+                                UsedIn
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
                     </tbody>
                   </table>
                 </div>

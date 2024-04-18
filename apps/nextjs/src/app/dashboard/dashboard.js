@@ -338,192 +338,193 @@ export function Dashboard() {
         ) : (
           <ul>
             <button onClick={handleAddPopup}>Add Item</button>
-            {itemList.map((item, index) => (
-              <li key={index}>
-                <div className="relative">
-                  <div className="flex items-center ml-2">
-                    <button
-                      onClick={() =>
-                        setOpenIndex(openIndex === index ? null : index)
-                      }
-                      type="button"
-                      className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-4 w-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
+            {itemList !== null &&
+              itemList.map((item, index) => (
+                <li key={index}>
+                  <div className="relative">
+                    <div className="flex items-center ml-2">
+                      <button
+                        onClick={() =>
+                          setOpenIndex(openIndex === index ? null : index)
+                        }
+                        type="button"
+                        className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
                       >
-                        {openIndex === index ? (
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M5 15l7-7 7 7"
-                          />
-                        ) : (
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 9l-7 7-7-7"
-                          />
-                        )}
-                      </svg>
-                    </button>
-                    <button
-                      onClick={() =>
-                        setOpenIndex(openIndex === index ? null : index)
-                      }
-                      type="button"
-                      className="inline-flex items-center justify-center ml-2 rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
-                      id="dropdown-menu-button"
-                    >
-                      {item.itemName}
-                    </button>
-                    {!itemCountMap[item.itemName] && (
-                      <div>
-                        <ItemTotalCount
-                          businessId={businessId}
-                          itemName={item.itemName}
-                          updateItemCount={updateItemCount}
-                        />
-                      </div>
-                    )}
-                    {!estimatedDeductionMap[item.itemName] && (
-                      <div>
-                        <ItemEstimateDeduction
-                          businessId={businessId}
-                          itemName={item.itemName}
-                          estimateDeduction={updateEstimateDeduction}
-                        />
-                      </div>
-                    )}
-                    <LargestPortion
-                      businessId={businessId}
-                      itemName={item.itemName}
-                      updateMaxPortion={updateMaxPortionForItem}
-                    />
-                    {/* Display the item count if available */}
-
-                    <>
-                      <p className="m-8">
-                        Total Count:{' '}
-                        {maxPortionMap[item.itemName] &&
-                        itemCountMap[item.itemName] &&
-                        maxPortionMap[item.itemName].unitNumber
-                          ? (
-                              itemCountMap[item.itemName] /
-                              maxPortionMap[item.itemName].unitNumber
-                            ).toFixed(2)
-                          : '0.00'}{' '}
-                        {maxPortionMap[item.itemName] &&
-                        itemCountMap[item.itemName] &&
-                        maxPortionMap[item.itemName].unitNumber
-                          ? maxPortionMap[item.itemName].unitName
-                          : 'Units'}{' '}
-                      </p>
-                      <p className="m-8">
-                        Estimate:{' '}
-                        {maxPortionMap[item.itemName] &&
-                        estimatedDeductionMap[item.itemName] &&
-                        maxPortionMap[item.itemName].unitNumber
-                          ? (
-                              estimatedDeductionMap[item.itemName]
-                                .estimateDeduction /
-                              maxPortionMap[item.itemName].unitNumber
-                            ).toFixed(2)
-                          : '0.00'}{' '}
-                        {maxPortionMap[item.itemName] &&
-                        itemCountMap[item.itemName] &&
-                        maxPortionMap[item.itemName].unitNumber
-                          ? maxPortionMap[item.itemName].unitName
-                          : 'Units'}{' '}
-                      </p>
-                    </>
-                  </div>
-                  {openIndex === index && (
-                    <div className="ml-12">
-                      <div className="flex items-center ml-2">
-                        <h6 className="mr-auto">Location:</h6>
-                        <button
-                          onClick={() => handleItemLogPopup(item.itemName)}
-                          type="button"
-                          className="inline-flex items-center justify-center rounded-md border border-gray-300 shadow-sm px-3 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
-                          style={{
-                            marginRight: '100px',
-                            verticalAlign: 'middle'
-                          }}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-4 w-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
                         >
-                          Item Log
-                        </button>
-                      </div>
-                      <Location
-                        itemName={item.itemName}
+                          {openIndex === index ? (
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M5 15l7-7 7 7"
+                            />
+                          ) : (
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M19 9l-7 7-7-7"
+                            />
+                          )}
+                        </svg>
+                      </button>
+                      <button
+                        onClick={() =>
+                          setOpenIndex(openIndex === index ? null : index)
+                        }
+                        type="button"
+                        className="inline-flex items-center justify-center ml-2 rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
+                        id="dropdown-menu-button"
+                      >
+                        {item.itemName}
+                      </button>
+                      {!itemCountMap[item.itemName] && (
+                        <div>
+                          <ItemTotalCount
+                            businessId={businessId}
+                            itemName={item.itemName}
+                            updateItemCount={updateItemCount}
+                          />
+                        </div>
+                      )}
+                      {!estimatedDeductionMap[item.itemName] && (
+                        <div>
+                          <ItemEstimateDeduction
+                            businessId={businessId}
+                            itemName={item.itemName}
+                            estimateDeduction={updateEstimateDeduction}
+                          />
+                        </div>
+                      )}
+                      <LargestPortion
                         businessId={businessId}
-                        updateLocationList={updateLocationList}
+                        itemName={item.itemName}
+                        updateMaxPortion={updateMaxPortionForItem}
                       />
-                      <ul>
-                        {locationList.map((location, i) => (
-                          <li
-                            key={i}
-                            className="block px-4 py-2 text-sm text-gray-700"
-                          >
-                            {location}
-                            <button
-                              onClick={() => handleLocationPopup(location)}
-                              type="button"
-                              className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
-                            >
-                              i
-                            </button>
+                      {/* Display the item count if available */}
 
-                            {!locationInventory[location] ||
-                            !locationInventory[location][item.itemName] ? (
-                              <div>
-                                <LocationTotalCount
-                                  itemName={item.itemName}
-                                  businessId={businessId}
-                                  locationName={location}
-                                  updateLocationInventory={
-                                    updateLocationInventory
-                                  }
-                                />
-                                <LargestPortion
-                                  businessId={businessId}
-                                  itemName={item.itemName}
-                                  updateMaxPortion={updateMaxPortionForItem}
-                                />
-                              </div>
-                            ) : (
-                              <>
-                                <LocationTotal
-                                  itemName={item.itemName}
-                                  location={location}
-                                  businessId={businessId}
-                                  setCount={setCount}
-                                />
-                                <p className="m-8">
-                                  Last Updated:
-                                  <DateComponent
+                      <>
+                        <p className="m-8">
+                          Total Count:{' '}
+                          {maxPortionMap[item.itemName] &&
+                          itemCountMap[item.itemName] &&
+                          maxPortionMap[item.itemName].unitNumber
+                            ? (
+                                itemCountMap[item.itemName] /
+                                maxPortionMap[item.itemName].unitNumber
+                              ).toFixed(2)
+                            : '0.00'}{' '}
+                          {maxPortionMap[item.itemName] &&
+                          itemCountMap[item.itemName] &&
+                          maxPortionMap[item.itemName].unitNumber
+                            ? maxPortionMap[item.itemName].unitName
+                            : `Units`}{' '}
+                        </p>
+                        <p className="m-8">
+                          Estimate:{' '}
+                          {maxPortionMap[item.itemName] &&
+                          estimatedDeductionMap[item.itemName] &&
+                          maxPortionMap[item.itemName].unitNumber
+                            ? (
+                                estimatedDeductionMap[item.itemName]
+                                  .estimateDeduction /
+                                maxPortionMap[item.itemName].unitNumber
+                              ).toFixed(2)
+                            : '0.00'}{' '}
+                          {maxPortionMap[item.itemName] &&
+                          itemCountMap[item.itemName] &&
+                          maxPortionMap[item.itemName].unitNumber
+                            ? maxPortionMap[item.itemName].unitName
+                            : `Units`}{' '}
+                        </p>
+                      </>
+                    </div>
+                    {openIndex === index && (
+                      <div className="ml-12">
+                        <div className="flex items-center ml-2">
+                          <h6 className="mr-auto">Location:</h6>
+                          <button
+                            onClick={() => handleItemLogPopup(item.itemName)}
+                            type="button"
+                            className="inline-flex items-center justify-center rounded-md border border-gray-300 shadow-sm px-3 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
+                            style={{
+                              marginRight: '100px',
+                              verticalAlign: 'middle'
+                            }}
+                          >
+                            Item Log
+                          </button>
+                        </div>
+                        <Location
+                          itemName={item.itemName}
+                          businessId={businessId}
+                          updateLocationList={updateLocationList}
+                        />
+                        <ul>
+                          {locationList.map((location, i) => (
+                            <li
+                              key={i}
+                              className="block px-4 py-2 text-sm text-gray-700"
+                            >
+                              {location}
+                              <button
+                                onClick={() => handleLocationPopup(location)}
+                                type="button"
+                                className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
+                              >
+                                i
+                              </button>
+
+                              {!locationInventory[location] ||
+                              !locationInventory[location][item.itemName] ? (
+                                <div>
+                                  <LocationTotalCount
+                                    itemName={item.itemName}
+                                    businessId={businessId}
+                                    locationName={location}
+                                    updateLocationInventory={
+                                      updateLocationInventory
+                                    }
+                                  />
+                                  <LargestPortion
+                                    businessId={businessId}
+                                    itemName={item.itemName}
+                                    updateMaxPortion={updateMaxPortionForItem}
+                                  />
+                                </div>
+                              ) : (
+                                <>
+                                  <LocationTotal
                                     itemName={item.itemName}
                                     location={location}
                                     businessId={businessId}
+                                    setCount={setCount}
                                   />
-                                </p>
-                                <p className="m-8">Estimated:</p>
-                              </>
-                            )}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              </li>
-            ))}
+                                  <p className="m-8">
+                                    Last Updated:
+                                    <DateComponent
+                                      itemName={item.itemName}
+                                      location={location}
+                                      businessId={businessId}
+                                    />
+                                  </p>
+                                  <p className="m-8">Estimated:</p>
+                                </>
+                              )}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                </li>
+              ))}
           </ul>
         )}
       </div>
