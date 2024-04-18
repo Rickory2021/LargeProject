@@ -150,11 +150,11 @@ export function Account() {
           />
         ) : (
           <div className="flex flex-col items-center justify-center h-screen pb-16">
-            <div className="bg-white shadow-lg rounded-lg p-8 text-center">
+            <div className="bg-blue-400 shadow-lg rounded-lg p-8 text-center">
               <table className="table-fixed min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
                 <tbody className="divide-y divide-gray-200 dark:divide-neutral-700">
                   <tr className="hover:bg-gray-100 dark:hover:bg-neutral-700 h-16 overflow-y-auto">
-                    <td className="px-6 py-4 text-start text-sm font-medium text-gray-800 dark:text-neutral-200">
+                    <td className="px-6 py-4 text-start text-lg font-medium text-gray-800 dark:text-neutral-200">
                       Name:
                     </td>
                     <td className="px-6 py-4 text-end text-sm font-medium text-gray-800 dark:text-neutral-200">
@@ -162,7 +162,7 @@ export function Account() {
                     </td>
                   </tr>
                   <tr className="hover:bg-gray-100 dark:hover:bg-neutral-700 h-16 overflow-y-auto">
-                    <td className="px-6 py-4 text-start text-sm font-medium text-gray-800 dark:text-neutral-200">
+                    <td className="px-6 py-4 text-start text-lg font-medium text-gray-800 dark:text-neutral-200">
                       Email:
                     </td>
                     <td className="px-6 py-4 text-end text-sm font-medium text-gray-800 dark:text-neutral-200">
@@ -170,7 +170,7 @@ export function Account() {
                     </td>
                   </tr>
                   <tr className="hover:bg-gray-100 dark:hover:bg-neutral-700 h-16 overflow-y-auto">
-                    <td className="px-6 py-4 text-start text-sm font-medium text-gray-800 dark:text-neutral-200">
+                    <td className="px-6 py-4 text-start text-lg font-medium text-gray-800 dark:text-neutral-200">
                       Business Id:
                     </td>
                     <td className="px-6 py-4 text-end text-sm font-medium text-gray-800 dark:text-neutral-200">
@@ -178,7 +178,7 @@ export function Account() {
                     </td>
                   </tr>
                   <tr className="hover:bg-gray-100 dark:hover:bg-neutral-700 h-16 overflow-y-auto">
-                    <td className="px-6 py-4 text-start text-sm font-medium text-gray-800 dark:text-neutral-200">
+                    <td className="px-6 py-4 text-start text-lg font-medium text-gray-800 dark:text-neutral-200">
                       Business Name:
                     </td>
                     <td className="px-6 py-4 text-end text-sm font-medium text-gray-800 dark:text-neutral-200">

@@ -315,7 +315,7 @@ export function Dashboard() {
     <div className="flex">
       <SideNav openCallback={handleSideNavOpen} />
       <div
-        className={`flex justify-center items-center flex-col flex-1 ${isSideNavOpen ? 'ml-72' : 'ml-36'} lg:${isSideNavOpen ? 'ml-80' : 'ml-40'} xl:${isSideNavOpen ? 'ml-88' : 'ml-44'}`}
+        className={`p-5 border-blue-500 flex justify-center items-center flex-col flex-1 ${isSideNavOpen ? 'ml-72' : 'ml-36'} lg:${isSideNavOpen ? 'ml-80' : 'ml-40'} xl:${isSideNavOpen ? 'ml-88' : 'ml-44'}`}
       >
         {loading ? (
           <CookieComponent
@@ -324,7 +324,14 @@ export function Dashboard() {
           />
         ) : (
           <ul>
-            <button onClick={handleAddPopup}>Add Item</button>
+            <div className="flex justify-center">
+            <button
+            onClick={handleAddPopup}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow"
+            >
+            Add Item
+            </button>
+            </div>
             {itemList.map((item, index) => (
               <li key={index}>
                 <div className="relative">
@@ -411,7 +418,7 @@ export function Dashboard() {
                             verticalAlign: 'middle'
                           }}
                         >
-                          Item Log
+                        Item Log
                         </button>
                       </div>
                       <Location
@@ -561,42 +568,45 @@ export function Dashboard() {
           </div>
         </div>
       )}
-      {popupItemLog && (
-        <div
-          className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50"
-          onClick={handleClosePopup}
-        >
-          <div
-            className="bg-white p-4 rounded-md relative"
-            onClick={e => e.stopPropagation()}
-          >
-            <button
-              className="absolute top-2 right-2"
-              onClick={handleClosePopup}
-            >
-              X
-            </button>
-            {/* Render ItemLog component here */}
-            <ItemLog
-              itemName={selectedItemName}
-              businessId={businessId}
-              locationBucket={'2024'}
-              updateItemLog={updateItemLog}
-            />
-            <p>{selectedItemName} Log</p>
-            {itemLog.map((log, index) => (
-              <div key={index}>
-                <p>Location: {log.locationName}</p>
-                <p>Date + Time: {log.updateDate}</p>
-                <p>Description: {log.logReason}</p>
-                <p>Initial Portion: {log.initialPortion}</p>
-                <p>Final Portion: {log.finalPortion}</p>
-                <br />
-              </div>
-            ))}
-          </div>
+  
+  {popupItemLog && (
+  <div
+    className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50"
+    onClick={handleClosePopup}
+  >
+    <div
+      className="bg-white p-4 rounded-md relative overflow-y-auto max-h-80" 
+      onClick={e => e.stopPropagation()}
+    >
+      <button
+        className="absolute top-2 right-2"
+        onClick={handleClosePopup}
+      >
+        X
+      </button>
+      {/* Render ItemLog component here */}
+      <ItemLog
+        itemName={selectedItemName}
+        businessId={businessId}
+        locationBucket={'2024'}
+        updateItemLog={updateItemLog}
+      />
+      <p>{selectedItemName}</p>
+      
+      {itemLog.map((log, index) => (
+        <div key={index}>
+          <p>Location: {log.locationName}</p>
+          <p>Date + Time: {log.updateDate}</p>
+          <p>Description: {log.logReason}</p>
+          <p>Initial Portion: {log.initialPortion}</p>
+          <p>Final Portion: {log.finalPortion}</p>
+          <br />
         </div>
-      )}
+      ))}
+      
+    </div>
+  </div>
+)}
       {addItemPopup && (
         <div
           style={{
