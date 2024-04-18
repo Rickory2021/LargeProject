@@ -122,7 +122,7 @@ export default function SignUp() {
   };
 
   const handleRetypePasswordChange = e => {
-    setRetypePassword(prevRetypePassword => e.target.value);
+    setRetypePassword(e.target.value);
   };
 
   useEffect(() => {
