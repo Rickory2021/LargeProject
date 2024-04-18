@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "lint": "next lint"
+    "lint": "next lint",
+    "jest": "test"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.18",
