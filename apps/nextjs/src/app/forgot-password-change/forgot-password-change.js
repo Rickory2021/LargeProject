@@ -119,7 +119,7 @@ export default function ForgotPasswordChange() {
   };
 
   const handleRetypePasswordChange = e => {
-    setRetypePassword(prevRetypePassword => e.target.value);
+    setRetypePassword(e.target.value);
   };
 
   useEffect(() => {
