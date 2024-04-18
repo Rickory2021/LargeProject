@@ -29,7 +29,7 @@ export default function ForgotPasswordChange() {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    if (!validatePassword(password)) {
+    if (!validatePassword(password || retypePassword)) {
       setError('Entered password does not meet validation requirements!');
       return;
     }
