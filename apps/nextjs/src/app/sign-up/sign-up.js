@@ -12,16 +12,13 @@ export default function SignUp() {
   const [username, setUsername] = useState('');
   const [error, setError] = useState('');
   const [passwordFocused, setPasswordFocused] = useState(false);
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [confirmPasswordHovered, setConfirmPasswordHovered] = useState(false);
   const [passwordRequirements, setPasswordRequirements] = useState({
     minLength: false,
     uppercase: false,
     lowercase: false,
     specialCharacter: false
   });
-  const [passwordsMatch, setPasswordsMatch] = useState(false);
 
   const router = useRouter();
 
@@ -92,14 +89,6 @@ export default function SignUp() {
     // setShowPassword(false); // Hide the button when the password input is blurred
   };
 
-  const handleConfirmPasswordHover = () => {
-    setConfirmPasswordHovered(true);
-  };
-
-  const handleConfirmPasswordLeave = () => {
-    setConfirmPasswordHovered(false);
-  };
-
   const togglePasswordVisibility = () => {
     setShowPassword(prevShowPassword => !prevShowPassword);
   };
@@ -109,11 +98,6 @@ export default function SignUp() {
     if (passwordFocused) {
       validatePassword(e.target.value);
     }
-  };
-
-  const handleConfirmPasswordChange = (e) => {
-    setConfirmPassword(e.target.value);
-    setPasswordsMatch(e.target.value === password);
   };
 
   // ✓ vs ✅
@@ -152,7 +136,6 @@ export default function SignUp() {
             onBlur={handlePasswordBlur}
             className="p-2 border border-gray-300 rounded-md"
           />
-
           {!showPassword && (
             <button
               type="button"
@@ -172,17 +155,18 @@ export default function SignUp() {
             </button>
           )}
         </div>
-        <input
-          type="password"
-          placeholder="Confirm Password"
-          value={confirmPassword}
-          onChange={handleConfirmPasswordChange}
-          onFocus={handleConfirmPasswordHover}
-          onBlur={handleConfirmPasswordLeave}
-          className="p-2 border border-gray-300 rounded-md"
-        />
-        {(passwordRequirements && (passwordFocused || confirmPasswordHovered)) && (
-          <div className="flex p-2 border border-gray-300 rounded-md">
+        {(passwordFocused ||
+          (passwordRequirements &&
+            passwordRequirements.passwordLength > 0 &&
+            !(
+              passwordRequirements.minLength &&
+              passwordRequirements.uppercase &&
+              passwordRequirements.lowercase &&
+              passwordRequirements.number &&
+              passwordRequirements.specialCharacter &&
+              !passwordFocused
+            ))) && (
+          <div className="p-2 border border-gray-300 rounded-md">
             <ul>
               <li>
                 {passwordRequirements.minLength ? '✅' : '-'} Password must be
@@ -197,11 +181,11 @@ export default function SignUp() {
                 one lowercase letter
               </li>
               <li>
-                {passwordRequirements.specialCharacter ? '✅' : '-'} Contain
-                at least one special character: !@#$%^&*
+                {passwordRequirements.number ? '✅' : '-'} Contain at one number
               </li>
               <li>
-                {(passwordsMatch && password.length > 0)? '✅' : '-'} Passwords Match
+                {passwordRequirements.specialCharacter ? '✅' : '-'} Contain at
+                least one special character: !@#$%^&*
               </li>
             </ul>
           </div>
