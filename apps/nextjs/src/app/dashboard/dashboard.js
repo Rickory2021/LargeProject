@@ -6,6 +6,7 @@ import Location from './components/location';
 import LargestPortion from './components/LargestPortion';
 import LocationPopup from './components/LocationPopup';
 import ItemTotalCount from './components/ItemTotalCount';
+import ItemEstimateDeduction from './components/ItemEstimateDeduction';
 import LocationTotalCount from './components/LocationTotalCount';
 import ItemLog from './components/ItemLog'; // Import ItemLog here
 import LocationTotal from './components/LocationTotal';
@@ -25,6 +26,7 @@ export function Dashboard() {
   const [popupItemLog, setPopupItemLog] = useState(false);
   const [selectedItemName, setSelectedItemName] = useState('');
   const [itemCountMap, setItemCountMap] = useState({});
+  const [estimatedDeductionMap, setEstimatedDeductionMap] = useState({});
   const [locationInventory, setLocationInventory] = useState({});
   const [maxPortionMap, setMaxPortionMap] = useState({});
   const [editMode, setEditMode] = useState(false);
@@ -159,6 +161,13 @@ export function Dashboard() {
     setItemCountMap(prevState => ({
       ...prevState,
       [itemName]: newItemTotal
+    }));
+  };
+
+  const updateEstimateDeduction = (itemName, newEstimatedDeduction) => {
+    setEstimatedDeductionMap(prevState => ({
+      ...prevState,
+      [itemName]: newEstimatedDeduction
     }));
   };
 
@@ -383,6 +392,15 @@ export function Dashboard() {
                         />
                       </div>
                     )}
+                    {!estimatedDeductionMap[item.itemName] && (
+                      <div>
+                        <ItemEstimateDeduction
+                          businessId={businessId}
+                          itemName={item.itemName}
+                          estimateDeduction={updateEstimateDeduction}
+                        />
+                      </div>
+                    )}
                     <LargestPortion
                       businessId={businessId}
                       itemName={item.itemName}
@@ -401,8 +419,21 @@ export function Dashboard() {
                               maxPortionMap[item.itemName].unitNumber
                             ).toFixed(2)
                           : '0.00'}{' '}
+                        {maxPortionMap[item.itemName].unitName}
                       </p>
-                      <p className="m-8">Estimated:</p>
+                      <p className="m-8">
+                        Estimate:{' '}
+                        {maxPortionMap[item.itemName] &&
+                        estimatedDeductionMap[item.itemName] &&
+                        maxPortionMap[item.itemName].unitNumber
+                          ? (
+                              estimatedDeductionMap[item.itemName]
+                                .estimateDeduction /
+                              maxPortionMap[item.itemName].unitNumber
+                            ).toFixed(2)
+                          : '0.00'}{' '}
+                        {maxPortionMap[item.itemName].unitName}
+                      </p>
                     </>
                   </div>
                   {openIndex === index && (
