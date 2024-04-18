@@ -22,6 +22,7 @@ module.exports = {
     'no-dupe-keys': 'warn',
     'react/no-unknown-property': 'warn',
     'react/no-unescaped-entities': 'warn',
-    'no-useless-catch': 'warn'
+    'no-useless-catch': 'warn',
+    'no-undef': 'warn'
   }
 };
