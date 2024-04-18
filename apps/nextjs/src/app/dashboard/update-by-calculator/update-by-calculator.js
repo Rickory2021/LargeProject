@@ -1837,19 +1837,19 @@ export function UpdateByCalculator() {
                         </th>
                         <th
                           scope="col"
-                          className="px-8 py-4 text-end text-sm font-medium text-gray-500 uppercase dark:text-neutral-500 w-[20%]"
+                          className="px-8 py-4 text-start text-sm font-medium text-gray-500 uppercase dark:text-neutral-500 w-[20%]"
                         >
                           Total Count
                         </th>
                         <th
                           scope="col"
-                          className="px-8 py-4 text-end text-sm font-medium text-gray-500 uppercase dark:text-neutral-500 w-[20%]"
+                          className="px-8 py-4 text-start text-sm font-medium text-gray-500 uppercase dark:text-neutral-500 w-[20%]"
                         >
                           Estimated
                         </th>
                         <th
                           scope="col"
-                          className="px-8 py-4 text-end text-sm font-medium text-gray-500 uppercase dark:text-neutral-500 w-[20%]"
+                          className="px-8 py-4 text-start text-sm font-medium text-gray-500 uppercase dark:text-neutral-500 w-[20%]"
                         >
                           Portion Info
                         </th>
