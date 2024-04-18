@@ -113,6 +113,10 @@ const SideNav = ({ openCallback }) => {
                     <Link href="/dashboard">
                       {menu.icon ? menu.icon : <FaHome />}
                     </Link>
+                  ) : menu.title === 'Update' ? (
+                    <Link href="/dashboard/update-by-item">
+                      {menu.icon ? menu.icon : <FaHome />}
+                    </Link>
                   ) : (
                     <Link href={`/dashboard/${menu.title.toLowerCase()}`}>
                       {menu.icon ? menu.icon : <FaHome />}
