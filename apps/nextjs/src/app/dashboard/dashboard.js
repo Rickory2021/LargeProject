@@ -325,10 +325,10 @@ export function Dashboard() {
   }
 
   return (
-    <div className="flex">
+    <div className="flex ">
       <SideNav openCallback={handleSideNavOpen} />
       <div
-        className={`flex justify-center items-center flex-col flex-1 ${isSideNavOpen ? 'ml-72' : 'ml-36'} lg:${isSideNavOpen ? 'ml-80' : 'ml-40'} xl:${isSideNavOpen ? 'ml-88' : 'ml-44'}`}
+        className={`p-5 border-blue-500 flex justify-center items-center flex-col flex-1 ${isSideNavOpen ? 'ml-72' : 'ml-36'} lg:${isSideNavOpen ? 'ml-80' : 'ml-40'} xl:${isSideNavOpen ? 'ml-88' : 'ml-44'}`}
       >
         {loading ? (
           <CookieComponent
@@ -337,19 +337,30 @@ export function Dashboard() {
           />
         ) : (
           <ul>
-            <button onClick={handleAddPopup}>Add Item</button>
+
+          <div>
+          <h2 className="text-2xl font-bold text-center mb-4 border-b border-gray-700">Current Inventory</h2>        
+          </div>
+            <div className="flex justify-center">
+            <button
+            onClick={handleAddPopup}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow"
+            >
+            Add Item
+            </button>
+            </div>
             {itemList !== null &&
               itemList.map((item, index) => (
-                <li key={index}>
-                  <div className="relative">
-                    <div className="flex items-center ml-2">
-                      <button
-                        onClick={() =>
-                          setOpenIndex(openIndex === index ? null : index)
-                        }
-                        type="button"
-                        className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
-                      >
+              <li key={index}>
+                <div className="relative">
+                  <div className="flex items-center ml-2">
+                    <button
+                      onClick={() =>
+                        setOpenIndex(openIndex === index ? null : index)
+                      }
+                      type="button"
+                      className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
+                    >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           className="h-4 w-4"
@@ -605,42 +616,45 @@ export function Dashboard() {
           </div>
         </div>
       )}
-      {popupItemLog && (
-        <div
-          className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50"
-          onClick={handleClosePopup}
-        >
-          <div
-            className="bg-white p-4 rounded-md relative"
-            onClick={e => e.stopPropagation()}
-          >
-            <button
-              className="absolute top-2 right-2"
-              onClick={handleClosePopup}
-            >
-              X
-            </button>
-            {/* Render ItemLog component here */}
-            <ItemLog
-              itemName={selectedItemName}
-              businessId={businessId}
-              locationBucket={'2024'}
-              updateItemLog={updateItemLog}
-            />
-            <p>{selectedItemName} Log</p>
-            {itemLog.map((log, index) => (
-              <div key={index}>
-                <p>Location: {log.locationName}</p>
-                <p>Date + Time: {log.updateDate}</p>
-                <p>Description: {log.logReason}</p>
-                <p>Initial Portion: {log.initialPortion}</p>
-                <p>Final Portion: {log.finalPortion}</p>
-                <br />
-              </div>
-            ))}
-          </div>
+  
+  {popupItemLog && (
+  <div
+    className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50"
+    onClick={handleClosePopup}
+  >
+    <div
+      className="bg-white p-4 rounded-md relative overflow-y-auto max-h-80" 
+      onClick={e => e.stopPropagation()}
+    >
+      <button
+        className="absolute top-2 right-2"
+        onClick={handleClosePopup}
+      >
+        X
+      </button>
+      {/* Render ItemLog component here */}
+      <ItemLog
+        itemName={selectedItemName}
+        businessId={businessId}
+        locationBucket={'2024'}
+        updateItemLog={updateItemLog}
+      />
+      <p>{selectedItemName}</p>
+      
+      {itemLog.map((log, index) => (
+        <div key={index}>
+          <p>Location: {log.locationName}</p>
+          <p>Date + Time: {log.updateDate}</p>
+          <p>Description: {log.logReason}</p>
+          <p>Initial Portion: {log.initialPortion}</p>
+          <p>Final Portion: {log.finalPortion}</p>
+          <br />
         </div>
-      )}
+      ))}
+      
+    </div>
+  </div>
+)}
       {addItemPopup && (
         <div
           style={{

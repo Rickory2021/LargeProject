@@ -787,6 +787,7 @@ export function UpdateByItem() {
           />
         ) : (
           <ul>
+            <h2 className="text-2xl font-bold text-center mb-4 border-b border-gray-700">Item List</h2>
             {itemList !== null &&
               itemList.map((item, index) => (
                 <li key={index}>
@@ -944,6 +945,7 @@ export function UpdateByItem() {
                                       setItemName(item.itemName);
                                       toggleDropdownForLocation(location);
                                     }}
+                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
                                   >
                                     {location}
                                   </button>
@@ -952,7 +954,7 @@ export function UpdateByItem() {
                                       handleLocationPopup(location)
                                     }
                                     type="button"
-                                    className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
+                                    className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full border border-black shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-500 focus:outline-none"
                                   >
                                     i
                                   </button>
