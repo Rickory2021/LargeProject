@@ -9,6 +9,7 @@ import ItemEstimateDeduction from '../components/ItemEstimateDeduction';
 import ItemsNeeded from '../components/ItemsNeeded';
 import ItemsUsedIn from '../components/ItemsUsedIn';
 import Portal from '../components/Portal';
+import ItemsNeededWrapper from '../components/ItemsNeededWrapper';
 // import '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 export function UpdateByCalculator() {
@@ -38,6 +39,7 @@ export function UpdateByCalculator() {
   useState('');
   const [isSideNavOpen, setIsSideNavOpen] = useState(true);
   const [openStates, setOpenStates] = useState({});
+  const [makeEstimatePopup, setMakeEstimatePopup] = useState('');
 
   const handleSideNavOpen = openState => {
     setIsSideNavOpen(openState);
@@ -78,6 +80,7 @@ export function UpdateByCalculator() {
     setDeletePopup(false);
     setAddPortionPopup(false);
     setEditInventoryNeededInPopup(false);
+    setMakeEstimatePopup(false);
     setTableKey(prevKey => prevKey + 1);
   };
 
@@ -89,8 +92,13 @@ export function UpdateByCalculator() {
     setAddPortionPopup(true);
   };
 
+  const handleMakeEstimatePopup = () => {
+    setMakeEstimatePopup(true);
+  };
+
   const handleInputChange = (event, name, type) => {
     const value = event.target.value;
+    console.log(value);
     if (type === 'usedIn') {
       setEditedInventory(prevState => ({
         ...prevState,
@@ -588,6 +596,104 @@ export function UpdateByCalculator() {
 
     fetchAndSetPortionInfo();
   }, [businessId, itemName]);
+
+  const updatedEstimateDeduction = async (
+    newEstimateDeduction,
+    findItemName
+  ) => {
+    const endpoint =
+      'http://localhost:3001/api/crud/business/estimate-deduction/update?businessId=' +
+      businessId;
+
+    const payload = {
+      newEstimateDeduction: newEstimateDeduction,
+      findItemName: findItemName
+    };
+
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST', // or 'POST' depending on your API
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+    } catch (error) {
+      console.error('Error updating estimate deduction:', error);
+      throw error;
+    }
+  };
+
+  const getEstimateDeduction = async (businessId, itemName) => {
+    const url =
+      'http://localhost:3001/api/crud/business/estimate-deduction/read?businessId=' +
+      businessId;
+
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ itemName: itemName })
+    };
+
+    try {
+      const response = await fetch(url, requestOptions);
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      const estimateDeduction = data.output[0]?.estimateDeduction || 0;
+
+      return estimateDeduction;
+    } catch (error) {
+      console.error(
+        'There was a problem fetching the estimate deduction:',
+        error
+      );
+      return null;
+    }
+  };
+
+  const estimateCalculator = async () => {
+    // Call the wrapper component to handle fetching and updating itemsNeeded
+    console.log('Here');
+    await (
+      <ItemsNeededWrapper
+        businessId={businessId}
+        itemName={itemName}
+        setItemsNeeded={setItemsNeeded}
+      />
+    );
+    console.log('Here');
+
+    // Loop through the updated itemsNeeded state
+    if (itemsNeededMap[itemName]) {
+      console.log('here');
+      itemsNeededMap[itemName].forEach(async (item, index) => {
+        console.log('here');
+        console.log(item.unitName);
+
+        // Fetch estimateDeduction
+        const estimateDeduction = await getEstimateDeduction(
+          businessId,
+          itemName
+        );
+        // Calculate result
+        const result =
+          item.unitCost * editedPortion.newUnitNumber + estimateDeduction;
+        updatedEstimateDeduction(result, itemName);
+        // Print result to console
+        console.log(`Result for ${item.unitName}: ${result}`);
+      });
+    }
+  };
 
   return (
     <div className="flex">
@@ -1633,6 +1739,88 @@ export function UpdateByCalculator() {
                       </div>
                     </Portal>
                   )}
+                  {makeEstimatePopup && (
+                    <Portal>
+                      <div
+                        style={{
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                          bottom: 0,
+                          zIndex: 1000,
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          backdropFilter: 'blur(4px)'
+                        }}
+                        onClick={e => e.stopPropagation()}
+                      >
+                        <div
+                          className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150"
+                          style={{
+                            width: '40%',
+                            maxHeight: '70%',
+                            maxWidth: '90%',
+                            zIndex: 110,
+                            position: 'relative'
+                          }}
+                          onClick={e => e.stopPropagation()}
+                        >
+                          <div className="flex justify-end p-2">
+                            <button
+                              onClick={handleClosePopup}
+                              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+                            >
+                              <svg
+                                className="w-5 h-5"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                  clipRule="evenodd"
+                                ></path>
+                              </svg>
+                            </button>
+                          </div>
+                          <h6 className="text-center mb-4">Item: </h6>
+                          <p className="text-center mb-2">Item Name: </p>
+                          <input
+                            type="text"
+                            name="itemName"
+                            value={itemName}
+                            readOnly
+                            className="bg-gray-200 rounded-md p-2 mb-2"
+                          />
+                          <p className="text-center mb-2">
+                            Input the item number(number of items sold/used):{' '}
+                          </p>
+                          <input
+                            type="text"
+                            name="newUnitName"
+                            value={editedPortion.newUnitNumber}
+                            onChange={e =>
+                              handleInputChange(e, 'newUnitNumber', 'portion')
+                            }
+                            className="bg-gray-200 rounded-md p-2 mb-2"
+                          />
+                          <br />
+                          <button
+                            onClick={() => {
+                              estimateCalculator();
+                              handleClosePopup();
+                            }}
+                            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                          >
+                            Save
+                          </button>
+                        </div>
+                      </div>
+                    </Portal>
+                  )}
                 </li>
               ))}
             <div className="-m-1.5 overflow-x-auto">
@@ -1677,99 +1865,97 @@ export function UpdateByCalculator() {
                         >
                           Items Used
                         </th>
+                        <th
+                          scope="col"
+                          className="px-8 py-4 text-start text-sm font-medium text-gray-500 uppercase dark:text-neutral-500 w-[20%]"
+                        >
+                          Make Estimate
+                        </th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 dark:divide-neutral-700">
-                      {itemList !== null &&
-                        itemList.map((item, index) => (
-                          <tr
-                            key={index}
-                            className="hover:bg-gray-100 dark:hover:bg-neutral-700 h-24 overflow-y-auto"
-                          >
-                            <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
-                              {item.itemName}
-                            </td>
-                            <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
-                              {maxPortionMap[item.itemName] &&
-                              itemCountMap[item.itemName] &&
-                              maxPortionMap[item.itemName].unitNumber
-                                ? (
-                                    itemCountMap[item.itemName] /
-                                    maxPortionMap[item.itemName].unitNumber
-                                  ).toFixed(2)
-                                : 'No'}{' '}
-                              {maxPortionMap[item.itemName] &&
-                              itemCountMap[item.itemName] &&
-                              maxPortionMap[item.itemName].unitNumber
-                                ? maxPortionMap[item.itemName].unitName
-                                : 'Portion Details'}{' '}
-                            </td>
-                            <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
-                              {maxPortionMap[item.itemName] &&
-                              estimatedDeductionMap[item.itemName] &&
-                              maxPortionMap[item.itemName].unitNumber
-                                ? (
-                                    estimatedDeductionMap[item.itemName]
-                                      .estimateDeduction /
-                                    maxPortionMap[item.itemName].unitNumber
-                                  ).toFixed(2)
-                                : 'No'}{' '}
-                              {maxPortionMap[item.itemName] &&
-                              itemCountMap[item.itemName] &&
-                              maxPortionMap[item.itemName].unitNumber
-                                ? maxPortionMap[item.itemName].unitName
-                                : 'Portion Details'}{' '}
-                            </td>
-                            <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
-                              <button
-                                onClick={e => {
-                                  handleButtonClick(
-                                    item.itemName,
-                                    index,
-                                    'openPortionInfo'
-                                  );
-                                  e.stopPropagation();
-                                }}
-                                type="button"
-                                className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 w-[20%]"
-                              >
-                                Portion Info
-                              </button>
-                            </td>
-                            <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
-                              <button
-                                onClick={e => {
-                                  handleButtonClick(
-                                    item.itemName,
-                                    index,
-                                    'openItemNeeded'
-                                  );
-                                  e.stopPropagation();
-                                }}
-                                type="button"
-                                className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 w-[20%]"
-                              >
-                                Items Needed
-                              </button>
-                            </td>
-                            <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
-                              <button
-                                onClick={e => {
-                                  handleButtonClick(
-                                    item.itemName,
-                                    index,
-                                    'openItemUsedIn'
-                                  );
-                                  e.stopPropagation();
-                                }}
-                                type="button"
-                                className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 w-[20%]"
-                              >
-                                UsedIn
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
+                      {itemList.map((item, index) => (
+                        <tr
+                          key={index}
+                          className="hover:bg-gray-100 dark:hover:bg-neutral-700 h-24 overflow-y-auto"
+                        >
+                          <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
+                            {item.itemName}
+                          </td>
+                          <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
+                            {maxPortionMap[item.itemName] &&
+                            itemCountMap[item.itemName] &&
+                            maxPortionMap[item.itemName].unitNumber
+                              ? (
+                                  itemCountMap[item.itemName] /
+                                  maxPortionMap[item.itemName].unitNumber
+                                ).toFixed(2)
+                              : '0.00'}{' '}
+                          </td>
+                          <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]"></td>
+                          <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
+                            <button
+                              onClick={e => {
+                                handleButtonClick(
+                                  item.itemName,
+                                  index,
+                                  'openPortionInfo'
+                                );
+                                e.stopPropagation();
+                              }}
+                              type="button"
+                              className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 w-[20%]"
+                            >
+                              Portion Info
+                            </button>
+                          </td>
+                          <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
+                            <button
+                              onClick={e => {
+                                handleButtonClick(
+                                  item.itemName,
+                                  index,
+                                  'openItemNeeded'
+                                );
+                                e.stopPropagation();
+                              }}
+                              type="button"
+                              className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 w-[20%]"
+                            >
+                              Items Needed
+                            </button>
+                          </td>
+                          <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
+                            <button
+                              onClick={e => {
+                                handleButtonClick(
+                                  item.itemName,
+                                  index,
+                                  'openItemUsedIn'
+                                );
+                                e.stopPropagation();
+                              }}
+                              type="button"
+                              className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 w-[20%]"
+                            >
+                              UsedIn
+                            </button>
+                          </td>
+                          <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
+                            <button
+                              onClick={e => {
+                                setItemName(item.itemName);
+                                handleMakeEstimatePopup();
+                                e.stopPropagation();
+                              }}
+                              type="button"
+                              className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 w-[20%]"
+                            >
+                              Make Estimate
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
                 </div>
