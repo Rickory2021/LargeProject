@@ -74,7 +74,9 @@ module.exports.AddUserBusinessConn = async (req, res) => {
     // return success response
     res.status(200).json({ error: null });
   } catch (error) {
-    res.status(500).json({ error: 'Connection of Business & User Failed' });
+    res
+      .status(500)
+      .json({ error: `Connection of Business & User Failed: ${error}` });
   }
 };
 
