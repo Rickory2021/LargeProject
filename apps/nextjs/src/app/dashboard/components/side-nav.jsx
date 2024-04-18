@@ -35,7 +35,7 @@ const SideNav = ({ openCallback }) => {
   const handleLogout = async () => {
     try {
       const response = await fetch(
-        'https://slicer-backend.vercel.app/api/auth/user/logout',
+        'http://localhost:3001/api/auth/user/logout',
         {
           method: 'POST',
           headers: {
@@ -75,7 +75,7 @@ const SideNav = ({ openCallback }) => {
         open={open}
       />
 
-      <div classname="inline-flex">
+      <div className="inline-flex">
         <Link href="/">
           <SideBarIcon
             icon={<GiKnifeFork size="60" />}
@@ -87,7 +87,7 @@ const SideNav = ({ openCallback }) => {
 
       <ul className="pt-1">
         {Menus.map((menu, index) => (
-          <>
+          <React.Fragment key={index}>
             <Link
               href={
                 menu.title === 'Dashboard'
@@ -102,7 +102,6 @@ const SideNav = ({ openCallback }) => {
                     }
                   : null
               }
-              key={index}
             >
               <li
                 key={index}
@@ -152,17 +151,17 @@ const SideNav = ({ openCallback }) => {
 
             {menu.submenu && submenuOpen && !open && (
               <ul>
-                {menu.submenuItems.map((submenuItem, index) => (
+                {menu.submenuItems.map((submenuItem, submenuIndex) => (
                   <Link
                     href={
                       submenuItem.title === 'By Item'
                         ? '/dashboard/update-by-item'
                         : '/dashboard/update-by-calculator'
                     }
-                    key={index}
+                    key={submenuIndex}
                   >
                     <li
-                      key={index}
+                      key={submenuIndex}
                       className="text-white-300 text-sm gap-x-4 cursor-pointer p-4 pl-10 hover:bg-black rounded-md"
                     >
                       {submenuItem.title === 'By Item' ? (
@@ -179,7 +178,7 @@ const SideNav = ({ openCallback }) => {
                 ))}
               </ul>
             )}
-          </>
+          </React.Fragment>
         ))}
       </ul>
 
