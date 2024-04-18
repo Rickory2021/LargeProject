@@ -787,7 +787,9 @@ export function UpdateByItem() {
           />
         ) : (
           <ul>
-            <h2 className="text-2xl font-bold text-center mb-4 border-b border-gray-700">Item List</h2>
+            <h2 className="text-2xl font-bold text-center mb-4 border-b border-gray-700">
+              Item List
+            </h2>
             {itemList !== null &&
               itemList.map((item, index) => (
                 <li key={index}>
@@ -966,11 +968,10 @@ export function UpdateByItem() {
                                       businessId={businessId}
                                     />
                                   </p>
-                                  <p className="m-8">Estimated:</p>
-                                  <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                                  {/* <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
                                     {' '}
                                     Clear estimate{' '}
-                                  </button>
+                                  </button> */}
                                 </div>
                               )}
                               {showDropdownMap[location] && (
