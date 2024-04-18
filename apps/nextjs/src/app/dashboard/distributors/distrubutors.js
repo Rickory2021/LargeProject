@@ -568,7 +568,7 @@ export function Distributors() {
                                     handleEditDistributor(distributor);
                                   }}
                                   type="button"
-                                  className="inline-flex items-center justify-center w-8 h-8 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
+                                  className="rounded-full bg-blue-500 hover:bg-blue-600 text-white px-2 py-1"
                                 >
                                   Edit
                                 </button>
@@ -579,7 +579,7 @@ export function Distributors() {
                                     handleDeleteDistributor(distributor);
                                   }}
                                   type="button"
-                                  className="inline-flex items-center justify-center w-8 h-8 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
+                                  className="rounded-full bg-blue-500 hover:bg-blue-600 text-white px-2 py-1"
                                 >
                                   Delete
                                 </button>
