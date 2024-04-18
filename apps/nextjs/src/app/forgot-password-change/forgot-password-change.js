@@ -36,7 +36,7 @@ export default function ForgotPasswordChange() {
 
     try {
       const res = await fetch(
-        `https://slicer-backend.vercel.app/api/auth/user/reset-password?token=${token}`,
+        `http://localhost:3001/api/auth/user/reset-password?token=${token}`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

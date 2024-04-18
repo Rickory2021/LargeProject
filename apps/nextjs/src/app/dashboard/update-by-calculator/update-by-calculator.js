@@ -479,7 +479,7 @@ export function UpdateByCalculator() {
 
   const getBusinessId = async () => {
     const response = await fetch(
-      'https://slicer-backend.vercel.app/api/auth/user/user-info?id=' + userId,
+      'http://localhost:3001/api/auth/user/user-info?id=' + userId,
       {
         method: 'GET',
         headers: {
@@ -515,11 +515,11 @@ export function UpdateByCalculator() {
   const readAll = async () => {
     try {
       console.log(
-        'https://slicer-backend.vercel.app/api/crud/business/item-list/read-all/?businessId=' +
+        'http://localhost:3001/api/crud/business/item-list/read-all/?businessId=' +
           businessId
       );
       const response = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/item-list/read-all/?businessId=' +
+        'http://localhost:3001/api/crud/business/item-list/read-all/?businessId=' +
           businessId,
         {
           method: 'POST',

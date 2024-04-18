@@ -8,7 +8,7 @@ function ItemsUsedIn({ businessId, itemName, setItemsUsedIn }) {
   const fetchItemsUsedIn = async () => {
     try {
       const response = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/item-relation/read-used-in?businessId=' +
+        'http://localhost:3001/api/crud/business/item-relation/read-used-in?businessId=' +
           businessId,
         {
           method: 'POST',

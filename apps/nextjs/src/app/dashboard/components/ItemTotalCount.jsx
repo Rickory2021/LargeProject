@@ -8,7 +8,7 @@ function ItemTotalCount({ businessId, itemName, updateItemCount }) {
   const getItemTotalCount = async () => {
     try {
       const response = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/item-list/total-item-count?businessId=' +
+        'http://localhost:3001/api/crud/business/item-list/total-item-count?businessId=' +
           businessId,
         {
           method: 'POST',

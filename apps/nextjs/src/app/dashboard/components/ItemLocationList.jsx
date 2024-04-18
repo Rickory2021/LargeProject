@@ -14,7 +14,7 @@ function itemLocationList({
   const getItemLocationList = async () => {
     try {
       const response = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/item-inventory/read-all?businessId=' +
+        'http://localhost:3001/api/crud/business/item-inventory/read-all?businessId=' +
           businessId,
         {
           method: 'POST',

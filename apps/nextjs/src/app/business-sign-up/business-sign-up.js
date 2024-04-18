@@ -22,7 +22,7 @@ export default function BusinessSignUp() {
 
   const getBusinessId = async () => {
     const response = await fetch(
-      'https://slicer-backend.vercel.app/api/auth/user/user-info?id=' + userId,
+      'http://localhost:3001/api/auth/user/user-info?id=' + userId,
       {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
@@ -54,7 +54,7 @@ export default function BusinessSignUp() {
     e.preventDefault();
     try {
       const resBusiness = await fetch(
-        'https://slicer-backend.vercel.app/api/auth/business/register',
+        'http://localhost:3001/api/auth/business/register',
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -67,7 +67,7 @@ export default function BusinessSignUp() {
         const data = await resBusiness.json();
         let { businessId } = data;
         const resConnect = await fetch(
-          'https://slicer-backend.vercel.app/api/auth/business/add-connection',
+          'http://localhost:3001/api/auth/business/add-connection',
           {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

@@ -11,7 +11,7 @@ export default function ForgotPassword() {
     e.preventDefault();
     try {
       const res = await fetch(
-        'https://slicer-backend.vercel.app/api/auth/user/forgot-password',
+        'http://localhost:3001/api/auth/user/forgot-password',
         {
           method: 'POST',
           headers: {

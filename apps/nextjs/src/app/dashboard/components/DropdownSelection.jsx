@@ -11,7 +11,7 @@ const DropdownSelection = ({ businessId, itemName, onItemSelected }) => {
   const fetchPortionList = async () => {
     try {
       const response = await fetch(
-        `https://slicer-backend.vercel.app/api/crud/business/portion-info-list/read-all?businessId=${businessId}`,
+        `http://localhost:3001/api/crud/business/portion-info-list/read-all?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
