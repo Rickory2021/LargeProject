@@ -34,12 +34,14 @@ function PortionInfo({ businessId, itemName, setPortionInfoMap }) {
 
   useEffect(() => {
     const fetchAndSetPortionInfo = async () => {
+      console.log('Fetching portion info for itemName:', itemName); // Debugging log
       const portionInfoList = await fetchPortionInfo();
+      console.log('Fetched portion info:', portionInfoList); // Debugging log
       setPortionInfoMap(itemName, portionInfoList);
     };
 
-    fetchAndSetPortionInfo(); // Call the function when component mounts or when itemName or businessId changes
-  }, [businessId, itemName]); // Add businessId and itemName as dependencies
+    fetchAndSetPortionInfo();
+  }, [businessId, itemName]);
 
   return null; // This component doesn't render anything directly
 }
