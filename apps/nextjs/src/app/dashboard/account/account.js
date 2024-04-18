@@ -150,6 +150,7 @@ export function Account() {
           />
         ) : (
           <div className="flex flex-col items-center justify-center h-screen pb-16">
+            <h2 className="text-2xl font-bold text-center mb-4 border-b border-gray-700">User Information</h2>
             <div className="bg-blue-400 shadow-lg rounded-lg p-8 text-center">
               <table className="table-fixed min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
                 <tbody className="divide-y divide-gray-200 dark:divide-neutral-700">

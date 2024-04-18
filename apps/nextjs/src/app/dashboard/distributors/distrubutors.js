@@ -468,6 +468,7 @@ export function Distributors() {
           />
         ) : (
           <ul>
+            <h2 className="text-2xl font-bold text-center mb-4 border-b border-gray-700">Inventory List</h2>
             {itemList !== null &&
               itemList.map((item, index) => (
                 <li key={index}>
@@ -524,7 +525,7 @@ export function Distributors() {
                             handleAddPopup(item);
                           }}
                         >
-                          Add
+                          Add Distributor
                         </button>
                       </div>
                     </div>

@@ -325,7 +325,7 @@ export function Dashboard() {
   }
 
   return (
-    <div className="flex">
+    <div className="flex ">
       <SideNav openCallback={handleSideNavOpen} />
       <div
         className={`p-5 border-blue-500 flex justify-center items-center flex-col flex-1 ${isSideNavOpen ? 'ml-72' : 'ml-36'} lg:${isSideNavOpen ? 'ml-80' : 'ml-40'} xl:${isSideNavOpen ? 'ml-88' : 'ml-44'}`}
@@ -337,6 +337,9 @@ export function Dashboard() {
           />
         ) : (
           <ul>
+          <div>
+          <h2 className="text-2xl font-bold text-center mb-4 border-b border-gray-700">Current Inventory</h2>        
+          </div>
             <div className="flex justify-center">
             <button
             onClick={handleAddPopup}
