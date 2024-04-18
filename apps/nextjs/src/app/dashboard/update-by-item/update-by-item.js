@@ -11,6 +11,7 @@ import Distributor from '../components/Distributor';
 import DistributorPopup from '../components/DistributorPopup';
 import LocationTotalCount from '../components/LocationTotalCount';
 import DropdownSelection from '../components/DropdownSelection';
+import DateComponent from '../components/DateComponent';
 // import '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 export function UpdateByItem() {
@@ -846,10 +847,13 @@ export function UpdateByItem() {
                           <p className="m-8">
                             Total Count:{' '}
                             {maxPortionMap[item.itemName] &&
-                              itemCountMap[item.itemName] /
-                                maxPortionMap[item.itemName].unitNumber}{' '}
-                            {maxPortionMap[item.itemName] &&
-                              maxPortionMap[item.itemName].unitName}
+                            itemCountMap[item.itemName] &&
+                            maxPortionMap[item.itemName].unitNumber
+                              ? (
+                                  itemCountMap[item.itemName] /
+                                  maxPortionMap[item.itemName].unitNumber
+                                ).toFixed(2)
+                              : '0.00'}{' '}
                           </p>
                           <p className="m-8">Estimated:</p>
                         </>
@@ -915,10 +919,11 @@ export function UpdateByItem() {
                                   </button>
                                   <p className="m-8">
                                     Last Updated:{' '}
-                                    {
-                                      locationInventory[location][item.itemName]
-                                        .metaData
-                                    }
+                                    <DateComponent
+                                      itemName={item.itemName}
+                                      location={location}
+                                      businessId={businessId}
+                                    />
                                   </p>
                                   <p className="m-8">Estimated:</p>
                                   <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">

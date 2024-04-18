@@ -21,6 +21,7 @@ export function Distributors() {
   const [editMode, setEditMode] = useState(false);
   const [addDistributorPopup, setaddDistributorPopup] = useState('');
   const [isSideNavOpen, setIsSideNavOpen] = useState(true);
+  const [deletePopup, setDeletePopup] = useState('');
 
   const handleSideNavOpen = openState => {
     setIsSideNavOpen(openState);
@@ -102,6 +103,7 @@ export function Distributors() {
     setEditPopup(null);
     setaddDistributorPopup(null);
     setEditMode(false);
+    setDeletePopup(false);
   };
 
   const handleEditDistributor = distributor => {
@@ -128,6 +130,10 @@ export function Distributors() {
     console.log('Item Portion: ' + newDistributor.itemPortion);
     console.log('Item Cost: ' + newDistributor.itemCost);
     console.log('Priority: ' + newDistributor.priority);
+  };
+
+  const handleDeleteDistributor = () => {
+    setDeletePopup(true);
   };
 
   const getItemName = itemName => {
@@ -342,6 +348,33 @@ export function Distributors() {
     return distributorNames; // Assuming the response contains the updated distributor list
   };
 
+  const deleteDistributor = async () => {
+    const requestBody = {
+      itemName: itemName,
+      index: index
+    };
+
+    const response = await fetch(
+      'http://localhost:3001/api/crud/business/distributor-item/delete?businessId=' +
+        businessId,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      }
+    );
+    if (!response.ok) {
+      throw new Error('Failed to fetch updated distributor list');
+    }
+    const updatedDistributorList = await fetchUpdatedDistributorList();
+
+    console.log(updatedDistributorList);
+    // Update the distributor list state with the updated list
+    setDistributorList(updatedDistributorList);
+  };
+
   const getBusinessId = async () => {
     const response = await fetch(
       'http://localhost:3001/api/auth/user/user-info?id=' + userId,
@@ -537,6 +570,17 @@ export function Distributors() {
                                   className="inline-flex items-center justify-center w-8 h-8 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
                                 >
                                   Edit
+                                </button>
+                                <button
+                                  onClick={() => {
+                                    setIndex(i);
+                                    setItemName(item.itemName);
+                                    handleDeleteDistributor(distributor);
+                                  }}
+                                  type="button"
+                                  className="inline-flex items-center justify-center w-8 h-8 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
+                                >
+                                  Delete
                                 </button>
                               </div>
                               <p>
@@ -766,6 +810,75 @@ export function Distributors() {
                   }}
                 >
                   Create
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+        {deletePopup && (
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              zIndex: 1000,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backdropFilter: 'blur(4px)'
+            }}
+            onClick={e => e.stopPropagation()}
+          >
+            <div
+              className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150"
+              style={{
+                width: '40%',
+                maxHeight: '70%',
+                maxWidth: '90%',
+                zIndex: 110,
+                position: 'relative'
+              }}
+              onClick={e => e.stopPropagation()}
+            >
+              <div className="flex justify-end p-2">
+                <button
+                  onClick={handleClosePopup}
+                  className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+                >
+                  <svg
+                    className="w-5 h-5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                    ></path>
+                  </svg>
+                </button>
+              </div>
+              <h6 className="text-center mb-4">
+                Are you sure you want to delete this connection?
+              </h6>
+              <div className="flex justify-center">
+                <button
+                  onClick={() => {
+                    handleClosePopup();
+                    deleteDistributor();
+                  }}
+                  className="bg-green-500 text-white px-4 py-2 rounded mr-4"
+                >
+                  Yes
+                </button>
+                <button
+                  onClick={handleClosePopup}
+                  className="bg-red-500 text-white px-4 py-2 rounded"
+                >
+                  No
                 </button>
               </div>
             </div>

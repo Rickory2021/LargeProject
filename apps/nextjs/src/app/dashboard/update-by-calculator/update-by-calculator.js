@@ -8,7 +8,6 @@ import PortionInfo from '../components/PortionInfo';
 import ItemsNeeded from '../components/ItemsNeeded';
 import ItemsUsedIn from '../components/ItemsUsedIn';
 import Portal from '../components/Portal';
-import { useSelectedLayoutSegment } from 'next/navigation';
 // import '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 export function UpdateByCalculator() {
@@ -1671,10 +1670,13 @@ export function UpdateByCalculator() {
                           </td>
                           <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
                             {maxPortionMap[item.itemName] &&
-                              itemCountMap[item.itemName] /
-                                maxPortionMap[item.itemName].unitNumber}{' '}
-                            {maxPortionMap[item.itemName] &&
-                              maxPortionMap[item.itemName].unitName}
+                            itemCountMap[item.itemName] &&
+                            maxPortionMap[item.itemName].unitNumber
+                              ? (
+                                  itemCountMap[item.itemName] /
+                                  maxPortionMap[item.itemName].unitNumber
+                                ).toFixed(2)
+                              : '0.00'}{' '}
                           </td>
                           <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]"></td>
                           <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">

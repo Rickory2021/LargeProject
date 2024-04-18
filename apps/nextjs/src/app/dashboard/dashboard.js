@@ -8,6 +8,8 @@ import LocationPopup from './components/LocationPopup';
 import ItemTotalCount from './components/ItemTotalCount';
 import LocationTotalCount from './components/LocationTotalCount';
 import ItemLog from './components/ItemLog'; // Import ItemLog here
+import LocationTotal from './components/LocationTotal';
+import DateComponent from './components/DateComponent';
 // import '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 export function Dashboard() {
@@ -28,6 +30,8 @@ export function Dashboard() {
   const [editMode, setEditMode] = useState(false);
   const [isSideNavOpen, setIsSideNavOpen] = useState(true);
   const [addItemPopup, setAddItemPopups] = useState('');
+  const [count, setCount] = useState('');
+  const [maxPortionNumber, setMaxPortionNumber] = useState('');
 
   const handleSideNavOpen = openState => {
     setIsSideNavOpen(openState);
@@ -390,10 +394,13 @@ export function Dashboard() {
                       <p className="m-8">
                         Total Count:{' '}
                         {maxPortionMap[item.itemName] &&
-                          itemCountMap[item.itemName] /
-                            maxPortionMap[item.itemName].unitNumber}{' '}
-                        {maxPortionMap[item.itemName] &&
-                          maxPortionMap[item.itemName].unitName}
+                        itemCountMap[item.itemName] &&
+                        maxPortionMap[item.itemName].unitNumber
+                          ? (
+                              itemCountMap[item.itemName] /
+                              maxPortionMap[item.itemName].unitNumber
+                            ).toFixed(2)
+                          : '0.00'}{' '}
                       </p>
                       <p className="m-8">Estimated:</p>
                     </>
@@ -453,22 +460,19 @@ export function Dashboard() {
                               </div>
                             ) : (
                               <>
+                                <LocationTotal
+                                  itemName={item.itemName}
+                                  location={location}
+                                  businessId={businessId}
+                                  setCount={setCount}
+                                />
                                 <p className="m-8">
-                                  Total count:{' '}
-                                  {maxPortionMap[item.itemName] &&
-                                    locationInventory[location][item.itemName]
-                                      .portionNumber /
-                                      maxPortionMap[item.itemName]
-                                        .unitNumber}{' '}
-                                  {maxPortionMap[item.itemName] &&
-                                    maxPortionMap[item.itemName].unitName}
-                                </p>
-                                <p className="m-8">
-                                  Last Updated:{' '}
-                                  {
-                                    locationInventory[location][item.itemName]
-                                      .metaData
-                                  }
+                                  Last Updated:
+                                  <DateComponent
+                                    itemName={item.itemName}
+                                    location={location}
+                                    businessId={businessId}
+                                  />
                                 </p>
                                 <p className="m-8">Estimated:</p>
                               </>
