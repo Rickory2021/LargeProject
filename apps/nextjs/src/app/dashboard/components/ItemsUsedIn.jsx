@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 
 function ItemsUsedIn({ businessId, itemName, setItemsUsedIn }) {
-  console.log(itemName);
   const requestBody = {
     itemName: itemName
   };
