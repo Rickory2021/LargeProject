@@ -1192,83 +1192,75 @@ export function UpdateByItem() {
                     )}
 
                     {addLocationPopup && (
-                      <div>
-                        <div>
-                          <div
-                            style={{
-                              position: 'absolute',
-                              top: 0,
-                              left: 0,
-                              right: 0,
-                              bottom: 0,
-                              zIndex: 1000,
-                              display: 'flex',
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                              backdropFilter: 'blur(4px)'
-                            }}
-                            onClick={e => e.stopPropagation()}
-                          >
-                            <div
-                              className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150"
-                              style={{
-                                width: '40%',
-                                maxHeight: '70%',
-                                maxWidth: '90%',
-                                zIndex: 110,
-                                position: 'relative'
-                              }}
-                              onClick={e => e.stopPropagation()}
+                      <div
+                        style={{
+                          position: 'fixed',
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                          bottom: 0,
+                          zIndex: 1000,
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          backdropFilter: 'blur(4px)'
+                        }}
+                        onClick={handleClosePopup}
+                      >
+                        <div
+                          className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150"
+                          style={{
+                            width: '40%',
+                            maxHeight: '70%',
+                            maxWidth: '90%',
+                            zIndex: 110,
+                            position: 'relative'
+                          }}
+                          onClick={e => e.stopPropagation()}
+                        >
+                          <div className="flex justify-end p-2">
+                            <button
+                              onClick={handleClosePopup}
+                              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
                             >
-                              <div className="flex justify-end p-2">
-                                <button
-                                  onClick={handleClosePopup}
-                                  className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
-                                >
-                                  <svg
-                                    className="w-5 h-5"
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                  >
-                                    <path
-                                      fillRule="evenodd"
-                                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                      clipRule="evenodd"
-                                    ></path>
-                                  </svg>
-                                </button>
-                              </div>
-                              <h6>Create a new Location: </h6>
-                              <p>Location name: </p>
-
-                              <input
-                                type="text"
-                                name="locationName"
-                                value={newLocation.locationName}
-                                onChange={e =>
-                                  handleInputChange(
-                                    e,
-                                    'locationName',
-                                    'location'
-                                  )
-                                }
-                                className="bg-gray-100 rounded-md p-2 mb-2"
-                              />
-                              <br></br>
-                              <button
-                                onClick={() => {
-                                  addLocation();
-                                  handleClosePopup();
-                                }}
+                              <svg
+                                className="w-5 h-5"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg"
                               >
-                                Create
-                              </button>
-                            </div>
+                                <path
+                                  fillRule="evenodd"
+                                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                  clipRule="evenodd"
+                                ></path>
+                              </svg>
+                            </button>
                           </div>
+                          <h6>Create a new Location: </h6>
+                          <p>Location name: </p>
+                          <input
+                            type="text"
+                            name="locationName"
+                            value={newLocation.locationName}
+                            onChange={e =>
+                              handleInputChange(e, 'locationName', 'location')
+                            }
+                            className="bg-gray-100 rounded-md p-2 mb-2"
+                          />
+                          <br />
+                          <button
+                            onClick={() => {
+                              addLocation();
+                              handleClosePopup();
+                            }}
+                          >
+                            Create
+                          </button>
                         </div>
                       </div>
                     )}
+
                     {editInventoryItemPopup && (
                       <div
                         style={{
