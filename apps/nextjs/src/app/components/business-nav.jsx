@@ -27,7 +27,7 @@ export function BusinessNav() {
 const handleLogout = async () => {
   try {
     const response = await fetch(
-      `${process.env.BACKEND_URL}/api/auth/user/logout`,
+      'https://slicer-backend.vercel.app/api/auth/user/logout',
       {
         method: 'POST',
         headers: {

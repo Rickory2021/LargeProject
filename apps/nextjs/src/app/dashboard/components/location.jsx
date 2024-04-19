@@ -8,7 +8,8 @@ function Location({ itemName, businessId, updateLocationList }) {
   const getLocationList = async () => {
     try {
       const response = await fetch(
-        `${process.env.BACKEND_URL}/api/crud/business/item-location/read-all?businessId=${businessId}`,
+        'https://slicer-backend.vercel.app/api/crud/business/item-location/read-all?businessId=' +
+          businessId,
         {
           method: 'POST',
           headers: {

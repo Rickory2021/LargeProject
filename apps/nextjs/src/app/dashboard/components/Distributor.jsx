@@ -11,7 +11,8 @@ function Distributor({ itemName, businessId, updateDistributorList }) {
     const getDistributorList = async () => {
       try {
         const response = await fetch(
-          `${process.env.BACKEND_URL}/api/crud/business/distributor-item/read-all?businessId=${businessId}`,
+          'https://slicer-backend.vercel.app/api/crud/business/distributor-item/read-all?businessId=' +
+            businessId,
           {
             method: 'POST',
             headers: {

@@ -14,7 +14,8 @@ const LocationComponent = ({
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `${process.env.BACKEND_URL}/api/crud/business/item-location/total-location-count?businessId=${businessId}`,
+          'https://slicer-backend.vercel.app/api/crud/business/item-location/total-location-count?businessId=' +
+            businessId,
           {
             method: 'POST',
             headers: {

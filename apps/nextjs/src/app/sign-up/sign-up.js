@@ -35,7 +35,7 @@ export default function SignUp() {
 
     try {
       const res = await fetch(
-        `${process.env.BACKEND_URL}/api/auth/user/signup`,
+        'https://slicer-backend.vercel.app/api/auth/user/signup',
         {
           method: 'POST',
           headers: {
