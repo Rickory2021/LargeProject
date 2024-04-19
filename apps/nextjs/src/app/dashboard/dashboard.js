@@ -93,8 +93,7 @@ export function Dashboard() {
   const EditLocationMetaData = async location => {
     try {
       const response1 = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/location-metadata-list/update-address?businessId=' +
-          businessId,
+        `${process.env.BACKEND_URL}/api/crud/business/location-metadata-list/update-address?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -110,8 +109,7 @@ export function Dashboard() {
         throw new Error('Failed to update location address: ', Error);
       }
       const response2 = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/location-metadata-list/update-metadata?businessId=' +
-          businessId,
+        `${process.env.BACKEND_URL}/api/crud/business/location-metadata-list/update-metadata?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -201,8 +199,7 @@ export function Dashboard() {
   const getBusinessId = async () => {
     try {
       const response = await fetch(
-        'https://slicer-backend.vercel.app/api/auth/user/user-info?id=' +
-          userId,
+        `${process.env.BACKEND_URL}/api/auth/user/user-info?id=${userId}`,
         {
           method: 'GET',
           headers: {
@@ -228,8 +225,7 @@ export function Dashboard() {
     console.log(addJson.itemName);
     try {
       const response = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/item-list/create?businessId=' +
-          businessId,
+        `${process.env.BACKEND_URL}/api/crud/business/item-list/create?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -251,8 +247,7 @@ export function Dashboard() {
   const fetchNewItemList = async () => {
     try {
       const response = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/item-list/read-all/?businessId=' +
-          businessId,
+        `${process.env.BACKEND_URL}/api/crud/business/item-list/read-all/?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -290,12 +285,10 @@ export function Dashboard() {
   const readAll = async () => {
     try {
       console.log(
-        'https://slicer-backend.vercel.app/api/crud/business/item-list/read-all/?businessId=' +
-          businessId
+        `${process.env.BACKEND_URL}/api/crud/business/item-list/read-all/?businessId=${businessId}`
       );
       const response = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/item-list/read-all/?businessId=' +
-          businessId,
+        `${process.env.BACKEND_URL}/api/crud/business/item-list/read-all/?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {

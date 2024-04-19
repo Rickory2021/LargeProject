@@ -46,17 +46,16 @@ const Table = ({ businessId }) => {
     };
 
     const response = await fetch(
-      'https://slicer-backend.vercel.app/api/crud/business/item-list/update?businessId=' +
-        businessId +
-        '&findItemName=' +
-        posts[editPostId].itemName +
-        '&newItemName=' +
-        editFormData.itemName,
+      `${process.env.BACKEND_URL}/api/crud/business/item-list/update-name?businessId=${businessId}`,
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
-        }
+        },
+        body: JSON.stringify({
+          findItemName: posts[editPostId].itemName,
+          newItemName: editFormData.itemName
+        })
       }
     );
     if (response.ok) {
@@ -77,15 +76,15 @@ const Table = ({ businessId }) => {
     const newPosts = [...posts];
 
     const response = await fetch(
-      'https://slicer-backend.vercel.app/api/crud/business/item-list/delete?businessId=' +
-        businessId +
-        '&itemName=' +
-        posts[editPostId].itemName,
+      `${prcoess.env.BACKEND_URL}/api/crud/business/item-list/delete?businessId=${businessId}`,
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
-        }
+        },
+        body: JSON.stringify({
+          itemName: posts[editPostId].itemName
+        })
       }
     );
 
@@ -109,15 +108,15 @@ const Table = ({ businessId }) => {
       itemName: addPost.itemName
     };
     const response = await fetch(
-      'https://slicer-backend.vercel.app/api/crud/business/item-list/create?businessId=' +
-        businessId +
-        '&itemName=' +
-        addPost.itemName,
+      `${process.env.BACKEND_URL}/api/crud/business/item-list/create?businessId=${businessId}`,
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
-        }
+        },
+        body: JSON.stringify({
+          itemName: addPost.itemName
+        })
       }
     );
     const newPosts = [...posts, newPost];
@@ -137,8 +136,7 @@ const Table = ({ businessId }) => {
   useEffect(() => {
     const readAll = async () => {
       const response = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/item-list/read-all/?businessId=' +
-          businessId,
+        `${process.env.BACKEND_URL}/api/crud/business/item-list/read-all/?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {

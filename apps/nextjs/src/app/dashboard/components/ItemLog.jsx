@@ -9,8 +9,7 @@ function ItemLog({ itemName, businessId, locationBucket, updateItemLog }) {
   const getItemLog = async () => {
     try {
       const response = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/item-location-log/read-all?businessId=' +
-          businessId,
+        `${process.env.BACKEND_URL}/api/crud/business/item-location-log/read-all?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {

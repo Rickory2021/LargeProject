@@ -9,8 +9,7 @@ function ItemsNeededWrapper({ businessId, itemName, setItemsNeeded }) {
     console.log('here');
     try {
       const response = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/item-relation/read-needed?businessId=' +
-          businessId,
+        `${process.env.BACKEND_URL}/api/crud/business/item-relation/read-needed?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {

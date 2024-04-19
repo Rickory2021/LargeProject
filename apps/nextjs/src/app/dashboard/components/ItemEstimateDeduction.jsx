@@ -8,8 +8,7 @@ function ItemEstimateDeduction({ businessId, itemName, estimateDeduction }) {
   const getEstimateDeduction = async () => {
     try {
       const response = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/estimate-deduction/read?businessId=' +
-          businessId,
+        `${process.env.BACKEND_URL}/api/crud/business/estimate-deduction/read?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {

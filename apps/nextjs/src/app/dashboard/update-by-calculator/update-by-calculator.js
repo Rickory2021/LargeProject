@@ -71,9 +71,7 @@ export function UpdateByCalculator() {
     newEstimateDeduction,
     findItemName
   ) => {
-    const endpoint =
-      'https://slicer-backend.vercel.app/api/crud/business/estimate-deduction/update?businessId=' +
-      businessId;
+    const endpoint = `${process.env.BACKEND_URL}/api/crud/business/estimate-deduction/update?businessId=${businessId}`;
 
     const payload = {
       newEstimateDeduction: newEstimateDeduction,
@@ -99,9 +97,7 @@ export function UpdateByCalculator() {
   };
 
   const getEstimateDeduction = async (businessId, itemName) => {
-    const url =
-      'https://slicer-backend.vercel.app/api/crud/business/estimate-deduction/read?businessId=' +
-      businessId;
+    const url = `${process.env.BACKEND_URL}/api/crud/business/estimate-deduction/read?businessId=${businessId}`;
 
     const requestOptions = {
       method: 'POST',
@@ -290,8 +286,7 @@ export function UpdateByCalculator() {
   const updateItem = async () => {
     try {
       const response = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/item-relation/update-unit-cost?businessId=' +
-          businessId,
+        `${process.env.BACKEND_URL}/api/crud/business/item-relation/update-unit-cost?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -317,8 +312,7 @@ export function UpdateByCalculator() {
   const updateItemNeeded = async () => {
     try {
       const response = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/item-relation/update-unit-cost?businessId=' +
-          businessId,
+        `${process.env.BACKEND_URL}/api/crud/business/item-relation/update-unit-cost?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -344,8 +338,7 @@ export function UpdateByCalculator() {
   const updatePortion = async () => {
     try {
       const response1 = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/portion-info-list/update-name?businessId=' +
-          businessId,
+        `${process.env.BACKEND_URL}/api/crud/business/portion-info-list/update-name?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -362,8 +355,7 @@ export function UpdateByCalculator() {
         console.error('Failed to update portion name: ' + Error);
       }
       const response2 = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/portion-info-list/update-number?businessId=' +
-          businessId,
+        `${process.env.BACKEND_URL}/api/crud/business/portion-info-list/update-number?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -388,8 +380,7 @@ export function UpdateByCalculator() {
   const fetchNewPortion = async () => {
     try {
       const response = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/portion-info-list/read-all?businessId=' +
-          businessId,
+        `${process.env.BACKEND_URL}/api/crud/business/portion-info-list/read-all?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -413,8 +404,7 @@ export function UpdateByCalculator() {
   const addNewPortion = async () => {
     try {
       const response = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/portion-info-list/create?businessId=' +
-          businessId,
+        `${process.env.BACKEND_URL}/api/crud/business/portion-info-list/create?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -442,8 +432,7 @@ export function UpdateByCalculator() {
     console.log(editedInventory.newUnitCost);
     try {
       const response = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/item-relation/create?businessId=' +
-          businessId,
+        `${process.env.BACKEND_URL}/api/crud/business/item-relation/create?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -470,8 +459,7 @@ export function UpdateByCalculator() {
   const deleteItemConnection = async () => {
     try {
       const response = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/item-relation/delete?businessId=' +
-          businessId,
+        `${process.env.BACKEND_URL}/api/crud/business/item-relation/delete?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -499,8 +487,7 @@ export function UpdateByCalculator() {
   const deletePortion = async () => {
     try {
       const response = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/portion-info-list/delete?businessId=' +
-          businessId,
+        `${process.env.BACKEND_URL}/api/crud/business/portion-info-list/delete?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -526,8 +513,7 @@ export function UpdateByCalculator() {
     console.log(itemName);
     try {
       const response = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/item-relation/read-used-in?businessId=' +
-          businessId,
+        `${process.env.BACKEND_URL}/api/crud/business/item-relation/read-used-in?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -556,8 +542,7 @@ export function UpdateByCalculator() {
   const fetchItemNeeded = async () => {
     try {
       const response = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/item-relation/read-needed?businessId=' +
-          businessId,
+        `${process.env.BACKEND_URL}/api/crud/business/item-relation/read-needed?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -592,7 +577,7 @@ export function UpdateByCalculator() {
 
   const getBusinessId = async () => {
     const response = await fetch(
-      'https://slicer-backend.vercel.app/api/auth/user/user-info?id=' + userId,
+      `${process.env.BACKEND_URL}/api/auth/user/user-info?id=${userId}`,
       {
         method: 'GET',
         headers: {
@@ -628,12 +613,10 @@ export function UpdateByCalculator() {
   const readAll = async () => {
     try {
       console.log(
-        'https://slicer-backend.vercel.app/api/crud/business/item-list/read-all/?businessId=' +
-          businessId
+        `${process.env.BACKEND_URL}/api/crud/business/item-list/read-all/?businessId=${businessId}`
       );
       const response = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/item-list/read-all/?businessId=' +
-          businessId,
+        `${process.env.BACKEND_URL}/api/crud/business/item-list/read-all/?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {

@@ -36,7 +36,7 @@ export function Account() {
 
   const getBusinessId = async () => {
     const response = await fetch(
-      'https://slicer-backend.vercel.app/api/auth/user/user-info?id=' + userId,
+      `${process.env.BACKEND_URL}/api/auth/user/user-info?id=${userId}`,
       {
         method: 'GET',
         headers: {
@@ -58,8 +58,7 @@ export function Account() {
 
   const getBusinessName = async () => {
     const response = await fetch(
-      'https://slicer-backend.vercel.app/api/auth/business/business-name?businessId=' +
-        businessId,
+      `${process.env.BACKEND_URL}/api/auth/business/business-name?businessId=${businessId}`,
       {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
@@ -109,7 +108,7 @@ export function Account() {
 
   const getUserInfo = async () => {
     const response = await fetch(
-      'https://slicer-backend.vercel.app/api/auth/user/user-info?id=' + userId,
+      `${process.env.BACKEND_URL}/api/auth/user/user-info?id=${userId}`,
       {
         method: 'GET',
         headers: {
