@@ -93,7 +93,7 @@ export function Dashboard() {
   const EditLocationMetaData = async location => {
     try {
       const response1 = await fetch(
-        `${process.env.BACKEND_URL}/api/crud/business/location-metadata-list/update-address?businessId=${businessId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/location-metadata-list/update-address?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -109,7 +109,7 @@ export function Dashboard() {
         throw new Error('Failed to update location address: ', Error);
       }
       const response2 = await fetch(
-        `${process.env.BACKEND_URL}/api/crud/business/location-metadata-list/update-metadata?businessId=${businessId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/location-metadata-list/update-metadata?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -198,13 +198,14 @@ export function Dashboard() {
 
   const getBusinessId = async () => {
     try {
+      console.log(
+        `NEXT_PUBLIC_BACKEND_URL:${process.env.NEXT_PUBLIC_BACKEND_URL}`
+      );
       const response = await fetch(
-        `${process.env.BACKEND_URL}/api/auth/user/user-info?id=${userId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/user/user-info?id=${userId}`,
         {
           method: 'GET',
-          headers: {
-            'Content-Type': 'application/json'
-          }
+          headers: { 'Content-Type': 'application/json' }
         }
       );
       if (response.ok) {
@@ -225,7 +226,7 @@ export function Dashboard() {
     console.log(addJson.itemName);
     try {
       const response = await fetch(
-        `${process.env.BACKEND_URL}/api/crud/business/item-list/create?businessId=${businessId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/item-list/create?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -247,7 +248,7 @@ export function Dashboard() {
   const fetchNewItemList = async () => {
     try {
       const response = await fetch(
-        `${process.env.BACKEND_URL}/api/crud/business/item-list/read-all/?businessId=${businessId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/item-list/read-all/?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -285,10 +286,10 @@ export function Dashboard() {
   const readAll = async () => {
     try {
       console.log(
-        `${process.env.BACKEND_URL}/api/crud/business/item-list/read-all/?businessId=${businessId}`
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/item-list/read-all/?businessId=${businessId}`
       );
       const response = await fetch(
-        `${process.env.BACKEND_URL}/api/crud/business/item-list/read-all/?businessId=${businessId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/item-list/read-all/?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
