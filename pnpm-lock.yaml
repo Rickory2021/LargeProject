@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.4.5
     devDependencies:
       '@repo/eslint-config':
         specifier: workspace:*
@@ -120,6 +124,9 @@ importers:
       daisyui:
         specifier: ^4.7.2
         version: 4.7.2(postcss@8.4.31)
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.4.5
       express:
         specifier: ^4.18.3
         version: 4.18.3

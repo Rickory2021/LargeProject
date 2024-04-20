@@ -8,7 +8,7 @@ function ItemEstimateDeduction({ businessId, itemName, estimateDeduction }) {
   const getEstimateDeduction = async () => {
     try {
       const response = await fetch(
-        `${process.env.BACKEND_URL}/api/crud/business/estimate-deduction/read?businessId=${businessId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/estimate-deduction/read?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {

@@ -35,7 +35,7 @@ const SideNav = ({ openCallback }) => {
   const handleLogout = async () => {
     try {
       const response = await fetch(
-        `${process.env.BACKEND_URL}/api/auth/user/logout`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/user/logout`,
         {
           method: 'POST',
           headers: {

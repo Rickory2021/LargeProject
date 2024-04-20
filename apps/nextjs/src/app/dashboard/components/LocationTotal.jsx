@@ -8,7 +8,7 @@ const LocationTotal = ({ itemName, location, businessId, setCount }) => {
     const fetchTotalLocationCount = async () => {
       try {
         const response = await fetch(
-          `${process.env.BACKEND_URL}/api/crud/business/item-location/total-location-count?businessId=${businessId}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/item-location/total-location-count?businessId=${businessId}`,
           {
             method: 'POST',
             headers: {

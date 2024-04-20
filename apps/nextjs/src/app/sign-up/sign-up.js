@@ -1,4 +1,5 @@
 'use client';
+require('dotenv').config();
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -34,8 +35,9 @@ export default function SignUp() {
     }
 
     try {
+      console.log(process.env.NEXT_PUBLIC_BACKEND_URL);
       const res = await fetch(
-        `${process.env.BACKEND_URL}/api/auth/user/signup`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/user/signup`,
         {
           method: 'POST',
           headers: {

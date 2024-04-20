@@ -10,8 +10,9 @@ export default function SignIn() {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
+      console.log(process.env.NEXT_PUBLIC_BACKEND_URL);
       const res = await fetch(
-        `${process.env.BACKEND_URL}/api/auth/user/login`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/user/login`,
         {
           method: 'POST',
           headers: {

@@ -75,6 +75,8 @@ That is why we are using .env files that are ignored to keep sensitive data from
 Since packages/api/package.json is currently the the one with “dotenv” within its dependencies,<br>
 So in packages/api create an .env file (So server.js can access the important information) based off .env.example and credentials found in discord.
 
+Edit: Now there is also apps/nextjs and the "dotenv" is now global
+
 ## Installing Prettier & ESLint
 
 This Project will be using Prettier & ESLint to ensure proper formating and coding style.<br>

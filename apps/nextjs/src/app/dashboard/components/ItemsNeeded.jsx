@@ -8,7 +8,7 @@ function ItemsNeeded({ businessId, itemName, setItemsNeeded }) {
   const fetchItemsNeeded = async () => {
     try {
       const response = await fetch(
-        `${process.env.BACKEND_URL}/api/crud/business/item-relation/read-needed?businessId=${businessId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/item-relation/read-needed?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {

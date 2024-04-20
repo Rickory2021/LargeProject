@@ -11,7 +11,7 @@ export default function ForgotPassword() {
     e.preventDefault();
     try {
       const res = await fetch(
-        `${process.env.BACKEND_URL}p/api/auth/user/forgot-password`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}p/api/auth/user/forgot-password`,
         {
           method: 'POST',
           headers: {

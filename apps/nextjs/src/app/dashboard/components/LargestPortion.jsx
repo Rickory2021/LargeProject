@@ -13,7 +13,7 @@ function LargestPortion({ businessId, itemName, updateMaxPortion }) {
     const fetchMaxPortion = async () => {
       try {
         const response = await fetch(
-          `${process.env.BACKEND_URL}/api/crud/business/portion-info-list/read-all?businessId=${businessId}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/portion-info-list/read-all?businessId=${businessId}`,
           {
             method: 'POST',
             headers: {

@@ -8,7 +8,7 @@ function LocationPopup({ locationName, businessId, updataLocationMetaData }) {
   const getLocationMetaData = async () => {
     try {
       const response = await fetch(
-        `${process.env.BACKEND_URL}/api/crud/business/location-metadata-list/read-one?businessId=${businessId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/location-metadata-list/read-one?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
