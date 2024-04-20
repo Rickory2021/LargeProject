@@ -11,7 +11,7 @@ export default function SignIn() {
     e.preventDefault();
     try {
       const res = await fetch(
-        `https://slicer-backend.vercel.app/api/auth/user/login`,
+        `${process.env.BACKEND_URL}/api/auth/user/login`,
         {
           method: 'POST',
           headers: {

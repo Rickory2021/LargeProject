@@ -9,8 +9,7 @@ const DateComponent = ({ itemName, location, businessId }) => {
     const fetchDate = async () => {
       try {
         const response = await fetch(
-          'https://slicer-backend.vercel.app/api/crud/business/item-location/get-one-recent-date?businessId=' +
-            businessId,
+          `${process.env.BACKEND_URL}/api/crud/business/item-location/get-one-recent-date?businessId=${businessId}`,
           {
             method: 'POST',
             headers: {

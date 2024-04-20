@@ -286,8 +286,7 @@ export function UpdateByItem() {
   const addLocation = async () => {
     try {
       const response = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/item-location/create?businessId=' +
-          businessId,
+        `${process.env.BACKEND_URL}/api/crud/business/item-location/create?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -316,8 +315,7 @@ export function UpdateByItem() {
   const addInventoryItem = async () => {
     try {
       const response = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/item-inventory/create?businessId=' +
-          businessId,
+        `${process.env.BACKEND_URL}/api/crud/business/item-inventory/create?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -349,8 +347,7 @@ export function UpdateByItem() {
     console.log(newInventoryItem.newNumber);
     try {
       const response1 = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/item-inventory/update-number?businessId=' +
-          businessId,
+        `${process.env.BACKEND_URL}/api/crud/business/item-inventory/update-number?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -372,8 +369,7 @@ export function UpdateByItem() {
       console.log(locationName);
       console.log(itemName);
       const response2 = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/item-inventory/update-metadata?businessId=' +
-          businessId,
+        `${process.env.BACKEND_URL}/api/crud/business/item-inventory/update-metadata?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -402,8 +398,7 @@ export function UpdateByItem() {
     try {
       // Make the first API call to update the distributor item name
       const response1 = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/distributor-item/update-distributor-item-name?businessId=' +
-          businessId,
+        `${process.env.BACKEND_URL}/api/crud/business/distributor-item/update-distributor-item-name?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -423,8 +418,7 @@ export function UpdateByItem() {
       console.log('Unit Amount: ' + editedDistributorData.unitAmount);
       // Make the second API call to update the unit amount
       const response2 = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/distributor-item/update-item-portion?businessId=' +
-          businessId,
+        `${process.env.BACKEND_URL}/api/crud/business/distributor-item/update-item-portion?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -443,8 +437,7 @@ export function UpdateByItem() {
 
       // Make the third API call to update the cost
       const response3 = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/distributor-item/update-item-cost?businessId=' +
-          businessId,
+        `${process.env.BACKEND_URL}/api/crud/business/distributor-item/update-item-cost?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -480,8 +473,7 @@ export function UpdateByItem() {
   const handleDeleteItem = async () => {
     try {
       const response = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/item-inventory/delete?businessId=' +
-          businessId,
+        `${process.env.BACKEND_URL}/api/crud/business/item-inventory/delete?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -506,8 +498,7 @@ export function UpdateByItem() {
   const EditDistributorMetaData = async () => {
     try {
       const response1 = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/distributor-metadata-list/update-deadline-date?businessId=' +
-          businessId,
+        `${process.env.BACKEND_URL}/api/crud/business/distributor-metadata-list/update-deadline-date?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -523,8 +514,7 @@ export function UpdateByItem() {
         throw new Error('Failed to update Deadline Date');
       }
       const response2 = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/distributor-metadata-list/update-delivery-date?businessId=' +
-          businessId,
+        `${process.env.BACKEND_URL}/api/crud/business/distributor-metadata-list/update-delivery-date?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -540,8 +530,7 @@ export function UpdateByItem() {
         throw new Error('Failed to update Delivery Date');
       }
       const response3 = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/distributor-metadata-list/update-meta-data?businessId=' +
-          businessId,
+        `${process.env.BACKEND_URL}/api/crud/business/distributor-metadata-list/update-meta-data?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -569,8 +558,7 @@ export function UpdateByItem() {
   const EditLocationMetaData = async location => {
     try {
       const response1 = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/location-metadata-list/update-address?businessId=' +
-          businessId,
+        `${process.env.BACKEND_URL}/api/crud/business/location-metadata-list/update-address?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -586,8 +574,7 @@ export function UpdateByItem() {
         throw new Error('Failed to update location address: ', Error);
       }
       const response2 = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/location-metadata-list/update-metadata?businessId=' +
-          businessId,
+        `${process.env.BACKEND_URL}/api/crud/business/location-metadata-list/update-metadata?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -614,8 +601,7 @@ export function UpdateByItem() {
     };
 
     const response = await fetch(
-      'https://slicer-backend.vercel.app/api/crud/business/item-inventory/read-all?businessId=' +
-        businessId,
+      `${process.env.BACKEND_URL}/api/crud/business/item-inventory/read-all?businessId=${businessId}`,
       {
         method: 'POST',
         headers: {
@@ -641,8 +627,7 @@ export function UpdateByItem() {
     };
 
     const response = await fetch(
-      'https://slicer-backend.vercel.app/api/crud/business/item-location/read-all?businessId=' +
-        businessId,
+      `${process.env.BACKEND_URL}/api/crud/business/item-location/read-all?businessId=${businessId}`,
       {
         method: 'POST',
         headers: {
@@ -663,7 +648,7 @@ export function UpdateByItem() {
 
   const getBusinessId = async () => {
     const response = await fetch(
-      'https://slicer-backend.vercel.app/api/auth/user/user-info?id=' + userId,
+      `${process.env.BACKEND_URL}/api/auth/user/user-info?id=${userId}`,
       {
         method: 'GET',
         headers: {
@@ -698,13 +683,8 @@ export function UpdateByItem() {
 
   const readAll = async () => {
     try {
-      console.log(
-        'hhttps://slicer-backend.vercel.app/api/crud/business/item-list/read-all/?businessId=' +
-          businessId
-      );
       const response = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/item-list/read-all/?businessId=' +
-          businessId,
+        `${process.env.BACKEND_URL}/api/crud/business/item-list/read-all/?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -727,8 +707,7 @@ export function UpdateByItem() {
   const upItemCount = async () => {
     try {
       const response = await fetch(
-        'https://slicer-backend.vercel.app/api/crud/business/item-list/total-item-count?businessId=' +
-          businessId,
+        `${process.env.BACKEND_URL}/api/crud/business/item-list/total-item-count?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
