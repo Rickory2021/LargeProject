@@ -592,121 +592,120 @@ export function Distributors() {
           </ul>
         )}
         {popupDistributor && (
-          <div>
+          <div
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              zIndex: 1000,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backdropFilter: 'blur(4px)'
+            }}
+            onClick={e => e.stopPropagation()}
+          >
             <div
+              className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150"
               style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                zIndex: 1000,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                backdropFilter: 'blur(4px)'
+                width: '40%',
+                maxHeight: '70%',
+                maxWidth: '90%',
+                zIndex: 110,
+                position: 'relative'
               }}
               onClick={e => e.stopPropagation()}
             >
-              <div
-                className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150"
-                style={{
-                  width: '40%',
-                  maxHeight: '70%',
-                  maxWidth: '90%',
-                  zIndex: 110,
-                  position: 'relative'
-                }}
-                onClick={e => e.stopPropagation()}
-              >
-                <div className="flex justify-end p-2">
-                  <button
-                    onClick={handleClosePopup}
-                    className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+              <div className="flex justify-end p-2">
+                <button
+                  onClick={handleClosePopup}
+                  className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+                >
+                  <svg
+                    className="w-5 h-5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    <svg
-                      className="w-5 h-5"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                        clipRule="evenodd"
-                      ></path>
-                    </svg>
-                  </button>
-                </div>
-                <DistributorPopup
-                  businessId={businessId}
-                  distributorName={popupDistributor.distributorName}
-                  updateDistributorMetaData={updateDistributorMetaData}
-                />
-                <h6>{updataDistributorMetaData.distributorName} MetaData</h6>
-                {editMode ? (
-                  <>
-                    <p>Deadline Date: </p>
-                    <input
-                      type="text"
-                      value={editedDistributorMetaData.deadlineDate}
-                      onChange={e =>
-                        handleInputChange(e, 'deadlineDate', 'edited')
-                      }
-                      className="bg-gray-100 rounded-md p-2 mb-2"
-                    />
-                    <p>Delivery Date: </p>
-                    <input
-                      type="text"
-                      value={editedDistributorMetaData.deliveryDate}
-                      onChange={e =>
-                        handleInputChange(e, 'deliveryDate', 'edited')
-                      }
-                      className="bg-gray-100 rounded-md p-2 mb-2"
-                    />
-                    <p>Notes (MetaData): </p>
-                    <input
-                      type="text"
-                      value={editedDistributorMetaData.noteMetaData}
-                      onChange={e =>
-                        handleInputChange(e, 'noteMetaData', 'edited')
-                      }
-                      className="bg-gray-100 rounded-md p-2 mb-2"
-                    />
-                    {/* Add other input fields */}
-                    <br />
-                    {/* Save button */}
-                    <button onClick={EditDistributorMetaData}>Save</button>
-                  </>
-                ) : (
-                  <>
-                    <p>
-                      Deadline Date:{' '}
-                      {updataDistributorMetaData.distributorDeadlineDate}
-                    </p>
-                    <p>
-                      Delivery Date:{' '}
-                      {updataDistributorMetaData.distributorDeliveryDate}
-                    </p>
-                    <p>
-                      Notes (MetaData):{' '}
-                      {updataDistributorMetaData.distributorMetaData}
-                    </p>
-                    {/* Display other metadata */}
-                    <br />
-                    {/* Edit button */}
-                    <button onClick={() => setEditMode(true)}>Edit</button>
-                  </>
-                )}
+                    <path
+                      fillRule="evenodd"
+                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                    ></path>
+                  </svg>
+                </button>
               </div>
+              <DistributorPopup
+                businessId={businessId}
+                distributorName={popupDistributor.distributorName}
+                updateDistributorMetaData={updateDistributorMetaData}
+              />
+              <h6>{updataDistributorMetaData.distributorName} MetaData</h6>
+              {editMode ? (
+                <>
+                  <p>Deadline Date: </p>
+                  <input
+                    type="text"
+                    value={editedDistributorMetaData.deadlineDate}
+                    onChange={e =>
+                      handleInputChange(e, 'deadlineDate', 'edited')
+                    }
+                    className="bg-gray-100 rounded-md p-2 mb-2"
+                  />
+                  <p>Delivery Date: </p>
+                  <input
+                    type="text"
+                    value={editedDistributorMetaData.deliveryDate}
+                    onChange={e =>
+                      handleInputChange(e, 'deliveryDate', 'edited')
+                    }
+                    className="bg-gray-100 rounded-md p-2 mb-2"
+                  />
+                  <p>Notes (MetaData): </p>
+                  <input
+                    type="text"
+                    value={editedDistributorMetaData.noteMetaData}
+                    onChange={e =>
+                      handleInputChange(e, 'noteMetaData', 'edited')
+                    }
+                    className="bg-gray-100 rounded-md p-2 mb-2"
+                  />
+                  {/* Add other input fields */}
+                  <br />
+                  {/* Save button */}
+                  <button onClick={EditDistributorMetaData}>Save</button>
+                </>
+              ) : (
+                <>
+                  <p>
+                    Deadline Date:{' '}
+                    {updataDistributorMetaData.distributorDeadlineDate}
+                  </p>
+                  <p>
+                    Delivery Date:{' '}
+                    {updataDistributorMetaData.distributorDeliveryDate}
+                  </p>
+                  <p>
+                    Notes (MetaData):{' '}
+                    {updataDistributorMetaData.distributorMetaData}
+                  </p>
+                  {/* Display other metadata */}
+                  <br />
+                  {/* Edit button */}
+                  <button onClick={() => setEditMode(true)}>Edit</button>
+                </>
+              )}
             </div>
           </div>
         )}
+
         {editPopupDistributor && (
           <div>
             <div
               style={{
-                position: 'absolute',
+                position: 'fixed',
                 top: 0,
                 left: 0,
                 right: 0,
@@ -786,7 +785,7 @@ export function Distributors() {
           <div>
             <div
               style={{
-                position: 'absolute',
+                position: 'fixed',
                 top: 0,
                 left: 0,
                 right: 0,
@@ -903,7 +902,7 @@ export function Distributors() {
         {deletePopup && (
           <div
             style={{
-              position: 'absolute',
+              position: 'fixed',
               top: 0,
               left: 0,
               right: 0,

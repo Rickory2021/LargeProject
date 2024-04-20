@@ -6,6 +6,10 @@ const DateComponent = ({ itemName, location, businessId }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    console.log(
+      'https://slicer-backend.vercel.app/api/crud/business/item-location/get-one-recent-date?businessId=' +
+        businessId
+    );
     const fetchDate = async () => {
       try {
         const response = await fetch(
@@ -28,6 +32,7 @@ const DateComponent = ({ itemName, location, businessId }) => {
 
         const data = await response.json();
         const outputList = data.outputList;
+        console.log(outputList);
 
         if (outputList && outputList.length > 0) {
           const dateOnly = new Date(outputList[0]).toLocaleDateString();

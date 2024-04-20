@@ -13,6 +13,7 @@ function CookieComponent({ cookieName, onUserIdChange }) {
     if (cookie) {
       const value = cookie.split('=')[1];
       setCookieValue(value);
+      console.log('cookie: ' + value);
     } else {
       //No cookie of accessToken name
       router.push('/sign-in');
@@ -20,6 +21,7 @@ function CookieComponent({ cookieName, onUserIdChange }) {
   }, []);
 
   const verifyAccessToken = async accessToken => {
+    console.log(`${process.env.BACKEND_URL}/api/auth/${accessToken}`);
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/${accessToken}`,
       {
