@@ -959,6 +959,54 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "calculate-estimate",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"itemName\":\"_Salmon Nigiri\" , \"quanity\":1}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/crud/business/estimate-deduction/calculate-estimate?businessId=66212c80704132dbfc654195",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"crud",
+								"business",
+								"estimate-deduction",
+								"calculate-estimate"
+							],
+							"query": [
+								{
+									"key": "itemName",
+									"value": "Fluid Item",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "businessId",
+									"value": "66212c80704132dbfc654195"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -1258,7 +1306,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"itemName\": \"Fluid Item\",\r\n    \"locationName\": \"Location A\",\r\n    \"portionNumber\": \"20\",\r\n    \"metaData\": \"First Item\",\r\n    \"logReason\": \"Inventory Arrival\"\r\n}",
+							"raw": "{\r\n    \"itemName\": \"\",\r\n    \"locationName\": \"\",\r\n    \"portionNumber\": ,\r\n    \"metaData\": \"\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1266,7 +1314,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3001/api/crud/business/item-inventory/create?businessId=6619a6969cb09d729201a801",
+							"raw": "http://localhost:3001/api/crud/business/item-inventory/create?businessId=66212c80704132dbfc654195",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1282,7 +1330,7 @@
 							"query": [
 								{
 									"key": "businessId",
-									"value": "6619a6969cb09d729201a801"
+									"value": "66212c80704132dbfc654195"
 								}
 							]
 						}
@@ -1918,7 +1966,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": " {\"itemName\":\"Fluid Item\", \"distributorName\":\"PepsiCo\", \"distributorItemName\":\"WaterLife 3/8 Pack\", \"distributorItemPortion\":405.6, \"distributorItemCost\":\"25\", \"priorityChoice\":1}",
+							"raw": "{\r\n    \"itemName\": \"Wasabi\",\r\n    \"distributorName\": \"KGI Trading\",\r\n    \"distributorItemName\": \"Waner Wasabi Powder V-1 1/2.2lb/10pk/cs\",\r\n    \"distributorItemPortion\": 5000,\r\n    \"distributorItemCost\": 119.90,\r\n    \"priorityChoice\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1926,7 +1974,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3001/api/crud/business/distributor-item/create?businessId=6619a6969cb09d729201a801",
+							"raw": "http://localhost:3001/api/crud/business/distributor-item/create?businessId=66212c80704132dbfc654195",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1947,7 +1995,7 @@
 								},
 								{
 									"key": "businessId",
-									"value": "6619a6969cb09d729201a801"
+									"value": "66212c80704132dbfc654195"
 								}
 							]
 						}
