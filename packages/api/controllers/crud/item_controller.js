@@ -83,10 +83,25 @@ class ItemListController extends GenericCRUDController {
             sum += inventory.portionNumber;
           });
         });
+        console.log(item);
+        let largestPortionName = 'Unit',
+          largestPortionNumber = 1;
+        if (item.portionInfoList.length !== 0) {
+          const lastPortionInfo =
+            item.portionInfoList[item.portionInfoList.length - 1];
+          largestPortionName = lastPortionInfo.unitName;
+          largestPortionNumber = lastPortionInfo.unitNumber;
+        }
+        const lastPortionInfo =
+          item.portionInfoList[item.portionInfoList.length - 1];
+
+        console.log(item.portionInfoList);
         const newItemData = {
           itemName: item.itemName,
           estimate: sum - item.estimateDeduction,
-          totalCount: sum
+          totalCount: sum,
+          largestPortionName,
+          largestPortionNumber
         };
 
         // Push the new JSON object to the output array
