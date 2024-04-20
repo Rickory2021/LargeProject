@@ -261,7 +261,7 @@ export function Dashboard() {
         return null;
       }
       const data = await response.json();
-      const fieldValues = data.output;
+      const fieldValues = data.outputList;
 
       setItemList(fieldValues); // Update itemList state with new data
     } catch (error) {
@@ -301,7 +301,7 @@ export function Dashboard() {
         throw new Error('Failed to fetch item names');
       }
       const data = await response.json();
-      const fieldValues = data.output;
+      const fieldValues = data.outputList;
       console.log('FIELD NAMES:\n' + fieldValues);
 
       setItemList(fieldValues);

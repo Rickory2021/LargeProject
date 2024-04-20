@@ -55,13 +55,74 @@ class EstimateDeductionController extends GenericCRUDController {
       return res.status(500).json({ error: error.message });
     }
   }
+
+  //req.query.businessId
+  async calculateEstimate(req, res) {
+    const { itemName, quantity } = req.body;
+    console.log(typeof quantity);
+    const businessId = req.query.businessId;
+    console.log('calculateEstimate');
+    try {
+      const business = await Business.findById(businessId);
+      if (!business) {
+        throw new Error('Business not found');
+      }
+
+      // Find the item in the business's itemList by name
+      const item = business.itemList.find(item => item.itemName === itemName);
+      if (!item) {
+        console.log('Item not found');
+        return;
+      }
+
+      // Iterate over the itemNeededList
+      for (const neededItem of item.itemNeededList) {
+        const { itemName: neededItemName, unitCost } = neededItem;
+        console.log(`neededItemName:${neededItemName}\tunitCost:${unitCost}`);
+
+        // Find the needed item by name
+        const neededItemDoc = business.itemList.find(
+          listItem => listItem.itemName === neededItemName
+        );
+
+        if (!neededItemDoc) {
+          console.log(`Needed item ${neededItemName} not found`);
+          continue;
+        }
+
+        // Calculate deduction and update estimateDeduction
+        const deduction = unitCost * quantity;
+        neededItemDoc.estimateDeduction += deduction;
+
+        // Save the updated needed item
+        await business.save();
+      }
+      console.log('Estimate deduction updated successfully');
+      console.log(`Distributor's ItemName updated successfully`);
+      return res.status(200).json({
+        statusDetails: [
+          {
+            acknowledged: true,
+            modifiedCount: 1,
+            upsertedId: null,
+            upsertedCount: 0,
+            matchedCount: 1
+          }
+        ]
+      });
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
+    }
+  }
 }
 let estimateDeductionController = new EstimateDeductionController();
 module.exports = {
   readEstimateDeduction: (req, res) =>
     estimateDeductionController.readEstimateDeduction(req, res),
   updateEstimateDeduction: (req, res) =>
-    estimateDeductionController.updateEstimateDeduction(req, res)
+    estimateDeductionController.updateEstimateDeduction(req, res),
+  calculateEstimate: (req, res) =>
+    estimateDeductionController.calculateEstimate(req, res)
 };
 
 // let mongooseBusinessID = new mongoose.Types.ObjectId(

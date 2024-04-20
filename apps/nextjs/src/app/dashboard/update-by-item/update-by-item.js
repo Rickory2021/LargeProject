@@ -696,7 +696,7 @@ export function UpdateByItem() {
         throw new Error('Failed to fetch item names');
       }
       const data = await response.json();
-      const fieldValues = data.output;
+      const fieldValues = data.outputList;
 
       setItemList(fieldValues);
     } catch (error) {

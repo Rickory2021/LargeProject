@@ -67,30 +67,32 @@ class ItemListController extends GenericCRUDController {
 
   //req.query.businessId
   async readAllItemName(req, res) {
+    const businessId = req.query.businessId;
     try {
-      const businessId = req.query.businessId;
       console.log('About to read');
-      let mongooseBusinessID = new mongoose.Types.ObjectId(businessId);
-      // { $limit: outputSize }, // Project only the name field for each post
-      // { $skip: outset } // Project only the name field for each post
-      const fieldValues = await super.readGeneric([
-        { $match: { _id: mongooseBusinessID } },
-        { $unwind: `$itemList` },
-        { $project: { _id: 0, itemName: '$itemList.itemName' } }
-      ]);
-      // After adding the item, fetch the updated business document
       const business = await Business.findById(businessId);
       if (!business) {
-        return res.status(404).json({ error: 'Business not found' });
+        throw new Error('Business not found');
       }
+      let outputList = [];
+      // Iterate over the itemNeededList
+      for (const item of business.itemList) {
+        let sum = 0;
+        item.locationItemList.forEach(locationItem => {
+          locationItem.inventoryList.forEach(inventory => {
+            sum += inventory.portionNumber;
+          });
+        });
+        const newItemData = {
+          itemName: item.itemName,
+          estimate: sum - item.estimateDeduction,
+          totalCount: sum
+        };
 
-      // Sort the itemList array by itemName
-      business.itemList.sort((a, b) => a.itemName.localeCompare(b.itemName));
-
-      // Save the updated business document
-      await business.save();
-      //req.query.printedFieldName
-      return res.status(200).json({ output: fieldValues });
+        // Push the new JSON object to the output array
+        outputList.push(newItemData);
+      }
+      return res.status(200).json({ outputList: outputList });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
@@ -154,6 +156,15 @@ class ItemListController extends GenericCRUDController {
         },
         { $set: { 'itemList.$.itemName': newItemName } }
       );
+      const business = await Business.findById(businessId);
+      if (!business) {
+        throw new Error('Business not found');
+      }
+      // Sort the itemList array by itemName
+      business.itemList.sort((a, b) => a.itemName.localeCompare(b.itemName));
+
+      // Save the updated business document
+      await business.save();
       return res.status(200).json({ statusDetails: [statusDetails] });
     } catch (error) {
       return res.status(500).json({ error: error.message });
