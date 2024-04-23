@@ -119,7 +119,7 @@ module.exports.forgotPassword = async (req, res) => {
     );
 
     // const resetUrl = `${req.protocol}://${req.get('host')}/forgot-password-change?token=${resetToken}`;
-    const resetUrl = `https://slicer-nine.vercel.app/forgot-password-change?token=${resetToken}`;
+    const resetUrl = `https://slicer-project.vercel.app/forgot-password-change?token=${resetToken}`;
     const emailText = `<p>Forgot password? Reset password by clicking on the link below: </p><a href="${resetUrl}">Reset Password</a>`;
     // Call function
     const emailSent = await sendResetEmail(
