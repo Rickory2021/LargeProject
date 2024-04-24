@@ -24,6 +24,7 @@ function Location({ itemName, businessId, updateLocationList }) {
       const data = await response.json();
       const outputList = data.outputList;
       const locationNames = outputList.map(item => item.locationName).flat();
+      console.log(`locationNames:${locationNames}`);
       updateLocationList(locationNames);
     } catch (error) {
       console.error('Error fetching item names:', error);
