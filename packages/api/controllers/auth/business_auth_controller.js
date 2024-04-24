@@ -28,7 +28,7 @@ module.exports.RegisterBusiness = async (req, res) => {
     // Return a success response
     res.status(201).json({ error: null, businessId: newBusiness.id });
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: `Internal Server Error:${error}` });
   }
 };
 
@@ -130,7 +130,7 @@ module.exports.RemoveUserBusinessConn = async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .json({ error: 'Removal of Business & User Connection Failed' });
+      .json({ error: `Removal of Business & User Connection Failed:${error}` });
   }
 };
 
@@ -165,6 +165,9 @@ module.exports.GetBusinessName = async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .json({ businessName: null, error: 'Business Name Fetch Failed' });
+      .json({
+        businessName: null,
+        error: `Business Name Fetch Failed:${error}`
+      });
   }
 };

@@ -83,9 +83,9 @@ module.exports.VerifyEmail = async (req, res) => {
         .json({ error: 'Invalid or expired verification link.' });
     }
   } catch (error) {
-    return res
-      .status(500)
-      .json({ error: 'An error occurred during the verification process.' });
+    return res.status(500).json({
+      error: `An error occurred during the verification process.${error}`
+    });
   }
 };
 
@@ -274,7 +274,7 @@ module.exports.Login = async (req, res) => {
       accessToken: accessToken
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: `Internal Server Error:${error}` });
   }
 };
 
