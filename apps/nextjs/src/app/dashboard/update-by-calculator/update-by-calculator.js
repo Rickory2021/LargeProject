@@ -39,7 +39,10 @@ export function UpdateByCalculator() {
   useState('');
   const [isSideNavOpen, setIsSideNavOpen] = useState(true);
   const [openStates, setOpenStates] = useState({});
-  const [makeEstimatePopup, setMakeEstimatePopup] = useState('');
+  const [makeEstimateByItemNeededPopup, setMakeEstimateByItemNeededPopup] =
+    useState('');
+  const [makeEstimateByALaCartePopup, setMakeEstimateByALaCartePopup] =
+    useState('');
   const [portionInfoLoaded, setPortionInfoLoaded] = useState(false);
 
   const handleSideNavOpen = openState => {
@@ -64,8 +67,12 @@ export function UpdateByCalculator() {
     newUnitNumber: 1
   });
 
-  const handleMakeEstimatePopup = () => {
-    setMakeEstimatePopup(true);
+  const handleMakeEstimateByItemNeededPopup = () => {
+    setMakeEstimateByItemNeededPopup(true);
+  };
+
+  const handleMakeEstimateByALaCartePopup = () => {
+    setMakeEstimateByALaCartePopup(true);
   };
 
   const updatedEstimateDeduction = async (
@@ -128,7 +135,7 @@ export function UpdateByCalculator() {
     }
   };
 
-  const estimateCalculator = async () => {
+  const estimateByItemNeededCalculator = async () => {
     // Call the wrapper component to handle fetching and updating itemsNeeded
     console.log('Here');
     await (
@@ -173,6 +180,17 @@ export function UpdateByCalculator() {
     }
   };
 
+  const estimateByALaCarteCalculator = async () => {
+    // Fetch estimateDeduction
+    const estimateDeduction = await getEstimateDeduction(businessId, itemName);
+    // Calculate result
+    const result = editedPortion.newUnitNumber * -1 + estimateDeduction;
+    updatedEstimateDeduction(result, itemName);
+    // Print result to console
+    console.log(`Result for ${itemName}: ${result}`);
+    readAll();
+  };
+
   const handleCloseTablePopup = () => {
     setOpenStates(prevStates => ({
       ...prevStates,
@@ -191,7 +209,8 @@ export function UpdateByCalculator() {
     setDeletePopup(false);
     setAddPortionPopup(false);
     setEditInventoryNeededInPopup(false);
-    setMakeEstimatePopup(false);
+    setMakeEstimateByItemNeededPopup(false);
+    setMakeEstimateByALaCartePopup(false);
     setTableKey(prevKey => prevKey + 1);
   };
 
@@ -752,7 +771,8 @@ export function UpdateByCalculator() {
                         </th>
                         <th
                           scope="col"
-                          className="px-8 py-4 text-start text-sm font-medium text-gray-500 uppercase dark:text-neutral-500 w-[20%]"
+                          className="px-8 py-4 text-center text-sm font-medium text-gray-500 uppercase dark:text-neutral-500 border-l border-b"
+                          colSpan="2"
                         >
                           Make Estimate
                         </th>
@@ -843,17 +863,30 @@ export function UpdateByCalculator() {
                                 UsedIn
                               </button>
                             </td>
-                            <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
+                            <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 border-l w-[20%]">
                               <button
                                 onClick={e => {
                                   setItemName(item.itemName);
-                                  handleMakeEstimatePopup();
+                                  handleMakeEstimateByItemNeededPopup();
                                   e.stopPropagation();
                                 }}
                                 type="button"
                                 className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 w-[20%]"
                               >
-                                Make Estimate
+                                By Items Needed Info
+                              </button>
+                            </td>
+                            <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
+                              <button
+                                onClick={e => {
+                                  setItemName(item.itemName);
+                                  handleMakeEstimateByALaCartePopup();
+                                  e.stopPropagation();
+                                }}
+                                type="button"
+                                className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 w-[20%]"
+                              >
+                                By A La Carte
                               </button>
                             </td>
                           </tr>
@@ -1833,7 +1866,7 @@ export function UpdateByCalculator() {
                 </div>
               </Portal>
             )}
-            {makeEstimatePopup && (
+            {makeEstimateByItemNeededPopup && (
               <Portal>
                 <ItemsNeeded
                   businessId={businessId}
@@ -1854,7 +1887,8 @@ export function UpdateByCalculator() {
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    backdropFilter: 'blur(4px)'
+                    backdropFilter: 'blur(4px)',
+                    overflowY: 'auto' // Add this line to enable vertical scrolling
                   }}
                   onClick={e => e.stopPropagation()}
                 >
@@ -1862,8 +1896,6 @@ export function UpdateByCalculator() {
                     className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150"
                     style={{
                       width: '40%',
-                      maxHeight: '70%',
-                      maxWidth: '90%',
                       zIndex: 110,
                       position: 'relative'
                     }}
@@ -1888,7 +1920,9 @@ export function UpdateByCalculator() {
                         </svg>
                       </button>
                     </div>
-                    <h6 className="text-center mb-4">Item: </h6>
+                    <h6 className="text-center mb-4">
+                      Calculator By Item Needed:
+                    </h6>
                     <p className="text-center mb-2">Item Name: </p>
                     <input
                       type="text"
@@ -1898,7 +1932,7 @@ export function UpdateByCalculator() {
                       className="bg-gray-200 rounded-md p-2 mb-2"
                     />
                     <p className="text-center mb-2">
-                      Input the item number(number of items sold/used):{' '}
+                      Input the item number(number of items sold/used):
                     </p>
                     <input
                       type="text"
@@ -1950,13 +1984,194 @@ export function UpdateByCalculator() {
                     )}
                     <button
                       onClick={() => {
-                        estimateCalculator();
+                        estimateByItemNeededCalculator();
                         handleClosePopup();
                       }}
                       className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                     >
                       Save
                     </button>
+                    <br />
+                  </div>
+                </div>
+              </Portal>
+            )}
+            {makeEstimateByALaCartePopup && (
+              <Portal>
+                <PortionInfo
+                  businessId={businessId}
+                  itemName={itemName}
+                  setPortionInfoMap={updatePortionInfo}
+                />
+                <div
+                  style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    zIndex: 1000,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backdropFilter: 'blur(4px)',
+                    overflowY: 'auto' // Add this line to enable vertical scrolling
+                  }}
+                  onClick={e => e.stopPropagation()}
+                >
+                  <div
+                    className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150"
+                    style={{
+                      width: '40%',
+                      zIndex: 110,
+                      position: 'relative'
+                    }}
+                    onClick={e => e.stopPropagation()}
+                  >
+                    <div className="flex justify-end p-2">
+                      <button
+                        onClick={handleClosePopup}
+                        className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+                      >
+                        <svg
+                          className="w-5 h-5"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                            clipRule="evenodd"
+                          ></path>
+                        </svg>
+                      </button>
+                    </div>
+                    <h6 className="text-center mb-4">
+                      Calculator By A La Carte:
+                    </h6>
+                    <p className="text-center mb-2">Item Name: </p>
+                    <input
+                      type="text"
+                      name="itemName"
+                      value={itemName}
+                      readOnly
+                      className="bg-gray-200 rounded-md p-2 mb-2"
+                    />
+                    <p className="text-center mb-2">
+                      Update Estimate by:<br></br>
+                      Positive will Increase Estimated <br></br>
+                      Negative will Decrease Estimated <br></br>
+                    </p>
+                    <input
+                      type="text"
+                      name="newUnitName"
+                      value={editedPortion.newUnitNumber}
+                      onChange={e =>
+                        handleInputChange(e, 'newUnitNumber', 'portion')
+                      }
+                      className="bg-gray-200 rounded-md p-2 mb-2"
+                    />
+
+                    <br />
+                    <button
+                      onClick={() => {
+                        estimateByALaCarteCalculator();
+                        handleClosePopup();
+                      }}
+                      className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                    >
+                      Save
+                    </button>
+                    <div className="flex justify-end p-2">
+                      <button
+                        onClick={handleCloseTablePopup}
+                        className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+                      >
+                        <svg
+                          className="w-5 h-5"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                            clipRule="evenodd"
+                          ></path>
+                        </svg>
+                      </button>
+                    </div>
+                    <h6 className="text-center mb-4">Selected portion size:</h6>
+                    <button
+                      onClick={e => {
+                        setEditedPortion({
+                          itemName: itemName
+                        });
+                        handleAddPortion();
+                        e.stopPropagation();
+                      }}
+                      className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mb-4"
+                    >
+                      Add portion size
+                    </button>
+                    <table className="min-w-full border border-collapse border-gray-300">
+                      <thead>
+                        <tr>
+                          <th className="px-6 py-3 border-r border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Unit Name
+                          </th>
+                          <th className="px-6 py-3 border-r border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Based Unit Number
+                          </th>
+                          <th className="px-6 py-3 border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Net
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white">
+                        {itemPortionMap[itemName] &&
+                        itemPortionMap[itemName].length !== 0 ? (
+                          itemPortionMap[itemName].map((portion, index) => (
+                            <tr key={portion.id || index}>
+                              <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
+                                {portion.unitName}
+                              </td>
+                              <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
+                                {portion.unitNumber}
+                              </td>
+                              <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
+                                {(editedPortion.newUnitNumber /
+                                  portion.unitNumber >=
+                                0
+                                  ? '+' // Add "+" sign if the result is positive
+                                  : '') + // Empty string if the result is negative
+                                  (
+                                    editedPortion.newUnitNumber /
+                                    portion.unitNumber
+                                  ).toFixed(3)}
+                              </td>
+                            </tr>
+                          ))
+                        ) : (
+                          <tr>
+                            <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
+                              {`Unit`}
+                            </td>
+                            <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
+                              {1}
+                            </td>
+                            <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
+                              {(editedPortion.newUnitNumber >= 0
+                                ? '+' // Add "+" sign if the result is positive
+                                : '') + // Empty string if the result is negative
+                                (editedPortion.newUnitNumber / 1).toFixed(3)}
+                            </td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+
                     <br />
                   </div>
                 </div>
