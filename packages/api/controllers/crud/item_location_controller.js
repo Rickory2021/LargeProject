@@ -344,10 +344,40 @@ class ItemLocationController extends GenericCRUDController {
         if (!locationItemLog) {
           continue;
         }
-        sortedLogs = locationItemLog.locationBucketLog.sort(
-          (a, b) => b.updateDate - a.updateDate
-        );
+        sortedLogs = locationItemLog.locationBucketLog.sort((a, b) => {
+          // Check if a and b have locationName equal to inputLocationName
+          const aIsInputLocation = a.locationName === locationName;
+          console.log(
+            `aIsInputLocation=>${aIsInputLocation} = ${a.locationName} === ${locationName}`
+          );
+          const bIsInputLocation = b.locationName === locationName;
+          console.log(
+            `aIsInputLocation=>${bIsInputLocation} = ${b.locationName} === ${locationName}`
+          );
+          // If both a and b are inputLocation, sort by updateDate
+          if (aIsInputLocation && bIsInputLocation) {
+            return b.updateDate - a.updateDate;
+          }
+
+          // If only a is inputLocation, move it closer to index 0
+          if (aIsInputLocation) {
+            return -1;
+          }
+
+          // If only b is inputLocation, move it closer to index 0
+          if (bIsInputLocation) {
+            return 1;
+          }
+
+          // Sort by updateDate for other cases
+          return b.updateDate - a.updateDate;
+        });
         if (sortedLogs.length > 0) {
+          if (sortedLogs[0].locationName !== locationName) {
+            return res
+              .status(500)
+              .json({ error: `No Recent Date for ${locationName}` });
+          }
           // Return the most recent updateDate
           return res
             .status(200)
