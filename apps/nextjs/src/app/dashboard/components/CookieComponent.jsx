@@ -21,7 +21,9 @@ function CookieComponent({ cookieName, onUserIdChange }) {
   }, []);
 
   const verifyAccessToken = async accessToken => {
-    console.log(`${process.env.BACKEND_URL}/api/auth/${accessToken}`);
+    console.log(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/${accessToken}`
+    );
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/${accessToken}`,
       {
