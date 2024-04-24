@@ -18,6 +18,10 @@ export function Dashboard() {
   const [businessId, setBusinessId] = useState('');
   const [loading, setLoading] = useState(true);
   const [itemList, setItemList] = useState([]);
+  /* Includes:
+  itemName, estimate, totalCount, largestPortionName, largestPortionNumber
+  Defaults largestPortionName, largestPortionNumber=> 1 Unit
+  */
   const [locationList, setLocationList] = useState([]);
   const [locationMetaData, setLocationMetaData] = useState({});
   const [itemLog, setItemLog] = useState([]);
@@ -391,7 +395,7 @@ export function Dashboard() {
                       >
                         {item.itemName}
                       </button>
-                      {!itemCountMap[item.itemName] && (
+                      {/* {!itemCountMap[item.itemName] && (
                         <div>
                           <ItemTotalCount
                             businessId={businessId}
@@ -414,41 +418,40 @@ export function Dashboard() {
                         itemName={item.itemName}
                         updateMaxPortion={updateMaxPortionForItem}
                       />
-                      {/* Display the item count if available */}
+                      Display the item count if available */}
 
                       <>
                         <p className="m-8">
                           Total Count:{' '}
-                          {maxPortionMap[item.itemName] &&
-                          itemCountMap[item.itemName] &&
-                          maxPortionMap[item.itemName].unitNumber
+                          {item.largestPortionName &&
+                          item.totalCount &&
+                          item.largestPortionNumber
                             ? (
-                                itemCountMap[item.itemName] /
-                                maxPortionMap[item.itemName].unitNumber
+                                item.totalCount / item.largestPortionNumber
                               ).toFixed(2)
                             : 'No'}{' '}
-                          {maxPortionMap[item.itemName] &&
-                          itemCountMap[item.itemName] &&
-                          maxPortionMap[item.itemName].unitNumber
-                            ? maxPortionMap[item.itemName].unitName
+                          {item.largestPortionName &&
+                          item.totalCount &&
+                          item.largestPortionNumber
+                            ? item.largestPortionName
                             : `Portion Details`}{' '}
                         </p>
                         <p className="m-8">
                           Estimate:{' '}
-                          {maxPortionMap[item.itemName] &&
-                          estimatedDeductionMap[item.itemName] &&
-                          maxPortionMap[item.itemName].unitNumber
+                          {item.largestPortionName &&
+                          item.totalCount &&
+                          item.estimate &&
+                          item.largestPortionNumber
                             ? (
-                                estimatedDeductionMap[item.itemName]
-                                  .estimateDeduction /
-                                maxPortionMap[item.itemName].unitNumber
+                                item.estimate / item.largestPortionNumber
                               ).toFixed(2)
                             : 'No'}{' '}
-                          {maxPortionMap[item.itemName] &&
-                          itemCountMap[item.itemName] &&
-                          maxPortionMap[item.itemName].unitNumber
-                            ? maxPortionMap[item.itemName].unitName
-                            : `PortinDetails`}{' '}
+                          {item.largestPortionName &&
+                          item.totalCount &&
+                          item.estimate &&
+                          item.largestPortionNumber
+                            ? item.largestPortionName
+                            : `Portion Details`}{' '}
                         </p>
                       </>
                     </div>
