@@ -374,9 +374,7 @@ class ItemLocationController extends GenericCRUDController {
         });
         if (sortedLogs.length > 0) {
           if (sortedLogs[0].locationName !== locationName) {
-            return res
-              .status(500)
-              .json({ error: `No Recent Date for ${locationName}` });
+            return res.status(500).json({ error: `No Recent Date Found` });
           }
           // Return the most recent updateDate
           return res
