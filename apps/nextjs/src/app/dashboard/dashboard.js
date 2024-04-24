@@ -512,37 +512,70 @@ export function Dashboard() {
                     Item Log
                   </button>
                 </div>
-                <table className="min-w-full border border-collapse border-gray-300">
-                  <thead>
-                    <tr>
-                      <th className="px-6 py-3 border-r border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Location
-                      </th>
-                      <th className="px-6 py-3 border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Info
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white">
-                    {locationList.map((location, i) => (
-                      <tr key={i}>
-                        <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
-                          {location}
-                        </td>
-                        <td className="px-6 py-4 border-b border-gray-300 whitespace-nowrap text-center">
-                          <button
-                            onClick={() => handleLocationPopup(location)}
-                            type="button"
-                            className="inline-flex items-center justify-center w-6 h-6 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
-                            aria-label={`Info for ${location}`}
-                          >
-                            i
-                          </button>
-                        </td>
+                <br></br>
+                <div className="overflow-x-auto">
+                  <table className="min-w-full border border-collapse border-gray-300">
+                    <thead>
+                      <tr>
+                        <th className="px-6 py-3 border-r border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Location
+                        </th>
+                        <th className="px-6 py-3 border-r border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Info
+                        </th>
+                        <th className="px-6 py-3 border-r border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Total Count
+                        </th>
+                        <th className="px-6 py-3 border-r border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Last Updated
+                        </th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody className="bg-white">
+                      {locationList && locationList.length > 0 ? (
+                        locationList.map((location, i) => (
+                          <tr key={i}>
+                            <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
+                              {location}
+                            </td>
+                            <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
+                              <button
+                                onClick={() => handleLocationPopup(location)}
+                                type="button"
+                                className="inline-flex items-center justify-center w-6 h-6 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
+                                aria-label={`Info for ${location}`}
+                              >
+                                i
+                              </button>
+                            </td>
+                            <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
+                              {
+                                <LocationTotal
+                                  itemName={itemName}
+                                  location={location}
+                                  businessId={businessId}
+                                  unitName={largestPortionName}
+                                  unitNumber={largestPortionNumber}
+                                />
+                              }
+                            </td>
+                            <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
+                              {
+                                <DateComponent
+                                  itemName={itemName}
+                                  location={location}
+                                  businessId={businessId}
+                                />
+                              }
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <p></p>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>

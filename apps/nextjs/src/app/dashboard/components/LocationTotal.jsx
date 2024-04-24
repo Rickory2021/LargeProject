@@ -52,12 +52,7 @@ const LocationTotal = ({
   //   );
   // }
 
-  return (
-    <p>
-      Total Location Count: {(totalLocationCount / unitNumber).toFixed(2)}{' '}
-      {unitName}
-    </p>
-  );
+  return `${(totalLocationCount / unitNumber).toFixed(2)} ${unitName}`;
 };
 
 export default LocationTotal;
