@@ -3,11 +3,7 @@ import React, { useState, useEffect } from 'react';
 import SideNav from './components/side-nav';
 import CookieComponent from './components/CookieComponent';
 import Location from './components/location';
-import LargestPortion from './components/LargestPortion';
 import LocationPopup from './components/LocationPopup';
-import ItemTotalCount from './components/ItemTotalCount';
-import ItemEstimateDeduction from './components/ItemEstimateDeduction';
-import LocationTotalCount from './components/LocationTotalCount';
 import ItemLog from './components/ItemLog'; // Import ItemLog here
 import LocationTotal from './components/LocationTotal';
 import DateComponent from './components/DateComponent';
@@ -29,7 +25,6 @@ export function Dashboard() {
   const [popupLocation, setPopupLocation] = useState('');
   const [popupItemLog, setPopupItemLog] = useState(false);
   const [selectedItemName, setSelectedItemName] = useState('');
-  const [locationInventory, setLocationInventory] = useState({});
   const [editMode, setEditMode] = useState(false);
   const [isSideNavOpen, setIsSideNavOpen] = useState(true);
   const [addItemPopup, setAddItemPopups] = useState('');
@@ -56,11 +51,6 @@ export function Dashboard() {
 
   const updateItemLog = newItemLog => {
     setItemLog(newItemLog);
-  };
-
-  const defaultLocationInventory = {
-    portionNumber: 0,
-    metaData: 'No Input Exists'
   };
 
   const [newLocationMetaData, setNewLocationMetaData] = useState({
@@ -128,33 +118,6 @@ export function Dashboard() {
     }
   };
 
-  const updateLocationInventory = (
-    locationName,
-    itemName,
-    newLocationInventory
-  ) => {
-    console.log(`newLocationInventory:${newLocationInventory}`);
-    if (newLocationInventory == null || newLocationInventory.length == 0) {
-      setLocationInventory(prevState => ({
-        ...prevState,
-        [locationName]: {
-          ...prevState[locationName],
-          [itemName]: defaultLocationInventory
-        }
-      }));
-      console.log(`IF locationInventory:${locationInventory}`);
-    } else {
-      setLocationInventory(prevState => ({
-        ...prevState,
-        [locationName]: {
-          ...prevState[locationName],
-          [itemName]: newLocationInventory
-        }
-      }));
-      console.log(`ELSE locationInventory:${locationInventory}`);
-    }
-  };
-
   const handleLocationPopup = location => {
     setPopupLocation(location);
   };
@@ -193,7 +156,6 @@ export function Dashboard() {
         return { businessIdList };
       } else {
         console.log('error');
-        const errorData = await response.json();
         return null;
       }
     } catch (error) {
