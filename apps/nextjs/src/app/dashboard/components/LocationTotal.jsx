@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
-const LocationTotal = ({ itemName, location, businessId, setCount }) => {
+const LocationTotal = ({
+  itemName,
+  location,
+  businessId,
+  setCount,
+  unitName,
+  unitNumber
+}) => {
   const [totalLocationCount, setTotalLocationCount] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -37,11 +44,20 @@ const LocationTotal = ({ itemName, location, businessId, setCount }) => {
   if (loading) {
     return <p>Loading...</p>;
   }
+  // if (typeof unitNumber === 'undefined' || typeof unitName === 'undefined') {
+  //   return (
+  //     <p>
+  //       Total Location Count: {totalLocationCount}
+  //       (unitNumber or unitName is undefined)
+  //     </p>
+  //   );
+  // }
 
   return (
-    <div>
-      <p>Total Location Count: {totalLocationCount}</p>
-    </div>
+    <p>
+      Total Location Count: {(totalLocationCount / unitNumber).toFixed(2)}{' '}
+      {unitName}
+    </p>
   );
 };
 

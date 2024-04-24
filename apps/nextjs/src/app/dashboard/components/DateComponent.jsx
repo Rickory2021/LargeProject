@@ -58,11 +58,7 @@ const DateComponent = ({ itemName, location, businessId }) => {
     return <p>Error: {error}</p>;
   }
 
-  return (
-    <div>
-      <p>Date: {date}</p>
-    </div>
-  );
+  return <p>Last Updated: {date}</p>;
 };
 
 export default DateComponent;

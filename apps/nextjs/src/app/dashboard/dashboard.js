@@ -493,39 +493,30 @@ export function Dashboard() {
 
                               {!locationInventory[location] ||
                               !locationInventory[location][item.itemName] ? (
-                                <div>
-                                  <LocationTotalCount
-                                    itemName={item.itemName}
-                                    businessId={businessId}
-                                    locationName={location}
-                                    updateLocationInventory={
-                                      updateLocationInventory
-                                    }
-                                  />
-                                  <LargestPortion
-                                    businessId={businessId}
-                                    itemName={item.itemName}
-                                    updateMaxPortion={updateMaxPortionForItem}
-                                  />
-                                </div>
+                                <LocationTotalCount
+                                  itemName={item.itemName}
+                                  businessId={businessId}
+                                  locationName={location}
+                                  updateLocationInventory={
+                                    updateLocationInventory
+                                  }
+                                />
                               ) : (
-                                <>
+                                <div>
                                   <LocationTotal
                                     itemName={item.itemName}
                                     location={location}
                                     businessId={businessId}
                                     setCount={setCount}
+                                    unitName={item.largestPortionName}
+                                    unitNumber={item.largestPortionNumber}
                                   />
-                                  <p className="m-8">
-                                    Last Updated:
-                                    <DateComponent
-                                      itemName={item.itemName}
-                                      location={location}
-                                      businessId={businessId}
-                                    />
-                                  </p>
-                                  <p className="m-8">Estimated:</p>
-                                </>
+                                  <DateComponent
+                                    itemName={item.itemName}
+                                    location={location}
+                                    businessId={businessId}
+                                  />
+                                </div>
                               )}
                             </li>
                           ))}
