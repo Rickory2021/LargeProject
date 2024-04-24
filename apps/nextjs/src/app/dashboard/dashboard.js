@@ -28,6 +28,7 @@ export function Dashboard() {
   const [editMode, setEditMode] = useState(false);
   const [isSideNavOpen, setIsSideNavOpen] = useState(true);
   const [addItemPopup, setAddItemPopups] = useState('');
+  const [loadingLocation, setLoadingLocation] = useState(false);
 
   const handleSideNavOpen = openState => {
     setIsSideNavOpen(openState);
@@ -43,6 +44,7 @@ export function Dashboard() {
 
   const updateLocationList = newLocationList => {
     setLocationList(newLocationList);
+    setLoadingLocation(false);
   };
 
   const updataLocationMetaData = newLocationMetaData => {
@@ -295,6 +297,7 @@ export function Dashboard() {
                         onClick={() => {
                           setOpenIndex(openIndex === index ? null : index);
                           setLocationList([]);
+                          setLoadingLocation(true);
                         }}
                         type="button"
                         className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
@@ -371,62 +374,72 @@ export function Dashboard() {
                     </div>
                     {openIndex === index && (
                       <div className="ml-12">
-                        <div className="flex items-center ml-2">
-                          <h6 className="mr-auto">Location:</h6>
-                          <button
-                            onClick={() => handleItemLogPopup(item.itemName)}
-                            type="button"
-                            className="inline-flex items-center justify-center rounded-md border border-gray-300 shadow-sm px-3 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
-                            style={{
-                              marginRight: '100px',
-                              verticalAlign: 'middle'
-                            }}
-                          >
-                            Item Log
-                          </button>
-                        </div>
                         <Location
                           itemName={item.itemName}
                           businessId={businessId}
                           updateLocationList={updateLocationList}
                         />
-                        <ul>
-                          {locationList && locationList.length > 0 ? (
-                            locationList.map((location, i) => (
-                              <li
-                                key={i}
-                                className="block px-4 py-2 text-sm text-gray-700"
+                        {!loadingLocation ? (
+                          <div>
+                            <div className="flex items-center ml-2">
+                              <h6 className="mr-auto">Location:</h6>
+                              <button
+                                onClick={() =>
+                                  handleItemLogPopup(item.itemName)
+                                }
+                                type="button"
+                                className="inline-flex items-center justify-center rounded-md border border-gray-300 shadow-sm px-3 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
+                                style={{
+                                  marginRight: '100px',
+                                  verticalAlign: 'middle'
+                                }}
                               >
-                                {location}
-                                <button
-                                  onClick={() => handleLocationPopup(location)}
-                                  type="button"
-                                  className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
-                                >
-                                  i
-                                </button>
-                                <div>
-                                  <LocationTotal
-                                    itemName={item.itemName}
-                                    location={location}
-                                    businessId={businessId}
-                                    unitName={item.largestPortionName}
-                                    unitNumber={item.largestPortionNumber}
-                                  />
-                                  <DateComponent
-                                    itemName={item.itemName}
-                                    location={location}
-                                    businessId={businessId}
-                                  />
-                                </div>
-                              </li>
-                            ))
-                          ) : (
-                            <li>
-                              <h6 className="mr-auto">No Location Found</h6>
-                            </li>
-                          )}
-                        </ul>
+                                Item Log
+                              </button>
+                            </div>
+                            <ul>
+                              {locationList && locationList.length > 0 ? (
+                                locationList.map((location, i) => (
+                                  <li
+                                    key={i}
+                                    className="block px-4 py-2 text-sm text-gray-700"
+                                  >
+                                    {location}
+                                    <button
+                                      onClick={() =>
+                                        handleLocationPopup(location)
+                                      }
+                                      type="button"
+                                      className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
+                                    >
+                                      i
+                                    </button>
+                                    <div>
+                                      <LocationTotal
+                                        itemName={item.itemName}
+                                        location={location}
+                                        businessId={businessId}
+                                        unitName={item.largestPortionName}
+                                        unitNumber={item.largestPortionNumber}
+                                      />
+                                      <DateComponent
+                                        itemName={item.itemName}
+                                        location={location}
+                                        businessId={businessId}
+                                      />
+                                    </div>
+                                  </li>
+                                ))
+                              ) : (
+                                <li>
+                                  <h6 className="mr-auto">No Location Found</h6>
+                                </li>
+                              )}
+                            </ul>
+                          </div>
+                        ) : (
+                          <p>Loading...</p>
+                        )}
                       </div>
                     )}
                   </div>
