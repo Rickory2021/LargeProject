@@ -14,6 +14,9 @@ export function Dashboard() {
   const [businessId, setBusinessId] = useState('');
   const [loading, setLoading] = useState(true);
   const [itemList, setItemList] = useState([]);
+  const [itemName, setItemName] = useState('');
+  const [largestPortionName, setLargestPortionName] = useState('');
+  const [largestPortionNumber, setLargestPortionNumber] = useState('');
   /* Includes:
   itemName, estimate, totalCount, largestPortionName, largestPortionNumber
   Defaults largestPortionName, largestPortionNumber=> 1 Unit
@@ -29,6 +32,8 @@ export function Dashboard() {
   const [isSideNavOpen, setIsSideNavOpen] = useState(true);
   const [addItemPopup, setAddItemPopups] = useState('');
   const [loadingLocation, setLoadingLocation] = useState(false);
+  const [locationLoad, setLocationLoad] = useState('');
+  const [deleteItemPopup, setDeleteItemPopup] = useState('');
 
   const handleSideNavOpen = openState => {
     setIsSideNavOpen(openState);
@@ -138,6 +143,11 @@ export function Dashboard() {
     setPopupItemLog(false); // Set popupItemLog to false to close the popup
     setEditMode(false);
     setAddItemPopups(false);
+    setDeleteItemPopup(false);
+  };
+
+  const handleTableClosePopup = () => {
+    setLocationLoad(false);
   };
 
   const getBusinessId = async () => {
@@ -185,6 +195,28 @@ export function Dashboard() {
       await fetchNewItemList(); // Wait for fetchNewItemList to complete
     } catch (error) {
       console.log(error.error);
+    }
+  };
+
+  const deleteItem = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/item-list/delete?businessId=${businessId}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ itemName: itemName })
+        }
+      );
+      if (!response.ok) {
+        console.log('error');
+        return null;
+      }
+      await fetchNewItemList(); // Wait for fetchNewItemList to complete
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -253,6 +285,11 @@ export function Dashboard() {
     }
   };
 
+  const formatDate = dateTimeStr => {
+    const date = new Date(dateTimeStr);
+    return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+  };
+
   if (loading) {
     return (
       <CookieComponent
@@ -288,166 +325,229 @@ export function Dashboard() {
                 Add Item
               </button>
             </div>
-            {itemList !== null &&
-              itemList.map((item, index) => (
-                <li key={index}>
-                  <div className="relative">
-                    <div className="flex items-center ml-2">
-                      <button
-                        onClick={() => {
-                          setOpenIndex(openIndex === index ? null : index);
-                          setLocationList([]);
-                          setLoadingLocation(true);
-                        }}
-                        type="button"
-                        className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-4 w-4"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          {openIndex === index ? (
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M5 15l7-7 7 7"
-                            />
-                          ) : (
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M19 9l-7 7-7-7"
-                            />
-                          )}
-                        </svg>
-                      </button>
-                      <button
-                        onClick={() =>
-                          setOpenIndex(openIndex === index ? null : index)
-                        }
-                        type="button"
-                        className="inline-flex items-center justify-center ml-2 rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
-                        id="dropdown-menu-button"
-                      >
-                        {item.itemName}
-                      </button>
 
-                      <>
-                        <p className="m-8">
-                          Total Count:{' '}
-                          {item.largestPortionName &&
-                          item.totalCount &&
-                          item.largestPortionNumber
-                            ? (
-                                item.totalCount / item.largestPortionNumber
-                              ).toFixed(2)
-                            : 'No'}{' '}
-                          {item.largestPortionName &&
-                          item.totalCount &&
-                          item.largestPortionNumber
-                            ? item.largestPortionName
-                            : `Portion Details`}{' '}
-                        </p>
-                        <p className="m-8">
-                          Estimate:{' '}
-                          {item.largestPortionName &&
-                          item.totalCount &&
-                          item.estimate &&
-                          item.largestPortionNumber
-                            ? (
-                                item.estimate / item.largestPortionNumber
-                              ).toFixed(2)
-                            : 'No'}{' '}
-                          {item.largestPortionName &&
-                          item.totalCount &&
-                          item.estimate &&
-                          item.largestPortionNumber
-                            ? item.largestPortionName
-                            : `Portion Details`}{' '}
-                        </p>
-                      </>
-                    </div>
-                    {openIndex === index && (
-                      <div className="ml-12">
-                        <Location
-                          itemName={item.itemName}
-                          businessId={businessId}
-                          updateLocationList={updateLocationList}
-                        />
-                        {!loadingLocation ? (
-                          <div>
-                            <div className="flex items-center ml-2">
-                              <h6 className="mr-auto">Location:</h6>
+            <div className="-m-1.5 overflow-x-auto">
+              <div className="p-1.5 min-w-[1500px] inline-block align-middle">
+                <div className="overflow-hidden">
+                  <table className="table-fixed min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
+                    <thead>
+                      <tr>
+                        <th
+                          scope="col"
+                          className="px-8 py-4 text-start text-sm font-medium text-gray-500 uppercase dark:text-neutral-500 w-[20%]"
+                        >
+                          Name
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-8 py-4 text-start text-sm font-medium text-gray-500 uppercase dark:text-neutral-500 w-[20%]"
+                        >
+                          Total Count
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-8 py-4 text-start text-sm font-medium text-gray-500 uppercase dark:text-neutral-500 w-[20%]"
+                        >
+                          Estimated
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-8 py-4 text-start text-sm font-medium text-gray-500 uppercase dark:text-neutral-500 w-[20%]"
+                        >
+                          Location
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-8 py-4 text-start text-sm font-medium text-gray-500 uppercase dark:text-neutral-500 w-[20%]"
+                        >
+                          Action
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200 dark:divide-neutral-700">
+                      {itemList !== null &&
+                        itemList.map((item, index) => (
+                          <tr
+                            key={index}
+                            className="hover:bg-gray-100 dark:hover:bg-neutral-700 h-24 overflow-y-auto"
+                          >
+                            <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
+                              {item.itemName}
+                            </td>
+                            <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
+                              {item.largestPortionName &&
+                              item.totalCount &&
+                              item.largestPortionNumber
+                                ? (
+                                    item.totalCount / item.largestPortionNumber
+                                  ).toFixed(2)
+                                : 'No'}{' '}
+                              {item.largestPortionName &&
+                              item.totalCount &&
+                              item.largestPortionNumber
+                                ? item.largestPortionName
+                                : `Portion Details`}
+                            </td>
+                            <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
+                              {item.largestPortionName &&
+                              item.totalCount &&
+                              item.estimate &&
+                              item.largestPortionNumber
+                                ? (
+                                    item.estimate / item.largestPortionNumber
+                                  ).toFixed(2)
+                                : 'No'}{' '}
+                              {item.largestPortionName &&
+                              item.totalCount &&
+                              item.estimate &&
+                              item.largestPortionNumber
+                                ? item.largestPortionName
+                                : `Portion Details`}
+                            </td>
+                            <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
                               <button
-                                onClick={() =>
-                                  handleItemLogPopup(item.itemName)
-                                }
-                                type="button"
-                                className="inline-flex items-center justify-center rounded-md border border-gray-300 shadow-sm px-3 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
-                                style={{
-                                  marginRight: '100px',
-                                  verticalAlign: 'middle'
+                                onClick={e => {
+                                  setItemName(item.itemName);
+                                  setLargestPortionName(
+                                    item.largestPortionName
+                                  );
+                                  setLargestPortionNumber(
+                                    item.largestPortionNumber
+                                  );
+                                  setLocationLoad(true);
+                                  e.stopPropagation();
                                 }}
+                                type="button"
+                                className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 w-[20%]"
                               >
-                                Item Log
+                                Location
                               </button>
-                            </div>
-                            <ul>
-                              {locationList && locationList.length > 0 ? (
-                                locationList.map((location, i) => (
-                                  <li
-                                    key={i}
-                                    className="block px-4 py-2 text-sm text-gray-700"
-                                  >
-                                    {location}
-                                    <button
-                                      onClick={() =>
-                                        handleLocationPopup(location)
-                                      }
-                                      type="button"
-                                      className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
-                                    >
-                                      i
-                                    </button>
-                                    <div>
-                                      <LocationTotal
-                                        itemName={item.itemName}
-                                        location={location}
-                                        businessId={businessId}
-                                        unitName={item.largestPortionName}
-                                        unitNumber={item.largestPortionNumber}
-                                      />
-                                      <DateComponent
-                                        itemName={item.itemName}
-                                        location={location}
-                                        businessId={businessId}
-                                      />
-                                    </div>
-                                  </li>
-                                ))
-                              ) : (
-                                <li>
-                                  <h6 className="mr-auto">No Location Found</h6>
-                                </li>
-                              )}
-                            </ul>
-                          </div>
-                        ) : (
-                          <p>Loading...</p>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                </li>
-              ))}
+                            </td>
+                            <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
+                              <button
+                                onClick={e => {
+                                  setItemName(item.itemName);
+                                  setDeleteItemPopup(true);
+                                  e.stopPropagation();
+                                }}
+                                type="button"
+                                className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-red-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 w-[20%]"
+                              >
+                                Delete
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
           </ul>
         )}
       </div>
+      {locationLoad && (
+        <div>
+          <Location
+            itemName={itemName}
+            businessId={businessId}
+            updateLocationList={updateLocationList}
+          />
+          <div
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              zIndex: 100,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backdropFilter: 'blur(4px)'
+            }}
+            onClick={e => e.stopPropagation()}
+          >
+            <div
+              className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150"
+              style={{
+                width: '40%',
+                maxHeight: '70%',
+                maxWidth: '90%',
+                zIndex: 110,
+                position: 'relative'
+              }}
+              onClick={e => e.stopPropagation()}
+            >
+              <div className="flex justify-end p-2">
+                <button
+                  onClick={handleTableClosePopup}
+                  className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+                >
+                  <svg
+                    className="w-5 h-5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                    ></path>
+                  </svg>
+                </button>
+              </div>
+              <div>
+                <div className="flex items-center ml-2">
+                  <h6 className="mr-auto">Location:</h6>
+                  <button
+                    onClick={() => handleItemLogPopup(itemName)}
+                    type="button"
+                    className="inline-flex items-center justify-center rounded-md border border-gray-300 shadow-sm px-3 py-2 bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 focus:outline-none"
+                    style={{
+                      verticalAlign: 'middle'
+                    }}
+                  >
+                    Item Log
+                  </button>
+                </div>
+                <table className="min-w-full border border-collapse border-gray-300">
+                  <thead>
+                    <tr>
+                      <th className="px-6 py-3 border-r border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Location
+                      </th>
+                      <th className="px-6 py-3 border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Info
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white">
+                    {locationList.map((location, i) => (
+                      <tr key={i}>
+                        <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
+                          {location}
+                        </td>
+                        <td className="px-6 py-4 border-b border-gray-300 whitespace-nowrap text-center">
+                          <button
+                            onClick={() => handleLocationPopup(location)}
+                            type="button"
+                            className="inline-flex items-center justify-center w-6 h-6 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
+                            aria-label={`Info for ${location}`}
+                          >
+                            i
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       {popupLocation && (
         <div>
           <div
@@ -557,44 +657,173 @@ export function Dashboard() {
           </div>
         </div>
       )}
-
-      {popupItemLog && (
+      {deleteItemPopup && (
         <div
-          className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50"
-          onClick={handleClosePopup}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 1000,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backdropFilter: 'blur(4px)'
+          }}
+          onClick={e => e.stopPropagation()}
         >
           <div
-            className="bg-white p-4 rounded-md relative overflow-y-auto max-h-80"
+            className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150"
+            style={{
+              width: '40%',
+              maxHeight: '70%',
+              maxWidth: '90%',
+              zIndex: 110,
+              position: 'relative'
+            }}
             onClick={e => e.stopPropagation()}
           >
-            <button
-              className="absolute top-2 right-2"
-              onClick={handleClosePopup}
-            >
-              X
-            </button>
-            {/* Render ItemLog component here */}
-            <ItemLog
-              itemName={selectedItemName}
-              businessId={businessId}
-              locationBucket={'2024'}
-              updateItemLog={updateItemLog}
-            />
-            <p>{selectedItemName}</p>
-
-            {itemLog.map((log, index) => (
-              <div key={index}>
-                <p>Location: {log.locationName}</p>
-                <p>Date + Time: {log.updateDate}</p>
-                <p>Description: {log.logReason}</p>
-                <p>Initial Portion: {log.initialPortion}</p>
-                <p>Final Portion: {log.finalPortion}</p>
-                <br />
-              </div>
-            ))}
+            <div className="flex justify-end p-2">
+              <button
+                onClick={handleClosePopup}
+                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+            <h6 className="text-center mb-4">
+              Are you sure you want to delete this Item?
+            </h6>
+            <div className="flex justify-center">
+              <button
+                onClick={() => {
+                  handleClosePopup();
+                  deleteItem();
+                }}
+                className="bg-green-500 text-white px-4 py-2 rounded mr-4"
+              >
+                Yes
+              </button>
+              <button
+                onClick={handleClosePopup}
+                className="bg-red-500 text-white px-4 py-2 rounded"
+              >
+                No
+              </button>
+            </div>
           </div>
         </div>
       )}
+
+      {popupItemLog && (
+        <div>
+          <div
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              zIndex: 1000,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backdropFilter: 'blur(4px)'
+            }}
+            onClick={e => e.stopPropagation()}
+          >
+            <div
+              className="bg-white rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150 overflow-y-auto"
+              style={{
+                width: '30%', // Adjusted width
+                maxHeight: '80%', // Adjusted maxHeight
+                maxWidth: '95%', // Adjusted maxWidth
+                zIndex: 110,
+                position: 'relative',
+                height: '500px', // Adjusted height
+                padding: '0' // Remove padding
+              }}
+              onClick={e => e.stopPropagation()}
+            >
+              <div className="p-8">
+                <div className="flex justify-end p-2">
+                  <button
+                    onClick={handleClosePopup}
+                    className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+                  >
+                    <svg
+                      className="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                        clipRule="evenodd"
+                      ></path>
+                    </svg>
+                  </button>
+                </div>
+
+                {/* Render ItemLog component here */}
+                <ItemLog
+                  itemName={selectedItemName}
+                  businessId={businessId}
+                  locationBucket={'2024'}
+                  updateItemLog={updateItemLog}
+                />
+                <p>{selectedItemName}</p>
+                <br />
+
+                {itemLog.map((log, index) => (
+                  <div
+                    key={index}
+                    className="border-b border-gray-300 pb-4 mb-4"
+                    style={{ fontSize: '30px' }}
+                  >
+                    {' '}
+                    {/* Added fontSize style */}
+                    <p style={{ fontSize: '16px' }}>
+                      Location: {log.locationName}
+                    </p>{' '}
+                    {/* Increased font size and added bold weight */}
+                    <p style={{ fontSize: '16px' }}>
+                      Date + Time: {formatDate(log.updateDate)}
+                    </p>{' '}
+                    {/* Increased font size */}
+                    <p style={{ fontSize: '16px' }}>
+                      Description: {log.logReason}
+                    </p>{' '}
+                    {/* Increased font size */}
+                    <p style={{ fontSize: '16px' }}>
+                      Initial Portion: {log.initialPortion}
+                    </p>{' '}
+                    {/* Increased font size */}
+                    <p style={{ fontSize: '16px' }}>
+                      Final Portion: {log.finalPortion}
+                    </p>{' '}
+                    {/* Increased font size */}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {addItemPopup && (
         <div
           style={{
