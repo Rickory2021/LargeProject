@@ -23,6 +23,7 @@ function ItemsNeeded({ businessId, itemName, setItemsNeeded }) {
       }
       const data = await response.json();
       const itemNeededList = data.outputList[0]?.itemNeededList || []; // Extract itemNeededList from response data
+      console.log(`itemNeededList FROM ITEMSNEEDED.jsx: ${itemNeededList}`);
       return itemNeededList;
     } catch (error) {
       console.error('Error fetching items needed:', error);

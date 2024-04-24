@@ -24,6 +24,7 @@ function ItemsNeededWrapper({ businessId, itemName, setItemsNeeded }) {
       }
       const data = await response.json();
       const itemNeededList = data.outputList[0]?.itemNeededList || [];
+      console.log(`itemNeededList from ITEMSNEEDEDWRAPPER:${itemNeededList}`);
       return itemNeededList;
     } catch (error) {
       console.error('Error fetching items needed:', error);

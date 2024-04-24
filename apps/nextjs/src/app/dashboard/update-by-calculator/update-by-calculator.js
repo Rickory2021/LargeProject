@@ -140,25 +140,36 @@ export function UpdateByCalculator() {
     );
     console.log('Here');
 
-    // Loop through the updated itemsNeeded state
-    if (itemsNeededMap[itemName]) {
-      console.log('here');
-      itemsNeededMap[itemName].forEach(async (item, index) => {
-        console.log('here');
-        console.log(item.unitName);
+    const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/estimate-deduction/calculate-estimate?businessId=${businessId}`;
 
-        // Fetch estimateDeduction
-        const estimateDeduction = await getEstimateDeduction(
-          businessId,
-          itemName
-        );
-        // Calculate result
-        const result =
-          item.unitCost * editedPortion.newUnitNumber + estimateDeduction;
-        updatedEstimateDeduction(result, itemName);
-        // Print result to console
-        console.log(`Result for ${item.unitName}: ${result}`);
-      });
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        itemName: itemName,
+        quantity: editedPortion.newUnitNumber
+      })
+    };
+
+    try {
+      const response = await fetch(url, requestOptions);
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      // const estimateDeduction = data.output[0]?.estimateDeduction || 0;
+      await readAll();
+      // return estimateDeduction;
+    } catch (error) {
+      console.error(
+        'There was a problem fetching the estimate deduction:',
+        error
+      );
+      return null;
     }
   };
 
@@ -758,12 +769,34 @@ export function UpdateByCalculator() {
                               {item.itemName}
                             </td>
                             <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
-                              {item.totalCount / item.largestPortionNumber}{' '}
-                              {item.largestPortionName}
+                              {item.largestPortionName &&
+                              item.totalCount &&
+                              item.largestPortionNumber
+                                ? (
+                                    item.totalCount / item.largestPortionNumber
+                                  ).toFixed(2)
+                                : 'No'}{' '}
+                              {item.largestPortionName &&
+                              item.totalCount &&
+                              item.largestPortionNumber
+                                ? item.largestPortionName
+                                : `Portion Details`}
                             </td>
                             <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
-                              {item.estimate / item.largestPortionNumber}{' '}
-                              {item.largestPortionName}
+                              {item.largestPortionName &&
+                              item.totalCount &&
+                              item.estimate &&
+                              item.largestPortionNumber
+                                ? (
+                                    item.estimate / item.largestPortionNumber
+                                  ).toFixed(2)
+                                : 'No'}{' '}
+                              {item.largestPortionName &&
+                              item.totalCount &&
+                              item.estimate &&
+                              item.largestPortionNumber
+                                ? item.largestPortionName
+                                : `Portion Details`}
                             </td>
                             <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
                               <button
@@ -1802,6 +1835,14 @@ export function UpdateByCalculator() {
             )}
             {makeEstimatePopup && (
               <Portal>
+                <ItemsNeeded
+                  businessId={businessId}
+                  itemName={itemName}
+                  setItemsNeeded={setItemsNeeded}
+                  onEditItem={() => {
+                    fetchItemNeeded();
+                  }}
+                />
                 <div
                   style={{
                     position: 'fixed',
@@ -1869,6 +1910,44 @@ export function UpdateByCalculator() {
                       className="bg-gray-200 rounded-md p-2 mb-2"
                     />
                     <br />
+                    {itemsNeededMap[itemName] &&
+                    itemsNeededMap[itemName].length !== 0 ? (
+                      <table className="min-w-full border border-collapse border-gray-300">
+                        <thead>
+                          <tr>
+                            <th className="px-6 py-3 border-r border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                              Item Name
+                            </th>
+                            <th className="px-6 py-3 border-r border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                              Unit Cost
+                            </th>
+                            <th className="px-6 py-3 border-r border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                              Estimated Deduction Unit
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody className="bg-white">
+                          {itemsNeededMap[itemName] &&
+                            itemsNeededMap[itemName].map((item, index) => (
+                              <tr key={index}>
+                                <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
+                                  {item.itemName}
+                                </td>
+                                <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
+                                  {item.unitCost}
+                                </td>
+                                <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
+                                  {(
+                                    item.unitCost * editedPortion.newUnitNumber
+                                  ).toFixed(3)}
+                                </td>
+                              </tr>
+                            ))}
+                        </tbody>
+                      </table>
+                    ) : (
+                      <p>----------</p>
+                    )}
                     <button
                       onClick={() => {
                         estimateCalculator();
@@ -1878,6 +1957,7 @@ export function UpdateByCalculator() {
                     >
                       Save
                     </button>
+                    <br />
                   </div>
                 </div>
               </Portal>
