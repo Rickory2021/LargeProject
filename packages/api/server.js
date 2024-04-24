@@ -30,7 +30,12 @@ app.use((req, res, next) => {
 
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'https://slicer-project.vercel.app'],
+    origin: [
+      'http://localhost:3000',
+      'https://slicer-project-backend.vercel.app',
+      'http://localhost:3001',
+      'https://slicer-project.vercel.app'
+    ],
     // origin: ['https://large-project-nextjs.vercel.app'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
