@@ -4,7 +4,6 @@ const LocationTotal = ({
   itemName,
   location,
   businessId,
-  setCount,
   unitName,
   unitNumber
 }) => {
@@ -12,6 +11,7 @@ const LocationTotal = ({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log(`FROM LOCATIONTOTAL: LOCATION=>${location}=>${location}`);
     const fetchTotalLocationCount = async () => {
       try {
         const response = await fetch(
@@ -30,7 +30,6 @@ const LocationTotal = ({
         const data = await response.json();
         const count = data.outputList[0];
         setTotalLocationCount(count);
-        setCount(count); // Directly pass the count value here
         setLoading(false);
       } catch (error) {
         console.error('Error fetching total location count:', error);
@@ -39,7 +38,7 @@ const LocationTotal = ({
     };
 
     fetchTotalLocationCount();
-  }, [itemName, businessId, location, setCount]);
+  }, [itemName, businessId, location]);
 
   if (loading) {
     return <p>Loading...</p>;
