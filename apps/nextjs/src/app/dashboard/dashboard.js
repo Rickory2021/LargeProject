@@ -29,15 +29,10 @@ export function Dashboard() {
   const [popupLocation, setPopupLocation] = useState('');
   const [popupItemLog, setPopupItemLog] = useState(false);
   const [selectedItemName, setSelectedItemName] = useState('');
-  const [itemCountMap, setItemCountMap] = useState({});
-  const [estimatedDeductionMap, setEstimatedDeductionMap] = useState({});
   const [locationInventory, setLocationInventory] = useState({});
-  const [maxPortionMap, setMaxPortionMap] = useState({});
   const [editMode, setEditMode] = useState(false);
   const [isSideNavOpen, setIsSideNavOpen] = useState(true);
   const [addItemPopup, setAddItemPopups] = useState('');
-  const [count, setCount] = useState('');
-  const [maxPortionNumber, setMaxPortionNumber] = useState('');
 
   const handleSideNavOpen = openState => {
     setIsSideNavOpen(openState);
@@ -138,7 +133,8 @@ export function Dashboard() {
     itemName,
     newLocationInventory
   ) => {
-    if (newLocationInventory == null) {
+    console.log(`newLocationInventory:${newLocationInventory}`);
+    if (newLocationInventory == null || newLocationInventory.length == 0) {
       setLocationInventory(prevState => ({
         ...prevState,
         [locationName]: {
@@ -146,7 +142,7 @@ export function Dashboard() {
           [itemName]: defaultLocationInventory
         }
       }));
-      console.log(locationInventory);
+      console.log(`IF locationInventory:${locationInventory}`);
     } else {
       setLocationInventory(prevState => ({
         ...prevState,
@@ -155,29 +151,8 @@ export function Dashboard() {
           [itemName]: newLocationInventory
         }
       }));
-      console.log(locationInventory);
+      console.log(`ELSE locationInventory:${locationInventory}`);
     }
-  };
-
-  const updateItemCount = (itemName, newItemTotal) => {
-    setItemCountMap(prevState => ({
-      ...prevState,
-      [itemName]: newItemTotal
-    }));
-  };
-
-  const updateEstimateDeduction = (itemName, newEstimatedDeduction) => {
-    setEstimatedDeductionMap(prevState => ({
-      ...prevState,
-      [itemName]: newEstimatedDeduction
-    }));
-  };
-
-  const updateMaxPortionForItem = (itemName, newMaxPortion) => {
-    setMaxPortionMap(prevState => ({
-      ...prevState,
-      [itemName]: newMaxPortion
-    }));
   };
 
   const handleLocationPopup = location => {
@@ -355,9 +330,10 @@ export function Dashboard() {
                   <div className="relative">
                     <div className="flex items-center ml-2">
                       <button
-                        onClick={() =>
-                          setOpenIndex(openIndex === index ? null : index)
-                        }
+                        onClick={() => {
+                          setOpenIndex(openIndex === index ? null : index);
+                          setLocationList([]);
+                        }}
                         type="button"
                         className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
                       >
@@ -395,30 +371,6 @@ export function Dashboard() {
                       >
                         {item.itemName}
                       </button>
-                      {/* {!itemCountMap[item.itemName] && (
-                        <div>
-                          <ItemTotalCount
-                            businessId={businessId}
-                            itemName={item.itemName}
-                            updateItemCount={updateItemCount}
-                          />
-                        </div>
-                      )}
-                      {!estimatedDeductionMap[item.itemName] && (
-                        <div>
-                          <ItemEstimateDeduction
-                            businessId={businessId}
-                            itemName={item.itemName}
-                            estimateDeduction={updateEstimateDeduction}
-                          />
-                        </div>
-                      )}
-                      <LargestPortion
-                        businessId={businessId}
-                        itemName={item.itemName}
-                        updateMaxPortion={updateMaxPortionForItem}
-                      />
-                      Display the item count if available */}
 
                       <>
                         <p className="m-8">
@@ -477,37 +429,25 @@ export function Dashboard() {
                           updateLocationList={updateLocationList}
                         />
                         <ul>
-                          {locationList.map((location, i) => (
-                            <li
-                              key={i}
-                              className="block px-4 py-2 text-sm text-gray-700"
-                            >
-                              {location}
-                              <button
-                                onClick={() => handleLocationPopup(location)}
-                                type="button"
-                                className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
+                          {locationList && locationList.length > 0 ? (
+                            locationList.map((location, i) => (
+                              <li
+                                key={i}
+                                className="block px-4 py-2 text-sm text-gray-700"
                               >
-                                i
-                              </button>
-
-                              {!locationInventory[location] ||
-                              !locationInventory[location][item.itemName] ? (
-                                <LocationTotalCount
-                                  itemName={item.itemName}
-                                  businessId={businessId}
-                                  locationName={location}
-                                  updateLocationInventory={
-                                    updateLocationInventory
-                                  }
-                                />
-                              ) : (
+                                {location}
+                                <button
+                                  onClick={() => handleLocationPopup(location)}
+                                  type="button"
+                                  className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
+                                >
+                                  i
+                                </button>
                                 <div>
                                   <LocationTotal
                                     itemName={item.itemName}
                                     location={location}
                                     businessId={businessId}
-                                    setCount={setCount}
                                     unitName={item.largestPortionName}
                                     unitNumber={item.largestPortionNumber}
                                   />
@@ -517,9 +457,13 @@ export function Dashboard() {
                                     businessId={businessId}
                                   />
                                 </div>
-                              )}
+                              </li>
+                            ))
+                          ) : (
+                            <li>
+                              <h6 className="mr-auto">No Location Found</h6>
                             </li>
-                          ))}
+                          )}
                         </ul>
                       </div>
                     )}
