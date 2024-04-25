@@ -152,38 +152,38 @@ export function Account() {
             <h2 className="text-2xl font-bold text-center mb-4 border-b border-gray-700">
               User Information
             </h2>
-            <div className="bg-blue-400 shadow-lg rounded-lg p-8 text-center">
-              <table className="table-fixed min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
-                <tbody className="divide-y divide-gray-200 dark:divide-neutral-700">
-                  <tr className="hover:bg-gray-100 dark:hover:bg-neutral-700 h-16 overflow-y-auto">
-                    <td className="px-6 py-4 text-start text-lg font-medium text-gray-800 dark:text-neutral-200">
+            <div className="bg-white shadow-lg rounded-lg p-8 text-center">
+              <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
+                <tbody>
+                  <tr className="hover:bg-gray-100 dark:hover:bg-neutral-700">
+                    <td className="px-6 py-4 border-b border-r text-start text-lg font-medium text-gray-800 dark:text-neutral-200">
                       Name:
                     </td>
-                    <td className="px-6 py-4 text-end text-sm font-medium text-gray-800 dark:text-neutral-200">
+                    <td className="px-6 py-4 border-b text-start text-sm font-medium text-gray-800 dark:text-neutral-200">
                       {firstName} {lastName}
                     </td>
                   </tr>
-                  <tr className="hover:bg-gray-100 dark:hover:bg-neutral-700 h-16 overflow-y-auto">
-                    <td className="px-6 py-4 text-start text-lg font-medium text-gray-800 dark:text-neutral-200">
+                  <tr className="hover:bg-gray-100 dark:hover:bg-neutral-700">
+                    <td className="px-6 py-4 border-b border-r text-start text-lg font-medium text-gray-800 dark:text-neutral-200">
                       Email:
                     </td>
-                    <td className="px-6 py-4 text-end text-sm font-medium text-gray-800 dark:text-neutral-200">
+                    <td className="px-6 py-4 border-b text-start text-sm font-medium text-gray-800 dark:text-neutral-200">
                       {email}
                     </td>
                   </tr>
-                  <tr className="hover:bg-gray-100 dark:hover:bg-neutral-700 h-16 overflow-y-auto">
-                    <td className="px-6 py-4 text-start text-lg font-medium text-gray-800 dark:text-neutral-200">
+                  <tr className="hover:bg-gray-100 dark:hover:bg-neutral-700">
+                    <td className="px-6 py-4 border-b border-r text-start text-lg font-medium text-gray-800 dark:text-neutral-200">
                       Business Id:
                     </td>
-                    <td className="px-6 py-4 text-end text-sm font-medium text-gray-800 dark:text-neutral-200">
+                    <td className="px-6 py-4 border-b text-start text-sm font-medium text-gray-800 dark:text-neutral-200">
                       {businessId}
                     </td>
                   </tr>
-                  <tr className="hover:bg-gray-100 dark:hover:bg-neutral-700 h-16 overflow-y-auto">
-                    <td className="px-6 py-4 text-start text-lg font-medium text-gray-800 dark:text-neutral-200">
+                  <tr className="hover:bg-gray-100 dark:hover:bg-neutral-700">
+                    <td className="px-6 py-4 border-b border-r text-start text-lg font-medium text-gray-800 dark:text-neutral-200">
                       Business Name:
                     </td>
-                    <td className="px-6 py-4 text-end text-sm font-medium text-gray-800 dark:text-neutral-200">
+                    <td className="px-6 py-4 border-b text-start text-sm font-medium text-gray-800 dark:text-neutral-200">
                       {businessName}
                     </td>
                   </tr>
