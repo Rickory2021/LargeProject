@@ -821,7 +821,7 @@ export function Dashboard() {
                   locationBucket={'2024'}
                   updateItemLog={updateItemLog}
                 />
-                <p>{selectedItemName}</p>
+                <p>{selectedItemName} Item Log</p>
                 <br />
 
                 <table className="min-w-full border border-collapse border-gray-300">
@@ -837,10 +837,7 @@ export function Dashboard() {
                         Description
                       </th>
                       <th className="px-6 py-3 border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Initial Portion
-                      </th>
-                      <th className="px-6 py-3 border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Final Portion
+                        Net Portion
                       </th>
                     </tr>
                   </thead>
@@ -864,12 +861,12 @@ export function Dashboard() {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-left">
                           <p className="text-sm font-medium text-gray-800">
-                            {log.initialPortion}
-                          </p>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-left">
-                          <p className="text-sm font-medium text-gray-800">
-                            {log.finalPortion}
+                            {(log.finalPortion - log.initialPortion >= 0
+                              ? '+' // Add "+" sign if the result is positive
+                              : '') + // Empty string if the result is negative
+                              (log.finalPortion - log.initialPortion).toFixed(
+                                2
+                              )}
                           </p>
                         </td>
                       </tr>
