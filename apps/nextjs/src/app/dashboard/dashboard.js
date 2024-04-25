@@ -785,9 +785,7 @@ export function Dashboard() {
             <div
               className="bg-white rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150 overflow-y-auto"
               style={{
-                width: '30%', // Adjusted width
-                maxHeight: '80%', // Adjusted maxHeight
-                maxWidth: '95%', // Adjusted maxWidth
+                width: '50%', // Adjusted width
                 zIndex: 110,
                 position: 'relative',
                 height: '500px', // Adjusted height
@@ -826,36 +824,58 @@ export function Dashboard() {
                 <p>{selectedItemName}</p>
                 <br />
 
-                {itemLog.map((log, index) => (
-                  <div
-                    key={index}
-                    className="border-b border-gray-300 pb-4 mb-4"
-                    style={{ fontSize: '30px' }}
-                  >
-                    {' '}
-                    {/* Added fontSize style */}
-                    <p style={{ fontSize: '16px' }}>
-                      Location: {log.locationName}
-                    </p>{' '}
-                    {/* Increased font size and added bold weight */}
-                    <p style={{ fontSize: '16px' }}>
-                      Date + Time: {formatDate(log.updateDate)}
-                    </p>{' '}
-                    {/* Increased font size */}
-                    <p style={{ fontSize: '16px' }}>
-                      Description: {log.logReason}
-                    </p>{' '}
-                    {/* Increased font size */}
-                    <p style={{ fontSize: '16px' }}>
-                      Initial Portion: {log.initialPortion}
-                    </p>{' '}
-                    {/* Increased font size */}
-                    <p style={{ fontSize: '16px' }}>
-                      Final Portion: {log.finalPortion}
-                    </p>{' '}
-                    {/* Increased font size */}
-                  </div>
-                ))}
+                <table className="min-w-full border border-collapse border-gray-300">
+                  <thead className="bg-gray-100">
+                    <tr>
+                      <th className="px-6 py-3 border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Location
+                      </th>
+                      <th className="px-6 py-3 border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Date
+                      </th>
+                      <th className="px-6 py-3 border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Description
+                      </th>
+                      <th className="px-6 py-3 border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Initial Portion
+                      </th>
+                      <th className="px-6 py-3 border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Final Portion
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white">
+                    {itemLog.map((log, index) => (
+                      <tr key={index} className="border-b border-gray-300">
+                        <td className="px-6 py-4 whitespace-nowrap text-left">
+                          <p className="text-sm font-medium text-gray-800">
+                            {log.locationName}
+                          </p>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-left">
+                          <p className="text-sm font-medium text-gray-800">
+                            {formatDate(log.updateDate)}
+                          </p>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-left">
+                          <p className="text-sm font-medium text-gray-800">
+                            {log.logReason}
+                          </p>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-left">
+                          <p className="text-sm font-medium text-gray-800">
+                            {log.initialPortion}
+                          </p>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-left">
+                          <p className="text-sm font-medium text-gray-800">
+                            {log.finalPortion}
+                          </p>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
