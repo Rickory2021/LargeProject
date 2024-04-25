@@ -1306,6 +1306,7 @@ export function UpdateByItem() {
                           EditLocationMetaData(popupLocation);
                           handleClosePopup(); // Close the popup after saving
                         }}
+                        className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
                       >
                         Save
                       </button>
@@ -1324,6 +1325,7 @@ export function UpdateByItem() {
                           setNewLocationMetaData(locationMetaData);
                           setEditMode(true);
                         }}
+                        className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
                       >
                         Edit
                       </button>
@@ -1396,6 +1398,7 @@ export function UpdateByItem() {
                       addLocation();
                       handleClosePopup();
                     }}
+                    className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
                   >
                     Create
                   </button>
@@ -1469,8 +1472,10 @@ export function UpdateByItem() {
                   <br />
                   <button
                     onClick={() => {
-                      updateInventoryItem(), handleClosePopup();
+                      updateInventoryItem();
+                      handleClosePopup();
                     }}
+                    className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
                   >
                     Save
                   </button>
@@ -1578,6 +1583,7 @@ export function UpdateByItem() {
                       addInventoryItem();
                       handleClosePopup();
                     }}
+                    className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
                   >
                     Create
                   </button>
@@ -1638,7 +1644,7 @@ export function UpdateByItem() {
                   <br />
                   <div className="flex justify-between">
                     <button
-                      className="bg-green-500 text-white px-4 py-2 rounded-md mr-2"
+                      className="bg-green-500 text-white px-4 py-2 rounded-md"
                       onClick={() => {
                         handleDeleteItem();
                         handleClosePopup();
@@ -1647,12 +1653,13 @@ export function UpdateByItem() {
                       Yes
                     </button>
                     <button
-                      className="bg-red-500 text-white px-4 py-2 rounded-md"
+                      className="bg-red-500 text-white px-4 py-2 rounded-md ml-2"
                       onClick={handleClosePopup}
                     >
                       No
                     </button>
                   </div>
+                  s
                 </div>
               </div>
             )}
