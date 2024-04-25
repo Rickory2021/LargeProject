@@ -1164,7 +1164,7 @@ export function UpdateByItem() {
                       <thead>
                         <tr>
                           <th className="px-6 py-3 border-r border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Portion Info
+                            Portion Amount w/ Units
                           </th>
                           <th className="px-6 py-3 border-r border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Note
@@ -1181,8 +1181,8 @@ export function UpdateByItem() {
                               {selectedItem &&
                               selectedItem.unitNumber !== 0 &&
                               selectedItem.unitNumber
-                                ? `portionNumber: ${item.portionNumber / selectedItem.unitNumber} ${selectedItem.unitName}`
-                                : `portionNumber: ${item.portionNumber} Base Units`}
+                                ? `${item.portionNumber / selectedItem.unitNumber} ${selectedItem.unitName}`
+                                : `${item.portionNumber} Base Units`}
                             </td>
                             <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
                               Note: {item.metaData}
