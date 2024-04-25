@@ -8,7 +8,7 @@ let dbInstance = null;
 const connectToServer = async () => {
   try {
     await client.connect();
-    console.log('Successfully connected to MongoDB.');
+    // console.log('Successfully connected to MongoDB.');
     dbInstance = client.db('inventory_tracker');
   } catch (err) {
     console.error('Failed to connect to MongoDB', err);

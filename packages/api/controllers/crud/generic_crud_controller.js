@@ -16,12 +16,12 @@ class GenericCRUDController {
       // Check if the document exists
       if (existingItem !== null) {
         // Modify this line
-        console.log(`ID: ${businessId} at ${field} value: ${value} does exist`);
+        // console.log(`ID: ${businessId} at ${field} value: ${value} does exist`);
         return true;
       } else {
-        console.log(
-          `ID: ${businessId} at ${field} value: ${value} does not exist`
-        );
+        // console.log(
+        //   `ID: ${businessId} at ${field} value: ${value} does not exist`
+        // );
         return false;
       }
     } catch (error) {
@@ -38,10 +38,10 @@ class GenericCRUDController {
       // Check if the document exists
       if (existingItem !== null) {
         // Modify this line
-        console.log(`ID: ${businessId} by ${query} does exist`);
+        // console.log(`ID: ${businessId} by ${query} does exist`);
         return true;
       } else {
-        console.log(`ID: ${businessId} by ${query} does not exist`);
+        // console.log(`ID: ${businessId} by ${query} does not exist`);
         return false;
       }
     } catch (error) {
@@ -63,13 +63,13 @@ class GenericCRUDController {
 
       //Check if any documents were modified
       if (result.modifiedCount > 0) {
-        console.log(`Successfully pushed new item to ${field}`);
+        // console.log(`Successfully pushed new item to ${field}`);
       } else {
-        console.log(`Failed to push new item to ${field}`);
+        // console.log(`Failed to push new item to ${field}`);
       }
       return result;
     } catch (error) {
-      console.error('Error pushing item:', error);
+      // console.error('Error pushing item:', error);
     }
   }
 
@@ -94,17 +94,17 @@ class GenericCRUDController {
 
       //Check if any documents were modified
       if (result.modifiedCount > 0) {
-        console.log(
-          `Successfully pushed new item :filterQuery ${filterQuery} updateQuery ${updateQuery}`
-        );
+        // console.log(
+        //   `Successfully pushed new item :filterQuery ${filterQuery} updateQuery ${updateQuery}`
+        // );
       } else {
-        console.log(
-          `Failed to push new item :filterQuery ${filterQuery} updateQuery ${updateQuery}`
-        );
+        // console.log(
+        //   `Failed to push new item :filterQuery ${filterQuery} updateQuery ${updateQuery}`
+        // );
       }
       return result;
     } catch (error) {
-      console.error('Error pushing item:', error);
+      // console.error('Error pushing item:', error);
     }
   }
 
@@ -122,12 +122,12 @@ class GenericCRUDController {
       ]);
 
       if (!result || result.length === 0) {
-        console.log('User or posts not found');
+        // console.log('User or posts not found');
         return null;
       }
 
       // Extract the names from the result
-      console.log('result from generic:', result);
+      // console.log('result from generic:', result);
       return result;
     } catch (error) {
       console.error('Error:', error);
@@ -141,7 +141,7 @@ class GenericCRUDController {
     // console.log(projectFieldsArray);
     // let projectionJson = this.constructJson(projectFieldsArray);
     // console.log(projectionJson);
-    console.log(updateJson);
+    // console.log(updateJson);
     try {
       let result = null;
       if (arrayFiltersJson === null) {
@@ -162,12 +162,12 @@ class GenericCRUDController {
       }
 
       if (!result || result.length === 0) {
-        console.log('User or posts not found');
+        // console.log('User or posts not found');
         return null;
       }
 
       // Extract the names from the result
-      console.log('result from generic:', result);
+      // console.log('result from generic:', result);
       return result;
     } catch (error) {
       console.error('Error:', error);
@@ -183,24 +183,24 @@ class GenericCRUDController {
     // console.log(projectionJson);
     // Update all documents where itemList contains an item with the specified itemId
     try {
-      console.log('About to delete');
+      // console.log('About to delete');
 
       const result = await Business.updateOne(
         { _id: businessId },
         { $pull: { [arrayField]: { [fieldToCheck]: checkString } } }
       );
 
-      console.log('MongoDB Update Result:', result);
+      // console.log('MongoDB Update Result:', result);
 
       //Check if any documents were modified
       if (result.modifiedCount > 0) {
-        console.log(
-          `Successfully deleted all embedded document with ${fieldToCheck}:${checkString} from ${businessId}=>${arrayField}`
-        );
+        // console.log(
+        //   `Successfully deleted all embedded document with ${fieldToCheck}:${checkString} from ${businessId}=>${arrayField}`
+        // );
       } else {
-        console.log(
-          `Failed to Delete all embedded documents with ${fieldToCheck}:${checkString} ${businessId}=>from ${arrayField}`
-        );
+        // console.log(
+        //   `Failed to Delete all embedded documents with ${fieldToCheck}:${checkString} ${businessId}=>from ${arrayField}`
+        // );
       }
       return result;
     } catch (error) {
@@ -220,13 +220,13 @@ class GenericCRUDController {
       const result = await Business.updateOne(filterJson, updateJson);
       //Check if any documents were modified
       if (result.modifiedCount > 0) {
-        console.log(
-          `Successfully Delete All embedded document with ${filterJson} with action ${updateJson}`
-        );
+        // console.log(
+        //   `Successfully Delete All embedded document with ${filterJson} with action ${updateJson}`
+        // );
       } else {
-        console.log(
-          `Failed Delete embedded All document with  ${filterJson} with action ${updateJson}`
-        );
+        // console.log(
+        //   `Failed Delete embedded All document with  ${filterJson} with action ${updateJson}`
+        // );
       }
       return result;
     } catch (error) {

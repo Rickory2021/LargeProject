@@ -30,13 +30,13 @@ class ItemRelationController extends GenericCRUDController {
         { $match: { 'usedInList.itemName': finishedItemName } },
         { $project: { itemName: '$usedInList.itemName' } }
       ]);
-      console.log(rawUsedInList);
+      // // console.log(rawUsedInList);
       if (rawUsedInList.length === 0) {
-        console.log(
+        // console.log(
           `Raw ${rawItemName} not found item Finishd '${finishedItemName}' in usedInList`
         );
       } else {
-        console.log(
+        // console.log(
           `Raw ${rawItemName} found item Finishd '${finishedItemName}' in usedInList`
         );
         return false;
@@ -50,13 +50,13 @@ class ItemRelationController extends GenericCRUDController {
         { $match: { 'itemNeededList.itemName': finishedItemName } },
         { $project: { itemName: '$itemNeededList.itemName' } }
       ]);
-      console.log(rawItemNeededList);
+      // console.log(rawItemNeededList);
       if (rawItemNeededList.length === 0) {
-        console.log(
+        // console.log(
           `Raw ${rawItemName} not found item Finishd '${finishedItemName}' in itemNeededList`
         );
       } else {
-        console.log(
+        // console.log(
           `Raw ${rawItemName} found item Finishd '${finishedItemName}' in itemNeededList`
         );
         return false;
@@ -75,14 +75,14 @@ class ItemRelationController extends GenericCRUDController {
     const { rawItemName, finishedItemName, unitCost } = req.body;
 
     try {
-      console.log('Check if Both Items Exist');
+      // console.log('Check if Both Items Exist');
       let doesExistRaw = await this.doesExistItem(
         businessId,
         'itemList.itemName',
         rawItemName
       );
       if (!doesExistRaw) {
-        console.log(`Raw Item Doesn't Exist`);
+        // console.log(`Raw Item Doesn't Exist`);
         return res.status(409).json({ error: `Raw Item Doesn't Exist` });
       }
       let doesExistFinished = await this.doesExistItem(
@@ -91,7 +91,7 @@ class ItemRelationController extends GenericCRUDController {
         finishedItemName
       );
       if (!doesExistFinished) {
-        console.log(`Finished Item Doesn't Exist`);
+        // console.log(`Finished Item Doesn't Exist`);
         return res.status(409).json({ error: `Finished Item Doesn't Exist` });
       }
       let doesConnectionExist = await this.doesExistRelation(
@@ -100,13 +100,13 @@ class ItemRelationController extends GenericCRUDController {
         finishedItemName
       );
       if (!doesConnectionExist) {
-        console.log('Item Connection has already been made');
+        // console.log('Item Connection has already been made');
         return res
           .status(409)
           .json({ error: 'Item Connection has already been made' });
       }
 
-      console.log('About to create relation');
+      // console.log('About to create relation');
       const rawUsedInData = { itemName: finishedItemName, unitCost: unitCost };
       const statusDataRaw = await super.createGenericByQuery(
         {
@@ -166,10 +166,10 @@ class ItemRelationController extends GenericCRUDController {
       const businessId = req.query.businessId;
       let mongooseBusinessID = new mongoose.Types.ObjectId(businessId);
       let { itemName } = req.body;
-      // console.log(itemName);
+      // // console.log(itemName);
       // { $limit: outputSize }, // Project only the name field for each post
       // { $skip: outset } // Project only the name field for each post
-      console.log('About to read');
+      // console.log('About to read');
       const fieldValues = await super.readGeneric([
         { $match: { _id: mongooseBusinessID } },
         { $unwind: '$itemList' },
@@ -190,10 +190,10 @@ class ItemRelationController extends GenericCRUDController {
       const businessId = req.query.businessId;
       let mongooseBusinessID = new mongoose.Types.ObjectId(businessId);
       let { itemName } = req.body;
-      // console.log(itemName);
+      // // console.log(itemName);
       // { $limit: outputSize }, // Project only the name field for each post
       // { $skip: outset } // Project only the name field for each post
-      console.log('About to read');
+      // console.log('About to read');
       const fieldValues = await super.readGeneric([
         { $match: { _id: mongooseBusinessID } },
         { $unwind: '$itemList' },
@@ -214,7 +214,7 @@ class ItemRelationController extends GenericCRUDController {
     const { rawItemName, finishedItemName, newUnitCost } = req.body;
     const businessId = req.query.businessId;
     try {
-      console.log('About to update Raw Items Used In List');
+      // console.log('About to update Raw Items Used In List');
       const statusDataRaw = await super.updateGeneric(
         {
           _id: businessId,
@@ -233,9 +233,9 @@ class ItemRelationController extends GenericCRUDController {
           ]
         }
       );
-      console.log(statusDataRaw);
+      // console.log(statusDataRaw);
 
-      console.log('About to update Finished Items Needed List');
+      // console.log('About to update Finished Items Needed List');
       const statusDataFinished = await super.updateGeneric(
         {
           _id: businessId,
@@ -267,7 +267,7 @@ class ItemRelationController extends GenericCRUDController {
     const businessId = req.query.businessId;
     const { rawItemName, finishedItemName } = req.body;
     try {
-      console.log('About to delete Raws Used In Connection');
+      // console.log('About to delete Raws Used In Connection');
       const statusDataRaw = await super.deleteGenericByQuery(
         {
           _id: businessId,
@@ -281,7 +281,7 @@ class ItemRelationController extends GenericCRUDController {
         }
       );
 
-      console.log('About to delete Finished Needed In Connection');
+      // console.log('About to delete Finished Needed In Connection');
       const statusDataFinished = await super.deleteGenericByQuery(
         {
           _id: businessId,

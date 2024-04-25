@@ -112,11 +112,11 @@ module.exports.forgotPassword = async (req, res) => {
 
     const resetToken = user.generatePasswordResetToken();
     await user.save({ validateBeforeSave: false });
-    console.log(`resetToken ${resetToken}`);
-    console.log(`user ${user}`);
-    console.log(
-      `UnHASHED:${crypto.createHash('sha256').update(resetToken).digest('hex')}`
-    );
+    // console.log(`resetToken ${resetToken}`);
+    // console.log(`user ${user}`);
+    // console.log(
+    //   `UnHASHED:${crypto.createHash('sha256').update(resetToken).digest('hex')}`
+    // );
 
     // const resetUrl = `${req.protocol}://${req.get('host')}/forgot-password-change?token=${resetToken}`;
     const resetUrl = `https://slicer-project.vercel.app/forgot-password-change?token=${resetToken}`;
@@ -166,8 +166,8 @@ exports.resetPassword = async (req, res) => {
     //   passworResetExpires: { $gt: Date.now() }
     // });
     const currentDate = new Date();
-    console.log(currentDate);
-    console.log(currentDate.toISOString());
+    // console.log(currentDate);
+    // console.log(currentDate.toISOString());
 
     const user = await User.findOne({
       passwordResetToken: token,
@@ -288,11 +288,11 @@ module.exports.Login = async (req, res) => {
 module.exports.GetUserInfo = async (req, res) => {
   try {
     const userId = req.query.id;
-    console.log(userId);
+    // console.log(userId);
 
     // Find user by username using the User model
     const user = await User.findOne({ _id: userId });
-    console.log(user);
+    // console.log(user);
 
     if (!user) {
       return res.status(400).json({ error: 'Incorrect userId' });

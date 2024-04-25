@@ -32,14 +32,14 @@ class ItemInventoryController extends GenericCRUDController {
         { $match: { 'locationItemList.locationName': locationName } },
         { $project: { locationName: '$locationItemList.locationName' } }
       ]);
-      console.log(locationInfo);
+      // // console.log(locationInfo);
       if (locationInfo.length === 0) {
-        console.log(
+        // console.log(
           `locationInfo '${locationName}' not found for item '${itemName}' in business '${businessId}'`
         );
         return false;
       } else {
-        console.log(
+        // console.log(
           `locationInfo '${locationName}' found for item '${itemName}' in business '${businessId}'`
         );
         return true;
@@ -57,14 +57,14 @@ class ItemInventoryController extends GenericCRUDController {
         'locationMetaDataList.locationName',
         locationName
       );
-      console.log(locationMetaData);
+      // console.log(locationMetaData);
       if (locationMetaData.length === 0) {
-        console.log(
+        // console.log(
           `locationMetaData '${locationName}' not found in business '${businessId}'`
         );
         return false;
       } else {
-        console.log(
+        // console.log(
           `locationMetaData '${locationName}' found for in business '${businessId}'`
         );
         return true;
@@ -80,11 +80,11 @@ class ItemInventoryController extends GenericCRUDController {
     let businessId = req.query.businessId;
     let { itemName, locationName, portionNumber, metaData, logReason } =
       req.body;
-    console.log(
+    // console.log(
       `businessId:${businessId} itemName :${itemName} locationName :${locationName} portionNumber :${portionNumber} metaData :${metaData}`
     );
     try {
-      console.log('About to create');
+      // console.log('About to create');
       const locationInventoryObject = new LocationInventory({
         portionNumber,
         metaData
@@ -109,7 +109,7 @@ class ItemInventoryController extends GenericCRUDController {
         }
       );
       if (statusDetails && statusDetails.modifiedCount > 0) {
-        console.log('Documents were modified successfully.');
+        // console.log('Documents were modified successfully.');
         const mockReq = {
           query: { businessId: businessId },
           body: {
@@ -150,7 +150,7 @@ class ItemInventoryController extends GenericCRUDController {
       const businessId = req.query.businessId;
       let mongooseBusinessID = new mongoose.Types.ObjectId(businessId);
       let { itemName, locationName } = req.body;
-      console.log('About to read');
+      // console.log('About to read');
       const fieldValues = await super.readGeneric([
         {
           $match: {
@@ -192,12 +192,12 @@ class ItemInventoryController extends GenericCRUDController {
       req.body;
     const businessId = req.query.businessId;
     try {
-      console.log('About to update');
+      // console.log('About to update');
       const business = await Business.findById(businessId);
 
       // Check if the business exists
       if (!business) {
-        console.log('Business not found');
+        // console.log('Business not found');
         return res.status(500).json({ error: 'Business not found' });
       }
 
@@ -206,7 +206,7 @@ class ItemInventoryController extends GenericCRUDController {
 
       // Check if the item exists
       if (!item) {
-        console.log('Item not found');
+        // console.log('Item not found');
         return res.status(500).json({ error: 'Item not found' });
       }
 
@@ -217,7 +217,7 @@ class ItemInventoryController extends GenericCRUDController {
 
       // Check if the location item exists
       if (!locationItem) {
-        console.log('Location item not found');
+        // console.log('Location item not found');
         return res.status(500).json({ error: 'Location item not found' });
       }
       let initialPortion;
@@ -226,14 +226,14 @@ class ItemInventoryController extends GenericCRUDController {
         initialPortion = locationItem.inventoryList[index].portionNumber;
         locationItem.inventoryList[index].portionNumber = newNumber;
       } else {
-        console.log('Invalid index');
+        // console.log('Invalid index');
         return res.status(500).json({ error: 'Invalid index' });
       }
 
       // Save the changes to the database
       const statusDetails = await business.save();
       if (statusDetails) {
-        console.log('Documents were modified successfully.');
+        // console.log('Documents were modified successfully.');
         const mockReq = {
           query: { businessId: businessId },
           body: {
@@ -262,7 +262,7 @@ class ItemInventoryController extends GenericCRUDController {
         };
         createLog(mockReq, mockRes);
       }
-      console.log('Portion number updated successfully');
+      // console.log('Portion number updated successfully');
       return res.status(200).json({ statusDetails: [statusDetails] });
     } catch (error) {
       return res.status(500).json({ error: error.message });
@@ -274,12 +274,12 @@ class ItemInventoryController extends GenericCRUDController {
     const { itemName, findLocationName, index, newMetaData } = req.body;
     const businessId = req.query.businessId;
     try {
-      console.log('About to update');
+      // console.log('About to update');
       const business = await Business.findById(businessId);
 
       // Check if the business exists
       if (!business) {
-        console.log('Business not found');
+        // console.log('Business not found');
         return res.status(500).json({ error: 'Business not found' });
       }
 
@@ -288,7 +288,7 @@ class ItemInventoryController extends GenericCRUDController {
 
       // Check if the item exists
       if (!item) {
-        console.log('Item not found');
+        // console.log('Item not found');
         return res.status(500).json({ error: 'Item not found' });
       }
 
@@ -299,7 +299,7 @@ class ItemInventoryController extends GenericCRUDController {
 
       // Check if the location item exists
       if (!locationItem) {
-        console.log('Location item not found');
+        // console.log('Location item not found');
         return res.status(500).json({ error: 'Location item not found' });
       }
 
@@ -307,13 +307,13 @@ class ItemInventoryController extends GenericCRUDController {
       if (index >= 0 && index < locationItem.inventoryList.length) {
         locationItem.inventoryList[index].metaData = newMetaData;
       } else {
-        console.log('Invalid index');
+        // console.log('Invalid index');
         return res.status(500).json({ error: 'Invalid index' });
       }
 
       // Save the changes to the database
       const statusDetails = await business.save();
-      console.log('Portion number updated successfully');
+      // console.log('Portion number updated successfully');
       return res.status(200).json({ statusDetails: [statusDetails] });
     } catch (error) {
       return res.status(500).json({ error: error.message });
@@ -330,7 +330,7 @@ class ItemInventoryController extends GenericCRUDController {
 
       // Check if the business exists
       if (!business) {
-        console.log('Business not found');
+        // console.log('Business not found');
         return res.status(500).json({ error: 'Business not found' });
       }
 
@@ -339,7 +339,7 @@ class ItemInventoryController extends GenericCRUDController {
 
       // Check if the item exists
       if (!item) {
-        console.log('Item not found');
+        // console.log('Item not found');
         return res.status(500).json({ error: 'Item not found' });
       }
 
@@ -350,7 +350,7 @@ class ItemInventoryController extends GenericCRUDController {
 
       // Check if the location item exists
       if (!locationItem) {
-        console.log('Location item not found');
+        // console.log('Location item not found');
         return res.status(500).json({ error: 'Location item not found' });
       }
 
@@ -358,13 +358,13 @@ class ItemInventoryController extends GenericCRUDController {
       if (index >= 0 && index < locationItem.inventoryList.length) {
         locationItem.inventoryList.splice(index, 1);
       } else {
-        console.log('Invalid index');
+        // console.log('Invalid index');
         return res.status(500).json({ error: 'Invalid index' });
       }
 
       // Save the changes to the database
       const statusData = await business.save();
-      console.log('Inventory item deleted successfully');
+      // console.log('Inventory item deleted successfully');
       return res.status(200).json({ statusDetails: [statusData] });
     } catch (error) {
       return res.status(500).json({ error: error.message });

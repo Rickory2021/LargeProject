@@ -31,14 +31,14 @@ class PortionInfoListController extends GenericCRUDController {
         { $match: { 'portionInfoList.unitName': unitName } },
         { $project: { unitName: '$portionInfoList.unitName' } }
       ]);
-      console.log(portionInfo);
+      // // console.log(portionInfo);
       if (portionInfo.length === 0) {
-        console.log(
+        // console.log(
           `UnitName '${unitName}' not found for item '${itemName}' in business '${businessId}'`
         );
         return false;
       } else {
-        console.log(
+        // console.log(
           `UnitName '${unitName}' found for item '${itemName}' in business '${businessId}'`
         );
         return true;
@@ -53,24 +53,24 @@ class PortionInfoListController extends GenericCRUDController {
   async createPortionInfo(req, res) {
     let businessId = req.query.businessId;
     let { itemName, unitName, unitNumber } = req.body;
-    console.log(
+    // console.log(
       `businessId:${businessId} itemName :${itemName} unitName :${unitName} unitNumber :${unitNumber}`
     );
 
     try {
-      console.log('Check if Duplicate ItemName');
+      // console.log('Check if Duplicate ItemName');
       let doesExist = await this.doesExistUnitName(
         businessId,
         itemName,
         unitName
       );
       if (doesExist) {
-        console.log('DUPLICATE of New UnitName found in item');
+        // console.log('DUPLICATE of New UnitName found in item');
         return res
           .status(409)
           .json({ error: 'DUPLICATE New UnitName found in item' });
       }
-      console.log('About to create');
+      // console.log('About to create');
       const newPortionInfoObject = new PortionInfo({
         unitName: unitName,
         unitNumber: unitNumber
@@ -115,10 +115,10 @@ class PortionInfoListController extends GenericCRUDController {
 
       let mongooseBusinessID = new mongoose.Types.ObjectId(businessId);
       let { itemName } = req.body;
-      // console.log(itemName);
+      // // console.log(itemName);
       // { $limit: outputSize }, // Project only the name field for each post
       // { $skip: outset } // Project only the name field for each post
-      console.log('About to read');
+      // console.log('About to read');
       const fieldValues = await super.readGeneric([
         { $match: { _id: mongooseBusinessID } },
         { $unwind: '$itemList' },
@@ -139,19 +139,19 @@ class PortionInfoListController extends GenericCRUDController {
     const { itemName, findUnitName, newUnitName } = req.body;
     const businessId = req.query.businessId;
     try {
-      console.log('Check if Duplicate ItemName');
+      // console.log('Check if Duplicate ItemName');
       let doesExist = await this.doesExistUnitName(
         businessId,
         itemName,
         newUnitName
       );
       if (doesExist) {
-        console.log('DUPLICATE of New UnitName found in item');
+        // console.log('DUPLICATE of New UnitName found in item');
         return res
           .status(409)
           .json({ error: 'DUPLICATE New UnitName found in item' });
       }
-      console.log('About to update');
+      // console.log('About to update');
       const statusDetails = await super.updateGeneric(
         {
           _id: businessId,
@@ -182,7 +182,7 @@ class PortionInfoListController extends GenericCRUDController {
     const { itemName, findUnitName, newUnitNumber } = req.body;
     const businessId = req.query.businessId;
     try {
-      console.log('About to update');
+      // console.log('About to update');
       const statusDetails = await super.updateGeneric(
         {
           _id: businessId,

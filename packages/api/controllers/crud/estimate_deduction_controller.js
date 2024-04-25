@@ -10,11 +10,11 @@ class EstimateDeductionController extends GenericCRUDController {
   }
   //req.query.businessId
   async readEstimateDeduction(req, res) {
-    console.log('readEstimateDeduction');
+    // console.log('readEstimateDeduction');
     try {
       const businessId = req.query.businessId;
       let { itemName } = req.body;
-      console.log('About to read');
+      // console.log('About to read');
       let mongooseBusinessID = new mongoose.Types.ObjectId(businessId);
       // { $limit: outputSize }, // Project only the name field for each post
       // { $skip: outset } // Project only the name field for each post
@@ -42,7 +42,7 @@ class EstimateDeductionController extends GenericCRUDController {
     const { newEstimateDeduction, findItemName } = req.body;
     const businessId = req.query.businessId;
     try {
-      console.log('About to update');
+      // console.log('About to update');
       const statusDetails = await super.updateGeneric(
         {
           _id: businessId,
@@ -59,9 +59,9 @@ class EstimateDeductionController extends GenericCRUDController {
   //req.query.businessId
   async calculateEstimate(req, res) {
     const { itemName, quantity } = req.body;
-    console.log(typeof quantity);
+    // console.log(typeof quantity);
     const businessId = req.query.businessId;
-    console.log('calculateEstimate');
+    // console.log('calculateEstimate');
     try {
       const business = await Business.findById(businessId);
       if (!business) {
@@ -71,14 +71,14 @@ class EstimateDeductionController extends GenericCRUDController {
       // Find the item in the business's itemList by name
       const item = business.itemList.find(item => item.itemName === itemName);
       if (!item) {
-        console.log('Item not found');
+        // console.log('Item not found');
         return;
       }
 
       // Iterate over the itemNeededList
       for (const neededItem of item.itemNeededList) {
         const { itemName: neededItemName, unitCost } = neededItem;
-        console.log(`neededItemName:${neededItemName}\tunitCost:${unitCost}`);
+        // console.log(`neededItemName:${neededItemName}\tunitCost:${unitCost}`);
 
         // Find the needed item by name
         const neededItemDoc = business.itemList.find(
@@ -86,7 +86,7 @@ class EstimateDeductionController extends GenericCRUDController {
         );
 
         if (!neededItemDoc) {
-          console.log(`Needed item ${neededItemName} not found`);
+          // console.log(`Needed item ${neededItemName} not found`);
           continue;
         }
 
@@ -97,8 +97,8 @@ class EstimateDeductionController extends GenericCRUDController {
         // Save the updated needed item
         await business.save();
       }
-      console.log('Estimate deduction updated successfully');
-      console.log(`Distributor's ItemName updated successfully`);
+      // console.log('Estimate deduction updated successfully');
+      // console.log(`Distributor's ItemName updated successfully`);
       return res.status(200).json({
         statusDetails: [
           {

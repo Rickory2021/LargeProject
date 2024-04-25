@@ -31,14 +31,14 @@ class ItemLocationController extends GenericCRUDController {
         { $match: { 'locationItemList.locationName': locationName } },
         { $project: { locationName: '$locationItemList.locationName' } }
       ]);
-      console.log(locationInfo);
+      // // console.log(locationInfo);
       if (locationInfo.length === 0) {
-        console.log(
+        // console.log(
           `locationInfo '${locationName}' not found for item '${itemName}' in business '${businessId}'`
         );
         return false;
       } else {
-        console.log(
+        // console.log(
           `locationInfo '${locationName}' found for item '${itemName}' in business '${businessId}'`
         );
         return true;
@@ -56,14 +56,14 @@ class ItemLocationController extends GenericCRUDController {
         'locationMetaDataList.locationName',
         locationName
       );
-      console.log(locationMetaData);
+      // console.log(locationMetaData);
       if (locationMetaData.length === 0) {
-        console.log(
+        // console.log(
           `locationMetaData '${locationName}' not found in business '${businessId}'`
         );
         return false;
       } else {
-        console.log(
+        // console.log(
           `locationMetaData '${locationName}' found for in business '${businessId}'`
         );
         return true;
@@ -78,25 +78,25 @@ class ItemLocationController extends GenericCRUDController {
   async createItemLocation(req, res) {
     let businessId = req.query.businessId;
     let { itemName, locationName } = req.body;
-    console.log(
+    // console.log(
       `businessId:${businessId} itemName :${itemName} locationName :${locationName}`
     );
     let createItemLocationStatus, createLocationMetadataStatus;
 
     try {
-      console.log('Check if Duplicate Location Name in Item Location');
+      // console.log('Check if Duplicate Location Name in Item Location');
       let doesExist = await this.doesExistLocationName(
         businessId,
         itemName,
         locationName
       );
       if (doesExist) {
-        console.log('DUPLICATE of New Location Name in Item found in item');
+        // console.log('DUPLICATE of New Location Name in Item found in item');
         return res
           .status(409)
           .json({ error: 'DUPLICATE New Location Name in Item found in item' });
       }
-      console.log('About to create');
+      // console.log('About to create');
       createItemLocationStatus = await super.createGenericByQuery(
         {
           _id: businessId,
@@ -112,7 +112,7 @@ class ItemLocationController extends GenericCRUDController {
       const business = await Business.findById(businessId);
 
       if (!business) {
-        console.log('Business not found');
+        // console.log('Business not found');
         return res.status(500).json({ error: 'Business not found' });
       }
 
@@ -120,7 +120,7 @@ class ItemLocationController extends GenericCRUDController {
       const item = business.itemList.find(item => item.itemName === itemName);
 
       if (!item) {
-        console.log('Item not found in the Business');
+        // console.log('Item not found in the Business');
         return res
           .status(500)
           .json({ error: 'Item not found in the Business' });
@@ -196,7 +196,7 @@ class ItemLocationController extends GenericCRUDController {
       const businessId = req.query.businessId;
       let mongooseBusinessID = new mongoose.Types.ObjectId(businessId);
       let { itemName } = req.body;
-      console.log('About to read');
+      // console.log('About to read');
       const fieldValues = await super.readGeneric([
         { $match: { _id: mongooseBusinessID } },
         { $unwind: '$itemList' },
@@ -222,7 +222,7 @@ class ItemLocationController extends GenericCRUDController {
       const businessId = req.query.businessId;
       let mongooseBusinessID = new mongoose.Types.ObjectId(businessId);
       let { itemName, locationName } = req.body;
-      console.log('About to read');
+      // console.log('About to read');
       const fieldValues = await super.readGeneric([
         { $match: { _id: mongooseBusinessID } },
         { $unwind: '$itemList' },
@@ -251,19 +251,19 @@ class ItemLocationController extends GenericCRUDController {
     const { itemName, findLocationName, newLocationName } = req.body;
     const businessId = req.query.businessId;
     try {
-      console.log('Check if Duplicate locationName');
+      // console.log('Check if Duplicate locationName');
       let doesExist = await this.doesExistLocationName(
         businessId,
         itemName,
         newLocationName
       );
       if (doesExist) {
-        console.log('DUPLICATE of newLocationName found in item');
+        // console.log('DUPLICATE of newLocationName found in item');
         return res
           .status(409)
           .json({ error: 'DUPLICATE newLocationName found in item' });
       }
-      console.log('About to update');
+      // console.log('About to update');
       const fieldValues = await super.updateGeneric(
         {
           _id: businessId,
@@ -347,11 +347,11 @@ class ItemLocationController extends GenericCRUDController {
         sortedLogs = locationItemLog.locationBucketLog.sort((a, b) => {
           // Check if a and b have locationName equal to inputLocationName
           const aIsInputLocation = a.locationName === locationName;
-          console.log(
+          // console.log(
             `aIsInputLocation=>${aIsInputLocation} = ${a.locationName} === ${locationName}`
           );
           const bIsInputLocation = b.locationName === locationName;
-          console.log(
+          // console.log(
             `aIsInputLocation=>${bIsInputLocation} = ${b.locationName} === ${locationName}`
           );
           // If both a and b are inputLocation, sort by updateDate
@@ -410,8 +410,8 @@ class ItemLocationController extends GenericCRUDController {
       if (!item) {
         throw new Error('Item not found in the specified business');
       }
-      console.log('Location Name:', locationName);
-      console.log('Location Item List:', item.locationItemList);
+      // console.log('Location Name:', locationName);
+      // console.log('Location Item List:', item.locationItemList);
 
       const locationItem = item.locationItemList.find(
         location => location.locationName === locationName

@@ -25,20 +25,20 @@ class ItemListController extends GenericCRUDController {
     const { itemName } = req.body;
 
     try {
-      console.log('Check if Duplicate ItemName');
+      // console.log('Check if Duplicate ItemName');
       let doesExist = await this.doesExistItem(
         businessId,
         'itemList.itemName',
         itemName
       );
       if (doesExist) {
-        console.log('DUPLICATE ItemName found in itemList');
+        // console.log('DUPLICATE ItemName found in itemList');
         return res
           .status(409)
           .json({ error: 'DUPLICATE ItemName found in itemList' });
       }
 
-      console.log('About to create');
+      // console.log('About to create');
       const statusData = await super.createGeneric(
         businessId,
         'itemList',
@@ -69,7 +69,7 @@ class ItemListController extends GenericCRUDController {
   async readAllItemName(req, res) {
     const businessId = req.query.businessId;
     try {
-      console.log('About to read');
+      // console.log('About to read');
       const business = await Business.findById(businessId);
       if (!business) {
         throw new Error('Business not found');
@@ -83,7 +83,7 @@ class ItemListController extends GenericCRUDController {
             sum += inventory.portionNumber;
           });
         });
-        console.log(item);
+        // console.log(item);
         let largestPortionName = 'Unit',
           largestPortionNumber = 1;
         if (item.portionInfoList.length !== 0) {
@@ -95,7 +95,7 @@ class ItemListController extends GenericCRUDController {
         const lastPortionInfo =
           item.portionInfoList[item.portionInfoList.length - 1];
 
-        console.log(item.portionInfoList);
+        // console.log(item.portionInfoList);
         const newItemData = {
           itemName: item.itemName,
           estimate: sum - item.estimateDeduction,
@@ -116,7 +116,7 @@ class ItemListController extends GenericCRUDController {
   //req.query.businessId {itemName}
   async readOneItem(req, res) {
     try {
-      console.log('About to read');
+      // console.log('About to read');
       const mongooseBusinessID = new mongoose.Types.ObjectId(
         req.query.businessId
       );
@@ -151,19 +151,19 @@ class ItemListController extends GenericCRUDController {
     const { newItemName, findItemName } = req.body;
     const businessId = req.query.businessId;
     try {
-      console.log('Check if Duplicate ItemName');
+      // console.log('Check if Duplicate ItemName');
       let doesExist = await this.doesExistItem(
         businessId,
         'itemList.itemName',
         newItemName
       );
       if (doesExist) {
-        console.log('DUPLICATE of New ItemName found in itemList');
+        // console.log('DUPLICATE of New ItemName found in itemList');
         return res
           .status(409)
           .json({ error: 'DUPLICATE New ItemName found in itemList' });
       }
-      console.log('About to update');
+      // console.log('About to update');
       const statusDetails = await super.updateGeneric(
         {
           _id: businessId,
@@ -191,7 +191,7 @@ class ItemListController extends GenericCRUDController {
     const businessId = req.query.businessId;
     const { itemName } = req.body;
     try {
-      console.log('About to delete');
+      // console.log('About to delete');
       const statusData = await super.deleteGeneric(
         businessId,
         'itemList',

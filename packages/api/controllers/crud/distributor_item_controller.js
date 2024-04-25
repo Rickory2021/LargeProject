@@ -40,16 +40,16 @@ class DistributorItemController extends GenericCRUDController {
           $project: { distributorName: '$distributorItemList.distributorName' }
         }
       ]);
-      console.log(locationInfo);
+      // console.log(locationInfo);
       if (locationInfo.length === 0) {
-        console.log(
-          `distributorName '${distributorName}' not found for item '${itemName}' in business '${businessId}'`
-        );
+        // console.log(
+        //   `distributorName '${distributorName}' not found for item '${itemName}' in business '${businessId}'`
+        // );
         return false;
       } else {
-        console.log(
-          `distributorName '${distributorName}' found for item '${itemName}' in business '${businessId}'`
-        );
+        // console.log(
+        //   `distributorName '${distributorName}' found for item '${itemName}' in business '${businessId}'`
+        // );
         return true;
       }
     } catch (error) {
@@ -65,16 +65,16 @@ class DistributorItemController extends GenericCRUDController {
         'distributorMetaDataList.distributorName',
         distributorName
       );
-      console.log(distributorMetaData);
+      // console.log(distributorMetaData);
       if (distributorMetaData.length === 0) {
-        console.log(
-          `distributorMetaData '${distributorName}' not found in business '${businessId}'`
-        );
+        // console.log(
+        //   `distributorMetaData '${distributorName}' not found in business '${businessId}'`
+        // );
         return false;
       } else {
-        console.log(
-          `distributorMetaData '${distributorName}' found for in business '${businessId}'`
-        );
+        // console.log(
+        //   `distributorMetaData '${distributorName}' found for in business '${businessId}'`
+        // );
         return true;
       }
     } catch (error) {
@@ -94,10 +94,10 @@ class DistributorItemController extends GenericCRUDController {
       distributorItemCost,
       priorityChoice
     } = req.body;
-    console.log(
-      `businessId:${businessId} itemName :${itemName} distributorName :${distributorName} distributorItemName :${distributorItemName} \n
-      distributorItemPortion :${distributorItemPortion} distributorItemCost :${distributorItemCost} priorityChoice :${priorityChoice}`
-    );
+    // console.log(
+    //   `businessId:${businessId} itemName :${itemName} distributorName :${distributorName} distributorItemName :${distributorItemName} \n
+    //   distributorItemPortion :${distributorItemPortion} distributorItemCost :${distributorItemCost} priorityChoice :${priorityChoice}`
+    // );
     let createDistributorItemStatus, createDistributorMetadataStatus;
     const newDistributorObject = new DistributorItem({
       itemName: itemName,
@@ -109,7 +109,7 @@ class DistributorItemController extends GenericCRUDController {
     });
     try {
       // Note that there can be multiple products from the same distributor
-      console.log('About to create');
+      // console.log('About to create');
       createDistributorItemStatus = await super.createGenericByQuery(
         {
           _id: businessId,
@@ -200,7 +200,7 @@ class DistributorItemController extends GenericCRUDController {
       const businessId = req.query.businessId;
       let mongooseBusinessID = new mongoose.Types.ObjectId(businessId);
       let { itemName } = req.body;
-      console.log('About to read');
+      // console.log('About to read');
       const fieldValues = await super.readGeneric([
         { $match: { _id: mongooseBusinessID } },
         { $unwind: '$itemList' },
@@ -225,12 +225,12 @@ class DistributorItemController extends GenericCRUDController {
     const { itemName, index, newDistributorItemName } = req.body;
     const businessId = req.query.businessId;
     try {
-      console.log('About to update');
+      // console.log('About to update');
       const business = await Business.findById(businessId);
 
       // Check if the business exists
       if (!business) {
-        console.log('Business not found');
+        // console.log('Business not found');
         return res.status(500).json({ error: 'Business not found' });
       }
 
@@ -239,7 +239,7 @@ class DistributorItemController extends GenericCRUDController {
 
       // Check if the item exists
       if (!item) {
-        console.log('Item not found');
+        // console.log('Item not found');
         return res.status(500).json({ error: 'Item not found' });
       }
       // Update the portionNumber at the specified index
@@ -247,11 +247,11 @@ class DistributorItemController extends GenericCRUDController {
         item.distributorItemList[index].distributorItemName =
           newDistributorItemName;
       } else {
-        console.log('Invalid index');
+        // console.log('Invalid index');
         return res.status(500).json({ error: 'Invalid index' });
       }
       const statusDetails = await business.save();
-      console.log(`Distributor's ItemName updated successfully`);
+      // console.log(`Distributor's ItemName updated successfully`);
       return res.status(200).json({
         statusDetails: [
           {
@@ -273,12 +273,12 @@ class DistributorItemController extends GenericCRUDController {
     const { itemName, index, newItemPortion } = req.body;
     const businessId = req.query.businessId;
     try {
-      console.log('About to update');
+      // console.log('About to update');
       const business = await Business.findById(businessId);
 
       // Check if the business exists
       if (!business) {
-        console.log('Business not found');
+        // console.log('Business not found');
         return res.status(500).json({ error: 'Business not found' });
       }
 
@@ -287,18 +287,18 @@ class DistributorItemController extends GenericCRUDController {
 
       // Check if the item exists
       if (!item) {
-        console.log('Item not found');
+        // console.log('Item not found');
         return res.status(500).json({ error: 'Item not found' });
       }
       // Update the portionNumber at the specified index
       if (index >= 0 && index < item.distributorItemList.length) {
         item.distributorItemList[index].distributorItemPortion = newItemPortion;
       } else {
-        console.log('Invalid index');
+        // console.log('Invalid index');
         return res.status(500).json({ error: 'Invalid index' });
       }
       const statusDetails = await business.save();
-      console.log(`Distributor's ItemPortion updated successfully`);
+      // console.log(`Distributor's ItemPortion updated successfully`);
       return res.status(200).json({
         statusDetails: [
           {
@@ -320,12 +320,12 @@ class DistributorItemController extends GenericCRUDController {
     const { itemName, index, newItemCost } = req.body;
     const businessId = req.query.businessId;
     try {
-      console.log('About to update');
+      // console.log('About to update');
       const business = await Business.findById(businessId);
 
       // Check if the business exists
       if (!business) {
-        console.log('Business not found');
+        // console.log('Business not found');
         return res.status(500).json({ error: 'Business not found' });
       }
 
@@ -334,18 +334,18 @@ class DistributorItemController extends GenericCRUDController {
 
       // Check if the item exists
       if (!item) {
-        console.log('Item not found');
+        // console.log('Item not found');
         return res.status(500).json({ error: 'Item not found' });
       }
       // Update the portionNumber at the specified index
       if (index >= 0 && index < item.distributorItemList.length) {
         item.distributorItemList[index].distributorItemCost = newItemCost;
       } else {
-        console.log('Invalid index');
+        // console.log('Invalid index');
         return res.status(500).json({ error: 'Invalid index' });
       }
       const statusDetails = await business.save();
-      console.log(`Distributor's ItemCost updated successfully`);
+      // console.log(`Distributor's ItemCost updated successfully`);
       return res.status(200).json({
         statusDetails: [
           {
@@ -367,12 +367,12 @@ class DistributorItemController extends GenericCRUDController {
     const { itemName, index, newPriorityChoice } = req.body;
     const businessId = req.query.businessId;
     try {
-      console.log('About to update');
+      // console.log('About to update');
       const business = await Business.findById(businessId);
 
       // Check if the business exists
       if (!business) {
-        console.log('Business not found');
+        // console.log('Business not found');
         return res.status(500).json({ error: 'Business not found' });
       }
 
@@ -381,14 +381,14 @@ class DistributorItemController extends GenericCRUDController {
 
       // Check if the item exists
       if (!item) {
-        console.log('Item not found');
+        // console.log('Item not found');
         return res.status(500).json({ error: 'Item not found' });
       }
       // Update the portionNumber at the specified index
       if (index >= 0 && index < item.distributorItemList.length) {
         item.distributorItemList[index].priorityChoice = newPriorityChoice;
       } else {
-        console.log('Invalid index');
+        // console.log('Invalid index');
         return res.status(500).json({ error: 'Invalid index' });
       }
       // Sort the distributorItemList by priorityChoice
@@ -399,7 +399,7 @@ class DistributorItemController extends GenericCRUDController {
       // Save the updated business document
       await business.save();
       const statusDetails = await business.save();
-      console.log(`Distributor Item's Priority Choice updated successfully`);
+      // console.log(`Distributor Item's Priority Choice updated successfully`);
       return res.status(200).json({
         statusDetails: [
           {
@@ -426,7 +426,7 @@ class DistributorItemController extends GenericCRUDController {
 
       // Check if the business exists
       if (!business) {
-        console.log('Business not found');
+        // console.log('Business not found');
         return res.status(500).json({ error: 'Business not found' });
       }
 
@@ -435,7 +435,7 @@ class DistributorItemController extends GenericCRUDController {
 
       // Check if the item exists
       if (!item) {
-        console.log('Item not found');
+        // console.log('Item not found');
         return res.status(500).json({ error: 'Item not found' });
       }
 
@@ -443,13 +443,13 @@ class DistributorItemController extends GenericCRUDController {
       if (index >= 0 && index < item.distributorItemList.length) {
         item.distributorItemList.splice(index, 1);
       } else {
-        console.log('Invalid index');
+        // console.log('Invalid index');
         return res.status(500).json({ error: 'Invalid index' });
       }
 
       // Save the changes to the database
       const statusData = await business.save();
-      console.log('Distributor item deleted successfully');
+      // console.log('Distributor item deleted successfully');
       return res.status(200).json({
         statusDetails: [
           {

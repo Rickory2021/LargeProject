@@ -31,14 +31,14 @@ class ItemLocationLogController extends GenericCRUDController {
         { $match: { 'locationItemList.locationName': locationName } },
         { $project: { locationName: '$locationItemList.locationName' } }
       ]);
-      console.log(locationInfo);
+      // // console.log(locationInfo);
       if (locationInfo.length === 0) {
-        console.log(
+        // console.log(
           `locationInfo '${locationName}' not found for item '${itemName}' in business '${businessId}'`
         );
         return false;
       } else {
-        console.log(
+        // console.log(
           `locationInfo '${locationName}' found for item '${itemName}' in business '${businessId}'`
         );
         return true;
@@ -100,7 +100,7 @@ class ItemLocationLogController extends GenericCRUDController {
       finalPortion,
       updateDate
     } = req.body;
-    console.log(
+    // console.log(
       `businessId:${businessId} itemName :${itemName} logReason :${logReason} logReason :${logReason} initialPortion :${initialPortion} finalPortion :${finalPortion} updateDate :${updateDate}`
     );
 
@@ -120,7 +120,7 @@ class ItemLocationLogController extends GenericCRUDController {
       const business = await Business.findById(businessId);
 
       if (!business) {
-        console.log('Business not found');
+        // console.log('Business not found');
         return res.status(500).json({ error: 'Business not found' });
       }
 
@@ -130,7 +130,7 @@ class ItemLocationLogController extends GenericCRUDController {
       );
 
       if (!item) {
-        console.log('Item not found in the Business');
+        // console.log('Item not found in the Business');
         return res
           .status(500)
           .json({ error: 'Item not found in the Business' });
@@ -142,7 +142,7 @@ class ItemLocationLogController extends GenericCRUDController {
       );
 
       if (!locationItemLog) {
-        console.log('LocationItemLog not found');
+        // console.log('LocationItemLog not found');
         return res.status(500).json({ error: 'LocationItemLog not found' });
       }
 
@@ -157,7 +157,7 @@ class ItemLocationLogController extends GenericCRUDController {
       // Save the changes to the database
       const statusDetails = await business.save();
 
-      console.log('LocationBucketLog added successfully');
+      // console.log('LocationBucketLog added successfully');
       return res.status(500).json({ statusDetails: statusDetails });
     } catch (error) {
       return res.status(500).json({ error: error.message });
@@ -170,7 +170,7 @@ class ItemLocationLogController extends GenericCRUDController {
       const businessId = req.query.businessId;
       let mongooseBusinessID = new mongoose.Types.ObjectId(businessId);
       let { itemName, locationBucket } = req.body;
-      console.log('About to read');
+      // console.log('About to read');
       // Using aggregation pipeline to filter and project data
       const locationLogs = await Business.aggregate([
         // Match the business by its ID
@@ -204,9 +204,9 @@ class ItemLocationLogController extends GenericCRUDController {
     let businessId = req.query.businessId;
     let { itemName, updateDate } = req.body;
     let updateDateDate = new Date(updateDate);
-    console.log(`updateDateDate: ${updateDateDate.getFullYear().toString()}`);
+    // console.log(`updateDateDate: ${updateDateDate.getFullYear().toString()}`);
 
-    console.log(
+    // console.log(
       `businessId:${businessId} itemName :${itemName} updateDate :${updateDateDate.toISOString()}`
     );
 
@@ -215,7 +215,7 @@ class ItemLocationLogController extends GenericCRUDController {
       const business = await Business.findById(businessId);
 
       if (!business) {
-        console.log('Business not found');
+        // console.log('Business not found');
         return res.status(500).json({ error: 'Business not found' });
       }
 
@@ -225,7 +225,7 @@ class ItemLocationLogController extends GenericCRUDController {
       );
 
       if (!item) {
-        console.log('Item not found in the Business');
+        // console.log('Item not found in the Business');
         return res
           .status(500)
           .json({ error: 'Item not found in the Business' });
@@ -237,7 +237,7 @@ class ItemLocationLogController extends GenericCRUDController {
       );
 
       if (!locationItemLog) {
-        console.log('LocationItemLog not found');
+        // console.log('LocationItemLog not found');
         return res.status(500).json({ error: 'LocationItemLog not found' });
       }
 
@@ -246,7 +246,7 @@ class ItemLocationLogController extends GenericCRUDController {
         log => log.updateDate.toISOString === updateDateDate.toISOString
       );
       if (index === -1) {
-        console.log('Log entry not found in the LocationBucketLog');
+        // console.log('Log entry not found in the LocationBucketLog');
         return res
           .status(500)
           .json({ error: 'Log entry not found in the LocationBucketLog' });
@@ -258,7 +258,7 @@ class ItemLocationLogController extends GenericCRUDController {
       // Save the changes to the database
       const statusDetails = await business.save();
 
-      console.log('LocationBucketLog entry deleted successfully');
+      // console.log('LocationBucketLog entry deleted successfully');
       return res.status(200).json({ statusDetails: statusDetails });
     } catch (error) {
       return res.status(500).json({ error: error.message });

@@ -28,7 +28,7 @@ class EmployeeIdListController extends GenericCRUDController {
   async readAllEmployeeIds(req, res) {
     try {
       const businessId = req.query.businessId;
-      console.log('About to read all employee IDs');
+      // console.log('About to read all employee IDs');
       // Convert business ID to mongoose ObjectId
       let mongooseBusinessID = new mongoose.Types.ObjectId(businessId);
 
@@ -52,7 +52,7 @@ class EmployeeIdListController extends GenericCRUDController {
     const { employeeId } = req.body;
     // const employeeId = req.query.employeeId.toString(); // Convert to string
     try {
-      console.log('About to delete');
+      // console.log('About to delete');
       const businessStatusData = await super.deleteGenericByQuery(
         { _id: businessId },
         { $pull: { employeeIdList: employeeId } }
