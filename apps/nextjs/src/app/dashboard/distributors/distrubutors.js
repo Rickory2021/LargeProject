@@ -477,13 +477,13 @@ export function Distributors() {
                   <tr>
                     <th
                       scope="col"
-                      className="px-10 py-4 text-start text-sm font-medium text-gray-500 uppercase dark:text-neutral-500 w-[40%]"
+                      className="px-20 py-4 text-start text-lg font-medium text-gray-500 uppercase dark:text-neutral-500 w-[50%]"
                     >
                       Name
                     </th>
                     <th
                       scope="col"
-                      className="px-10 py-4 text-start text-sm font-medium text-gray-500 uppercase dark:text-neutral-500 w-[60%]"
+                      className="px-20 py-4 text-start text-lg font-medium text-gray-500 uppercase dark:text-neutral-500 w-[50%]"
                     >
                       Distributor Info
                     </th>
@@ -495,15 +495,14 @@ export function Distributors() {
                       key={index}
                       className="hover:bg-gray-100 dark:hover:bg-neutral-700 h-24 overflow-y-auto"
                     >
-                      <td className="px-10 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[40%] border-r border-gray-300">
+                      <td className="px-20 py-6 whitespace-nowrap text-lg font-medium text-gray-800 dark:text-neutral-200 w-[50%]">
                         <div className="relative">
                           <div className="flex items-center ml-2">
                             <div className="mb-2">{item.itemName}</div>
                           </div>
                         </div>
                       </td>
-
-                      <td className="px-10 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[60%]">
+                      <td className="px-20 py-6 whitespace-nowrap text-lg font-medium text-gray-800 dark:text-neutral-200 w-[50%]">
                         <button
                           onClick={e => {
                             setItemName(item.itemName);
@@ -511,7 +510,7 @@ export function Distributors() {
                             e.stopPropagation();
                           }}
                           type="button"
-                          className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 w-[20%]"
+                          className="inline-flex items-center gap-x-2 text-lg font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 w-[100%]"
                         >
                           Distributor Info
                         </button>
