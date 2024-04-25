@@ -14,6 +14,7 @@ import LocationTotalCount from '../components/LocationTotalCount';
 import DropdownSelection from '../components/DropdownSelection';
 import DateComponent from '../components/DateComponent';
 import LocationTotal from '../components/LocationTotal';
+import { createSearchParamsBailoutProxy } from 'next/dist/client/components/searchparams-bailout-proxy';
 // import '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 export function UpdateByItem() {
@@ -50,6 +51,9 @@ export function UpdateByItem() {
   const [selectedItem, setSelectedItem] = useState({});
   const [isSideNavOpen, setIsSideNavOpen] = useState(true);
   const [locationLoad, setLocationLoad] = useState('');
+  const [inventoryListPopup, setInventoryListPopup] = useState('');
+  const [load, setload] = useState(false);
+  const [deleteLocationPopup, setDeleteLocationPopup] = useState('');
 
   const updateEstimateDeduction = (itemName, newEstimatedDeduction) => {
     setEstimatedDeductionMap(prevState => ({
@@ -149,6 +153,10 @@ export function UpdateByItem() {
     setDistributorMetaData(newDistbutorMetaData);
   };
 
+  const handleInventoryListPopup = () => {
+    setInventoryListPopup(true);
+  };
+
   // Function to handle userId change
   const handleUserIdChange = userId => {
     setUserId(userId);
@@ -175,8 +183,8 @@ export function UpdateByItem() {
   const handleAddLocationPopup = item => {
     setAddLocationPopup(item);
   };
-  const handleAddInventoryPopup = item => {
-    setAddInventoryPopup(item);
+  const handleAddInventoryPopup = () => {
+    setAddInventoryPopup(true);
     setNewInventoryItem({
       newMetaData: '',
       index: '',
@@ -203,9 +211,15 @@ export function UpdateByItem() {
     setPopupLocation(null);
     setEditInventoryItemPopup(false);
     setEditMode(false);
+    setDeleteLocationPopup(false);
   };
   const handleCloseTablePopup = () => {
     setLocationLoad(false);
+    setload(true);
+  };
+
+  const handleCloseInventoryListPopup = () => {
+    setInventoryListPopup(false);
   };
 
   const updateLocationInventory = (
@@ -320,6 +334,9 @@ export function UpdateByItem() {
   };
 
   const addInventoryItem = async () => {
+    console.log(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/item-inventory/create?businessId=${businessId}`
+    );
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/item-inventory/create?businessId=${businessId}`,
@@ -348,10 +365,6 @@ export function UpdateByItem() {
   };
 
   const updateInventoryItem = async () => {
-    console.log(itemName);
-    console.log(locationName);
-    console.log(newInventoryItem.index);
-    console.log(newInventoryItem.newNumber);
     try {
       const response1 = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/item-inventory/update-number?businessId=${businessId}`,
@@ -371,32 +384,44 @@ export function UpdateByItem() {
       if (!response1.ok) {
         console.Error('Error updating inventory item name: ', Error);
       }
-      console.log(newInventoryItem.newMetaData);
-      console.log(newInventoryItem.index);
-      console.log(locationName);
       console.log(itemName);
-      const response2 = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/item-inventory/update-metadata?businessId=${businessId}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            itemName: itemName,
-            findLocationName: locationName,
-            index: newInventoryItem.index,
-            newMetaData: newInventoryItem.newMetaData
-          })
-        }
+      console.log(locationName);
+      console.log(newInventoryItem.index);
+      console.log(newInventoryItem.newMetaData);
+      console.log(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/item-inventory/update-metadata?businessId=${businessId}`
       );
-      if (!response2.ok) {
-        console.Error('Error updating inventory item metaData: ', Error);
+      try {
+        const response2 = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/item-inventory/update-metadata?businessId=${businessId}`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              itemName: itemName,
+              findLocationName: locationName,
+              index: newInventoryItem.index,
+              newMetaData: newInventoryItem.newMetaData
+            })
+          }
+        );
+
+        if (!response2.ok) {
+          const errorMessage = await response2.text();
+          throw new Error(
+            `HTTP error! Status: ${response2.status}, Message: ${errorMessage}`
+          );
+        }
+        // Handle successful response data
+      } catch (error) {
+        console.error('Error updating metadata:', error.message); // Corrected error handling
       }
 
       await fetchUpdatedInventoryList();
     } catch (error) {
-      console.error('Error updating new Inventory Item');
+      console.error('Error updating new Inventory Item: ', error);
     }
   };
 
@@ -499,6 +524,39 @@ export function UpdateByItem() {
       await fetchUpdatedInventoryList();
     } catch (error) {
       console.error('Error deleting Item: ', error);
+    }
+  };
+
+  const handleDeleteLocation = async () => {
+    console.log(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/item-location/delete?businessId=${businessId}`
+    );
+    console.log(itemName);
+    console.log(locationName);
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/item-location/delete?businessId=${businessId}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            itemName: itemName,
+            locationName: locationName
+          })
+        }
+      );
+      if (!response.ok) {
+        throw new Error('Failed to delete item');
+      }
+      const updatedLocationList = await fetchUpdatedLocationList();
+
+      console.log(updatedLocationList);
+      // Update the distributor list state with the updated list
+      updateLocationList(updatedLocationList);
+    } catch (error) {
+      console.error('Error deleting Location: ', error);
     }
   };
 
@@ -606,6 +664,9 @@ export function UpdateByItem() {
       itemName: itemName,
       locationName: locationName
     };
+    console.log(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/item-inventory/read-all?businessId=${businessId}`
+    );
 
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/item-inventory/read-all?businessId=${businessId}`,
@@ -622,7 +683,7 @@ export function UpdateByItem() {
     }
     const data = await response.json();
     const itemList = data.outputList.map(item => item.inventoryList).flat();
-    console.log(itemList);
+    console.log('itemList: ' + itemList);
     setItemLocationList(itemList);
   };
 
@@ -760,10 +821,6 @@ export function UpdateByItem() {
     console.log('newInventoryItem: ' + newInventoryItem.newNumber);
   }, [newInventoryItem]);
 
-  useEffect(() => {
-    upItemCount();
-  }, [itemLocationList]);
-
   return (
     <div className="flex">
       <SideNav openCallback={handleSideNavOpen} />
@@ -878,11 +935,6 @@ export function UpdateByItem() {
             </div>
             {locationLoad && (
               <div>
-                <Location
-                  itemName={itemName}
-                  businessId={businessId}
-                  updateLocationList={updateLocationList}
-                />
                 <div
                   style={{
                     position: 'fixed',
@@ -940,6 +992,12 @@ export function UpdateByItem() {
                         </button>
                       </div>
                       <div className="flex items-center">
+                        <Location
+                          itemName={itemName}
+                          businessId={businessId}
+                          updateLocationList={updateLocationList}
+                        />
+
                         {locationList && locationList.length > 0 ? (
                           <table className="min-w-full border border-collapse border-gray-300">
                             <thead>
@@ -959,6 +1017,9 @@ export function UpdateByItem() {
                                 <th className="px-6 py-3 border-r border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                   Last Updated
                                 </th>
+                                <th className="px-6 py-3 border-r border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                  Delete
+                                </th>
                               </tr>
                             </thead>
                             <tbody className="bg-white">
@@ -969,9 +1030,10 @@ export function UpdateByItem() {
                                   </td>
                                   <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
                                     <button
-                                      onClick={() =>
-                                        handleLocationPopup(location)
-                                      }
+                                      onClick={() => {
+                                        handleInventoryListPopup();
+                                        setLocationName(location);
+                                      }}
                                       type="button"
                                       className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-transparent text-blue-500 text-sm hover:text-blue-700 focus:outline-none"
                                       aria-label={`Info for ${location}`}
@@ -1007,6 +1069,19 @@ export function UpdateByItem() {
                                       businessId={businessId}
                                     />
                                   </td>
+                                  <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
+                                    <button
+                                      className="bg-red-500 text-white px-2 py-1 rounded text-sm"
+                                      onClick={e => {
+                                        setLocationName(location);
+                                        setDeleteLocationPopup(true);
+                                        e.stopPropagation();
+                                      }}
+                                      aria-label={`Delete ${location}`}
+                                    >
+                                      Delete
+                                    </button>
+                                  </td>
                                 </tr>
                               ))}
                             </tbody>
@@ -1021,77 +1096,126 @@ export function UpdateByItem() {
               </div>
             )}
 
-            {showDropdownMap[location] && (
-              <div>
-                <div className="flex items-center space-x-4 mb-4">
-                  <p className="font-bold">Inventory List:</p>
-                  <DropdownSelection
-                    businessId={businessId}
-                    itemName={itemName}
-                    onItemSelected={handleItemSelected}
-                  />
-                  <button
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-                    onClick={() => {
-                      setLocationName(location);
-                      handleAddInventoryPopup(itemName);
-                    }}
-                  >
-                    Add Inventory element{' '}
-                  </button>
-                </div>
-                <div className="flex flex-col items-start space-y-4">
-                  <ItemLocationList
-                    businessId={businessId}
-                    itemName={itemName}
-                    locationName={location}
-                    setItemLocationList={setItemLocationList}
-                  />
-                  {itemLocationList.map((item, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center justify-between w-full border p-4 rounded-md"
+            {inventoryListPopup && (
+              <div
+                style={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  zIndex: 1000,
+                  maxWidth: '90%',
+                  width: '40%',
+                  maxHeight: '70%',
+                  overflowY: 'auto',
+                  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                  borderRadius: '0.375rem',
+                  border: '1px solid #e5e7eb',
+                  backgroundColor: 'white',
+                  backdropFilter: 'blur(4px)'
+                }}
+                onClick={e => e.stopPropagation()}
+              >
+                <div className="p-8 text-center">
+                  <div className="flex justify-end p-2">
+                    <button
+                      onClick={handleCloseInventoryListPopup}
+                      className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
                     >
-                      <div className="w-1/2 pl-4 flex items-center">
-                        {selectedItem &&
-                        selectedItem.unitNumber !== 0 &&
-                        selectedItem.unitNumber ? (
-                          <p>
-                            portionNumber:{' '}
-                            {item.portionNumber / selectedItem.unitNumber}{' '}
-                            {selectedItem.unitName}
-                          </p>
-                        ) : (
-                          <p>portionNumber: {item.portionNumber} Base Units</p>
-                        )}
-                        <p className="ml-4">Note: {item.metaData}</p>
-                      </div>
-                      <div className="flex space-x-4">
-                        <button
-                          onClick={() => {
-                            setLocationName(location);
-                            console.log(index);
-                            handleEditInventoryItemPopup(item, index);
-                          }}
-                          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => {
-                            setLocationName(location);
-                            handleDeleteInventoryPopup(location, index);
-                          }}
-                          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    </div>
-                  ))}
+                      <svg
+                        className="w-5 h-5"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                          clipRule="evenodd"
+                        ></path>
+                      </svg>
+                    </button>
+                  </div>
+                  {/* Your existing content here */}
+                  <div className="flex items-center space-x-4 mb-4">
+                    <p className="font-bold">Inventory List:</p>
+                    <DropdownSelection
+                      businessId={businessId}
+                      itemName={itemName}
+                      onItemSelected={handleItemSelected}
+                    />
+                    <button
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                      onClick={() => {
+                        handleAddInventoryPopup();
+                      }}
+                    >
+                      Add Inventory element{' '}
+                    </button>
+                  </div>
+                  <div className="flex flex-col items-start space-y-4">
+                    <ItemLocationList
+                      businessId={businessId}
+                      itemName={itemName}
+                      locationName={locationName}
+                      setItemLocationList={setItemLocationList}
+                    />
+                    <table className="min-w-full border border-collapse border-gray-300 mb-4">
+                      <thead>
+                        <tr>
+                          <th className="px-6 py-3 border-r border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Portion Info
+                          </th>
+                          <th className="px-6 py-3 border-r border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Note
+                          </th>
+                          <th className="px-6 py-3 border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Actions
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white">
+                        {itemLocationList.map((item, index) => (
+                          <tr key={index}>
+                            <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
+                              {selectedItem &&
+                              selectedItem.unitNumber !== 0 &&
+                              selectedItem.unitNumber
+                                ? `portionNumber: ${item.portionNumber / selectedItem.unitNumber} ${selectedItem.unitName}`
+                                : `portionNumber: ${item.portionNumber} Base Units`}
+                            </td>
+                            <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
+                              Note: {item.metaData}
+                            </td>
+                            <td className="px-6 py-4 border-b border-gray-300 whitespace-nowrap text-center">
+                              <button
+                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mr-2"
+                                onClick={() => {
+                                  handleEditInventoryItemPopup(item, index);
+                                }}
+                                aria-label={`Edit Portion ${item.portionNumber}`}
+                              >
+                                Edit
+                              </button>
+                              <button
+                                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full"
+                                onClick={() => {
+                                  handleDeleteInventoryPopup(location, index);
+                                }}
+                                aria-label={`Delete Portion ${item.portionNumber}`}
+                              >
+                                Delete
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             )}
+
             {popupLocation && (
               <div
                 style={{
@@ -1437,13 +1561,20 @@ export function UpdateByItem() {
                   <input
                     type="text"
                     name="logReason"
-                    value={newLocation.logReason}
+                    value={newInventoryItem.logReason}
                     onChange={e => handleInputChange(e, 'logReason', 'Item')}
                     className="bg-gray-100 rounded-md p-2 mb-2"
                   />
                   <br />
                   <button
                     onClick={() => {
+                      console.log('newNumber: ' + newInventoryItem.newNumber);
+                      console.log(
+                        'newMetaData: ' + newInventoryItem.newMetaData
+                      );
+                      console.log(
+                        'newlogReason: ' + newInventoryItem.logReason
+                      );
                       addInventoryItem();
                       handleClosePopup();
                     }}
@@ -1510,6 +1641,77 @@ export function UpdateByItem() {
                       className="bg-green-500 text-white px-4 py-2 rounded-md mr-2"
                       onClick={() => {
                         handleDeleteItem();
+                        handleClosePopup();
+                      }}
+                    >
+                      Yes
+                    </button>
+                    <button
+                      className="bg-red-500 text-white px-4 py-2 rounded-md"
+                      onClick={handleClosePopup}
+                    >
+                      No
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+            {deleteLocationPopup && (
+              <div
+                style={{
+                  position: 'fixed',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  zIndex: 1000,
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backdropFilter: 'blur(4px)'
+                }}
+                onClick={handleClosePopup}
+              >
+                <div
+                  className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150"
+                  style={{
+                    width: '40%',
+                    maxHeight: '70%',
+                    maxWidth: '90%',
+                    zIndex: 110,
+                    position: 'relative'
+                  }}
+                  onClick={e => e.stopPropagation()}
+                >
+                  <div className="flex justify-end p-2">
+                    <button
+                      onClick={handleClosePopup}
+                      className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+                    >
+                      <svg
+                        className="w-5 h-5"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                          clipRule="evenodd"
+                        ></path>
+                      </svg>
+                    </button>
+                  </div>
+                  <br />
+                  <p className="max-w-sm text-center">
+                    Are you sure you want to delete this Location?
+                  </p>
+                  <br />
+                  <div className="flex justify-between">
+                    <button
+                      className="bg-green-500 text-white px-4 py-2 rounded-md mr-2"
+                      onClick={() => {
+                        handleDeleteLocation();
                         handleClosePopup();
                       }}
                     >
