@@ -33,14 +33,14 @@ class ItemLocationController extends GenericCRUDController {
       ]);
       // // console.log(locationInfo);
       if (locationInfo.length === 0) {
-        // console.log(
-          `locationInfo '${locationName}' not found for item '${itemName}' in business '${businessId}'`
-        );
+        // // console.log(
+        //   `locationInfo '${locationName}' not found for item '${itemName}' in business '${businessId}'`
+        // );
         return false;
       } else {
         // console.log(
-          `locationInfo '${locationName}' found for item '${itemName}' in business '${businessId}'`
-        );
+        //   `locationInfo '${locationName}' found for item '${itemName}' in business '${businessId}'`
+        // );
         return true;
       }
     } catch (error) {
@@ -59,13 +59,13 @@ class ItemLocationController extends GenericCRUDController {
       // console.log(locationMetaData);
       if (locationMetaData.length === 0) {
         // console.log(
-          `locationMetaData '${locationName}' not found in business '${businessId}'`
-        );
+        //   `locationMetaData '${locationName}' not found in business '${businessId}'`
+        // );
         return false;
       } else {
         // console.log(
-          `locationMetaData '${locationName}' found for in business '${businessId}'`
-        );
+        //   `locationMetaData '${locationName}' found for in business '${businessId}'`
+        // );
         return true;
       }
     } catch (error) {
@@ -79,8 +79,8 @@ class ItemLocationController extends GenericCRUDController {
     let businessId = req.query.businessId;
     let { itemName, locationName } = req.body;
     // console.log(
-      `businessId:${businessId} itemName :${itemName} locationName :${locationName}`
-    );
+    //   `businessId:${businessId} itemName :${itemName} locationName :${locationName}`
+    // );
     let createItemLocationStatus, createLocationMetadataStatus;
 
     try {
@@ -348,12 +348,12 @@ class ItemLocationController extends GenericCRUDController {
           // Check if a and b have locationName equal to inputLocationName
           const aIsInputLocation = a.locationName === locationName;
           // console.log(
-            `aIsInputLocation=>${aIsInputLocation} = ${a.locationName} === ${locationName}`
-          );
+          //   `aIsInputLocation=>${aIsInputLocation} = ${a.locationName} === ${locationName}`
+          // );
           const bIsInputLocation = b.locationName === locationName;
           // console.log(
-            `aIsInputLocation=>${bIsInputLocation} = ${b.locationName} === ${locationName}`
-          );
+          //   `aIsInputLocation=>${bIsInputLocation} = ${b.locationName} === ${locationName}`
+          // );
           // If both a and b are inputLocation, sort by updateDate
           if (aIsInputLocation && bIsInputLocation) {
             return b.updateDate - a.updateDate;

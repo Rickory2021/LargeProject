@@ -34,13 +34,13 @@ class ItemLocationLogController extends GenericCRUDController {
       // // console.log(locationInfo);
       if (locationInfo.length === 0) {
         // console.log(
-          `locationInfo '${locationName}' not found for item '${itemName}' in business '${businessId}'`
-        );
+        //   `locationInfo '${locationName}' not found for item '${itemName}' in business '${businessId}'`
+        // );
         return false;
       } else {
         // console.log(
-          `locationInfo '${locationName}' found for item '${itemName}' in business '${businessId}'`
-        );
+        //   `locationInfo '${locationName}' found for item '${itemName}' in business '${businessId}'`
+        // );
         return true;
       }
     } catch (error) {
@@ -101,8 +101,8 @@ class ItemLocationLogController extends GenericCRUDController {
       updateDate
     } = req.body;
     // console.log(
-      `businessId:${businessId} itemName :${itemName} logReason :${logReason} logReason :${logReason} initialPortion :${initialPortion} finalPortion :${finalPortion} updateDate :${updateDate}`
-    );
+    //   `businessId:${businessId} itemName :${itemName} logReason :${logReason} logReason :${logReason} initialPortion :${initialPortion} finalPortion :${finalPortion} updateDate :${updateDate}`
+    // );
 
     try {
       let newLocationLogObject = new LocationLog({
@@ -207,8 +207,8 @@ class ItemLocationLogController extends GenericCRUDController {
     // console.log(`updateDateDate: ${updateDateDate.getFullYear().toString()}`);
 
     // console.log(
-      `businessId:${businessId} itemName :${itemName} updateDate :${updateDateDate.toISOString()}`
-    );
+    //   `businessId:${businessId} itemName :${itemName} updateDate :${updateDateDate.toISOString()}`
+    // );
 
     try {
       // Step 1: Find the Business by its ID

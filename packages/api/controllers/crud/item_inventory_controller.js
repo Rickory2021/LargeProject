@@ -35,13 +35,13 @@ class ItemInventoryController extends GenericCRUDController {
       // // console.log(locationInfo);
       if (locationInfo.length === 0) {
         // console.log(
-          `locationInfo '${locationName}' not found for item '${itemName}' in business '${businessId}'`
-        );
+        //   `locationInfo '${locationName}' not found for item '${itemName}' in business '${businessId}'`
+        // );
         return false;
       } else {
         // console.log(
-          `locationInfo '${locationName}' found for item '${itemName}' in business '${businessId}'`
-        );
+        //   `locationInfo '${locationName}' found for item '${itemName}' in business '${businessId}'`
+        // );
         return true;
       }
     } catch (error) {
@@ -60,13 +60,13 @@ class ItemInventoryController extends GenericCRUDController {
       // console.log(locationMetaData);
       if (locationMetaData.length === 0) {
         // console.log(
-          `locationMetaData '${locationName}' not found in business '${businessId}'`
-        );
+        //   `locationMetaData '${locationName}' not found in business '${businessId}'`
+        // );
         return false;
       } else {
         // console.log(
-          `locationMetaData '${locationName}' found for in business '${businessId}'`
-        );
+        //   `locationMetaData '${locationName}' found for in business '${businessId}'`
+        // );
         return true;
       }
     } catch (error) {
@@ -81,8 +81,8 @@ class ItemInventoryController extends GenericCRUDController {
     let { itemName, locationName, portionNumber, metaData, logReason } =
       req.body;
     // console.log(
-      `businessId:${businessId} itemName :${itemName} locationName :${locationName} portionNumber :${portionNumber} metaData :${metaData}`
-    );
+    //   `businessId:${businessId} itemName :${itemName} locationName :${locationName} portionNumber :${portionNumber} metaData :${metaData}`
+    // );
     try {
       // console.log('About to create');
       const locationInventoryObject = new LocationInventory({

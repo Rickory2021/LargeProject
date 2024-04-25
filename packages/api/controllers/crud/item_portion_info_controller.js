@@ -34,13 +34,13 @@ class PortionInfoListController extends GenericCRUDController {
       // // console.log(portionInfo);
       if (portionInfo.length === 0) {
         // console.log(
-          `UnitName '${unitName}' not found for item '${itemName}' in business '${businessId}'`
-        );
+        //   `UnitName '${unitName}' not found for item '${itemName}' in business '${businessId}'`
+        // );
         return false;
       } else {
         // console.log(
-          `UnitName '${unitName}' found for item '${itemName}' in business '${businessId}'`
-        );
+        //   `UnitName '${unitName}' found for item '${itemName}' in business '${businessId}'`
+        // );
         return true;
       }
     } catch (error) {
@@ -54,8 +54,8 @@ class PortionInfoListController extends GenericCRUDController {
     let businessId = req.query.businessId;
     let { itemName, unitName, unitNumber } = req.body;
     // console.log(
-      `businessId:${businessId} itemName :${itemName} unitName :${unitName} unitNumber :${unitNumber}`
-    );
+    //   `businessId:${businessId} itemName :${itemName} unitName :${unitName} unitNumber :${unitNumber}`
+    // );
 
     try {
       // console.log('Check if Duplicate ItemName');

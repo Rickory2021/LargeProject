@@ -33,12 +33,12 @@ class ItemRelationController extends GenericCRUDController {
       // // console.log(rawUsedInList);
       if (rawUsedInList.length === 0) {
         // console.log(
-          `Raw ${rawItemName} not found item Finishd '${finishedItemName}' in usedInList`
-        );
+        //   `Raw ${rawItemName} not found item Finishd '${finishedItemName}' in usedInList`
+        // );
       } else {
         // console.log(
-          `Raw ${rawItemName} found item Finishd '${finishedItemName}' in usedInList`
-        );
+        //   `Raw ${rawItemName} found item Finishd '${finishedItemName}' in usedInList`
+        // );
         return false;
       }
       const rawItemNeededList = await Business.aggregate([
@@ -53,12 +53,12 @@ class ItemRelationController extends GenericCRUDController {
       // console.log(rawItemNeededList);
       if (rawItemNeededList.length === 0) {
         // console.log(
-          `Raw ${rawItemName} not found item Finishd '${finishedItemName}' in itemNeededList`
-        );
+        //   `Raw ${rawItemName} not found item Finishd '${finishedItemName}' in itemNeededList`
+        // );
       } else {
         // console.log(
-          `Raw ${rawItemName} found item Finishd '${finishedItemName}' in itemNeededList`
-        );
+        //   `Raw ${rawItemName} found item Finishd '${finishedItemName}' in itemNeededList`
+        // );
         return false;
       }
 
