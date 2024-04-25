@@ -843,7 +843,7 @@ export function UpdateByCalculator() {
                                 item.totalCount &&
                                 item.largestPortionNumber
                                   ? item.largestPortionName
-                                  : `Portion Details`}
+                                  : `Details`}
                               </td>
                               <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
                                 {item.largestPortionName &&
@@ -859,7 +859,7 @@ export function UpdateByCalculator() {
                                 item.estimate &&
                                 item.largestPortionNumber
                                   ? item.largestPortionName
-                                  : `Portion Details`}
+                                  : `Details`}
                               </td>
                               <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
                                 <button
@@ -972,10 +972,7 @@ export function UpdateByCalculator() {
                     itemName={itemName}
                     setPortionInfoMap={updatePortionInfo}
                   />
-                  <div
-                    onClick={handleCloseTablePopup}
-                    className="fixed top-0 left-0 w-full h-full backdrop-blur-sm z-50"
-                  >
+                  <div className="fixed top-0 left-0 w-full h-full backdrop-blur-sm z-50">
                     <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center backdrop-blur-sm">
                       <div className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm">
                         <div className="flex justify-end p-2">
@@ -1123,7 +1120,7 @@ export function UpdateByCalculator() {
                           onClick={e => {
                             setEditedInventory({
                               rawItemName: '',
-                              finishedItemName: '',
+                              finishedItemName: itemName,
                               newUnitCost: ''
                             });
                             handleAddInventory(itemName);
@@ -1244,7 +1241,7 @@ export function UpdateByCalculator() {
                         <button
                           onClick={e => {
                             setEditedInventory({
-                              rawItemName: '',
+                              rawItemName: itemName,
                               finishedItemName: '',
                               newUnitCost: ''
                             });
@@ -1414,6 +1411,7 @@ export function UpdateByCalculator() {
                           onClick={() => {
                             updateItem();
                             handleClosePopup();
+                            handleCloseTablePopup();
                           }}
                           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                         >
@@ -1502,6 +1500,7 @@ export function UpdateByCalculator() {
                           onClick={() => {
                             updateItemNeeded();
                             handleClosePopup();
+                            handleCloseTablePopup();
                           }}
                           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                         >
@@ -1565,8 +1564,9 @@ export function UpdateByCalculator() {
                       <div className="flex justify-center">
                         <button
                           onClick={() => {
-                            handleClosePopup();
                             deleteItemConnection();
+                            handleClosePopup();
+                            handleCloseTablePopup();
                           }}
                           className="bg-green-500 text-white px-4 py-2 rounded mr-4"
                         >
@@ -1671,6 +1671,7 @@ export function UpdateByCalculator() {
                         onClick={() => {
                           addNewItemConnection();
                           handleClosePopup();
+                          handleCloseTablePopup();
                         }}
                         className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                       >
@@ -1766,6 +1767,7 @@ export function UpdateByCalculator() {
                           onClick={() => {
                             updatePortion();
                             handleClosePopup();
+                            handleCloseTablePopup();
                           }}
                           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                         >
@@ -1830,6 +1832,7 @@ export function UpdateByCalculator() {
                         <button
                           onClick={() => {
                             handleClosePopup();
+                            handleCloseTablePopup();
                             deletePortion();
                           }}
                           className="bg-green-500 text-white px-4 py-2 rounded mr-4"
@@ -1930,6 +1933,7 @@ export function UpdateByCalculator() {
                         onClick={() => {
                           addNewPortion();
                           handleClosePopup();
+                          handleCloseTablePopup();
                         }}
                         className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                       >
@@ -2060,6 +2064,7 @@ export function UpdateByCalculator() {
                         onClick={() => {
                           estimateByItemNeededCalculator();
                           handleClosePopup();
+                          handleCloseTablePopup();
                         }}
                         className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                       >
@@ -2152,6 +2157,7 @@ export function UpdateByCalculator() {
                         onClick={() => {
                           estimateByALaCarteCalculator();
                           handleClosePopup();
+                          handleCloseTablePopup();
                         }}
                         className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                       >

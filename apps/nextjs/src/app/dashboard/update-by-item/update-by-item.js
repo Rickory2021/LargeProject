@@ -175,7 +175,8 @@ export function UpdateByItem() {
     setNewInventoryItem({
       newMetaData: item.metaData,
       index: index,
-      newNumber: item.portionNumber
+      newNumber: item.portionNumber,
+      logReason: 'Inventory Update'
     });
     setEditInventoryItemPopup(item);
   };
@@ -188,7 +189,8 @@ export function UpdateByItem() {
     setNewInventoryItem({
       newMetaData: '',
       index: '',
-      newNumber: ''
+      newNumber: '',
+      logReason: 'Inventory Arrival'
     });
   };
 
@@ -358,7 +360,9 @@ export function UpdateByItem() {
         console.error('Error creating new location: ', Error);
       }
       // Fetch the updated distributor list
-      await fetchUpdatedInventoryList();
+      const updatedLocationList = await fetchUpdatedLocationList();
+      updateLocationList(updatedLocationList);
+      readAll();
     } catch (error) {
       console.error('Error creating distributor:', error);
     }
@@ -377,7 +381,8 @@ export function UpdateByItem() {
             itemName: itemName,
             findLocationName: locationName,
             index: newInventoryItem.index,
-            newNumber: newInventoryItem.newNumber
+            newNumber: newInventoryItem.newNumber,
+            logReason: newInventoryItem.logReason
           })
         }
       );
@@ -403,7 +408,8 @@ export function UpdateByItem() {
               itemName: itemName,
               findLocationName: locationName,
               index: newInventoryItem.index,
-              newMetaData: newInventoryItem.newMetaData
+              newMetaData: newInventoryItem.newMetaData,
+              logReason: newInventoryItem.logReason
             })
           }
         );
@@ -420,85 +426,9 @@ export function UpdateByItem() {
       }
 
       await fetchUpdatedInventoryList();
+      readAll();
     } catch (error) {
       console.error('Error updating new Inventory Item: ', error);
-    }
-  };
-
-  const EditDistributor = async () => {
-    console.log(index);
-    try {
-      // Make the first API call to update the distributor item name
-      const response1 = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://slicer-project-backend.vercel.app'}/api/crud/business/distributor-item/update-distributor-item-name?businessId=${businessId}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            itemName: itemName,
-            index: index,
-            newDistributorItemName: editedDistributorData.distributorItemName
-          })
-        }
-      );
-      if (!response1.ok) {
-        throw new Error('Failed to update distributor item name');
-      }
-
-      console.log('Unit Amount: ' + editedDistributorData.unitAmount);
-      // Make the second API call to update the unit amount
-      const response2 = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://slicer-project-backend.vercel.app'}/api/crud/business/distributor-item/update-item-portion?businessId=${businessId}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            itemName: itemName,
-            index: index,
-            newItemPortion: editedDistributorData.unitAmount
-          })
-        }
-      );
-      if (!response2.ok) {
-        throw new Error('Failed to update unit amount');
-      }
-
-      // Make the third API call to update the cost
-      const response3 = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://slicer-project-backend.vercel.app'}/api/crud/business/distributor-item/update-item-cost?businessId=${businessId}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            itemName: itemName,
-            index: index,
-            newItemCost: editedDistributorData.cost
-          })
-        }
-      );
-      if (!response3.ok) {
-        throw new Error('Failed to update cost');
-      }
-
-      // Fetch the updated distributor list
-      const updatedDistributorList = await fetchUpdatedLocationList();
-
-      console.log(updatedDistributorList);
-      // Update the distributor list state with the updated list
-      setDistributorList(updatedDistributorList);
-
-      // Handle successful updates
-      console.log('Distributor information updated successfully');
-      // Optionally, close the popup after successful update
-      handleClosePopup();
-    } catch (error) {
-      console.error('Error updating distributor information:', error);
     }
   };
 
@@ -521,7 +451,9 @@ export function UpdateByItem() {
       if (!response.ok) {
         throw new Error('Failed to delete item');
       }
-      await fetchUpdatedInventoryList();
+      const updatedLocationList = await fetchUpdatedLocationList();
+      updateLocationList(updatedLocationList);
+      readAll();
     } catch (error) {
       console.error('Error deleting Item: ', error);
     }
@@ -555,68 +487,9 @@ export function UpdateByItem() {
       console.log(updatedLocationList);
       // Update the distributor list state with the updated list
       updateLocationList(updatedLocationList);
+      readAll();
     } catch (error) {
       console.error('Error deleting Location: ', error);
-    }
-  };
-
-  const EditDistributorMetaData = async () => {
-    try {
-      const response1 = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://slicer-project-backend.vercel.app'}/api/crud/business/distributor-metadata-list/update-deadline-date?businessId=${businessId}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            findDistributorName: updataDistributorMetaData.distributorName,
-            newDistributorDeadlineDate: editedDistributorMetaData.deadlineDate
-          })
-        }
-      );
-      if (!response1.ok) {
-        throw new Error('Failed to update Deadline Date');
-      }
-      const response2 = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://slicer-project-backend.vercel.app'}/api/crud/business/distributor-metadata-list/update-delivery-date?businessId=${businessId}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            findDistributorName: updataDistributorMetaData.distributorName,
-            newDistributorDeliveryDate: editedDistributorMetaData.deliveryDate
-          })
-        }
-      );
-      if (!response2.ok) {
-        throw new Error('Failed to update Delivery Date');
-      }
-      const response3 = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://slicer-project-backend.vercel.app'}/api/crud/business/distributor-metadata-list/update-meta-data?businessId=${businessId}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            findDistributorName: updataDistributorMetaData.distributorName,
-            newDeliveryMetaData: editedDistributorMetaData.noteMetaData
-          })
-        }
-      );
-      if (!response3.ok) {
-        throw new Error('Failed to update metadata notes!');
-      }
-
-      // Optionally, you can handle successful updates here
-      console.log('Distributor metadata updated successfully');
-      // Close the popup after successful update
-      handleClosePopup();
-    } catch (error) {
-      console.error('Error updating distributor metadata: ', error);
     }
   };
 
@@ -891,7 +764,7 @@ export function UpdateByItem() {
                               item.totalCount &&
                               item.largestPortionNumber
                                 ? item.largestPortionName
-                                : `Portion Details`}
+                                : `Details`}
                             </td>
                             <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
                               {item.largestPortionName &&
@@ -907,7 +780,7 @@ export function UpdateByItem() {
                               item.estimate &&
                               item.largestPortionNumber
                                 ? item.largestPortionName
-                                : `Portion Details`}
+                                : `Details`}
                             </td>
                             <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
                               <button
@@ -1148,6 +1021,7 @@ export function UpdateByItem() {
                       className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
                       onClick={() => {
                         handleAddInventoryPopup();
+                        handleCloseInventoryListPopup();
                       }}
                     >
                       Add Inventory element{' '}
@@ -1192,6 +1066,7 @@ export function UpdateByItem() {
                                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mr-2"
                                 onClick={() => {
                                   handleEditInventoryItemPopup(item, index);
+                                  handleCloseInventoryListPopup();
                                 }}
                                 aria-label={`Edit Portion ${item.portionNumber}`}
                               >
@@ -1201,6 +1076,7 @@ export function UpdateByItem() {
                                 className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full"
                                 onClick={() => {
                                   handleDeleteInventoryPopup(location, index);
+                                  handleCloseInventoryListPopup();
                                 }}
                                 aria-label={`Delete Portion ${item.portionNumber}`}
                               >
@@ -1397,6 +1273,7 @@ export function UpdateByItem() {
                     onClick={() => {
                       addLocation();
                       handleClosePopup();
+                      handleCloseInventoryListPopup();
                     }}
                     className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
                   >
@@ -1582,6 +1459,8 @@ export function UpdateByItem() {
                       );
                       addInventoryItem();
                       handleClosePopup();
+                      handleCloseTablePopup();
+                      handleCloseInventoryListPopup();
                     }}
                     className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
                   >
@@ -1719,6 +1598,7 @@ export function UpdateByItem() {
                       className="bg-green-500 text-white px-4 py-2 rounded-md mr-2"
                       onClick={() => {
                         handleDeleteLocation();
+
                         handleClosePopup();
                       }}
                     >

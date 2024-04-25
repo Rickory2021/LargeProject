@@ -529,9 +529,9 @@ export function Distributors() {
             style={{
               position: 'fixed',
               top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
+              left: -60,
+              width: '100vw', // Cover entire viewport width
+              height: '100vh', // Cover entire viewport height
               zIndex: 1000,
               display: 'flex',
               justifyContent: 'center',
@@ -544,8 +544,6 @@ export function Distributors() {
               className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150"
               style={{
                 width: '40%',
-                maxHeight: '80%', // Adjusted to 80% to leave space at the bottom
-                maxWidth: '90%',
                 zIndex: 110,
                 position: 'relative',
                 overflowY: 'auto' // Added to make the popup content scrollable
@@ -681,8 +679,8 @@ export function Distributors() {
               position: 'fixed',
               top: 0,
               left: 0,
-              right: 0,
-              bottom: 0,
+              width: '100vw', // Cover entire viewport width
+              height: '100vh', // Cover entire viewport height
               zIndex: 1000,
               display: 'flex',
               justifyContent: 'center',
