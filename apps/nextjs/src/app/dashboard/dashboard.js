@@ -571,7 +571,12 @@ export function Dashboard() {
                           </tr>
                         ))
                       ) : (
-                        <p></p>
+                        <tr>
+                          <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center"></td>
+                          <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center"></td>
+                          <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center"></td>
+                          <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center"></td>
+                        </tr>
                       )}
                     </tbody>
                   </table>

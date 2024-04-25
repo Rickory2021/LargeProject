@@ -41,7 +41,7 @@ const LocationTotal = ({
   }, [itemName, businessId, location]);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return `Loading...`;
   }
   // if (typeof unitNumber === 'undefined' || typeof unitName === 'undefined') {
   //   return (
