@@ -465,7 +465,7 @@ export function Distributors() {
         ) : (
           <ul>
             <h2 className="text-2xl font-bold text-center mb-4 border-b border-gray-700">
-              Inventory List
+              Distributors
             </h2>
             {itemList !== null &&
               itemList.map((item, index) => (
