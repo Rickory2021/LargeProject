@@ -13,6 +13,7 @@ import DistributorPopup from '../components/DistributorPopup';
 import LocationTotalCount from '../components/LocationTotalCount';
 import DropdownSelection from '../components/DropdownSelection';
 import DateComponent from '../components/DateComponent';
+import LocationTotal from '../components/LocationTotal';
 // import '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 export function UpdateByItem() {
@@ -21,6 +22,8 @@ export function UpdateByItem() {
   const [loading, setLoading] = useState(true);
   const [itemList, setItemList] = useState([]);
   const [itemName, setItemName] = useState('');
+  const [largestPortionName, setLargestUnitName] = useState('');
+  const [largestPortionNumber, setLargestUnitNumber] = useState('');
   const [index, setIndex] = useState('');
   const [locationList, setLocationList] = useState([]);
   const [itemCountMap, setItemCountMap] = useState({});
@@ -46,6 +49,7 @@ export function UpdateByItem() {
   const [deleteInventoryPopup, setDeleteInventoryPopup] = useState('');
   const [selectedItem, setSelectedItem] = useState({});
   const [isSideNavOpen, setIsSideNavOpen] = useState(true);
+  const [locationLoad, setLocationLoad] = useState('');
 
   const updateEstimateDeduction = (itemName, newEstimatedDeduction) => {
     setEstimatedDeductionMap(prevState => ({
@@ -199,6 +203,9 @@ export function UpdateByItem() {
     setPopupLocation(null);
     setEditInventoryItemPopup(false);
     setEditMode(false);
+  };
+  const handleCloseTablePopup = () => {
+    setLocationLoad(false);
   };
 
   const updateLocationInventory = (
@@ -773,732 +780,751 @@ export function UpdateByItem() {
             <h2 className="text-2xl font-bold text-center mb-4 border-b border-gray-700">
               Item List
             </h2>
-            {itemList !== null &&
-              itemList.map((item, index) => (
-                <li key={index}>
-                  <div className="relative">
-                    <div className="flex items-center ml-2">
+            <div className="-m-1.5 overflow-x-auto">
+              <div className="p-1.5 min-w-[1500px] inline-block align-middle">
+                <div className="overflow-hidden">
+                  <table className="table-fixed min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
+                    <thead>
+                      <tr>
+                        <th
+                          scope="col"
+                          className="px-8 py-4 text-start text-sm font-medium text-gray-500 uppercase dark:text-neutral-500 w-[20%]"
+                        >
+                          Name
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-8 py-4 text-start text-sm font-medium text-gray-500 uppercase dark:text-neutral-500 w-[20%]"
+                        >
+                          Total Count
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-8 py-4 text-start text-sm font-medium text-gray-500 uppercase dark:text-neutral-500 w-[20%]"
+                        >
+                          Estimated
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-8 py-4 text-start text-sm font-medium text-gray-500 uppercase dark:text-neutral-500 w-[20%]"
+                        >
+                          Location
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200 dark:divide-neutral-700">
+                      {itemList !== null &&
+                        itemList.map((item, index) => (
+                          <tr
+                            key={index}
+                            className="hover:bg-gray-100 dark:hover:bg-neutral-700 h-24 overflow-y-auto"
+                          >
+                            <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
+                              {item.itemName}
+                            </td>
+                            <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
+                              {item.largestPortionName &&
+                              item.totalCount &&
+                              item.largestPortionNumber
+                                ? (
+                                    item.totalCount / item.largestPortionNumber
+                                  ).toFixed(2)
+                                : 'No'}{' '}
+                              {item.largestPortionName &&
+                              item.totalCount &&
+                              item.largestPortionNumber
+                                ? item.largestPortionName
+                                : `Portion Details`}
+                            </td>
+                            <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
+                              {item.largestPortionName &&
+                              item.totalCount &&
+                              item.estimate &&
+                              item.largestPortionNumber
+                                ? (
+                                    item.estimate / item.largestPortionNumber
+                                  ).toFixed(2)
+                                : 'No'}{' '}
+                              {item.largestPortionName &&
+                              item.totalCount &&
+                              item.estimate &&
+                              item.largestPortionNumber
+                                ? item.largestPortionName
+                                : `Portion Details`}
+                            </td>
+                            <td className="px-8 py-6 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 w-[20%]">
+                              <button
+                                onClick={e => {
+                                  setItemName(item.itemName);
+                                  setLargestUnitNumber(
+                                    item.largestPortionNumber
+                                  );
+                                  setLargestUnitName(item.largestPortionName);
+                                  setLocationLoad(true);
+                                  e.stopPropagation();
+                                }}
+                                type="button"
+                                className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 w-[20%]"
+                              >
+                                Location
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            {locationLoad && (
+              <div>
+                <Location
+                  itemName={itemName}
+                  businessId={businessId}
+                  updateLocationList={updateLocationList}
+                />
+                <div
+                  style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    zIndex: 300,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backdropFilter: 'blur(4px)'
+                  }}
+                  onClick={e => e.stopPropagation()}
+                >
+                  <div
+                    className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150"
+                    style={{
+                      width: '80%', // Increased width
+                      maxHeight: '80%', // Increased maxHeight
+                      maxWidth: '90%',
+                      zIndex: 110,
+                      position: 'relative',
+                      overflowY: 'auto' // Added to allow scrolling if content exceeds maxHeight
+                    }}
+                    onClick={e => e.stopPropagation()}
+                  >
+                    <div className="flex justify-end p-2">
                       <button
-                        onClick={() => {
-                          getItemName(item.itemName);
-                          setOpenIndex(openIndex === index ? null : index);
-                        }}
-                        type="button"
-                        className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
+                        onClick={handleCloseTablePopup}
+                        className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
                       >
                         <svg
+                          className="w-5 h-5"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
                           xmlns="http://www.w3.org/2000/svg"
-                          className="h-4 w-4"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
                         >
-                          {openIndex === index ? (
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M5 15l7-7 7 7"
-                            />
-                          ) : (
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M19 9l-7 7-7-7"
-                            />
-                          )}
+                          <path
+                            fillRule="evenodd"
+                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                            clipRule="evenodd"
+                          ></path>
                         </svg>
                       </button>
-                      <div className="flex items-center ml-2">
-                        <button
-                          onClick={() => {
-                            getItemName(item.itemName);
-                            setOpenIndex(openIndex === index ? null : index);
-                          }}
-                          type="button"
-                          className="inline-flex items-center justify-center ml-2 mr-2 rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
-                          id="dropdown-menu-button"
-                        >
-                          {item.itemName}
-                        </button>
-                        {!itemCountMap[item.itemName] && (
-                          <div>
-                            <ItemTotalCount
-                              businessId={businessId}
-                              itemName={item.itemName}
-                              updateItemCount={updateItemCount}
-                            />
-                          </div>
-                        )}
-                        {!estimatedDeductionMap[item.itemName] && (
-                          <div>
-                            <ItemEstimateDeduction
-                              businessId={businessId}
-                              itemName={item.itemName}
-                              estimateDeduction={updateEstimateDeduction}
-                            />
-                          </div>
-                        )}
-                        <LargestPortion
-                          businessId={businessId}
-                          itemName={item.itemName}
-                          updateMaxPortion={updateMaxPortionForItem}
-                        />
-                        {/* Display the item count if available */}
-
-                        <>
-                          <p className="m-8">
-                            Total Count:{' '}
-                            {maxPortionMap[item.itemName] &&
-                            itemCountMap[item.itemName] &&
-                            maxPortionMap[item.itemName].unitNumber
-                              ? (
-                                  itemCountMap[item.itemName] /
-                                  maxPortionMap[item.itemName].unitNumber
-                                ).toFixed(2)
-                              : 'No'}{' '}
-                            {maxPortionMap[item.itemName] &&
-                            itemCountMap[item.itemName] &&
-                            maxPortionMap[item.itemName].unitNumber
-                              ? maxPortionMap[item.itemName].unitName
-                              : 'Portion Details'}{' '}
-                          </p>
-                          <p className="m-8">
-                            Estimate:{' '}
-                            {maxPortionMap[item.itemName] &&
-                            estimatedDeductionMap[item.itemName] &&
-                            maxPortionMap[item.itemName].unitNumber
-                              ? (
-                                  estimatedDeductionMap[item.itemName]
-                                    .estimateDeduction /
-                                  maxPortionMap[item.itemName].unitNumber
-                                ).toFixed(2)
-                              : 'No'}{' '}
-                            {maxPortionMap[item.itemName] &&
-                            itemCountMap[item.itemName] &&
-                            maxPortionMap[item.itemName].unitNumber
-                              ? maxPortionMap[item.itemName].unitName
-                              : 'Portion Details'}{' '}
-                          </p>
-                        </>
-                      </div>
                     </div>
-                    {openIndex === index && (
-                      <div className="ml-12">
-                        <div className="flex items-center ml-2">
-                          <h6 className="mr-auto">Location: </h6>
-                          <button
-                            onClick={handleAddLocationPopup}
-                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-                          >
-                            Add new location
-                          </button>
-                        </div>
-                        <Location
-                          itemName={item.itemName}
-                          businessId={businessId}
-                          updateLocationList={updateLocationList}
-                        />
-                        <ul>
-                          {locationList.map((location, i) => (
-                            <li
-                              key={i}
-                              className="block px-4 py-2 text-sm text-gray-700"
-                            >
-                              {!locationInventory[location] ||
-                              !locationInventory[location][item.itemName] ? (
-                                <div>
-                                  <LocationTotalCount
-                                    itemName={item.itemName}
-                                    businessId={businessId}
-                                    locationName={location}
-                                    updateLocationInventory={
-                                      updateLocationInventory
-                                    }
-                                  />
-                                  <LargestPortion
-                                    businessId={businessId}
-                                    itemName={item.itemName}
-                                    updateMaxPortion={updateMaxPortionForItem}
-                                  />
-                                </div>
-                              ) : (
-                                <div className="flex items-center">
-                                  <button
-                                    onClick={() => {
-                                      setItemName(item.itemName);
-                                      toggleDropdownForLocation(location);
-                                    }}
-                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-                                  >
+                    <div className="ml-12">
+                      <div className="flex items-center ml-2">
+                        <h6 className="mr-auto">Location: </h6>
+                        <button
+                          onClick={() => handleAddLocationPopup(itemName)}
+                          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                        >
+                          Add new location
+                        </button>
+                      </div>
+                      <div className="flex items-center">
+                        {locationList && locationList.length > 0 ? (
+                          <table className="min-w-full border border-collapse border-gray-300">
+                            <thead>
+                              <tr>
+                                <th className="px-6 py-3 border-r border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                  Location
+                                </th>
+                                <th className="px-6 py-3 border-r border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                  Inventory List
+                                </th>
+                                <th className="px-6 py-3 border-r border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                  Location Info
+                                </th>
+                                <th className="px-6 py-3 border-r border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                  Location Total Count
+                                </th>
+                                <th className="px-6 py-3 border-r border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                  Last Updated
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody className="bg-white">
+                              {locationList.map((location, i) => (
+                                <tr key={i}>
+                                  <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
                                     {location}
-                                  </button>
-                                  <button
-                                    onClick={() =>
-                                      handleLocationPopup(location)
-                                    }
-                                    type="button"
-                                    className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full border border-black shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-500 focus:outline-none"
-                                  >
-                                    i
-                                  </button>
-                                  <p className="m-8">
-                                    Last Updated:{' '}
+                                  </td>
+                                  <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
+                                    <button
+                                      onClick={() =>
+                                        handleLocationPopup(location)
+                                      }
+                                      type="button"
+                                      className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-transparent text-blue-500 text-sm hover:text-blue-700 focus:outline-none"
+                                      aria-label={`Info for ${location}`}
+                                    >
+                                      Inventory List
+                                    </button>
+                                  </td>
+                                  <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
+                                    <button
+                                      onClick={() =>
+                                        handleLocationPopup(location)
+                                      }
+                                      type="button"
+                                      className="inline-flex items-center justify-center w-6 h-6 rounded-full border border-gray-300 shadow-sm bg-white text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
+                                      aria-label={`Info for ${location}`}
+                                    >
+                                      i
+                                    </button>
+                                  </td>
+                                  <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
+                                    <LocationTotal
+                                      itemName={itemName}
+                                      businessId={businessId}
+                                      location={location}
+                                      unitName={largestPortionName}
+                                      unitNumber={largestPortionNumber}
+                                    />
+                                  </td>
+                                  <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
                                     <DateComponent
-                                      itemName={item.itemName}
+                                      itemName={itemName}
                                       location={location}
                                       businessId={businessId}
                                     />
-                                  </p>
-                                  {/* <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-                                    {' '}
-                                    Clear estimate{' '}
-                                  </button> */}
-                                </div>
-                              )}
-                              {showDropdownMap[location] && (
-                                <div>
-                                  <div className="flex items-center space-x-4 mb-4">
-                                    <p className="font-bold">Inventory List:</p>
-                                    <DropdownSelection
-                                      businessId={businessId}
-                                      itemName={item.itemName}
-                                      onItemSelected={handleItemSelected}
-                                    />
-                                    <button
-                                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-                                      onClick={() => {
-                                        setLocationName(location);
-                                        handleAddInventoryPopup(item);
-                                      }}
-                                    >
-                                      Add Inventory element{' '}
-                                    </button>
-                                  </div>
-                                  <div className="flex flex-col items-start space-y-4">
-                                    <ItemLocationList
-                                      businessId={businessId}
-                                      itemName={itemName}
-                                      locationName={location}
-                                      setItemLocationList={setItemLocationList}
-                                    />
-                                    {itemLocationList.map((item, index) => (
-                                      <div
-                                        key={index}
-                                        className="flex items-center justify-between w-full border p-4 rounded-md"
-                                      >
-                                        <div className="w-1/2 pl-4 flex items-center">
-                                          {selectedItem &&
-                                          selectedItem.unitNumber !== 0 &&
-                                          selectedItem.unitNumber ? (
-                                            <p>
-                                              portionNumber:{' '}
-                                              {item.portionNumber /
-                                                selectedItem.unitNumber}{' '}
-                                              {selectedItem.unitName}
-                                            </p>
-                                          ) : (
-                                            <p>
-                                              portionNumber:{' '}
-                                              {item.portionNumber} Base Units
-                                            </p>
-                                          )}
-                                          <p className="ml-4">
-                                            Note: {item.metaData}
-                                          </p>
-                                        </div>
-                                        <div className="flex space-x-4">
-                                          <button
-                                            onClick={() => {
-                                              setLocationName(location);
-                                              console.log(index);
-                                              handleEditInventoryItemPopup(
-                                                item,
-                                                index
-                                              );
-                                            }}
-                                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-                                          >
-                                            Edit
-                                          </button>
-                                          <button
-                                            onClick={() => {
-                                              setLocationName(location);
-                                              handleDeleteInventoryPopup(
-                                                location,
-                                                index
-                                              );
-                                            }}
-                                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-                                          >
-                                            Delete
-                                          </button>
-                                        </div>
-                                      </div>
-                                    ))}
-                                  </div>
-                                </div>
-                              )}
-                            </li>
-                          ))}
-                        </ul>
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        ) : (
+                          <p>No locations available.</p>
+                        )}
                       </div>
-                    )}
-                    {popupLocation && (
-                      <div
-                        className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-opacity-50"
-                        onClick={handleClosePopup}
-                      >
-                        <div
-                          style={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            right: 0,
-                            bottom: 0,
-                            zIndex: 1000,
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            backdropFilter: 'blur(4px)'
-                          }}
-                          onClick={e => e.stopPropagation()}
-                        >
-                          <div
-                            className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150"
-                            style={{
-                              width: '40%',
-                              maxHeight: '70%',
-                              maxWidth: '90%',
-                              zIndex: 110,
-                              position: 'relative'
-                            }}
-                            onClick={e => e.stopPropagation()}
-                          >
-                            <div className="flex justify-end p-2">
-                              <button
-                                onClick={handleClosePopup}
-                                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
-                              >
-                                <svg
-                                  className="w-5 h-5"
-                                  fill="currentColor"
-                                  viewBox="0 0 20 20"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                    clipRule="evenodd"
-                                  ></path>
-                                </svg>
-                              </button>
-                            </div>
-
-                            <LocationPopup
-                              locationName={popupLocation}
-                              businessId={businessId}
-                              updataLocationMetaData={updataLocationMetaData}
-                            />
-
-                            {editMode ? (
-                              <>
-                                <h6>Edit {popupLocation}</h6>
-                                <p>Address: </p>
-                                <input
-                                  type="text"
-                                  name="locationAddress"
-                                  value={newLocationMetaData.locationAddress}
-                                  onChange={e =>
-                                    handleInputChange(
-                                      e,
-                                      'locationAddress',
-                                      'locationMetaData'
-                                    )
-                                  }
-                                  className="bg-gray-100 rounded-md p-2 mb-2"
-                                />
-                                <p>Notes(MetaData): </p>
-                                <input
-                                  type="text"
-                                  name="locationMetaData"
-                                  value={newLocationMetaData.locationMetaData}
-                                  onChange={e =>
-                                    handleInputChange(
-                                      e,
-                                      'locationMetaData',
-                                      'locationMetaData'
-                                    )
-                                  }
-                                  className="bg-gray-100 rounded-md p-2 mb-2"
-                                />
-                                <br />
-                                <button
-                                  onClick={() => {
-                                    EditLocationMetaData(popupLocation);
-                                    handleClosePopup(); // Close the popup after saving
-                                  }}
-                                >
-                                  Save
-                                </button>
-                              </>
-                            ) : (
-                              <>
-                                <br></br>
-                                <h6>Information about {popupLocation}: </h6>
-                                <p>
-                                  Address: {locationMetaData.locationAddress}
-                                </p>
-                                <p>
-                                  Notes (MetaData):{' '}
-                                  {locationMetaData.locationMetaData}
-                                </p>
-                                <br></br>
-                                <button
-                                  onClick={() => {
-                                    setNewLocationMetaData(locationMetaData);
-                                    setEditMode(true);
-                                  }}
-                                >
-                                  Edit
-                                </button>
-                              </>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    {addLocationPopup && (
-                      <div
-                        style={{
-                          position: 'fixed',
-                          top: 0,
-                          left: 0,
-                          right: 0,
-                          bottom: 0,
-                          zIndex: 1000,
-                          display: 'flex',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          backdropFilter: 'blur(4px)'
-                        }}
-                        onClick={handleClosePopup}
-                      >
-                        <div
-                          className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150"
-                          style={{
-                            width: '40%',
-                            maxHeight: '70%',
-                            maxWidth: '90%',
-                            zIndex: 110,
-                            position: 'relative'
-                          }}
-                          onClick={e => e.stopPropagation()}
-                        >
-                          <div className="flex justify-end p-2">
-                            <button
-                              onClick={handleClosePopup}
-                              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
-                            >
-                              <svg
-                                className="w-5 h-5"
-                                fill="currentColor"
-                                viewBox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  fillRule="evenodd"
-                                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                  clipRule="evenodd"
-                                ></path>
-                              </svg>
-                            </button>
-                          </div>
-                          <h6>Create a new Location: </h6>
-                          <p>Location name: </p>
-                          <input
-                            type="text"
-                            name="locationName"
-                            value={newLocation.locationName}
-                            onChange={e =>
-                              handleInputChange(e, 'locationName', 'location')
-                            }
-                            className="bg-gray-100 rounded-md p-2 mb-2"
-                          />
-                          <br />
-                          <button
-                            onClick={() => {
-                              addLocation();
-                              handleClosePopup();
-                            }}
-                          >
-                            Create
-                          </button>
-                        </div>
-                      </div>
-                    )}
-
-                    {editInventoryItemPopup && (
-                      <div
-                        style={{
-                          position: 'fixed',
-                          top: 0,
-                          left: 0,
-                          right: 0,
-                          bottom: 0,
-                          zIndex: 1000,
-                          display: 'flex',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          backdropFilter: 'blur(4px)'
-                        }}
-                        onClick={handleClosePopup}
-                      >
-                        <div
-                          className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150"
-                          style={{
-                            width: '40%',
-                            maxHeight: '70%',
-                            maxWidth: '90%',
-                            zIndex: 110,
-                            position: 'relative'
-                          }}
-                          onClick={e => e.stopPropagation()}
-                        >
-                          <div className="flex justify-end p-2">
-                            <button
-                              onClick={handleClosePopup}
-                              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
-                            >
-                              <svg
-                                className="w-5 h-5"
-                                fill="currentColor"
-                                viewBox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  fillRule="evenodd"
-                                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                  clipRule="evenodd"
-                                ></path>
-                              </svg>
-                            </button>
-                          </div>
-                          <h6>Edit Inventory Input: </h6>
-                          <p>Portion Number: </p>
-                          <input
-                            type="text"
-                            name="newNumber"
-                            value={newInventoryItem.newNumber}
-                            onChange={e =>
-                              handleInputChange(e, 'newNumber', 'Item')
-                            }
-                            className="bg-gray-100 rounded-md p-2 mb-2"
-                          />
-                          <p>Note: </p>
-                          <input
-                            type="text"
-                            name="newMetaData"
-                            value={newInventoryItem.newMetaData}
-                            onChange={e =>
-                              handleInputChange(e, 'newMetaData', 'Item')
-                            }
-                            className="bg-gray-100 rounded-md p-2 mb-2"
-                          />
-                          <br />
-                          <button
-                            onClick={() => {
-                              updateInventoryItem(), handleClosePopup();
-                            }}
-                          >
-                            Save
-                          </button>
-                        </div>
-                      </div>
-                    )}
-
-                    {addInventoryPopup && (
-                      <div
-                        style={{
-                          position: 'fixed',
-                          top: 0,
-                          left: 0,
-                          right: 0,
-                          bottom: 0,
-                          zIndex: 1000,
-                          display: 'flex',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          backdropFilter: 'blur(4px)'
-                        }}
-                        onClick={handleClosePopup}
-                      >
-                        <div
-                          className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150"
-                          style={{
-                            width: '40%',
-                            maxHeight: '70%',
-                            maxWidth: '90%',
-                            zIndex: 110,
-                            position: 'relative'
-                          }}
-                          onClick={e => e.stopPropagation()}
-                        >
-                          <div className="flex justify-end p-2">
-                            <button
-                              onClick={handleClosePopup}
-                              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
-                            >
-                              <svg
-                                className="w-5 h-5"
-                                fill="currentColor"
-                                viewBox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  fillRule="evenodd"
-                                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                  clipRule="evenodd"
-                                ></path>
-                              </svg>
-                            </button>
-                          </div>
-                          <h6>Create a new Inventory Item: </h6>
-                          <p>Item Name: </p>
-                          <input
-                            type="text"
-                            name="itemName"
-                            value={itemName}
-                            readOnly
-                            className="bg-gray-100 rounded-md p-2 mb-2"
-                          />
-                          <p>Location Name: </p>
-                          <input
-                            type="text"
-                            name="locationName"
-                            value={locationName}
-                            readOnly
-                            className="bg-gray-100 rounded-md p-2 mb-2"
-                          />
-                          <p>Portion Number: </p>
-                          <input
-                            type="text"
-                            name="newNumber"
-                            value={newInventoryItem.newNumber}
-                            onChange={e =>
-                              handleInputChange(e, 'newNumber', 'Item')
-                            }
-                            className="bg-gray-100 rounded-md p-2 mb-2"
-                          />
-                          <p>Note(MetaData): </p>
-                          <input
-                            type="text"
-                            name="newMetaData"
-                            value={newInventoryItem.newMetaData}
-                            onChange={e =>
-                              handleInputChange(e, 'newMetaData', 'Item')
-                            }
-                            className="bg-gray-100 rounded-md p-2 mb-2"
-                          />
-                          <p>Log Reason: </p>
-                          <input
-                            type="text"
-                            name="logReason"
-                            value={newLocation.logReason}
-                            onChange={e =>
-                              handleInputChange(e, 'logReason', 'Item')
-                            }
-                            className="bg-gray-100 rounded-md p-2 mb-2"
-                          />
-                          <br />
-                          <button
-                            onClick={() => {
-                              addInventoryItem();
-                              handleClosePopup();
-                            }}
-                          >
-                            Create
-                          </button>
-                        </div>
-                      </div>
-                    )}
-
-                    {deleteInventoryPopup && (
-                      <div
-                        style={{
-                          position: 'fixed',
-                          top: 0,
-                          left: 0,
-                          right: 0,
-                          bottom: 0,
-                          zIndex: 1000,
-                          display: 'flex',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          backdropFilter: 'blur(4px)'
-                        }}
-                        onClick={handleClosePopup}
-                      >
-                        <div
-                          className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150"
-                          style={{
-                            width: '40%',
-                            maxHeight: '70%',
-                            maxWidth: '90%',
-                            zIndex: 110,
-                            position: 'relative'
-                          }}
-                          onClick={e => e.stopPropagation()}
-                        >
-                          <div className="flex justify-end p-2">
-                            <button
-                              onClick={handleClosePopup}
-                              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
-                            >
-                              <svg
-                                className="w-5 h-5"
-                                fill="currentColor"
-                                viewBox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  fillRule="evenodd"
-                                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                  clipRule="evenodd"
-                                ></path>
-                              </svg>
-                            </button>
-                          </div>
-                          <br />
-                          <p className="max-w-sm text-center">
-                            Are you sure you want to delete this Inventory Item?
-                          </p>
-                          <br />
-                          <div className="flex justify-between">
-                            <button
-                              className="bg-green-500 text-white px-4 py-2 rounded-md mr-2"
-                              onClick={() => {
-                                handleDeleteItem();
-                                handleClosePopup();
-                              }}
-                            >
-                              Yes
-                            </button>
-                            <button
-                              className="bg-red-500 text-white px-4 py-2 rounded-md"
-                              onClick={handleClosePopup}
-                            >
-                              No
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    )}
+                    </div>
                   </div>
-                </li>
-              ))}
+                </div>
+              </div>
+            )}
+
+            {showDropdownMap[location] && (
+              <div>
+                <div className="flex items-center space-x-4 mb-4">
+                  <p className="font-bold">Inventory List:</p>
+                  <DropdownSelection
+                    businessId={businessId}
+                    itemName={itemName}
+                    onItemSelected={handleItemSelected}
+                  />
+                  <button
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                    onClick={() => {
+                      setLocationName(location);
+                      handleAddInventoryPopup(itemName);
+                    }}
+                  >
+                    Add Inventory element{' '}
+                  </button>
+                </div>
+                <div className="flex flex-col items-start space-y-4">
+                  <ItemLocationList
+                    businessId={businessId}
+                    itemName={itemName}
+                    locationName={location}
+                    setItemLocationList={setItemLocationList}
+                  />
+                  {itemLocationList.map((item, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between w-full border p-4 rounded-md"
+                    >
+                      <div className="w-1/2 pl-4 flex items-center">
+                        {selectedItem &&
+                        selectedItem.unitNumber !== 0 &&
+                        selectedItem.unitNumber ? (
+                          <p>
+                            portionNumber:{' '}
+                            {item.portionNumber / selectedItem.unitNumber}{' '}
+                            {selectedItem.unitName}
+                          </p>
+                        ) : (
+                          <p>portionNumber: {item.portionNumber} Base Units</p>
+                        )}
+                        <p className="ml-4">Note: {item.metaData}</p>
+                      </div>
+                      <div className="flex space-x-4">
+                        <button
+                          onClick={() => {
+                            setLocationName(location);
+                            console.log(index);
+                            handleEditInventoryItemPopup(item, index);
+                          }}
+                          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => {
+                            setLocationName(location);
+                            handleDeleteInventoryPopup(location, index);
+                          }}
+                          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            {popupLocation && (
+              <div
+                style={{
+                  position: 'fixed',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  zIndex: 1000,
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backdropFilter: 'blur(4px)'
+                }}
+                onClick={e => e.stopPropagation()}
+              >
+                <div
+                  className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150"
+                  style={{
+                    width: '40%',
+                    maxHeight: '70%',
+                    maxWidth: '90%',
+                    zIndex: 110,
+                    position: 'relative'
+                  }}
+                  onClick={e => e.stopPropagation()}
+                >
+                  <div className="flex justify-end p-2">
+                    <button
+                      onClick={handleClosePopup}
+                      className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+                    >
+                      <svg
+                        className="w-5 h-5"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                          clipRule="evenodd"
+                        ></path>
+                      </svg>
+                    </button>
+                  </div>
+
+                  <LocationPopup
+                    locationName={popupLocation}
+                    businessId={businessId}
+                    updataLocationMetaData={updataLocationMetaData}
+                  />
+
+                  {editMode ? (
+                    <>
+                      <h6>Edit {popupLocation}</h6>
+                      <p>Address: </p>
+                      <input
+                        type="text"
+                        name="locationAddress"
+                        value={newLocationMetaData.locationAddress}
+                        onChange={e =>
+                          handleInputChange(
+                            e,
+                            'locationAddress',
+                            'locationMetaData'
+                          )
+                        }
+                        className="bg-gray-100 rounded-md p-2 mb-2"
+                      />
+                      <p>Notes(MetaData): </p>
+                      <input
+                        type="text"
+                        name="locationMetaData"
+                        value={newLocationMetaData.locationMetaData}
+                        onChange={e =>
+                          handleInputChange(
+                            e,
+                            'locationMetaData',
+                            'locationMetaData'
+                          )
+                        }
+                        className="bg-gray-100 rounded-md p-2 mb-2"
+                      />
+                      <br />
+                      <button
+                        onClick={() => {
+                          EditLocationMetaData(popupLocation);
+                          handleClosePopup(); // Close the popup after saving
+                        }}
+                      >
+                        Save
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <br></br>
+                      <h6>Information about {popupLocation}: </h6>
+                      <p>Address: {locationMetaData.locationAddress}</p>
+                      <p>
+                        Notes (MetaData): {locationMetaData.locationMetaData}
+                      </p>
+                      <br></br>
+                      <button
+                        onClick={() => {
+                          setNewLocationMetaData(locationMetaData);
+                          setEditMode(true);
+                        }}
+                      >
+                        Edit
+                      </button>
+                    </>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {addLocationPopup && (
+              <div
+                style={{
+                  position: 'fixed',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  zIndex: 1000,
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backdropFilter: 'blur(4px)'
+                }}
+                onClick={handleClosePopup}
+              >
+                <div
+                  className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150"
+                  style={{
+                    width: '40%',
+                    maxHeight: '70%',
+                    maxWidth: '90%',
+                    zIndex: 110,
+                    position: 'relative'
+                  }}
+                  onClick={e => e.stopPropagation()}
+                >
+                  <div className="flex justify-end p-2">
+                    <button
+                      onClick={handleClosePopup}
+                      className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+                    >
+                      <svg
+                        className="w-5 h-5"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                          clipRule="evenodd"
+                        ></path>
+                      </svg>
+                    </button>
+                  </div>
+                  <h6>Create a new Location: </h6>
+                  <p>Location name: </p>
+                  <input
+                    type="text"
+                    name="locationName"
+                    value={newLocation.locationName}
+                    onChange={e =>
+                      handleInputChange(e, 'locationName', 'location')
+                    }
+                    className="bg-gray-100 rounded-md p-2 mb-2"
+                  />
+                  <br />
+                  <button
+                    onClick={() => {
+                      addLocation();
+                      handleClosePopup();
+                    }}
+                  >
+                    Create
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {editInventoryItemPopup && (
+              <div
+                style={{
+                  position: 'fixed',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  zIndex: 1000,
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backdropFilter: 'blur(4px)'
+                }}
+                onClick={handleClosePopup}
+              >
+                <div
+                  className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150"
+                  style={{
+                    width: '40%',
+                    maxHeight: '70%',
+                    maxWidth: '90%',
+                    zIndex: 110,
+                    position: 'relative'
+                  }}
+                  onClick={e => e.stopPropagation()}
+                >
+                  <div className="flex justify-end p-2">
+                    <button
+                      onClick={handleClosePopup}
+                      className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+                    >
+                      <svg
+                        className="w-5 h-5"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                          clipRule="evenodd"
+                        ></path>
+                      </svg>
+                    </button>
+                  </div>
+                  <h6>Edit Inventory Input: </h6>
+                  <p>Portion Number: </p>
+                  <input
+                    type="text"
+                    name="newNumber"
+                    value={newInventoryItem.newNumber}
+                    onChange={e => handleInputChange(e, 'newNumber', 'Item')}
+                    className="bg-gray-100 rounded-md p-2 mb-2"
+                  />
+                  <p>Note: </p>
+                  <input
+                    type="text"
+                    name="newMetaData"
+                    value={newInventoryItem.newMetaData}
+                    onChange={e => handleInputChange(e, 'newMetaData', 'Item')}
+                    className="bg-gray-100 rounded-md p-2 mb-2"
+                  />
+                  <br />
+                  <button
+                    onClick={() => {
+                      updateInventoryItem(), handleClosePopup();
+                    }}
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {addInventoryPopup && (
+              <div
+                style={{
+                  position: 'fixed',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  zIndex: 1000,
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backdropFilter: 'blur(4px)'
+                }}
+                onClick={handleClosePopup}
+              >
+                <div
+                  className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150"
+                  style={{
+                    width: '40%',
+                    maxHeight: '70%',
+                    maxWidth: '90%',
+                    zIndex: 110,
+                    position: 'relative'
+                  }}
+                  onClick={e => e.stopPropagation()}
+                >
+                  <div className="flex justify-end p-2">
+                    <button
+                      onClick={handleClosePopup}
+                      className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+                    >
+                      <svg
+                        className="w-5 h-5"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                          clipRule="evenodd"
+                        ></path>
+                      </svg>
+                    </button>
+                  </div>
+                  <h6>Create a new Inventory Item: </h6>
+                  <p>Item Name: </p>
+                  <input
+                    type="text"
+                    name="itemName"
+                    value={itemName}
+                    readOnly
+                    className="bg-gray-100 rounded-md p-2 mb-2"
+                  />
+                  <p>Location Name: </p>
+                  <input
+                    type="text"
+                    name="locationName"
+                    value={locationName}
+                    readOnly
+                    className="bg-gray-100 rounded-md p-2 mb-2"
+                  />
+                  <p>Portion Number: </p>
+                  <input
+                    type="text"
+                    name="newNumber"
+                    value={newInventoryItem.newNumber}
+                    onChange={e => handleInputChange(e, 'newNumber', 'Item')}
+                    className="bg-gray-100 rounded-md p-2 mb-2"
+                  />
+                  <p>Note(MetaData): </p>
+                  <input
+                    type="text"
+                    name="newMetaData"
+                    value={newInventoryItem.newMetaData}
+                    onChange={e => handleInputChange(e, 'newMetaData', 'Item')}
+                    className="bg-gray-100 rounded-md p-2 mb-2"
+                  />
+                  <p>Log Reason: </p>
+                  <input
+                    type="text"
+                    name="logReason"
+                    value={newLocation.logReason}
+                    onChange={e => handleInputChange(e, 'logReason', 'Item')}
+                    className="bg-gray-100 rounded-md p-2 mb-2"
+                  />
+                  <br />
+                  <button
+                    onClick={() => {
+                      addInventoryItem();
+                      handleClosePopup();
+                    }}
+                  >
+                    Create
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {deleteInventoryPopup && (
+              <div
+                style={{
+                  position: 'fixed',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  zIndex: 1000,
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backdropFilter: 'blur(4px)'
+                }}
+                onClick={handleClosePopup}
+              >
+                <div
+                  className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150"
+                  style={{
+                    width: '40%',
+                    maxHeight: '70%',
+                    maxWidth: '90%',
+                    zIndex: 110,
+                    position: 'relative'
+                  }}
+                  onClick={e => e.stopPropagation()}
+                >
+                  <div className="flex justify-end p-2">
+                    <button
+                      onClick={handleClosePopup}
+                      className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+                    >
+                      <svg
+                        className="w-5 h-5"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                          clipRule="evenodd"
+                        ></path>
+                      </svg>
+                    </button>
+                  </div>
+                  <br />
+                  <p className="max-w-sm text-center">
+                    Are you sure you want to delete this Inventory Item?
+                  </p>
+                  <br />
+                  <div className="flex justify-between">
+                    <button
+                      className="bg-green-500 text-white px-4 py-2 rounded-md mr-2"
+                      onClick={() => {
+                        handleDeleteItem();
+                        handleClosePopup();
+                      }}
+                    >
+                      Yes
+                    </button>
+                    <button
+                      className="bg-red-500 text-white px-4 py-2 rounded-md"
+                      onClick={handleClosePopup}
+                    >
+                      No
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </ul>
         )}
       </div>

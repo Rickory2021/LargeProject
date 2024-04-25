@@ -6,10 +6,8 @@ const DateComponent = ({ itemName, location, businessId }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    console.log(
-      'https://slicer-backend.vercel.app/api/crud/business/item-location/get-one-recent-date?businessId=' +
-        businessId
-    );
+    console.log({ itemName, location }); // Logging both itemName and location
+
     const fetchDate = async () => {
       try {
         const response = await fetch(
@@ -48,17 +46,17 @@ const DateComponent = ({ itemName, location, businessId }) => {
     };
 
     fetchDate();
-  }, []);
+  }, [itemName, location, businessId]); // Added location to the dependency array
 
   if (loading) {
     return `Loading...`;
   }
 
   if (error) {
-    return `Error: ${error}`;
+    return `No Recent Date for: ${itemName} at ${location}`; // Display itemName and location in the error message
   }
 
-  return `${date}`;
+  return date;
 };
 
 export default DateComponent;

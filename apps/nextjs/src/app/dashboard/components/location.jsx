@@ -27,7 +27,7 @@ function Location({ itemName, businessId, updateLocationList }) {
       console.log(`locationNames:${locationNames}`);
       updateLocationList(locationNames);
     } catch (error) {
-      console.error('Error fetching item names:', error);
+      console.error('No locations exist:', error);
     }
   };
   useEffect(() => {
