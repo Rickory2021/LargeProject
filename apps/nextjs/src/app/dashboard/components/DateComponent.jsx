@@ -53,7 +53,7 @@ const DateComponent = ({ itemName, location, businessId }) => {
   }
 
   if (error) {
-    return `No Recent Date for: ${itemName} at ${location}`; // Display itemName and location in the error message
+    return `No Recent Date Found`; // Display itemName and location in the error message
   }
 
   return date;
