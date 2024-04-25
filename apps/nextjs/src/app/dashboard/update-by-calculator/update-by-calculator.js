@@ -1313,24 +1313,6 @@ export function UpdateByCalculator() {
                       </div>
                     </div>
                   </div>
-
-                  <div>
-                    {/* Popup with Add button when itemsUsedInMap[itemName] is empty */}
-                    <button
-                      onClick={e => {
-                        setEditedInventory({
-                          rawItemName: '',
-                          finishedItemName: '',
-                          newUnitCost: ''
-                        });
-                        handleAddInventory(itemName);
-                        e.stopPropagation();
-                      }}
-                      className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                    >
-                      Add Item Connection
-                    </button>
-                  </div>
                 </div>
               )}
               {editInventoryUsedInPopup && (
