@@ -564,7 +564,7 @@ export function Distributors() {
             <div
               className="bg-white p-8 rounded-md border border-gray-300 relative text-center backdrop-filter backdrop-blur-sm z-150"
               style={{
-                width: '40%',
+                width: '80%',
                 zIndex: 110,
                 position: 'relative',
                 overflowY: 'auto' // Added to make the popup content scrollable
