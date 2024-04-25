@@ -398,6 +398,7 @@ export function Distributors() {
   }, [userId]);
 
   useEffect(() => {
+    console.log('here');
     if (businessId !== '') readAll();
   }, [businessId]);
 
@@ -419,7 +420,9 @@ export function Distributors() {
         throw new Error('Failed to fetch item names');
       }
       const data = await response.json();
-      const fieldValues = data.output;
+      const fieldValues = data.outputList;
+
+      console.log(fieldValues);
 
       setItemList(fieldValues);
     } catch (error) {
@@ -433,6 +436,10 @@ export function Distributors() {
   useEffect(() => {
     console.log('Index: ' + index);
   }, [index]);
+
+  useEffect(() => {
+    console.log('Updated itemList:', itemList);
+  }, [itemList]);
 
   useEffect(() => {
     if (editMode) {
