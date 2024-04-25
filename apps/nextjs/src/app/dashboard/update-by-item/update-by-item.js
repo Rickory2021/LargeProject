@@ -1188,24 +1188,54 @@ export function UpdateByItem() {
                       </button>
                     </>
                   ) : (
-                    <>
-                      <br></br>
-                      <h6>Information about {popupLocation}: </h6>
-                      <p>Address: {locationMetaData.locationAddress}</p>
-                      <p>
-                        Notes (MetaData): {locationMetaData.locationMetaData}
-                      </p>
-                      <br></br>
-                      <button
-                        onClick={() => {
-                          setNewLocationMetaData(locationMetaData);
-                          setEditMode(true);
-                        }}
-                        className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-                      >
-                        Edit
-                      </button>
-                    </>
+                    <table className="min-w-full border border-collapse border-gray-300">
+                      <tbody className="bg-white">
+                        {/* Render Information about popupLocation */}
+                        <tr>
+                          <td
+                            colSpan="2"
+                            className="px-6 py-4 border-b border-gray-300 whitespace-nowrap text-center"
+                          >
+                            Information about {popupLocation}:
+                          </td>
+                        </tr>
+                        {/* Render Address */}
+                        <tr>
+                          <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
+                            Address
+                          </td>
+                          <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
+                            {locationMetaData.locationAddress}
+                          </td>
+                        </tr>
+                        {/* Render Notes (MetaData) */}
+                        <tr>
+                          <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
+                            Notes (MetaData)
+                          </td>
+                          <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
+                            {locationMetaData.locationMetaData}
+                          </td>
+                        </tr>
+                        {/* Render Edit Button */}
+                        <tr>
+                          <td
+                            colSpan="2"
+                            className="px-6 py-4 border-b border-gray-300 whitespace-nowrap text-center"
+                          >
+                            <button
+                              onClick={() => {
+                                setNewLocationMetaData(locationMetaData);
+                                setEditMode(true);
+                              }}
+                              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                            >
+                              Edit
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   )}
                 </div>
               </div>

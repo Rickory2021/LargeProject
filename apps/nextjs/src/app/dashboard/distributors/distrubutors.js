@@ -35,7 +35,8 @@ export function Distributors() {
     distributorName: '',
     distributorItemName: '',
     unitAmount: '',
-    cost: ''
+    cost: '',
+    priority: ''
   });
 
   const [editedDistributorMetaData, setEditedDistributorMetaData] = useState({
@@ -116,7 +117,8 @@ export function Distributors() {
     setEditedDistributorData({
       distributorItemName: distributor.distributorItemName,
       unitAmount: distributor.distributorItemPortion,
-      cost: distributor.distributorItemCost
+      cost: distributor.distributorItemCost,
+      priority: distributor.priorityChoice
     });
   };
 
@@ -236,6 +238,25 @@ export function Distributors() {
         }
       );
       if (!response3.ok) {
+        throw new Error('Failed to update cost');
+      }
+
+      // Make the third API call to update the cost
+      const response4 = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://slicer-project-backend.vercel.app'}/api/crud/business/distributor-item/update-priority-choice?businessId=${businessId}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            itemName: itemName,
+            index: index,
+            newPriorityChoice: editedDistributorData.priority
+          })
+        }
+      );
+      if (!response4.ok) {
         throw new Error('Failed to update cost');
       }
 
@@ -768,29 +789,51 @@ export function Distributors() {
                   </button>
                 </>
               ) : (
-                <>
-                  <p>
-                    Deadline Date:{' '}
-                    {updataDistributorMetaData.distributorDeadlineDate}
-                  </p>
-                  <p>
-                    Delivery Date:{' '}
-                    {updataDistributorMetaData.distributorDeliveryDate}
-                  </p>
-                  <p>
-                    Notes (MetaData):{' '}
-                    {updataDistributorMetaData.distributorMetaData}
-                  </p>
-                  {/* Display other metadata */}
-                  <br />
-                  {/* Edit button */}
-                  <button
-                    onClick={() => setEditMode(true)}
-                    className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-                  >
-                    Edit
-                  </button>
-                </>
+                <table className="min-w-full border border-collapse border-gray-300">
+                  <tbody className="bg-white">
+                    {/* Deadline Date */}
+                    <tr>
+                      <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
+                        Deadline Date
+                      </td>
+                      <td className="px-6 py-4 border-b border-gray-300 whitespace-nowrap text-center">
+                        {updataDistributorMetaData.distributorDeadlineDate}
+                      </td>
+                    </tr>
+                    {/* Delivery Date */}
+                    <tr>
+                      <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
+                        Delivery Date
+                      </td>
+                      <td className="px-6 py-4 border-b border-gray-300 whitespace-nowrap text-center">
+                        {updataDistributorMetaData.distributorDeliveryDate}
+                      </td>
+                    </tr>
+                    {/* Notes (MetaData) */}
+                    <tr>
+                      <td className="px-6 py-4 border-r border-b border-gray-300 whitespace-nowrap text-center">
+                        Notes (MetaData)
+                      </td>
+                      <td className="px-6 py-4 border-b border-gray-300 whitespace-nowrap text-center">
+                        {updataDistributorMetaData.distributorMetaData}
+                      </td>
+                    </tr>
+                    {/* Edit button */}
+                    <tr>
+                      <td
+                        colSpan="2"
+                        className="px-6 py-4 border-b border-gray-300 whitespace-nowrap text-center"
+                      >
+                        <button
+                          onClick={() => setEditMode(true)}
+                          className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                        >
+                          Edit
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               )}
             </div>
           </div>
@@ -868,6 +911,14 @@ export function Distributors() {
                   name="cost"
                   value={editedDistributorData.cost}
                   onChange={e => handleInputChange(e, 'cost', 'edited')}
+                  className="bg-gray-100 rounded-md p-2 mb-2"
+                />
+                <p>Priority: </p>
+                <input
+                  type="text"
+                  name="priority"
+                  value={editedDistributorData.priority}
+                  onChange={e => handleInputChange(e, 'priority', 'edited')}
                   className="bg-gray-100 rounded-md p-2 mb-2"
                 />
                 <br></br>
