@@ -17,7 +17,7 @@ function LocationTotalCount({
         };
 
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/item-inventory/read-all?businessId=${businessId}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://slicer-project-backend.vercel.app'}/api/crud/business/item-inventory/read-all?businessId=${businessId}`,
           {
             method: 'POST',
             headers: {

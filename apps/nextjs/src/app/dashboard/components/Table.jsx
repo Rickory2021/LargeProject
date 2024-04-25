@@ -46,7 +46,7 @@ const Table = ({ businessId }) => {
     };
 
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/item-list/update-name?businessId=${businessId}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://slicer-project-backend.vercel.app'}/api/crud/business/item-list/update-name?businessId=${businessId}`,
       {
         method: 'POST',
         headers: {
@@ -108,7 +108,7 @@ const Table = ({ businessId }) => {
       itemName: addPost.itemName
     };
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/item-list/create?businessId=${businessId}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://slicer-project-backend.vercel.app'}/api/crud/business/item-list/create?businessId=${businessId}`,
       {
         method: 'POST',
         headers: {
@@ -136,7 +136,7 @@ const Table = ({ businessId }) => {
   useEffect(() => {
     const readAll = async () => {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/item-list/read-all/?businessId=${businessId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://slicer-project-backend.vercel.app'}/api/crud/business/item-list/read-all/?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {

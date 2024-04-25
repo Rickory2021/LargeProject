@@ -22,10 +22,10 @@ function CookieComponent({ cookieName, onUserIdChange }) {
 
   const verifyAccessToken = async accessToken => {
     console.log(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/${accessToken}`
+      `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://slicer-project-backend.vercel.app'}/api/auth/${accessToken}`
     );
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/${accessToken}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://slicer-project-backend.vercel.app'}/api/auth/${accessToken}`,
       {
         method: 'POST',
         headers: {

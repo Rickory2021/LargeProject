@@ -148,7 +148,7 @@ export function Distributors() {
   const addDistributor = async () => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/distributor-item/create?businessId=${businessId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://slicer-project-backend.vercel.app'}/api/crud/business/distributor-item/create?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -183,7 +183,7 @@ export function Distributors() {
     try {
       // Make the first API call to update the distributor item name
       const response1 = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/distributor-item/update-distributor-item-name?businessId=${businessId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://slicer-project-backend.vercel.app'}/api/crud/business/distributor-item/update-distributor-item-name?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -203,7 +203,7 @@ export function Distributors() {
       console.log('Unit Amount: ' + editedDistributorData.unitAmount);
       // Make the second API call to update the unit amount
       const response2 = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/distributor-item/update-item-portion?businessId=${businessId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://slicer-project-backend.vercel.app'}/api/crud/business/distributor-item/update-item-portion?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -222,7 +222,7 @@ export function Distributors() {
 
       // Make the third API call to update the cost
       const response3 = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/distributor-item/update-item-cost?businessId=${businessId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://slicer-project-backend.vercel.app'}/api/crud/business/distributor-item/update-item-cost?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -259,7 +259,7 @@ export function Distributors() {
     console.log('HRERE');
     try {
       const response1 = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/distributor-metadata-list/update-deadline-date?businessId=${businessId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://slicer-project-backend.vercel.app'}/api/crud/business/distributor-metadata-list/update-deadline-date?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -275,7 +275,7 @@ export function Distributors() {
         throw new Error('Failed to update Deadline Date');
       }
       const response2 = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/distributor-metadata-list/update-delivery-date?businessId=${businessId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://slicer-project-backend.vercel.app'}/api/crud/business/distributor-metadata-list/update-delivery-date?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -291,7 +291,7 @@ export function Distributors() {
         throw new Error('Failed to update Delivery Date');
       }
       const response3 = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/distributor-metadata-list/update-meta-data?businessId=${businessId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://slicer-project-backend.vercel.app'}/api/crud/business/distributor-metadata-list/update-meta-data?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {
@@ -324,7 +324,7 @@ export function Distributors() {
     };
 
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/distributor-item/read-all?businessId=${businessId}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://slicer-project-backend.vercel.app'}/api/crud/business/distributor-item/read-all?businessId=${businessId}`,
       {
         method: 'POST',
         headers: {
@@ -351,7 +351,7 @@ export function Distributors() {
     };
 
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/distributor-item/delete?businessId=${businessId}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://slicer-project-backend.vercel.app'}/api/crud/business/distributor-item/delete?businessId=${businessId}`,
       {
         method: 'POST',
         headers: {
@@ -372,7 +372,7 @@ export function Distributors() {
 
   const getBusinessId = async () => {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/user/user-info?id=${userId}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://slicer-project-backend.vercel.app'}/api/auth/user/user-info?id=${userId}`,
       {
         method: 'GET',
         headers: {
@@ -409,10 +409,10 @@ export function Distributors() {
   const readAll = async () => {
     try {
       console.log(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/item-list/read-all/?businessId=${businessId}`
+        `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://slicer-project-backend.vercel.app'}/api/crud/business/item-list/read-all/?businessId=${businessId}`
       );
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/crud/business/item-list/read-all/?businessId=${businessId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://slicer-project-backend.vercel.app'}/api/crud/business/item-list/read-all/?businessId=${businessId}`,
         {
           method: 'POST',
           headers: {

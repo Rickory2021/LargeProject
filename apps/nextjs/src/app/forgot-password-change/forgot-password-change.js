@@ -36,7 +36,7 @@ export default function ForgotPasswordChange() {
 
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/user/reset-password?token=${token}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://slicer-project-backend.vercel.app'}/api/auth/user/reset-password?token=${token}`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
