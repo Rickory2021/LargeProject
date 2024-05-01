@@ -821,7 +821,7 @@ export function UpdateByCalculator() {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-gray-200 dark:divide-neutral-700">
-                        {itemList !== null &&
+                        {itemList !== undefined &&
                           itemList.map((item, index) => (
                             <tr
                               key={index}

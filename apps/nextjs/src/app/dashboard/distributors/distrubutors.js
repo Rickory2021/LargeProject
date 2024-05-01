@@ -492,7 +492,7 @@ export function Distributors() {
             <h2 className="text-2xl font-bold text-center mb-4 border-b border-gray-700">
               Distributors
             </h2>
-            {itemList !== null && (
+            {itemList !== undefined && (
               <table className="w-full divide-y divide-gray-200 dark:divide-neutral-700">
                 <thead>
                   <tr>
